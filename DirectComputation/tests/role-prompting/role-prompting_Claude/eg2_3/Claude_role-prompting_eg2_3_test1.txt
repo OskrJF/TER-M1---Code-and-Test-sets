@@ -1,0 +1,74 @@
+Claude_role-prompting_eg2_3_test1
+
+Date: 27 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+Let me read and analyze your CSV file to extract the formal concepts from this context.
+
+Now let me explain this step by step as your computer science teacher would:
+
+## Understanding Formal Concept Analysis
+
+**What is a Formal Context?**
+Your CSV represents a formal context with:
+- **Objects**: {o1, o2} 
+- **Attributes**: {a1, a2, a3}
+- **Incidence relation**: Shows which objects have which attributes
+
+**What is a Formal Concept?**
+A formal concept is a pair (A, B) where:
+- A is a set of objects (called the **extent**)
+- B is a set of attributes (called the **intent**)
+- A contains exactly those objects that have ALL attributes in B
+- B contains exactly those attributes that are shared by ALL objects in A
+
+**The Four Concepts in Your Example:**
+
+1. **Top Concept (⊤)**: (∅, {a1,a2,a3})
+   - No objects satisfy having ALL three attributes simultaneously
+
+2. **Object o1 Concept**: ({o1}, {a1,a2})
+   - Object o1 has exactly attributes a1 and a2
+
+3. **Object o2 Concept**: ({o2}, {a2,a3})
+   - Object o2 has exactly attributes a2 and a3
+
+4. **Bottom Concept (⊥)**: ({o1,o2}, {a2})
+   - Both objects share only attribute a2
+
+**Why This Forms a Lattice:**
+The concepts form a complete lattice because:
+- There's a partial ordering based on extent inclusion
+- Every pair of concepts has a unique meet (greatest lower bound) and join (least upper bound)
+- The structure has a unique top and bottom element
+
+This lattice helps us understand the hierarchical relationships between different combinations of objects and their shared properties in your dataset.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here's the complete list of all formal concepts from your context in the requested format:
+
+**[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]**
+
+Each concept is represented as [intent, extent] where:
+- First element: list of attributes (intent)
+- Second element: list of objects (extent)
+
+The four concepts are:
+1. [[a1, a2, a3], []] - Top concept with all attributes, no objects
+2. [[a1, a2], [o1]] - Object o1 with its attributes a1, a2  
+3. [[a2, a3], [o2]] - Object o2 with its attributes a2, a3
+4. [[a2], [o1, o2]] - Bottom concept with common attribute a2, all objects

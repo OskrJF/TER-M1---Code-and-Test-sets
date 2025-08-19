@@ -1,0 +1,43 @@
+Claude_role-prompting_eg5_5_test1
+
+Date: 27 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll help you understand how to extract lattice concepts from this formal context using Formal Concept Analysis (FCA). Let me walk you through this step by step.
+
+As your computer science teacher, let me walk you through the complete process of extracting formal concepts from this context.
+
+**What we just analyzed:**
+
+From the CSV file, we have a formal context with 5 objects (o1-o5) and 5 attributes (a1-a5). Using the fundamental principle of FCA - that a formal concept is a maximal rectangle of crosses in the context table - we systematically found all 8 formal concepts.
+
+**The key insight:** Each concept represents a meaningful relationship between a set of objects and their common attributes. For example:
+- Concept 5 shows that objects o1 and o3 are similar because they both have attributes a1 and a4
+- Concept 7 reveals that o3, o4, and o5 form a natural grouping around attribute a2
+
+**Why this matters in computer science:**
+- **Data Mining**: Concepts reveal hidden patterns in data
+- **Knowledge Representation**: The lattice structure shows hierarchical relationships
+- **Machine Learning**: Concept lattices can be used for classification and clustering
+- **Database Design**: Helps identify functional dependencies
+
+The interactive visualization above lets you explore each concept and understand how they form a complete lattice structure. Try clicking on different concepts to see their relationships!
+
+Would you like me to explain any specific aspect in more detail, such as the algorithm for computing concept closures or how to interpret the lattice ordering?
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3, a4, a5], []], [[a3], [o2]], [[a3], [o1, o2]], [[a1, a2, a4, a5], [o3]], [[a1, a4], [o1, o3]], [[a2, a5], [o3, o4]], [[a2], [o3, o4, o5]], [[], [o1, o2, o3, o4, o5]]]

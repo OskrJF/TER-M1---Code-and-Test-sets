@@ -1,0 +1,56 @@
+Claude_role-prompting_eg2_3_test2
+
+Date: 27 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll help you understand how to extract lattice concepts from this formal context using Formal Concept Analysis (FCA). Let me first read and analyze the CSV file, then walk through the concept extraction process step by step.
+
+Now let me walk you through the complete process of extracting lattice concepts from your formal context:
+
+## Understanding Your Data
+
+Your CSV represents a formal context where:
+- **Objects**: o1, o2 (the rows)
+- **Attributes**: a1, a2, a3 (the columns) 
+- **Relations**: "yes" means the object has the attribute, "no" means it doesn't
+
+## The Concept Extraction Process
+
+**Step 1: Compute Closure Operations**
+The key insight in FCA is that we need to find sets that are "closed" under two operations:
+- For objects → find their common attributes
+- For attributes → find objects that have all of them
+
+**Step 2: Find All Formal Concepts**
+A formal concept (A,B) must satisfy: A' = B and B' = A
+
+From your context, we get exactly **4 formal concepts**:
+
+1. **C1**: ({o1, o2}, {a2}) - Both objects share attribute a2
+2. **C2**: ({o1}, {a1, a2}) - Object o1 has attributes a1 and a2  
+3. **C3**: ({o2}, {a2, a3}) - Object o2 has attributes a2 and a3
+4. **C4**: (∅, {a1, a2, a3}) - No object has all three attributes
+
+**Step 3: The Lattice Structure**
+These concepts form a lattice where C1 is at the top (most general), C4 is at the bottom (most specific), and C2, C3 are incomparable concepts in the middle.
+
+This demonstrates how FCA reveals the natural hierarchy and relationships hidden in your data - each concept represents a meaningful cluster of objects that share exactly the same set of attributes.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Looking at the formal context from your CSV file, here are all the lattice concepts in the requested format:
+
+[[[a1, a2, a3], []], [[a2], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]]]

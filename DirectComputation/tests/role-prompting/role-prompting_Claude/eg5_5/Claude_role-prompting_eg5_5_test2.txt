@@ -1,0 +1,65 @@
+Claude_role-prompting_eg5_5_test2
+
+Date: 27 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+Let me read and analyze your CSV file to demonstrate formal concept analysis concepts.
+
+Now let me walk you through the formal concept analysis as your computer science teacher would:
+
+## What is Formal Concept Analysis?
+
+Formal Concept Analysis (FCA) is a mathematical framework for analyzing relationships between objects and their attributes. Think of it as a systematic way to find meaningful groupings in data.
+
+## Understanding Your Context
+
+Your CSV file represents a **formal context** - a table showing which objects (o1-o5) have which attributes (a1-a5). A "yes" means the object has that attribute, "no" means it doesn't.
+
+## What is a Formal Concept?
+
+A formal concept is a pair (A, B) where:
+- **A** is a set of objects (the *extent*)
+- **B** is a set of attributes (the *intent*)
+- Every object in A has every attribute in B
+- A and B are maximal (you can't add more objects or attributes without breaking the relationship)
+
+## Key Insight
+
+The tool above extracts all formal concepts from your data. Each concept represents a maximal group of objects that share a common set of attributes. For example:
+
+- Objects {o1, o3} might share attributes {a1, a4} 
+- Object {o2} might have only attribute {a3}
+- The empty set of objects corresponds to all attributes (since no objects need to satisfy all attributes)
+
+## The Concept Lattice
+
+These concepts form a lattice structure when ordered by inclusion - some concepts are more general (fewer attributes, more objects) while others are more specific (more attributes, fewer objects).
+
+The analysis shows you all the meaningful patterns hidden in your data - every possible way objects can be grouped by their shared attributes!
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+The tool now displays all formal concepts in the exact format you requested. Looking at your data, the complete list of formal concepts will be shown at the top in the format:
+
+`[[intent], [extent]], [[intent], [extent]], ...`
+
+where each concept is represented as a pair of:
+- The first list containing the attributes (intent)
+- The second list containing the objects (extent)
+
+The analysis will automatically compute all maximal object-attribute relationships from your context and present them in this clean, single-line format without quotation marks as requested.
+
+[[[], [o1,o2,o3,o4,o5]], [[a2], [o3,o4,o5]], [[a3], [o1,o2]], [[a1,a4], [o1,o3]], [[a2,a5], [o3,o4]], [[a1,a3,a4], [o1]], [[a1,a2,a4,a5], [o3]], [[a1,a2,a3,a4,a5], []]]

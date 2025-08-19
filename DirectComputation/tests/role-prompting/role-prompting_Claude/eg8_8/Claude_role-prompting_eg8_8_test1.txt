@@ -1,0 +1,57 @@
+Claude_role-prompting_eg8_8_test1
+
+Date: 27 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll help you understand formal concept analysis by extracting all the lattice concepts from this context. Let me first explain what we're working with and then systematically find all the concepts.
+
+Now let me explain the systematic process I used to extract these formal concepts:
+
+## The Method: Finding Formal Concepts
+
+In Formal Concept Analysis, we work with a **context** (O, A, I) where:
+- O = {O1, O2, O3, O4, O5, O6, O7, O8} (objects)
+- A = {a1, a2, a3, a4, a5, a6, a7, a8} (attributes)  
+- I is the incidence relation (Yes/No values in your CSV)
+
+### Key Operations:
+1. **↑ (up-arrow)**: For a set of objects, find their common attributes
+2. **↓ (down-arrow)**: For a set of attributes, find objects that have all of them
+
+### The Process:
+
+1. **Start with all possible object sets** and compute their common attributes
+2. **For each attribute set**, find which objects have all those attributes
+3. **A formal concept (A,B)** exists when A↑ = B and B↓ = A (closure property)
+
+### Critical Observation:
+Notice that **attribute a2 appears in every single object** - this makes it special! It's the only universal attribute, which is why our bottom concept has intent {a2}.
+
+The 12 concepts I found form a complete lattice where:
+- Each concept represents a "natural grouping" of objects by their shared attributes
+- The lattice shows the hierarchical relationships between these groupings
+- Concepts higher in the lattice have fewer objects but more attributes
+- Concepts lower in the lattice have more objects but fewer attributes
+
+This systematic approach ensures we find ALL possible formal concepts - no more, no less. Each concept represents a maximal rectangle of crosses (Yes values) in your context matrix when properly arranged.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Looking at the formal concepts I extracted from the context, here they are in your requested format:
+
+[[[a1, a2, a3, a4, a5, a6, a7, a8], []], [[a1, a2], [O1, O2, O3, O6]], [[a1, a2, a3], [O1, O2, O6]], [[a2, a4], [O4, O5, O7, O8]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a4, a6], [O3, O5]], [[a2, a6, a8], [O2, O5]], [[a2, a5, a7], [O6, O7, O8]], [[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a2, a4, a6, a7, a8], [O5]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a2], [O1, O2, O3, O4, O5, O6, O7, O8]]]
+
+Note: I noticed the last concept appears to be a duplicate of concept 9, so the unique formal concepts are actually 11 total. Each pair represents [extent, intent] where extent is the set of objects and intent is the set of attributes they share.

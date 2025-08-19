@@ -1,0 +1,64 @@
+Claude_role-prompting_eg2_9_test1
+
+Date: 27 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll help you understand how to extract lattice concepts from this formal context using Formal Concept Analysis (FCA). Let me create an interactive tool that will demonstrate the process step by step.
+
+Now let me explain the key concepts from a teacher's perspective:
+
+## Understanding Formal Concept Analysis (FCA)
+
+**What we just did:** We extracted all formal concepts from your context, which represents a relationship between 2 objects (o1, o2) and 9 attributes (a1-a9).
+
+### The Core Principle
+In FCA, a **formal concept** is a maximal pair (A, B) where:
+- A is a set of objects 
+- B is a set of attributes
+- Every object in A has every attribute in B
+- Every attribute in B is shared by every object in A
+- The pair is maximal (you can't add more objects or attributes without breaking the relationship)
+
+### What the Results Show
+From your data, we found **4 formal concepts**:
+
+1. **(∅, {a1, a4, a9})** - No objects, but attributes a1, a4, a9 are shared by all objects in the context
+2. **({o1}, {a1, a2, a3, a4, a7, a9})** - Object o1 alone with all its attributes
+3. **({o2}, {a1, a4, a6, a9})** - Object o2 alone with all its attributes  
+4. **({o1, o2}, {a1, a4, a9})** - Both objects together with their common attributes
+
+### Why This Matters
+These concepts reveal the **knowledge structure** hidden in your data:
+- Objects o1 and o2 share exactly 3 attributes: a1, a4, and a9
+- Object o1 has additional unique attributes: a2, a3, a7
+- Object o2 has one additional unique attribute: a6
+- No other meaningful groupings exist in this context
+
+This forms a **concept lattice** - a hierarchical structure showing how concepts relate to each other through generalization and specialization relationships.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Let me fix that format to match exactly what you requested:
+
+Based on the formal concept analysis of your CSV data, here are all the concepts in the requested format:
+
+**[[[a1, a4, a9], []], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a4, a9], [o1, o2]]]**
+
+Each concept is represented as [[attributes], [objects]] where:
+- The first concept has attributes {a1, a4, a9} shared by all objects, with an empty object set
+- The second concept has object o1 with its complete attribute set
+- The third concept has object o2 with its complete attribute set  
+- The fourth concept has both objects with their common attributes

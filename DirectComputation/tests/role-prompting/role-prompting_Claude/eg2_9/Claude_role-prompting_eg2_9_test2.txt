@@ -1,0 +1,75 @@
+Claude_role-prompting_eg2_9_test2
+
+Date: 27 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll help you understand formal concept analysis by extracting all lattice concepts from this context. Let me start by explaining what we're working with and then systematically find all the concepts.
+
+Now let me walk you through the formal concept analysis step by step:
+
+## What is Formal Concept Analysis?
+
+In FCA, we work with a **formal context** consisting of objects, attributes, and their relationships. From your CSV data, we have:
+- **Objects**: o1, o2 
+- **Attributes**: a1, a2, a3, a4, a5, a6, a7, a8, a9
+- **Relations**: which objects have which attributes (yes/no values)
+
+## The Key Principle
+
+A **formal concept** is a pair (A, B) where:
+- A is a set of objects (called the **extent**)
+- B is a set of attributes (called the **intent**)
+- A contains exactly those objects that have all attributes in B
+- B contains exactly those attributes shared by all objects in A
+
+This creates a "maximal rectangle" in the context table.
+
+## The Extracted Concepts
+
+From your data, we get exactly **4 formal concepts**:
+
+1. **Concept 1**: ({o1, o2}, {a1, a4, a9})
+   - Both objects share attributes a1, a4, and a9
+
+2. **Concept 2**: ({o1}, {a1, a2, a3, a4, a7, a9})
+   - Object o1 has these specific attributes
+
+3. **Concept 3**: ({o2}, {a1, a4, a6, a9})
+   - Object o2 has these specific attributes
+
+4. **Concept 4**: (∅, {a1, a2, a3, a4, a6, a7, a8, a9})
+   - Empty extent with maximal intent (bottom concept)
+
+## Why These Are All the Concepts
+
+The algorithm checks every possible subset of objects and computes their shared attributes, then verifies the closure property. These 4 concepts form a complete concept lattice where:
+- The top concept has maximal extent (both objects)
+- The bottom concept has maximal intent (most attributes)
+- Each concept represents a meaningful grouping in your data
+
+This lattice structure helps reveal the hierarchical relationships and common patterns in your dataset!
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Looking at the formal concepts I extracted from your CSV data, here they are in the requested format:
+
+[[[a1, a2, a3, a4, a6, a7, a8, a9], []], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a4, a9], [o1, o2]]]
+
+Each concept is represented as [extent, intent] where:
+- First concept: empty extent with maximal intent (bottom concept)
+- Second concept: object o1 with its specific attributes
+- Third concept: object o2 with its specific attributes  
+- Fourth concept: both objects with their shared attributes (top concept)

@@ -1,0 +1,57 @@
+Claude_role-prompting_eg15_15_test2
+
+Date: 27 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll help you understand formal concept analysis by extracting all lattice concepts from this context. Let me first load and analyze the data, then explain the process step by step.
+
+Now let me explain the formal concept analysis process as your computer science teacher:
+
+## Understanding Formal Concept Analysis
+
+**What are we doing?** We're finding all "formal concepts" from a binary relation between objects (O1-O15) and attributes (Attr1-Attr15). 
+
+**Key Definitions:**
+- **Context**: A table showing which objects have which attributes (Yes/No values)
+- **Extent**: A set of objects that all share certain attributes
+- **Intent**: A set of attributes that are all possessed by certain objects
+- **Formal Concept**: A pair (Extent, Intent) where the extent is maximal for the intent, and the intent is maximal for the extent
+
+**The Algorithm:**
+1. For each possible subset of attributes, find all objects that have ALL those attributes
+2. For those objects, find ALL attributes they share
+3. If this creates a "closed" relationship (no more objects or attributes can be added), it's a formal concept
+
+**Why is this useful?** 
+- Concepts represent natural groupings in your data
+- They form a mathematical lattice structure
+- Each concept is a "complete" description - you can't add more objects without losing attributes, or add more attributes without losing objects
+
+The analysis above shows all formal concepts extracted from your dataset. Each concept represents a meaningful cluster where objects and their shared attributes are maximally related. This is foundational for knowledge representation, data mining, and conceptual modeling in computer science.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Perfect! The analysis now displays all formal concepts in the exact format you requested. The single line shows each concept as a pair `[intent, extent]` where:
+
+- **Intent** comes first (the attributes)  
+- **Extent** comes second (the objects)
+- Empty sets are shown as `[]`
+- No quotation marks around the elements
+- All concepts are enclosed in one large array
+
+This format makes it easy to see the complete lattice structure at a glance and is commonly used in FCA literature and computational tools for further processing or visualization of the concept lattice.
+
+[[[], [O1,O10,O11,O12,O13,O14,O15,O2,O3,O4,O5,O6,O7,O8,O9]], [[Attr1], [O3,O6,O7,O8]], [[Attr2], [O10,O11,O13,O14,O2,O4,O5,O7,O9]], [[Attr1,Attr10,Attr11,Attr13,Attr2,Attr3,Attr4,Attr6,Attr7,Attr8,Attr9], [O7]], [[Attr3,Attr8], [O13,O3,O5,O7]], [[Attr1,Attr11,Attr13,Attr3,Attr8,Attr9], [O3,O7]], [[Attr2,Attr3,Attr6,Attr8], [O13,O5,O7]], [[Attr4], [O1,O10,O11,O15,O2,O5,O7]], [[Attr11,Attr2,Attr4], [O10,O11,O2,O5,O7]], [[Attr11,Attr13,Attr2,Attr3,Attr4,Attr6,Attr8], [O5,O7]], [[Attr5], [O1,O10,O12,O4,O5,O6,O8,O9]], [[Attr1,Attr5,Attr7], [O6,O8]], [[Attr2,Attr5,Attr6], [O10,O4,O5,O9]], [[Attr1,Attr10,Attr11,Attr12,Attr13,Attr14,Attr15,Attr2,Attr3,Attr4,Attr5,Attr6,Attr7,Attr8,Attr9], []], [[Attr11,Attr13,Attr14,Attr2,Attr3,Attr4,Attr5,Attr6,Attr8], [O5]], [[Attr13,Attr4,Attr5,Attr6], [O1,O10,O5]], [[Attr11,Attr13,Attr2,Attr4,Attr5,Attr6,Attr8], [O10,O5]], [[Attr6], [O1,O10,O11,O12,O13,O14,O4,O5,O7,O8,O9]], [[Attr1,Attr11,Attr6,Attr7], [O7,O8]], [[Attr2,Attr6], [O10,O11,O13,O14,O4,O5,O7,O9]], [[Attr4,Attr6], [O1,O10,O11,O5,O7]], [[Attr11,Attr2,Attr4,Attr6], [O10,O11,O5,O7]], [[Attr5,Attr6], [O1,O10,O12,O4,O5,O8,O9]], [[Attr1,Attr11,Attr5,Attr6,Attr7], [O8]], [[Attr7], [O11,O6,O7,O8,O9]], [[Attr1,Attr7], [O6,O7,O8]], [[Attr10,Attr2,Attr6,Attr7], [O11,O7,O9]], [[Attr10,Attr11,Attr2,Attr4,Attr6,Attr7], [O11,O7]], [[Attr5,Attr7], [O6,O8,O9]], [[Attr10,Attr12,Attr14,Attr2,Attr5,Attr6,Attr7,Attr9], [O9]], [[Attr6,Attr7], [O11,O7,O8,O9]], [[Attr5,Attr6,Attr7], [O8,O9]], [[Attr8], [O10,O13,O3,O5,O6,O7]], [[Attr1,Attr13,Attr8], [O3,O6,O7]], [[Attr2,Attr6,Attr8], [O10,O13,O5,O7]], [[Attr11,Attr13,Attr2,Attr4,Attr6,Attr8], [O10,O5,O7]], [[Attr13,Attr5,Attr8], [O10,O5,O6]], [[Attr1,Attr10,Attr12,Attr13,Attr15,Attr5,Attr7,Attr8], [O6]], [[Attr1,Attr10,Attr13,Attr7,Attr8], [O6,O7]], [[Attr9], [O1,O12,O13,O15,O3,O7,O9]], [[Attr10,Attr2,Attr6,Attr9], [O13,O7,O9]], [[Attr3,Attr8,Attr9], [O13,O3,O7]], [[Attr10,Attr2,Attr3,Attr6,Attr8,Attr9], [O13,O7]], [[Attr13,Attr4,Attr9], [O1,O15,O7]], [[Attr5,Attr6,Attr9], [O1,O12,O9]], [[Attr13,Attr15,Attr4,Attr5,Attr6,Attr9], [O1]], [[Attr6,Attr9], [O1,O12,O13,O7,O9]], [[Attr13,Attr4,Attr6,Attr9], [O1,O7]], [[Attr10,Attr2,Attr6,Attr7,Attr9], [O7,O9]], [[Attr10], [O11,O12,O13,O2,O6,O7,O9]], [[Attr10,Attr2], [O11,O13,O2,O7,O9]], [[Attr10,Attr11,Attr2,Attr4], [O11,O2,O7]], [[Attr10,Attr12,Attr5], [O12,O6,O9]], [[Attr10,Attr6], [O11,O12,O13,O7,O9]], [[Attr10,Attr2,Attr6], [O11,O13,O7,O9]], [[Attr10,Attr12,Attr14,Attr5,Attr6,Attr9], [O12,O9]], [[Attr10,Attr7], [O11,O6,O7,O9]], [[Attr10,Attr12,Attr5,Attr7], [O6,O9]], [[Attr10,Attr8], [O13,O6,O7]], [[Attr10,Attr6,Attr9], [O12,O13,O7,O9]], [[Attr11], [O10,O11,O15,O2,O3,O5,O7,O8]], [[Attr1,Attr11], [O3,O7,O8]], [[Attr11,Attr13,Attr3,Attr8], [O3,O5,O7]], [[Attr11,Attr4], [O10,O11,O15,O2,O5,O7]], [[Attr11,Attr5,Attr6], [O10,O5,O8]], [[Attr11,Attr6], [O10,O11,O5,O7,O8]], [[Attr11,Attr6,Attr7], [O11,O7,O8]], [[Attr11,Attr13,Attr8], [O10,O3,O5,O7]], [[Attr11,Attr13,Attr9], [O15,O3,O7]], [[Attr11,Attr13,Attr4,Attr9], [O15,O7]], [[Attr12], [O11,O12,O14,O2,O4,O6,O9]], [[Attr12,Attr2], [O11,O14,O2,O4,O9]], [[Attr10,Attr11,Attr12,Attr15,Attr2,Attr4], [O11,O2]], [[Attr12,Attr5], [O12,O4,O6,O9]], [[Attr12,Attr14,Attr2,Attr5,Attr6], [O4,O9]], [[Attr12,Attr6], [O11,O12,O14,O4,O9]], [[Attr12,Attr2,Attr6], [O11,O14,O4,O9]], [[Attr10,Attr11,Attr12,Attr15,Attr2,Attr4,Attr6,Attr7], [O11]], [[Attr12,Attr14,Attr5,Attr6], [O12,O4,O9]], [[Attr10,Attr12,Attr7], [O11,O6,O9]], [[Attr10,Attr12,Attr2,Attr6,Attr7], [O11,O9]], [[Attr10,Attr12], [O11,O12,O2,O6,O9]], [[Attr10,Attr12,Attr2], [O11,O2,O9]], [[Attr10,Attr12,Attr6], [O11,O12,O9]], [[Attr13], [O1,O10,O14,O15,O2,O3,O4,O5,O6,O7]], [[Attr13,Attr2], [O10,O14,O2,O4,O5,O7]], [[Attr13,Attr4], [O1,O10,O15,O2,O5,O7]], [[Attr11,Attr13,Attr2,Attr4], [O10,O2,O5,O7]], [[Attr13,Attr5], [O1,O10,O4,O5,O6]], [[Attr13,Attr2,Attr5,Attr6], [O10,O4,O5]], [[Attr13,Attr6], [O1,O10,O14,O4,O5,O7]], [[Attr13,Attr2,Attr6], [O10,O14,O4,O5,O7]], [[Attr13,Attr4,Attr6], [O1,O10,O5,O7]], [[Attr13,Attr5,Attr6], [O1,O10,O4,O5]], [[Attr13,Attr8], [O10,O3,O5,O6,O7]], [[Attr13,Attr9], [O1,O15,O3,O7]], [[Attr10,Attr13], [O2,O6,O7]], [[Attr10,Attr11,Attr13,Attr2,Attr4], [O2,O7]], [[Attr11,Attr13], [O10,O15,O2,O3,O5,O7]], [[Attr11,Attr13,Attr4], [O10,O15,O2,O5,O7]], [[Attr12,Attr13], [O14,O2,O4,O6]], [[Attr12,Attr13,Attr2], [O14,O2,O4]], [[Attr10,Attr11,Attr12,Attr13,Attr15,Attr2,Attr4], [O2]], [[Attr12,Attr13,Attr5], [O4,O6]], [[Attr12,Attr13,Attr14,Attr2,Attr5,Attr6], [O4]], [[Attr12,Attr13,Attr14,Attr2,Attr6], [O14,O4]], [[Attr10,Attr12,Attr13,Attr15], [O2,O6]], [[Attr14], [O12,O13,O14,O15,O4,O5,O9]], [[Attr14,Attr2,Attr6], [O13,O14,O4,O5,O9]], [[Attr14,Attr2,Attr3,Attr6,Attr8], [O13,O5]], [[Attr11,Attr13,Attr14,Attr4], [O15,O5]], [[Attr14,Attr5,Attr6], [O12,O4,O5,O9]], [[Attr14,Attr2,Attr5,Attr6], [O4,O5,O9]], [[Attr14,Attr6], [O12,O13,O14,O4,O5,O9]], [[Attr14,Attr9], [O12,O13,O15,O9]], [[Attr10,Attr14,Attr2,Attr6,Attr9], [O13,O9]], [[Attr10,Attr14,Attr15,Attr2,Attr3,Attr6,Attr8,Attr9], [O13]], [[Attr11,Attr13,Attr14,Attr4,Attr9], [O15]], [[Attr10,Attr14,Attr6,Attr9], [O12,O13,O9]], [[Attr12,Attr14,Attr6], [O12,O14,O4,O9]], [[Attr12,Attr14,Attr2,Attr6], [O14,O4,O9]], [[Attr13,Attr14], [O14,O15,O4,O5]], [[Attr13,Attr14,Attr2,Attr6], [O14,O4,O5]], [[Attr13,Attr14,Attr2,Attr5,Attr6], [O4,O5]], [[Attr15], [O1,O11,O13,O14,O2,O3,O6]], [[Attr1,Attr13,Attr15,Attr8], [O3,O6]], [[Attr15,Attr2], [O11,O13,O14,O2]], [[Attr15,Attr3,Attr8,Attr9], [O13,O3]], [[Attr1,Attr11,Attr13,Attr15,Attr3,Attr8,Attr9], [O3]], [[Attr15,Attr4], [O1,O11,O2]], [[Attr13,Attr15,Attr5], [O1,O6]], [[Attr15,Attr6], [O1,O11,O13,O14]], [[Attr15,Attr2,Attr6], [O11,O13,O14]], [[Attr15,Attr4,Attr6], [O1,O11]], [[Attr10,Attr12,Attr15,Attr7], [O11,O6]], [[Attr15,Attr8], [O13,O3,O6]], [[Attr15,Attr9], [O1,O13,O3]], [[Attr15,Attr6,Attr9], [O1,O13]], [[Attr10,Attr15], [O11,O13,O2,O6]], [[Attr10,Attr15,Attr2], [O11,O13,O2]], [[Attr10,Attr15,Attr2,Attr6], [O11,O13]], [[Attr10,Attr15,Attr8], [O13,O6]], [[Attr11,Attr15], [O11,O2,O3]], [[Attr12,Attr15], [O11,O14,O2,O6]], [[Attr12,Attr15,Attr2], [O11,O14,O2]], [[Attr12,Attr15,Attr2,Attr6], [O11,O14]], [[Attr10,Attr12,Attr15], [O11,O2,O6]], [[Attr13,Attr15], [O1,O14,O2,O3,O6]], [[Attr12,Attr13,Attr15,Attr2], [O14,O2]], [[Attr13,Attr15,Attr4], [O1,O2]], [[Attr13,Attr15,Attr6], [O1,O14]], [[Attr12,Attr13,Attr14,Attr15,Attr2,Attr6], [O14]], [[Attr13,Attr15,Attr9], [O1,O3]], [[Attr11,Attr13,Attr15], [O2,O3]], [[Attr12,Attr13,Attr15], [O14,O2,O6]], [[Attr14,Attr15,Attr2,Attr6], [O13,O14]]]
