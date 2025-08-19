@@ -15,7 +15,7 @@ The project has been selected for presentation at
 
 # Benchmark
 
-* Directory "Synthetics" contains a set of randomly generated formal contexts of increasing size (from \(2\times3\) to \(50\times50\)), with incidence probability \(p=0.5\)
+* Directory "Synthetics" contains a set of randomly generated formal contexts of increasing size (from 2x3 to 50x50), with incidence probability p=0.5.
 * Real formal contexts have been selected in UCI Machine Learning Repository  ([https://archive.ics.uci.edu/]()), then binarized by A. Gutierrez for [FCA4J]({https://www.lirmm.fr/fca4j) evaluation and are available at [https://gite.lirmm.fr/gutierre/fca4j-benchmark]()
 
 # Repository organization
