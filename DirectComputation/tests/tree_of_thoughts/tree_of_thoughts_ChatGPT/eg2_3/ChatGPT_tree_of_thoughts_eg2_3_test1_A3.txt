@@ -1,0 +1,34 @@
+ChatGPT_tree_of_thoughts_eg2_3_test1_A3
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Here are three effective methods for finding the **concept lattice** in a **formal context** with fewer than 20 objects and attributes in **Formal Concept Analysis (FCA)**:
+
+---
+
+**1. Next Closure Algorithm**
+The Next Closure algorithm, introduced by Ganter, is a fundamental and widely used method in FCA for computing all formal concepts of a given context in a systematic and lexicographic order. It operates by iterating through all subsets of attributes and generating their corresponding extents using the derivation operators. Each subset is examined based on a closure operator that ensures only closed attribute sets (intents of concepts) are considered. Despite its exponential worst-case complexity, the algorithm is quite efficient for small contexts, such as those with fewer than 20 objects and attributes. Its deterministic nature and straightforward implementation make it a preferred choice in many academic and practical settings.
+
+---
+
+**2. Concept Lattice Construction via Bordat’s Algorithm**
+Bordat’s algorithm constructs the concept lattice by recursively building the Hasse diagram starting from the most general concept (i.e., the one with all objects and no attributes) and incrementally finding immediate successors (upper neighbors) through attribute extensions. This graph-based approach emphasizes the structure of the lattice, maintaining parent-child relationships explicitly during computation. The recursive generation ensures that only valid concepts are explored, and each new concept is discovered by minimally extending the intent of an existing one. For contexts with fewer than 20 elements on each side, this method is manageable and offers intuitive insights into the hierarchical nature of the lattice.
+
+---
+
+**3. Lattice Building via Closure System Enumeration (with Pruning)**
+Another practical method involves enumerating all possible attribute combinations (subsets) and applying the closure operator to find intents, while avoiding duplicates by using a hash table or bitset to store already-encountered closures. This approach can be improved using pruning strategies: for example, if a subset’s closure has already been seen or is not larger than a previously examined one, it can be skipped. For small contexts, this brute-force-enhanced-with-pruning method is both feasible and helpful for understanding closure properties. It's particularly useful in educational or exploratory scenarios where transparency and simplicity of the algorithm matter more than asymptotic performance.
+
+---
+
+Each of these methods balances computational effort and conceptual clarity, making them ideal for contexts of modest size.

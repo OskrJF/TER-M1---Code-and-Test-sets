@@ -1,0 +1,25 @@
+ChatGPT_tree_of_thoughts_eg2_3_test3_A2
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), when working with small contexts (fewer than 20 objects and attributes), several efficient methods can be used to compute the concept lattice. Here are three common approaches:
+
+**1. Next Closure Algorithm:**
+The Next Closure algorithm, introduced by Bernhard Ganter, is a canonical method for enumerating all formal concepts of a context in lectic (lexicographic) order. It operates by systematically generating all closed sets of attributes (intents) using a closure operator derived from the incidence relation of the context. For each intent, the corresponding extent (the set of objects sharing all attributes in the intent) is computed, and together they form a formal concept. Since the algorithm avoids redundancies and guarantees that each concept is generated once, it is especially effective for small contexts. Its deterministic nature and strong theoretical foundation make it a preferred method in many FCA tools.
+
+**2. Concept Lattice Construction via Attribute Exploration:**
+Attribute exploration is an interactive method often used to identify implications between attributes but can also be adapted to construct the concept lattice. In this approach, the user or an algorithm systematically explores the relationships among attributes by querying for counterexamples or confirming implications. As valid implications are accepted, the system incrementally builds the lattice by adding formal concepts consistent with the verified implications. While typically semi-automatic, for small datasets it can be fully automated, leveraging background knowledge to reduce computational effort and uncover hidden structure in the context.
+
+**3. Bordat’s Algorithm (Conceptual Scaling):**
+Bordat’s algorithm constructs the concept lattice by starting from the bottom concept (the one with all objects) and recursively identifying upper neighbors through closure computations. It treats the lattice as a graph and builds it by identifying each concept’s immediate successors based on minimal attribute differences. Especially in small contexts, this method is practical and intuitive, as it mimics a breadth-first traversal of the lattice structure. Conceptual scaling techniques, often used alongside this method, allow it to be applied to complex or multi-valued contexts by transforming them into binary form first.
+

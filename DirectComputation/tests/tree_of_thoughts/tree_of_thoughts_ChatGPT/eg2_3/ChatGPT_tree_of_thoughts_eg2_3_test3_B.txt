@@ -1,0 +1,124 @@
+ChatGPT_tree_of_thoughts_eg2_3_test3_B
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1B:
+Pick one of these three ways to extract all the lattice concepts from the next context and apply it to give me the concepts
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+
+**1. Next Closure Algorithm (Ganter's Algorithm):**
+One of the most widely used methods for generating formal concepts is the **Next Closure algorithm**, introduced by Bernhard Ganter. This algorithm systematically enumerates all formal concepts of a context in lectic (lexicographic) order based on a fixed ordering of attributes. Starting from the empty set of attributes, it repeatedly applies the closure operator (double derivation) to generate the extent and intent of each concept. The algorithm ensures that no concept is missed or repeated and is particularly efficient for small contexts, making it ideal for scenarios with fewer than 20 objects and attributes. Its output can be easily transformed into a Hasse diagram representing the concept lattice.
+
+**2. Concept Lattice Construction via Attribute Exploration:**
+Attribute exploration is an interactive method often used to identify implications between attributes but can also be adapted to construct the concept lattice. In this approach, the user or an algorithm systematically explores the relationships among attributes by querying for counterexamples or confirming implications. As valid implications are accepted, the system incrementally builds the lattice by adding formal concepts consistent with the verified implications. While typically semi-automatic, for small datasets it can be fully automated, leveraging background knowledge to reduce computational effort and uncover hidden structure in the context.
+
+3. **Bordat’s Algorithm (Graph-Based Construction)**: Bordat’s algorithm constructs the lattice by building a graph where each node represents a concept and edges represent the covering relation in the concept lattice. It starts with the most general concept (containing all objects) and incrementally adds more specific concepts by computing successors through object-attribute incidence. This graph-based approach naturally yields the Hasse diagram of the lattice and is particularly useful for visualizing the concept structure. It is well-suited for small datasets and is also implemented in various FCA software tools for educational and analytical purposes.
+____________________
+
+OUTPUT:
+Let's proceed using **Next Closure Algorithm (Ganter's Algorithm)**, which is well-suited for this small formal context.
+
+---
+
+### **Formal Context**
+
+|        | a1  | a2  | a3  |
+| ------ | --- | --- | --- |
+| **o1** | yes | yes | no  |
+| **o2** | no  | yes | yes |
+
+Let’s denote:
+
+* **Objects (G)** = {o1, o2}
+* **Attributes (M)** = {a1, a2, a3}
+* **Incidence relation (I)** =
+
+  * o1 has a1, a2
+  * o2 has a2, a3
+
+---
+
+### **Step-by-Step Using Next Closure**
+
+We use the **Next Closure** algorithm to generate **formal concepts** `(extent, intent)` where:
+
+* **Extent** is a set of objects that share the same intent.
+* **Intent** is the set of all attributes common to those objects.
+
+We proceed by checking **all subsets of attributes in lectic (lexicographic) order**: `[], [a1], [a2], [a3], [a1,a2], ...` and applying the **closure operator** to get the intent.
+
+#### 1. ∅
+
+* Common to all objects → `extent = {o1, o2}`
+* Shared attributes of all objects: **a2**
+  → **Concept**: `({o1, o2}, {a2})`
+
+#### 2. {a1}
+
+* Objects having a1: `{o1}`
+* Attributes shared by `{o1}`: `{a1, a2}`
+  → Closure = `{a1, a2}`
+  → **Concept**: `({o1}, {a1, a2})`
+
+#### 3. {a2}
+
+* Objects with a2: `{o1, o2}`
+* Common attributes: `{a2}`
+  → Already known (see Concept 1) → skip
+
+#### 4. {a3}
+
+* Objects with a3: `{o2}`
+* Attributes shared by `{o2}`: `{a2, a3}`
+  → Closure = `{a2, a3}`
+  → **Concept**: `({o2}, {a2, a3})`
+
+#### 5. {a1, a2}
+
+* Objects with both: `{o1}`
+* Shared attributes: `{a1, a2}`
+  → Already known (Concept 2) → skip
+
+#### 6. {a1, a3}
+
+* No object has both → extent = ∅
+* Closure of ∅ = all attributes = {a1, a2, a3}
+  → **Concept**: `(∅, {a1, a2, a3})`
+
+#### 7. {a2, a3}
+
+* Objects: `{o2}`
+* Shared: `{a2, a3}`
+  → Already known (Concept 3) → skip
+
+#### 8. {a1, a2, a3}
+
+* No object has all three → extent = ∅
+* Closure = {a1, a2, a3}
+  → Already known (Concept 4) → skip
+
+---
+
+### ✅ **List of Formal Concepts**
+
+1. `({o1, o2}, {a2})`
+2. `({o1}, {a1, a2})`
+3. `({o2}, {a2, a3})`
+4. `(∅, {a1, a2, a3})`
+
+These are all the formal concepts of the given context, extracted using the **Next Closure algorithm**.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a2, a3], []]]

@@ -1,0 +1,124 @@
+ChatGPT_tree_of_thoughts_eg2_3_test1_B
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1B:
+Pick one of these three ways to extract all the lattice concepts from the next context and apply it to give me the concepts
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+
+**1. Ganter’s Next Closure Algorithm:**
+Ganter’s Next Closure algorithm is a fundamental method for generating all formal concepts of a formal context in lectic (lexicographic) order. It systematically explores all intents (attribute sets) using a closure operator derived from the context, ensuring that each concept is visited exactly once. The algorithm starts from the empty set and repeatedly applies the closure operator to find the next closed set in order. For small contexts, this approach is both efficient and exact, offering a clear and canonical way to construct the entire concept lattice without redundant computation.
+
+**2. Concept Lattice Construction via Cross-Table Visualization:**
+For small formal contexts, the **cross-table method** (manually or semi-automatically analyzing the incidence table) can be effective. Each formal concept corresponds to a maximal rectangle (block of crosses) in the cross-table where all selected objects share exactly the same attributes, and vice versa. By scanning subsets of attributes and their corresponding object sets (or vice versa), one can derive intents and extents directly. This approach is often visual and intuitive, making it suitable for educational purposes or contexts with less than a few hundred combinations, and can be supported by simple tools such as spreadsheets or basic scripts to assist with the subset computations.
+
+**3. Lattice Building via Closure System Enumeration (with Pruning)**
+Another practical method involves enumerating all possible attribute combinations (subsets) and applying the closure operator to find intents, while avoiding duplicates by using a hash table or bitset to store already-encountered closures. This approach can be improved using pruning strategies: for example, if a subset’s closure has already been seen or is not larger than a previously examined one, it can be skipped. For small contexts, this brute-force-enhanced-with-pruning method is both feasible and helpful for understanding closure properties. It's particularly useful in educational or exploratory scenarios where transparency and simplicity of the algorithm matter more than asymptotic performance.
+____________________
+
+OUTPUT:
+Let's use **Ganter’s Next Closure Algorithm** to extract **all the formal concepts (lattice concepts)** from the following context:
+
+```
+Objects: o1, o2  
+Attributes: a1, a2, a3  
+
+Context (incidence table):  
+           a1   a2   a3  
+    o1     ✔    ✔    ✘  
+    o2     ✘    ✔    ✔
+```
+
+We define:
+
+* **G** (objects) = {o1, o2}
+* **M** (attributes) = {a1, a2, a3}
+* **I** (relation):
+
+  * o1 has a1, a2
+  * o2 has a2, a3
+
+---
+
+### Step-by-Step using Ganter’s Next Closure Algorithm:
+
+The closure operator is based on **derivation operators**:
+
+* For a set of attributes $A \subseteq M$, the **derivation** $A'$ is the set of all objects having all attributes in $A$.
+* Then $A''$ is the set of attributes common to all objects in $A'$.
+* A **formal concept** is a pair $(A', A'')$, i.e., extent and intent, where $A = A''$.
+
+We start from the empty set and move through all subsets of attributes in **lectic order**:
+(∅), (a1), (a2), (a3), (a1,a2), (a1,a3), (a2,a3), (a1,a2,a3)
+
+#### Now, compute closures and extract concepts:
+
+1. **∅**
+
+   * ∅' = {o1, o2} (all objects have all of no attributes)
+   * ∅'' = attributes common to o1 and o2 = {a2}
+     → Concept: (Extent: {o1, o2}, Intent: {a2})
+
+2. **a1**
+
+   * {a1}' = {o1}
+   * {a1}'' = attributes of o1 = {a1, a2}
+     → Concept: ({o1}, {a1, a2})
+
+3. **a2**
+
+   * Already got its closure as ∅'' = {a2}, so skip (duplicate).
+
+4. **a3**
+
+   * {a3}' = {o2}
+   * {a3}'' = attributes of o2 = {a2, a3}
+     → Concept: ({o2}, {a2, a3})
+
+5. **a1,a2**
+
+   * Already saw closure is {a1, a2}, so same concept as above → skip.
+
+6. **a1,a3**
+
+   * {a1,a3}' = ∅ (no object has both a1 and a3)
+   * ∅'' = {a2} (same as before)
+     → Already exists, skip.
+
+7. **a2,a3**
+
+   * Already got closure {a2, a3} with extent {o2}, so skip.
+
+8. **a1,a2,a3**
+
+   * {a1,a2,a3}' = ∅
+   * ∅'' = {a2} → already seen.
+
+---
+
+### ✅ Final List of Formal Concepts:
+
+| Extent   | Intent   |
+| -------- | -------- |
+| {o1, o2} | {a2}     |
+| {o1}     | {a1, a2} |
+| {o2}     | {a2, a3} |
+
+---
+
+Let me know if you'd like the **Hasse diagram** or want to use another method (like visualization or closure system enumeration) for comparison.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a2], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]]]

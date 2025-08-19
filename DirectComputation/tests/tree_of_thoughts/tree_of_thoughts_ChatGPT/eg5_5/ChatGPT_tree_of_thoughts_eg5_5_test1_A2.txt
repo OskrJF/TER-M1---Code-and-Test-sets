@@ -1,0 +1,34 @@
+ChatGPT_tree_of_thoughts_eg5_5_test1_A2
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Certainly! Here are **three ways to find the lattice of formal concepts** in a formal context with fewer than 20 objects and 20 attributes:
+
+---
+
+**1. Next Closure Algorithm (Ganter’s Algorithm):**
+The *Next Closure* algorithm, developed by Bernhard Ganter, is one of the most widely used methods to compute the concept lattice from a formal context. It systematically enumerates all formal concepts by lexicographically generating the closed sets of attributes using a closure operator based on the context. Starting from the smallest (often empty) intent, it computes its corresponding extent and then moves to the next closed set in a defined order, ensuring no duplicates or omissions. This method is efficient for small contexts, as it avoids computing the power set explicitly and ensures all concepts are produced in a structured sequence.
+
+---
+
+**2. Bordat’s Algorithm (Graph-Based Construction):**
+Bordat’s algorithm takes a more structural approach by constructing the Hasse diagram of the concept lattice incrementally. It begins with the most general concept (with all objects) and explores neighboring concepts by identifying minimal changes in object sets that lead to new intents. Each new node (concept) is connected to its predecessors, enabling the lattice structure to be built directly as a graph. This approach is particularly suitable when the focus is not only on generating all concepts but also on understanding their ordering relationships early in the computation.
+
+---
+
+**3. Using Conceptual Scaling and FCA Tools (e.g., ConExp or ToscanaJ):**
+Another practical way to obtain the concept lattice for small contexts is by using software tools like **ConExp** or **ToscanaJ**, which implement visualization and computation frameworks for FCA. These tools allow users to input a context matrix (a cross-table of objects and attributes), and they handle the internal computation of the lattice—often using optimized or hybrid versions of algorithms like Next Closure. They also provide visual outputs of the lattice as a diagram, making it especially useful for educational or analytical purposes when dealing with manageable context sizes like <20 objects and attributes.
+
+---
+
+Let me know if you'd like code examples or software walkthroughs.

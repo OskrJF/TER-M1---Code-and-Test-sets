@@ -1,0 +1,96 @@
+ChatGPT_tree_of_thoughts_eg2_9_test2_B
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1B:
+Pick one of these three ways to extract all the lattice concepts from the next context and apply it to give me the concepts
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+
+**1. Ganter’s Next Closure Algorithm:**
+One of the most widely used methods for computing formal concepts is Ganter’s Next Closure algorithm. This algorithm systematically enumerates all concepts of a formal context in a lectic (lexicographic) order without redundancy. It starts from the smallest (bottom) concept and recursively generates each subsequent concept by applying a closure operator to subsets of attributes. The method ensures that each concept is generated exactly once and is particularly efficient for small to medium-sized contexts. Given the limited size (less than 20×20), the algorithm performs very well and provides a structured traversal of the concept lattice.
+
+**2. Concept Lattice Construction via Attribute Exploration:**
+Attribute exploration is an interactive method used both to generate concepts and explore dependencies among attributes, typically used in knowledge acquisition. It can also serve to construct the concept lattice by identifying implications and generating formal concepts based on counterexamples (objects). In a fully known context, a non-interactive version can be used where implications are automatically validated against the context. By successively adding implications and their corresponding concepts, one can construct the complete lattice. This approach is particularly helpful when the goal is not only to compute the lattice but also to understand the underlying attribute dependencies in the domain.
+
+**3. Brute-Force Enumeration with Closure Checking**
+For very small contexts, a **brute-force approach** becomes feasible: enumerate all possible subsets of attributes, compute their closures (via derivation operators), and retain only those pairs that satisfy the closure condition (i.e., the extent of the intent maps back to the same intent). While computationally expensive in theory, this method works efficiently when the attribute set is small (under 20), as the number of potential subsets is manageable. This method is often used in educational tools or simple scripts for quick prototyping, where clarity of implementation and ease of debugging are more critical than scalability. With appropriate pruning and memoization, even this naive approach can yield all formal concepts accurately and quickly in such limited contexts.
+____________________
+
+OUTPUT:
+Let's use **Ganter’s Next Closure Algorithm** (Option 1), which is efficient and systematic, especially given the small size of your formal context.
+
+---
+
+### **Step-by-Step Application of Ganter's Next Closure Algorithm**
+
+We are given this formal context:
+
+|        | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+| ------ | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| **o1** | ✔  | ✔  | ✔  | ✔  | ✘  | ✘  | ✔  | ✘  | ✔  |
+| **o2** | ✔  | ✘  | ✘  | ✔  | ✘  | ✔  | ✘  | ✘  | ✔  |
+
+We'll extract all **formal concepts** `(extent, intent)` such that:
+
+* The **extent** is the set of objects sharing the attributes in the intent.
+* The **intent** is the set of attributes common to the extent.
+
+---
+
+### **Formal Concepts (Result)**
+
+After applying Ganter's algorithm, we find the following **12 formal concepts**:
+
+| #  | Extent   | Intent                               |
+| -- | -------- | ------------------------------------ |
+| 1  | {o1, o2} | {a1, a4, a9}                         |
+| 2  | {o1}     | {a1, a2, a3, a4, a7, a9}             |
+| 3  | {o2}     | {a1, a4, a6, a9}                     |
+| 4  | {o1, o2} | {a1, a4, a9}                         |
+| 5  | {o1, o2} | {a1, a4, a9}                         |
+| 6  | {o1}     | {a1, a2, a3, a4, a7, a9}             |
+| 7  | {o2}     | {a1, a4, a6, a9}                     |
+| 8  | {}       | {a1, a2, a3, a4, a5, a6, a7, a8, a9} |
+| 9  | {o1, o2} | {a1, a4, a9}                         |
+| 10 | {o1}     | {a1, a2, a3, a4, a7, a9}             |
+| 11 | {o2}     | {a1, a4, a6, a9}                     |
+| 12 | {o1, o2} | {}                                   |
+
+But many of these repeat. Let’s **deduplicate** and list the **unique formal concepts**:
+
+---
+
+### ✅ **Final Set of Unique Formal Concepts**
+
+| # | Extent   | Intent                               |
+| - | -------- | ------------------------------------ |
+| 1 | {}       | {a1, a2, a3, a4, a5, a6, a7, a8, a9} |
+| 2 | {o1}     | {a1, a2, a3, a4, a7, a9}             |
+| 3 | {o2}     | {a1, a4, a6, a9}                     |
+| 4 | {o1, o2} | {a1, a4, a9}                         |
+| 5 | {o1, o2} | {}                                   |
+
+---
+
+These 5 concepts form the full **concept lattice** of your context. Each node corresponds to one concept, and you can draw the lattice diagram by ordering them via the subconcept-superconcept relation (based on subset of extents / superset of intents).
+
+Would you like a visual diagram of the concept lattice?
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of formal concepts in the requested format:
+
+```
+[[[a1, a2, a3, a4, a5, a6, a7, a8, a9], []], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a4, a9], [o1, o2]], [[], [o1, o2]]]
+```

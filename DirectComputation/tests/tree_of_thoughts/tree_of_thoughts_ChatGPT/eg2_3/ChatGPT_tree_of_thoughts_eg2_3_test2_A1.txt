@@ -1,0 +1,35 @@
+ChatGPT_tree_of_thoughts_eg2_3_test2_A1
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In **Formal Concept Analysis (FCA)**, when dealing with a small context (i.e., fewer than 20 objects and 20 attributes), several efficient methods can be used to compute the **concept lattice**. Here are three common approaches, each suitable for such small-scale problems:
+
+---
+
+**1. Next Closure Algorithm**
+The *Next Closure* algorithm is a systematic method for enumerating all formal concepts in a context by generating them in lectic (lexicographic) order. It operates on the principle of computing the closure of attribute subsets, ensuring that each intent is visited only once. Starting from the empty set, the algorithm recursively explores the attribute space, using closure operators to find extents and intents that form valid concepts. Since the context is small, the algorithm's complexity is manageable, making it a practical choice for concept enumeration. Its deterministic nature and structured output are especially useful when concepts must be presented in a specific order or need to be compared incrementally.
+
+---
+
+**2. Bordat’s Algorithm (Incremental Concept Formation)**
+Bordat’s algorithm builds the concept lattice incrementally by adding one object at a time and updating the lattice structure accordingly. It begins with the top concept (containing all objects) and iteratively refines it by considering how the addition of a new object changes the existing concepts and possibly introduces new ones. The approach is well-suited to small contexts as it avoids computing all attribute subsets up front and focuses on extending only where necessary. It maintains the partial order structure of the lattice during each step, making it ideal for applications that require on-the-fly construction or visualization of the lattice.
+
+---
+
+**3. Concept Lattice Construction via Derivation Operators**
+This method involves direct use of the derivation operators (`'` and `''`) from FCA, applying them to compute all formal concepts by checking every possible subset of objects or attributes. For each subset, the intent or extent is calculated using the derivation operators, and if the double derivation returns the original set (i.e., a closure), it is a valid concept. Although this brute-force strategy becomes computationally expensive for large datasets, it is entirely feasible for contexts with fewer than 20 elements. This method is conceptually straightforward and highly transparent, which is beneficial in educational settings or for debugging other lattice construction algorithms.
+
+---
+
+Each of these methods has strengths depending on the application goal—whether ordered output, dynamic construction, or pedagogical clarity is preferred.
+

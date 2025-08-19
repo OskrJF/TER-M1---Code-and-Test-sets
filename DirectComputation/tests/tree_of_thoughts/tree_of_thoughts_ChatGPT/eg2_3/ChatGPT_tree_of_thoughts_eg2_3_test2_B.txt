@@ -1,0 +1,112 @@
+ChatGPT_tree_of_thoughts_eg2_3_test2_B
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1B:
+Pick one of these three ways to extract all the lattice concepts from the next context and apply it to give me the concepts
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+
+**1. Next Closure Algorithm**
+The *Next Closure* algorithm is a systematic method for enumerating all formal concepts in a context by generating them in lectic (lexicographic) order. It operates on the principle of computing the closure of attribute subsets, ensuring that each intent is visited only once. Starting from the empty set, the algorithm recursively explores the attribute space, using closure operators to find extents and intents that form valid concepts. Since the context is small, the algorithm's complexity is manageable, making it a practical choice for concept enumeration. Its deterministic nature and structured output are especially useful when concepts must be presented in a specific order or need to be compared incrementally.
+
+**2. Concept Lattice Construction via Attribute Exploration:**
+Attribute exploration is an interactive, knowledge-based method that can also be used to construct the concept lattice. While typically designed for use with expert feedback, it can be fully automated when the complete formal context is known. The method involves systematically querying which combinations of attributes imply others (implications), and then using these to build the full implication base. From this base, the lattice of formal concepts can be derived. Though more pedagogical and used often in educational or theoretical settings, this method works well with small datasets and has the advantage of highlighting the logical dependencies among attributes, not just the concept structure.
+
+**3. Derivation Operators with Power Set Enumeration (Brute Force):**
+For very small contexts, a brute-force approach using power set enumeration is feasible and sometimes educationally useful. This method involves generating all possible subsets of attributes (or objects), applying the derivation operators (prime operators) to each subset to find their closure, and identifying pairs of subsets that are fixed points under double derivation (i.e., extents and intents that map to each other). Though computationally expensive for large datasets, in the case of fewer than 20 attributes or objects, the power set (up to 2^20 = 1,048,576 combinations) is small enough to be tractable with modern hardware or even simple scripting languages, allowing for complete enumeration of concepts without specialized optimization.
+____________________
+
+OUTPUT:
+I'll use **Method 3: Derivation Operators with Power Set Enumeration (Brute Force)** since the context is very small and this approach is straightforward for such cases.
+
+---
+
+### **Formal Context:**
+
+|    | a1  | a2  | a3  |
+| -- | --- | --- | --- |
+| o1 | yes | yes | no  |
+| o2 | no  | yes | yes |
+
+From this, we can construct:
+
+* **G (Objects)** = {o1, o2}
+* **M (Attributes)** = {a1, a2, a3}
+* **I (Incidence relation)** = {
+
+  * (o1, a1), (o1, a2),
+  * (o2, a2), (o2, a3)
+    }
+
+---
+
+### **Brute Force Concept Extraction using Derivation Operators**
+
+We define:
+
+* For **A ⊆ G**, define A′ = {m ∈ M | ∀g ∈ A: (g, m) ∈ I}
+* For **B ⊆ M**, define B′ = {g ∈ G | ∀m ∈ B: (g, m) ∈ I}
+
+A **formal concept** is a pair (A, B) such that A′ = B and B′ = A.
+
+We compute all (A, A′′) or (B′, B), where A ⊆ G or B ⊆ M.
+
+---
+
+### Step-by-step: All subsets of **G = {o1, o2}**
+
+There are 4 subsets of G:
+
+1. **∅**
+
+   * ∅′ = {a1, a2, a3} (all attributes are trivially common to none)
+   * ∅′′ = {objects having all of a1, a2, a3} → None ⇒ ∅
+   * ⇒ (∅, {a1, a2, a3})
+
+2. **{o1}**
+
+   * {o1}′ = {a1, a2}
+   * {a1, a2}′ = {o1}
+   * ⇒ ({o1}, {a1, a2})
+
+3. **{o2}**
+
+   * {o2}′ = {a2, a3}
+   * {a2, a3}′ = {o2}
+   * ⇒ ({o2}, {a2, a3})
+
+4. **{o1, o2}**
+
+   * Common attributes = {a2}
+   * {a2}′ = {o1, o2}
+   * ⇒ ({o1, o2}, {a2})
+
+---
+
+### All Concepts (Extent, Intent):
+
+1. **(∅, {a1, a2, a3})**
+2. **({o1}, {a1, a2})**
+3. **({o2}, {a2, a3})**
+4. **({o1, o2}, {a2})**
+
+---
+
+✅ **These are all the lattice concepts** of the given formal context using the brute-force derivation method.
+
+Let me know if you'd like the lattice diagram or if you'd prefer this done using one of the other two methods.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]

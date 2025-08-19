@@ -1,0 +1,34 @@
+ChatGPT_tree_of_thoughts_eg2_9_test1_A2
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In **Formal Concept Analysis (FCA)**, when working with a *formal context* containing fewer than 20 objects and attributes, efficient computation of the **concept lattice** is feasible using several methods. Here are three practical approaches:
+
+---
+
+**1. Next Closure Algorithm**
+The **Next Closure algorithm**, introduced by Bernhard Ganter, is one of the foundational methods for computing all formal concepts from a context. It systematically generates the set of all *intents* (attribute sets) in lexicographic order and computes the corresponding *extents* (object sets) through derivation operations. The algorithm uses a closure operator to ensure that only closed sets—those that correspond to valid formal concepts—are enumerated. Because of its structured approach and reliance on bitwise operations, it's especially efficient for small contexts and guarantees that each concept is computed exactly once.
+
+---
+
+**2. Bordat’s Algorithm**
+**Bordat’s algorithm** is a graph-based approach that constructs the concept lattice incrementally. Starting from the bottom concept (usually the one with the full set of objects and no attributes), the algorithm generates immediate upper neighbors by computing minimal attribute differences. It uses recursive calls to explore and link the concept hierarchy by tracking how attribute sets extend to form new valid concepts. This method is particularly useful for visualizing the lattice structure as it builds, and its stepwise growth pattern is well-suited for small formal contexts.
+
+---
+
+**3. Conceptual Scaling with Binary Matrix Manipulation**
+A more implementation-oriented approach involves treating the formal context as a binary incidence matrix and using **conceptual scaling** techniques to identify formal concepts. By identifying all pairs of object and attribute subsets that satisfy the Galois connection (where the derivation operators produce stable closures), one can extract all valid extents and intents. This method lends itself well to scripting in programming languages like Python or R, leveraging matrix operations to quickly compute closures and filter out non-concepts. For contexts under 20×20 in size, this approach is both intuitive and computationally lightweight.
+
+---
+
+Each method leverages different structural or computational strengths of FCA and is highly tractable given the small size of the input.
