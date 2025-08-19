@@ -1,0 +1,137 @@
+Mistral_role-prompting_eg15_15_test1
+
+Date: 27 may 2025
+Model: Mistral Large 
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this context, I want you to extract and enumerate all lattice concepts
+Objet;Attr1;Attr2;Attr3;Attr4;Attr5;Attr6;Attr7;Attr8;Attr9;Attr10;Attr11;Attr12;Attr13;Attr14;Attr15
+O1;No;No;No;Yes;Yes;Yes;No;No;Yes;No;No;No;Yes;No;Yes
+O2;No;Yes;No;Yes;No;No;No;No;No;Yes;Yes;Yes;Yes;No;Yes
+O3;Yes;No;Yes;No;No;No;No;Yes;Yes;No;Yes;No;Yes;No;Yes
+O4;No;Yes;No;No;Yes;Yes;No;No;No;No;No;Yes;Yes;Yes;No
+O5;No;Yes;Yes;Yes;Yes;Yes;No;Yes;No;No;Yes;No;Yes;Yes;No
+O6;Yes;No;No;No;Yes;No;Yes;Yes;No;Yes;No;Yes;Yes;No;Yes
+O7;Yes;Yes;Yes;Yes;No;Yes;Yes;Yes;Yes;Yes;Yes;No;Yes;No;No
+O8;Yes;No;No;No;Yes;Yes;Yes;No;No;No;Yes;No;No;No;No
+O9;No;Yes;No;No;Yes;Yes;Yes;No;Yes;Yes;No;Yes;No;Yes;No
+O10;No;Yes;No;Yes;Yes;Yes;No;Yes;No;No;Yes;No;Yes;No;No
+O11;No;Yes;No;Yes;No;Yes;Yes;No;No;Yes;Yes;Yes;No;No;Yes
+O12;No;No;No;No;Yes;Yes;No;No;Yes;Yes;No;Yes;No;Yes;No
+O13;No;Yes;Yes;No;No;Yes;No;Yes;Yes;Yes;No;No;No;Yes;Yes
+O14;No;Yes;No;No;No;Yes;No;No;No;No;No;Yes;Yes;Yes;Yes
+O15;No;No;No;Yes;No;No;No;No;Yes;No;Yes;No;Yes;Yes;No
+____________________
+
+OUTPUT:
+Formal Concept Analysis (FCA) is a method used to analyze data and identify conceptual structures within it. It involves creating a formal context, which is a triplet consisting of a set of objects, a set of attributes, and a binary relation between them indicating which objects have which attributes.
+
+To extract and enumerate all lattice concepts from the given context, we need to follow these steps:
+
+1. **Define the Formal Context**: We have a set of objects (O1, O2, ..., O15) and a set of attributes (Attr1, Attr2, ..., Attr15). The binary relation is given by the table where "Yes" indicates that an object has a particular attribute.
+
+2. **Find Formal Concepts**: A formal concept is a pair (A, B), where A is a set of objects, B is a set of attributes, A' = B, and B' = A. Here, A' is the set of attributes common to all objects in A, and B' is the set of objects that have all attributes in B.
+
+3. **Construct the Concept Lattice**: The set of all formal concepts forms a complete lattice under the partial order defined by (A1, B1) ≤ (A2, B2) if and only if A1 ⊆ A2 (or equivalently B1 ⊇ B2).
+
+Let's start by identifying the formal concepts from the given context. We'll use the code interpreter to help with this computation.In the context of Formal Concept Analysis (FCA), a formal concept is a pair consisting of a set of objects (extent) and a set of attributes (intent) such that the extent is exactly the set of objects sharing the attributes in the intent, and the intent is exactly the set of attributes shared by the objects in the extent.
+
+Here are the formal concepts extracted from the given data:
+
+1. Concept 1: Objects = {O1}, Attributes = {3, 4, 5, 8, 12, 14}
+2. Concept 2: Objects = {O2}, Attributes = {1, 3, 9, 10, 11, 12, 14}
+3. Concept 3: Objects = {O3}, Attributes = {0, 2, 7, 8, 10, 12, 14}
+4. Concept 4: Objects = {O4}, Attributes = {1, 4, 5, 11, 12, 13}
+5. Concept 5: Objects = {O5}, Attributes = {1, 2, 3, 4, 5, 7, 10, 12, 13}
+6. Concept 6: Objects = {O6}, Attributes = {0, 4, 6, 7, 9, 11, 12, 14}
+7. Concept 7: Objects = {O7}, Attributes = {0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 12}
+8. Concept 8: Objects = {O8}, Attributes = {0, 4, 5, 6, 10}
+9. Concept 9: Objects = {O9}, Attributes = {1, 4, 5, 6, 8, 9, 11, 13}
+10. Concept 10: Objects = {O11}, Attributes = {1, 3, 5, 6, 9, 10, 11, 14}
+11. Concept 11: Objects = {O13}, Attributes = {1, 2, 5, 7, 8, 9, 13, 14}
+12. Concept 12: Objects = {O14}, Attributes = {1, 5, 11, 12, 13, 14}
+13. Concept 13: Objects = {O15}, Attributes = {3, 8, 10, 12, 13}
+14. Concept 14: Objects = {O1, O2}, Attributes = {3, 12, 14}
+15. Concept 15: Objects = {O1, O3}, Attributes = {8, 12, 14}
+16. Concept 16: Objects = {O1, O6}, Attributes = {4, 12, 14}
+17. Concept 17: Objects = {O1, O7}, Attributes = {3, 5, 8, 12}
+18. Concept 18: Objects = {O1, O11}, Attributes = {3, 5, 14}
+19. Concept 19: Objects = {O1, O13}, Attributes = {5, 8, 14}
+20. Concept 20: Objects = {O1, O14}, Attributes = {5, 12, 14}
+21. Concept 21: Objects = {O2, O3}, Attributes = {10, 12, 14}
+22. Concept 22: Objects = {O2, O6}, Attributes = {9, 11, 12, 14}
+23. Concept 23: Objects = {O2, O7}, Attributes = {1, 3, 9, 10, 12}
+24. Concept 24: Objects = {O2, O11}, Attributes = {1, 3, 9, 10, 11, 14}
+25. Concept 25: Objects = {O2, O14}, Attributes = {1, 11, 12, 14}
+26. Concept 26: Objects = {O3, O6}, Attributes = {0, 7, 12, 14}
+27. Concept 27: Objects = {O3, O7}, Attributes = {0, 2, 7, 8, 10, 12}
+28. Concept 28: Objects = {O3, O13}, Attributes = {2, 7, 8, 14}
+29. Concept 29: Objects = {O4, O5}, Attributes = {1, 4, 5, 12, 13}
+30. Concept 30: Objects = {O4, O6}, Attributes = {4, 11, 12}
+31. Concept 31: Objects = {O4, O9}, Attributes = {1, 4, 5, 11, 13}
+32. Concept 32: Objects = {O4, O14}, Attributes = {1, 5, 11, 12, 13}
+33. Concept 33: Objects = {O5, O7}, Attributes = {1, 2, 3, 5, 7, 10, 12}
+34. Concept 34: Objects = {O5, O10}, Attributes = {1, 3, 4, 5, 7, 10, 12}
+35. Concept 35: Objects = {O5, O13}, Attributes = {1, 2, 5, 7, 13}
+36. Concept 36: Objects = {O5, O15}, Attributes = {3, 10, 12, 13}
+37. Concept 37: Objects = {O6, O7}, Attributes = {0, 6, 7, 9, 12}
+38. Concept 38: Objects = {O6, O8}, Attributes = {0, 4, 6}
+39. Concept 39: Objects = {O6, O9}, Attributes = {4, 6, 9, 11}
+40. Concept 40: Objects = {O6, O11}, Attributes = {6, 9, 11, 14}
+41. Concept 41: Objects = {O6, O13}, Attributes = {7, 9, 14}
+42. Concept 42: Objects = {O7, O8}, Attributes = {0, 5, 6, 10}
+43. Concept 43: Objects = {O7, O9}, Attributes = {1, 5, 6, 8, 9}
+44. Concept 44: Objects = {O7, O11}, Attributes = {1, 3, 5, 6, 9, 10}
+45. Concept 45: Objects = {O7, O13}, Attributes = {1, 2, 5, 7, 8, 9}
+46. Concept 46: Objects = {O7, O15}, Attributes = {3, 8, 10, 12}
+47. Concept 47: Objects = {O8, O9}, Attributes = {4, 5, 6}
+48. Concept 48: Objects = {O9, O11}, Attributes = {1, 5, 6, 9, 11}
+49. Concept 49: Objects = {O9, O12}, Attributes = {4, 5, 8, 9, 11, 13}
+50. Concept 50: Objects = {O9, O13}, Attributes = {1, 5, 8, 9, 13}
+51. Concept 51: Objects = {O11, O13}, Attributes = {1, 5, 9, 14}
+52. Concept 52: Objects = {O11, O14}, Attributes = {1, 5, 11, 14}
+53. Concept 53: Objects = {O13, O14}, Attributes = {1, 5, 13, 14}
+54. Concept 54: Objects = {O1, O2, O11}, Attributes = {3, 14}
+55. Concept 55: Objects = {O1, O3, O13}, Attributes = {8, 14}
+56. Concept 56: Objects = {O1, O5, O10}, Attributes = {3, 4, 5, 12}
+57. Concept 57: Objects = {O1, O7, O15}, Attributes = {3, 8, 12}
+58. Concept 58: Objects = {O1, O9, O12}, Attributes = {4, 5, 8}
+59. Concept 59: Objects = {O2, O7, O9}, Attributes = {1, 9}
+60. Concept 60: Objects = {O2, O7, O9, O11}, Attributes = {1, 9}
+61. Concept 61: Objects = {O3, O5, O6, O7, O10}, Attributes = {7, 12}
+62. Concept 62: Objects = {O4, O5, O7, O10, O14}, Attributes = {1, 5, 12}
+63. Concept 63: Objects = {O4, O5, O9, O13, O14}, Attributes = {1, 5, 13}
+64. Concept 64: Objects = {O4, O5, O7, O9, O11, O14}, Attributes = {5, 11}
+65. Concept 65: Objects = {O5, O7, O8, O10, O11}, Attributes = {5, 10}
+66. Concept 66: Objects = {O6, O7, O8, O9, O11}, Attributes = {6}
+67. Concept 67: Objects = {O7, O9, O11, O13}, Attributes = {5, 9}
+68. Concept 68: Objects = {O2, O5, O7, O10, O11, O15}, Attributes = {3, 12}
+69. Concept 69: Objects = {O4, O5, O7, O10, O12, O14}, Attributes = {5, 12}
+70. Concept 70: Objects = {O3, O5, O6, O7, O10, O13}, Attributes = {7}
+71. Concept 71: Objects = {O4, O5, O9, O13, O14, O15}, Attributes = {13}
+72. Concept 72: Objects = {O1, O2, O3, O6, O11, O13, O14}, Attributes = {14}
+73. Concept 73: Objects = {O2, O5, O7, O10, O11, O14, O15}, Attributes = {3}
+74. Concept 74: Objects = {O3, O7, O9, O12, O13, O15}, Attributes = {8}
+75. Concept 75: Objects = {O4, O5, O6, O8, O9, O12}, Attributes = {4, 5}
+76. Concept 76: Objects = {O3, O5, O7, O8, O10, O11, O13, O15}, Attributes = {10}
+77. Concept 77: Objects = {O2, O4, O5, O6, O7, O9, O11, O14}, Attributes = {11}
+78. Concept 78: Objects = {O4, O5, O7, O9, O11, O13, O14}, Attributes = {1, 5}
+79. Concept 79: Objects = {O2, O4, O5, O7, O9, O10, O11, O13, O14}, Attributes = {1}
+80. Concept 80: Objects = {O3, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15}, Attributes = {5}
+81. Concept 81: Objects = {O1, O2, O3, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15}, Attributes = {}
+
+These concepts represent the formal structure of the data in terms of shared attributes among objects.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Certainly! Here is the list of all concepts with the first set labeled as "Attr":
+
+[[[Attr], [O1, O2, O3, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15]], [[Attr14], [O1, O2, O3, O6, O11, O13, O14]], [[Attr1], [O2, O4, O5, O7, O9, O10, O11, O13, O14]], [[Attr5], [O3, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15]], [[Attr10], [O3, O5, O7, O8, O10, O11, O13, O15]], [[Attr11], [O2, O4, O5, O6, O7, O9, O11, O14]], [[Attr3], [O2, O5, O7, O10, O11, O14, O15]], [[Attr8], [O3, O7, O9, O12, O13, O15]], [[Attr4, Attr5], [O4, O5, O6, O8, O9, O12]], [[Attr7], [O3, O5, O6, O7, O10, O13]], [[Attr13], [O4, O5, O9, O13, O14, O15]], [[Attr0], [O3, O6]], [[Attr2], [O3, O5, O7, O13]], [[Attr6], [O6, O7, O8, O9, O11]], [[Attr9], [O2, O7, O9, O11]], [[Attr5, Attr9], [O7, O9, O11, O13]], [[Attr5, Attr10], [O5, O7, O8, O10, O11]], [[Attr5, Attr11], [O4, O5, O7, O9, O11, O14]], [[Attr1, Attr5], [O4, O5, O7, O9, O11, O13, O14]], [[Attr3, Attr12], [O2, O5, O7, O10, O11, O14, O15]], [[Attr3, Attr14], [O1, O2, O11]], [[Attr4, Attr5, Attr12], [O4, O5, O7, O10, O12, O14]], [[Attr5, Attr12], [O1, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15]], [[Attr5, Attr13], [O4, O5, O9, O13, O14]], [[Attr7, Attr9], [O6, O13]], [[Attr7, Attr12], [O3, O5, O6, O7, O10]], [[Attr7, Attr14], [O3, O13]], [[Attr8, Attr9], [O7, O9]], [[Attr8, Attr12], [O1, O3, O15, O7]], [[Attr8, Attr14], [O1, O3, O13]], [[Attr9, Attr11], [O2, O6, O9, O11]], [[Attr9, Attr14], [O11, O13]], [[Attr10, Attr12], [O2, O3]], [[Attr10, Attr14], [O1, O11]], [[Attr11, Attr12], [O4, O14]], [[Attr11, Attr14], [O2, O11, O14]], [[Attr12, Attr14], [O1, O2, O6]], [[Attr0, Attr7], [O3, O6]], [[Attr0, Attr7, Attr12], [O3, O6]], [[Attr0, Attr7, Attr12, Attr14], [O3, O6]], [[Attr1, Attr3], [O2, O7]], [[Attr1, Attr3, Attr9], [O2, O7]], [[Attr1, Attr3, Attr9, Attr10], [O2, O7]], [[Attr1, Attr3, Attr9, Attr10, Attr11], [O2, O11]], [[Attr1, Attr3, Attr9, Attr10, Attr12], [O2, O7]], [[Attr1, Attr3, Attr9, Attr10, Attr11, Attr14], [O2, O11]], [[Attr1, Attr3, Attr10, Attr12, Attr14], [O2, O3]], [[Attr1, Attr4, Attr5], [O4, O5]], [[Attr1, Attr4, Attr5, Attr11], [O4, O9]], [[Attr1, Attr4, Attr5, Attr11, Attr13], [O4, O9]], [[Attr1, Attr4, Attr5, Attr12, Attr13], [O4, O5]], [[Attr1, Attr5, Attr6], [O8, O9]], [[Attr1, Attr5, Attr8, Attr9], [O9, O13]], [[Attr1, Attr5, Attr8, Attr9, Attr11], [O9, O12]], [[Attr1, Attr5, Attr8, Attr9, Attr13], [O9, O13]], [[Attr1, Attr5, Attr9, Attr11], [O9, O11]], [[Attr1, Attr5, Attr9, Attr14], [O11, O13]], [[Attr1, Attr5, Attr11, Attr13], [O13, O14]], [[Attr1, Attr5, Attr11, Attr14], [O11, O14]], [[Attr1, Attr5, Attr12, Attr13], [O4, O14]], [[Attr1, Attr5, Attr13, Attr14], [O13, O14]], [[Attr1, Attr9], [O2, O7, O9]], [[Attr1, Attr9, Attr11], [O2, O7, O9, O11]], [[Attr1, Attr10, Attr11, Attr12, Attr14], [O2, O11]], [[Attr1, Attr11, Attr12, Attr14], [O2, O14]], [[Attr2, Attr7, Attr8], [O3, O13]], [[Attr2, Attr7, Attr8, Attr14], [O3, O13]], [[Attr2, Attr7, Attr8, Attr10, Attr12], [O3, O7]], [[Attr3, Attr4, Attr5, Attr12], [O1, O5, O10]], [[Attr3, Attr5, Attr8, Attr12], [O1, O7]], [[Attr3, Attr5, Attr12], [O1, O7, O11]], [[Attr3, Attr5, Attr14], [O1, O11]], [[Attr3, Attr8, Attr12], [O1, O7, O15]], [[Attr3, Attr8, Attr10, Attr12], [O7, O15]], [[Attr3, Attr10, Attr12, Attr13], [O5, O15]], [[Attr4, Attr5, Attr8], [O1, O9, O12]], [[Attr4, Attr5, Attr11], [O4, O5, O7, O9, O11, O14]], [[Attr4, Attr6, Attr9, Attr11], [O6, O9]], [[Attr4, Attr6, Attr11, Attr12], [O6, O11]], [[Attr4, Attr11, Attr12], [O4, O6]], [[Attr4, Attr12, Attr14], [O1, O6]], [[Attr5, Attr6, Attr9], [O7, O9]], [[Attr5, Attr6, Attr9, Attr11], [O7, O9, O11]], [[Attr5, Attr6, Attr10], [O7, O8]], [[Attr5, Attr7, Attr8, Attr9], [O7, O13]], [[Attr5, Attr7, Attr10, Attr12], [O5, O7]], [[Attr5, Attr7, Attr13], [O5, O13]], [[Attr5, Attr8, Attr14], [O1, O13]], [[Attr5, Attr9, Attr13], [O11, O13]], [[Attr5, Attr10, Attr12], [O5, O10]], [[Attr5, Attr11, Attr12], [O4, O5, O7, O9, O11, O14]], [[Attr5, Attr12, Attr14], [O1, O14]], [[Attr6, Attr7, Attr9, Attr12], [O6, O7]], [[Attr6, Attr9, Attr11, Attr14], [O6, O11]], [[Attr7, Attr8, Attr10, Attr12], [O7, O15]], [[Attr7, Attr9, Attr14], [O6, O13]], [[Attr8, Attr10, Attr12, Attr13], [O15]], [[Attr9, Attr10, Attr11, Attr12, Attr13], [O12]], [[Attr0, Attr2, Attr7, Attr8, Attr10, Attr12], [O3, O7]], [[Attr0, Attr2, Attr7, Attr8, Attr12, Attr14], [O3]], [[Attr0, Attr4, Attr6, Attr7, Attr9, Attr11, Attr12, Attr14], [O6]], [[Attr0, Attr4, Attr6, Attr7, Attr9, Attr12], [O6]], [[Attr0, Attr4, Attr6, Attr9, Attr11], [O6]], [[Attr0, Attr4, Attr6, Attr9, Attr11, Attr12], [O6]], [[Attr0, Attr4, Attr6, Attr9, Attr11, Attr12, Attr14], [O6]], [[Attr0, Attr4, Attr6, Attr12], [O6, O8]], [[Attr0, Attr6, Attr7, Attr9, Attr12], [O6, O7]], [[Attr0, Attr7, Attr12, Attr14], [O3, O6]], [[Attr1, Attr2, Attr3, Attr5, Attr7, Attr10, Attr12], [O5, O7]], [[Attr1, Attr2, Attr3, Attr5, Attr7, Attr12], [O3, O5]], [[Attr1, Attr2, Attr5, Attr7, Attr8, Attr9], [O7, O13]], [[Attr1, Attr2, Attr5, Attr7, Attr13], [O5, O13]], [[Attr1, Attr3, Attr4, Attr5, Attr7, Attr10, Attr12], [O5, O10]], [[Attr1, Attr3, Attr5, Attr6, Attr9, Attr10, Attr11, Attr14], [O11]], [[Attr1, Attr3, Attr5, Attr6, Attr9, Attr10], [O7, O11]], [[Attr1, Attr3, Attr5, Attr6, Attr9, Attr11], [O9, O11]], [[Attr1, Attr3, Attr5, Attr9, Attr10, Attr11, Attr14], [O11]], [[Attr1, Attr3, Attr9, Attr10, Attr11, Attr12], [O2]], [[Attr1, Attr4, Attr5, Attr6, Attr8, Attr9, Attr11, Attr13], [O9]], [[Attr1, Attr4, Attr5, Attr6, Attr8, Attr9, Attr13], [O9]], [[Attr1, Attr4, Attr5, Attr6, Attr9, Attr11], [O9]], [[Attr1, Attr4, Attr5, Attr11, Attr12, Attr13], [O4]], [[Attr1, Attr5, Attr6, Attr8, Attr9], [O7, O9]], [[Attr1, Attr5, Attr6, Attr8, Attr9, Attr11], [O9, O11]], [[Attr1, Attr5, Attr6, Attr9, Attr11, Attr14], [O11]], [[Attr1, Attr5, Attr6, Attr9, Attr13], [O13]], [[Attr1, Attr5, Attr7, Attr8, Attr9, Attr10], [O7, O13]], [[Attr1, Attr5, Attr8, Attr9, Attr11, Attr13], [O9, O12]], [[Attr1, Attr5, Attr9, Attr11, Attr13], [O13]], [[Attr1, Attr5, Attr9, Attr11, Attr14], [O11]], [[Attr1, Attr5, Attr9, Attr13, Attr14], [O13]], [[Attr1, Attr5, Attr10, Attr11, Attr12, Attr13], [O12]], [[Attr1, Attr5, Attr11, Attr12, Attr13, Attr14], [O14]], [[Attr2, Attr5, Attr7, Attr8, Attr9, Attr13, Attr14], [O13]], [[Attr3, Attr4, Attr5, Attr8, Attr12, Attr14], [O1]], [[Attr3, Attr5, Attr8, Attr10, Attr12, Attr13], [O15]], [[Attr3, Attr8, Attr10, Attr12, Attr13], [O15]], [[Attr3, Attr9, Attr11, Attr12, Attr14], [O2, O6]], [[Attr3, Attr10, Attr12, Attr14], [O1, O3]], [[Attr4, Attr5, Attr6, Attr9, Attr11], [O9]], [[Attr4, Attr5, Attr6, Attr9, Attr11, Attr13], [O9]], [[Attr4, Attr5, Attr8, Attr9, Attr11, Attr13], [O9]], [[Attr4, Attr5, Attr8, Attr9, Attr13], [O9]], [[Attr4, Attr6, Attr9, Attr11, Attr12], [O6]], [[Attr4, Attr6, Attr9, Attr11, Attr12, Attr14], [O6]], [[Attr4, Attr6, Attr11, Attr12, Attr14], [O6]], [[Attr4, Attr12, Attr13], [O4]], [[Attr5, Attr6, Attr7, Attr9, Attr12], [O6, O7]], [[Attr5, Attr6, Attr9, Attr11, Attr14], [O6, O11]], [[Attr5, Attr7, Attr8, Attr9, Attr10, Attr12], [O7]], [[Attr5, Attr7, Attr9, Attr10, Attr12], [O5, O7]], [[Attr5, Attr7, Attr9, Attr14], [O6, O13]], [[Attr5, Attr8, Attr9, Attr10, Attr12, Attr13], [O15]], [[Attr5, Attr8, Attr9, Attr11, Attr13], [O9]], [[Attr5, Attr8, Attr9, Attr13, Attr14], [O13]], [[Attr5, Attr9, Attr10, Attr11, Attr12, Attr13], [O12]], [[Attr5, Attr9, Attr11, Attr13, Attr14], [O13]], [[Attr5, Attr9, Attr11, Attr14], [O11]], [[Attr5, Attr9, Attr13, Attr14], [O13]], [[Attr5, Attr10, Attr11, Attr12, Attr13], [O12]], [[Attr5, Attr10, Attr12, Attr13], [O5]], [[Attr5, Attr11, Attr12, Attr13, Attr14], [O14]], [[Attr6, Attr7, Attr9, Attr11, Attr12], [O6]], [[Attr6, Attr7, Attr9, Attr11, Attr14], [O6]], [[Attr6, Attr9, Attr11, Attr12, Attr14], [O6]], [[Attr7, Attr8, Attr9, Attr10, Attr12], [O7]], [[Attr7, Attr9, Attr10, Attr12, Attr14], [O3]], [[Attr7, Attr9, Attr12, Attr14], [O3, O6]], [[Attr7, Attr9, Attr14], [O6, O13]], [[Attr8, Attr9, Attr10, Attr12, Attr13], [O15]], [[Attr8, Attr9, Attr11, Attr13], [O9]], [[Attr8, Attr9, Attr13, Attr14], [O13]], [[Attr8, Attr10, Attr12, Attr13], [O15]], [[Attr9, Attr10, Attr11, Attr12, Attr13], [O12]], [[Attr9, Attr11, Attr12, Attr14], [O2, O6]], [[Attr9, Attr11, Attr14], [O11]], [[Attr10, Attr11, Attr12, Attr14], [O2]], [[Attr10, Attr12, Attr13], [O5]], [[Attr10, Attr12, Attr14], [O1, O3]], [[Attr11, Attr12, Attr13, Attr14], [O14]], [[Attr11, Attr12, Attr14], [O2, O11, O14]], [[Attr12, Attr13, Attr14], [O14]], [[Attr12, Attr14], [O1, O2, O6, O11]], [[Attr13, Attr14], [O13, O14]], [[Attr0, Attr1, Attr2, Attr3, Attr5, Attr6, Attr7, Attr8, Attr9, Attr10, Attr12], [O7]], [[Attr0, Attr1, Attr2, Attr5, Attr7, Attr10, Attr12], [O5, O7]], [[Attr0, Attr2, Attr7, Attr8, Attr10, Attr12], [O3, O7]], [[Attr0, Attr2, Attr7, Attr8, Attr12, Attr14], [O3]], [[Attr0, Attr4, Attr5, Attr6, Attr10], [O8]], [[Attr0, Attr4, Attr6, Attr7, Attr9, Attr11, Attr12, Attr14], [O6]], [[Attr0, Attr4, Attr6, Attr7, Attr9, Attr12], [O6]], [[Attr0, Attr4, Attr6, Attr9, Attr11], [O6]], [[Attr0, Attr4, Attr6, Attr9, Attr11, Attr12], [O6]], [[Attr0, Attr4, Attr6, Attr9, Attr11, Attr12, Attr14], [O6]], [[Attr0, Attr4, Attr6, Attr12], [O6, O8]], [[Attr0, Attr6, Attr7, Attr9, Attr12], [O6, O7]], [[Attr0, Attr7, Attr12, Attr14], [O3, O6]], [[Attr1, Attr2, Attr3, Attr4, Attr5, Attr7, Attr10, Attr12, Attr13], [O5]], [[Attr1, Attr2, Attr3, Attr5, Attr7, Attr10, Attr12], [O5, O7]], [[Attr1, Attr2, Attr3, Attr5, Attr7, Attr12], [O3, O5]], [[Attr1, Attr2, Attr3, Attr5, Attr7, Attr8, Attr9], [O7]], [[Attr1, Attr2, Attr5, Attr7, Attr8, Attr9], [O7, O13]], [[Attr1, Attr2, Attr5, Attr7, Attr13], [O5, O13]], [[Attr1, Attr3, Attr4, Attr5, Attr7, Attr10, Attr12], [O5, O10]], [[Attr1, Attr3, Attr5, Attr6, Attr9, Attr10, Attr11, Attr14], [O11]], [[Attr1, Attr3, Attr5, Attr6, Attr9, Attr10], [O7, O11]], [[Attr1, Attr3, Attr5, Attr6, Attr9, Attr11], [O9, O11]], [[Attr1, Attr3, Attr5, Attr9, Attr10, Attr11, Attr14], [O11]], [[Attr1, Attr3, Attr9, Attr10, Attr11, Attr12], [O2]], [[Attr1, Attr4, Attr5, Attr6, Attr8, Attr9, Attr11, Attr13], [O9]], [[Attr1, Attr4, Attr5, Attr6, Attr8, Attr9, Attr13], [O9]], [[Attr1, Attr4, Attr5, Attr6, Attr9, Attr11], [O9]], [[Attr1, Attr4, Attr5, Attr11, Attr12, Attr13], [O4]], [[Attr1, Attr5, Attr6, Attr8, Attr9], [O7, O9]], [[Attr1, Attr5, Attr6, Attr8, Attr9, Attr11], [O9, O11]], [[Attr1, Attr5, Attr6, Attr9, Attr11, Attr14], [O11]], [[Attr1, Attr5, Attr6, Attr9, Attr13], [O13]], [[Attr1, Attr5, Attr7, Attr8, Attr9, Attr10], [O7, O13]], [[Attr1, Attr5, Attr8, Attr9, Attr11, Attr13], [O9, O12]], [[Attr1, Attr5, Attr9, Attr11, Attr13], [O13]], [[Attr1, Attr5, Attr9, Attr11, Attr14], [O11]], [[Attr1, Attr5, Attr9, Attr13, Attr14], [O13]], [[Attr1, Attr5, Attr10, Attr11, Attr12, Attr13], [O12]], [[Attr1, Attr5, Attr11, Attr12, Attr13, Attr14], [O14]], [[Attr2, Attr5, Attr7, Attr8, Attr9, Attr13, Attr14], [O13]], [[Attr3, Attr4, Attr5, Attr8, Attr12, Attr14], [O1]], [[Attr3, Attr5, Attr8, Attr10, Attr12, Attr13], [O15]], [[Attr3, Attr8, Attr10, Attr12, Attr13], [O15]], [[Attr3, Attr9, Attr11, Attr12, Attr14], [O2, O6]], [[Attr3, Attr10, Attr12, Attr14], [O1, O3]], [[Attr4, Attr5, Attr6, Attr9, Attr11], [O9]], [[Attr4, Attr5, Attr6, Attr9, Attr11, Attr13], [O9]], [[Attr4, Attr5, Attr8, Attr9, Attr11, Attr13], [O9]], [[Attr4, Attr5, Attr8, Attr9, Attr13], [O9]], [[Attr4, Attr6, Attr9, Attr11, Attr12], [O6]], [[Attr4, Attr6, Attr9, Attr11, Attr12, Attr14], [O6]], [[Attr4, Attr6, Attr11, Attr12, Attr14], [O6]], [[Attr4, Attr12, Attr13], [O4]], [[Attr5, Attr6, Attr7, Attr9, Attr12], [O6, O7]], [[Attr5, Attr6, Attr9, Attr11, Attr14], [O6, O11]], [[Attr5, Attr7, Attr8, Attr9, Attr10, Attr12], [O7]], [[Attr5, Attr7, Attr9, Attr10, Attr12], [O5, O7]], [[Attr5, Attr7, Attr9, Attr14], [O6, O13]], [[Attr5, Attr8, Attr9, Attr10, Attr12, Attr13], [O15]], [[Attr5, Attr8, Attr9, Attr11, Attr13], [O9]], [[Attr5, Attr8, Attr9, Attr13, Attr14], [O13]], [[Attr5, Attr9, Attr10, Attr11, Attr12, Attr13], [O12]], [[Attr5, Attr9, Attr11, Attr13, Attr14], [O13]], [[Attr5, Attr9, Attr11, Attr14], [O11]], [[Attr5, Attr9, Attr13, Attr14], [O13]], [[Attr5, Attr10, Attr11, Attr12, Attr13], [O12]], [[Attr5, Attr10, Attr12, Attr13], [O5]], [[Attr5, Attr11, Attr12, Attr13, Attr14], [O14]], [[Attr6, Attr7, Attr9, Attr11, Attr12], [O6]], [[Attr6, Attr7, Attr9, Attr11, Attr14], [O6]], [[Attr6, Attr9, Attr11, Attr12, Attr14], [O6]], [[Attr7, Attr8, Attr9, Attr10, Attr12], [O7]], [[Attr7, Attr9, Attr10, Attr12, Attr14], [O3]], [[Attr7, Attr9, Attr12, Attr14], [O3, O6]], [[Attr7, Attr9, Attr14], [O6, O13]], [[Attr8, Attr9, Attr10, Attr12, Attr13], [O15]], [[Attr8, Attr9, Attr11, Attr13], [O9]], [[Attr8, Attr9, Attr13, Attr14], [O13]], [[Attr8, Attr10, Attr12, Attr13], [O15]], [[Attr9, Attr10, Attr11, Attr12, Attr13], [O12]], [[Attr9, Attr11, Attr12, Attr14], [O2, O6]], [[Attr9, Attr11, Attr14], [O11]], [[Attr10, Attr11, Attr12, Attr14], [O2]], [[Attr10, Attr12, Attr13], [O5]], [[Attr10, Attr12, Attr14], [O1, O3]], [[Attr11, Attr12, Attr13, Attr14], [O14]], [[Attr11, Attr12, Attr14], [O2, O11, O14]], [[Attr12, Attr13, Attr14], [O14]], [[Attr12, Attr14], [O1, O2, O6, O11]], [[Attr13, Attr14], [O13, O14]]]

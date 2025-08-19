@@ -1,0 +1,74 @@
+Mistral_contextual-prompting_eg8_8_test1
+
+Date: 29 may 2025
+Model: Mistral Large 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3;a4;a5;a6;a7;a8
+O1;Yes;Yes;Yes;No;No;No;No;No
+O2;Yes;Yes;Yes;No;No;Yes;No;Yes
+O3;Yes;Yes;No;Yes;No;Yes;No;No
+O4;No;Yes;Yes;Yes;Yes;No;No;Yes
+O5;No;Yes;No;Yes;No;Yes;Yes;Yes
+O6;Yes;Yes;Yes;No;Yes;No;Yes;No
+O7;No;Yes;Yes;Yes;Yes;No;Yes;No
+O8;No;Yes;Yes;Yes;Yes;No;Yes;No
+____________________
+
+OUTPUT:
+To find the lattice concepts in a formal context using Formal Concept Analysis (FCA), we need to identify all pairs of object sets and attribute sets that form a "concept". A concept is defined by two sets: the extent (a set of objects) and the intent (a set of attributes), such that:
+
+- The extent consists of all objects that share the attributes in the intent.
+- The intent consists of all attributes shared by the objects in the extent.
+
+Given the context, we can extract the concepts by following these steps:
+
+1. Enumerate all possible combinations of objects and find the intersection of their attributes.
+2. For each combination of attributes, find all objects that have these attributes.
+3. Ensure that the combination is maximal, meaning no larger set of objects shares the same attributes, and no larger set of attributes is shared by the same objects.
+
+Let's start by extracting and enumerating all the concepts from the given context. We'll use a computational approach to handle this systematically.Here are the lattice concepts extracted from the given context in formal concept analysis:
+
+| Extent | Intent |
+|--------|--------|
+| {O3} | {a1, a2, a4, a6} |
+| {O4} | {a2, a3, a4, a5, a8} |
+| {O6} | {a1, a2, a3, a5, a7} |
+| {O2} | {a1, a2, a3, a6, a8} |
+| {O5} | {a2, a4, a6, a7, a8} |
+| {O2, O5} | {a2, a6, a8} |
+| {O3, O5} | {a2, a4, a6} |
+| {O2, O4} | {a2, a3, a8} |
+| {O2, O3} | {a1, a2, a6} |
+| {O4, O5} | {a2, a4, a8} |
+| {O7, O8} | {a2, a3, a4, a5, a7} |
+| {O2, O4, O5} | {a2, a8} |
+| {O2, O3, O5} | {a2, a6} |
+| {O1, O2, O6} | {a1, a2, a3} |
+| {O5, O7, O8} | {a2, a4, a7} |
+| {O6, O7, O8} | {a2, a3, a5, a7} |
+| {O4, O7, O8} | {a2, a3, a4, a5} |
+| {O1, O2, O3, O6} | {a1, a2} |
+| {O5, O6, O7, O8} | {a2, a7} |
+| {O4, O6, O7, O8} | {a2, a3, a5} |
+| {O3, O4, O5, O7, O8} | {a2, a4} |
+| {O1, O2, O4, O6, O7, O8} | {a2, a3} |
+| {O1, O2, O3, O4, O5, O6, O7, O8} | {a2} |
+
+These pairs represent the formal concepts derived from the given context, where each concept is defined by a set of objects (extent) and a set of attributes (intent).
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all concepts in the specified format:
+
+[[[a1, a2, a4, a6], [O3]], [[a2, a3, a4, a5, a8], [O4]], [[a1, a2, a3, a5, a7], [O6]], [[a1, a2, a3, a6, a8], [O2]], [[a2, a4, a6, a7, a8], [O5]], [[a2, a6, a8], [O2, O5]], [[a2, a4, a6], [O3, O5]], [[a2, a3, a8], [O2, O4]], [[a1, a2, a6], [O2, O3]], [[a2, a4, a8], [O4, O5]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a2, a8], [O2, O4, O5]], [[a2, a6], [O2, O3, O5]], [[a1, a2, a3], [O1, O2, O6]], [[a2, a4, a7], [O5, O7, O8]], [[a2, a3, a5, a7], [O6, O7, O8]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a2, a7], [O5, O6, O7, O8]], [[a2, a3, a5], [O4, O6, O7, O8]], [[a2, a4], [O3, O4, O5, O7, O8]], [[a2, a3], [O1, O2, O4, O6, O7, O8]], [[a2], [O1, O2, O3, O4, O5, O6, O7, O8]]]

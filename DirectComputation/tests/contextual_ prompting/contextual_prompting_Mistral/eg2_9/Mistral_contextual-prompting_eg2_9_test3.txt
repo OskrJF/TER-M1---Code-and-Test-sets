@@ -1,0 +1,98 @@
+Mistral_contextual-prompting_eg2_9_test3
+
+Date: 19 may 2025
+Model: Mistral Large 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+____________________
+
+OUTPUT:
+To find the lattice concepts in a formal context using Formal Concept Analysis (FCA), we need to identify all formal concepts, which are pairs of object sets (extents) and attribute sets (intents) that form a complete lattice.
+
+Given the context:
+
+| Objet | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+|-------|----|----|----|----|----|----|----|----|----|
+| o1    | yes| yes| yes| yes| no | no | yes| no | yes|
+| o2    | yes| no | no | yes| no | yes| no | no | yes|
+
+We can enumerate the concepts as follows:
+
+1. **Concept 1**:
+   - Extent: {o1, o2}
+   - Intent: {a1, a4, a9}
+
+2. **Concept 2**:
+   - Extent: {o1}
+   - Intent: {a1, a2, a3, a4, a7, a9}
+
+3. **Concept 3**:
+   - Extent: {o2}
+   - Intent: {a1, a4, a6, a9}
+
+4. **Concept 4**:
+   - Extent: {}
+   - Intent: {a1, a2, a3, a4, a5, a6, a7, a8, a9}
+
+5. **Concept 5**:
+   - Extent: {o1, o2}
+   - Intent: {a1, a4}
+
+6. **Concept 6**:
+   - Extent: {o1}
+   - Intent: {a1, a2, a3, a4, a7}
+
+7. **Concept 7**:
+   - Extent: {o2}
+   - Intent: {a1, a4, a6}
+
+8. **Concept 8**:
+   - Extent: {o1}
+   - Intent: {a1, a2, a3, a4}
+
+9. **Concept 9**:
+   - Extent: {o1}
+   - Intent: {a1, a2, a3}
+
+10. **Concept 10**:
+    - Extent: {o1}
+    - Intent: {a1, a2}
+
+11. **Concept 11**:
+    - Extent: {o1}
+    - Intent: {a1}
+
+12. **Concept 12**:
+    - Extent: {o2}
+    - Intent: {a1, a4}
+
+13. **Concept 13**:
+    - Extent: {o2}
+    - Intent: {a1}
+
+14. **Concept 14**:
+    - Extent: {}
+    - Intent: {a5}
+
+15. **Concept 15**:
+    - Extent: {}
+    - Intent: {a8}
+
+These concepts form the lattice structure for the given formal context. Each concept is a maximal rectangle of "yes" entries in the context table.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []], [[a1, a4], [o1, o2]], [[a1, a2, a3, a4, a7], [o1]], [[a1, a4, a6], [o2]], [[a1, a2, a3, a4], [o1]], [[a1, a2, a3], [o1]], [[a1, a2], [o1]], [[a1], [o1]], [[a1, a4], [o2]], [[a1], [o2]], [[a5], []], [[a8], []]]

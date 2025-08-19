@@ -1,0 +1,83 @@
+Mistral_contextual-prompting_eg2_9_test2
+
+Date: 19 may 2025
+Model: Mistral Large 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+____________________
+
+OUTPUT:
+To find the lattice concepts in a formal context using Formal Concept Analysis (FCA), we need to identify all pairs of object sets and attribute sets that form concepts. A concept is defined as a pair \((A, B)\), where \(A\) is a set of objects, \(B\) is a set of attributes, and the following two conditions hold:
+
+1. All objects in \(A\) share all attributes in \(B\).
+2. \(A\) is the maximal set of objects that share all attributes in \(B\), and \(B\) is the maximal set of attributes shared by all objects in \(A\).
+
+Given the context:
+
+| Objet | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+|-------|----|----|----|----|----|----|----|----|----|
+| o1    | yes| yes| yes| yes| no | no | yes| no | yes|
+| o2    | yes| no | no | yes| no | yes| no | no | yes|
+
+We can enumerate the concepts as follows:
+
+1. Concept 1: \((\{\}, \{a1, a2, a3, a4, a5, a6, a7, a8, a9\})\)
+   - This is the top concept, containing all attributes and no objects.
+
+2. Concept 2: \((\{o1, o2\}, \{a1, a4, a9\})\)
+   - Both objects \(o1\) and \(o2\) share attributes \(a1\), \(a4\), and \(a9\).
+
+3. Concept 3: \((\{o1\}, \{a1, a2, a3, a4, a7, a9\})\)
+   - Object \(o1\) has attributes \(a1\), \(a2\), \(a3\), \(a4\), \(a7\), and \(a9\).
+
+4. Concept 4: \((\{o2\}, \{a1, a4, a6, a9\})\)
+   - Object \(o2\) has attributes \(a1\), \(a4\), \(a6\), and \(a9\).
+
+5. Concept 5: \((\{\}, \{a5, a8\})\)
+   - This concept contains attributes \(a5\) and \(a8\) that are not shared by any objects.
+
+6. Concept 6: \((\{\}, \{a2, a3, a7\})\)
+   - This concept contains attributes \(a2\), \(a3\), and \(a7\) that are not shared by any objects.
+
+7. Concept 7: \((\{\}, \{a6\})\)
+   - This concept contains attribute \(a6\) that is not shared by any objects.
+
+8. Concept 8: \((\{o1, o2\}, \{a1, a4, a9\})\)
+   - This is the same as Concept 2.
+
+9. Concept 9: \((\{\}, \{a1, a4, a9\})\)
+   - This concept contains attributes \(a1\), \(a4\), and \(a9\) that are shared by all objects.
+
+10. Concept 10: \((\{\}, \{a1, a4\})\)
+    - This concept contains attributes \(a1\) and \(a4\) that are shared by all objects.
+
+11. Concept 11: \((\{\}, \{a1\})\)
+    - This concept contains attribute \(a1\) that is shared by all objects.
+
+12. Concept 12: \((\{\}, \{a4\})\)
+    - This concept contains attribute \(a4\) that is shared by all objects.
+
+13. Concept 13: \((\{\}, \{a9\})\)
+    - This concept contains attribute \(a9\) that is shared by all objects.
+
+14. Concept 14: \((\{\}, \{\})\)
+    - This is the bottom concept, containing no attributes and all objects.
+
+These concepts form the lattice structure in FCA for the given context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a5, a8], []], [[a2, a3, a7], []], [[a6], []], [[a1, a4, a9], [o1, o2]], [[a1, a4, a9], []], [[a1, a4], []], [[a1], []], [[a4], []], [[a9], []], [[], [o1, o2]]]

@@ -1,0 +1,66 @@
+Mistral_contextual-prompting_eg2_3_test2
+
+Date: 18 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+To find the lattice concepts in the given formal context using Formal Concept Analysis (FCA), we need to identify all pairs of object sets and attribute sets that form concepts. A concept is defined as a pair \((A, B)\), where \(A\) is a set of objects and \(B\) is a set of attributes, such that:
+
+1. All objects in \(A\) share all attributes in \(B\).
+2. \(A\) is the maximal set of objects that share all attributes in \(B\).
+3. \(B\) is the maximal set of attributes shared by all objects in \(A\).
+
+Given the context:
+
+| Objet | a1 | a2 | a3 |
+|-------|----|----|----|
+| o1    | yes| yes| no |
+| o2    | no | yes| yes|
+
+We can enumerate the concepts as follows:
+
+1. **Concept 1**: \((\{\}, \{\})\)
+   - This is the trivial concept containing no objects and no attributes.
+
+2. **Concept 2**: \((\{o1\}, \{a1, a2\})\)
+   - Object \(o1\) has attributes \(a1\) and \(a2\).
+
+3. **Concept 3**: \((\{o2\}, \{a2, a3\})\)
+   - Object \(o2\) has attributes \(a2\) and \(a3\).
+
+4. **Concept 4**: \((\{o1, o2\}, \{a2\})\)
+   - Both objects \(o1\) and \(o2\) share attribute \(a2\).
+
+5. **Concept 5**: \((\{\}, \{a1\})\)
+   - This concept contains no objects but has attribute \(a1\).
+
+6. **Concept 6**: \((\{\}, \{a2\})\)
+   - This concept contains no objects but has attribute \(a2\).
+
+7. **Concept 7**: \((\{\}, \{a3\})\)
+   - This concept contains no objects but has attribute \(a3\).
+
+8. **Concept 8**: \((\{\}, \{a1, a2, a3\})\)
+   - This is the trivial concept containing no objects but all attributes.
+
+These are all the possible concepts that can be derived from the given formal context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]], [[a1], []], [[a2], []], [[a3], []], [[a1, a2, a3], []]]

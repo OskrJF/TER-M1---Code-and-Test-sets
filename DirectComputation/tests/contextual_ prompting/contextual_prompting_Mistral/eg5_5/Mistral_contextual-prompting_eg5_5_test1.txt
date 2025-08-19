@@ -1,0 +1,53 @@
+Mistral_contextual-prompting_eg5_5_test1
+
+Date: 29 may 2025
+Model: Mistral Large 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+To extract and enumerate all lattice concepts from the given context in formal concept analysis (FCA), we need to follow these steps:
+
+1. **Identify the Formal Context**: The given context is a table where rows represent objects and columns represent attributes. A "yes" indicates that an object has a particular attribute, and a "no" indicates it does not.
+
+2. **Find Formal Concepts**: A formal concept is a pair `(A, B)`, where `A` is a set of objects and `B` is a set of attributes. `A` is called the extent, and `B` is called the intent. The pair must satisfy two conditions:
+   - `A` is the set of all objects that have all the attributes in `B`.
+   - `B` is the set of all attributes shared by all the objects in `A`.
+
+3. **Enumerate All Concepts**: We need to find all such pairs `(A, B)` that satisfy the above conditions.
+
+Let's start by identifying all possible extents and intents from the given context. We'll use a systematic approach to find all formal concepts.Here are the formal concepts extracted from the given context:
+
+| Objects | Attributes |
+|---------|------------|
+| {o1, o3} | {a1, a4} |
+| {} | {a1, a2, a3, a4, a5} |
+| {o3, o4} | {a2, a5} |
+| {o1, o2} | {a3} |
+| {o3, o4, o5} | {a2} |
+| {o1, o2, o3, o4, o5} | {} |
+| {o1} | {a1, a3, a4} |
+| {o3} | {a1, a2, a4, a5} |
+
+These pairs represent the formal concepts where each pair consists of a set of objects and a set of attributes that define the concept.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2, o3, o4, o5]], [[a1, a4], [o1, o3]], [[a1, a2, a3, a4, a5], []], [[a2, a5], [o3, o4]], [[a3], [o1, o2]], [[a2], [o3, o4, o5]], [[a1, a3, a4], [o1]], [[a1, a2, a4, a5], [o3]]]
