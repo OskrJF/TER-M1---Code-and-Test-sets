@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg15_15_test1_A2
+
+Date: 26 may 2025
+Model: DeepSeek-V3
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by computing all formal concepts using the **NextClosure algorithm**. This algorithm generates concepts in a systematic order, leveraging the lexical order of attribute sets. Starting with the smallest intent (the empty set), it iteratively computes the next closure, ensuring completeness. Due to the context's small size, the algorithm efficiently enumerates all concepts without excessive computational overhead, making it a reliable choice for small datasets.  
+
+Another approach is to use **Galois connections and the attribute derivation operator** to build concepts step-by-step. For each subset of objects, compute its intent by intersecting the attributes shared by those objects, and vice versa for extents. By iterating through all possible object and attribute subsets, one can construct the complete concept lattice. Though this method is exhaustive, its feasibility is guaranteed for small contexts, as the number of subsets remains manageable (under 2²⁰ possibilities).  
+
+A third method involves **visualizing the context and applying manual derivation** for small datasets. By creating a cross-table of objects and attributes, one can manually identify maximal rectangles (concepts) where all objects share all attributes. This hands-on approach is practical for very small contexts (e.g., fewer than 10 objects/attributes) and helps build intuition. While not scalable, it reinforces understanding of concept formation and lattice structure before applying automated algorithms.

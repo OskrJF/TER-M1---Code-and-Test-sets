@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg2_9_test2_A1
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by using the **NextClosure algorithm**. This method systematically generates all formal concepts in lexicographic order by computing closures of attribute sets. Starting with the empty set, it iteratively applies a closure operator and checks for minimal extensions, ensuring completeness. Due to the small size of the context, the algorithm’s computational complexity remains manageable, making it a practical choice for enumerating all concepts efficiently.
+
+Another approach is the **Galois Connection-based method**, which leverages the duality between objects and attributes. By computing the intent (shared attributes) for every subset of objects and vice versa, one can derive formal concepts as fixed points of this connection. For small contexts, this can be done manually or with simple scripts, as the number of subsets is limited. The resulting concepts are then organized into a lattice based on the subset-superset hierarchy, providing a clear structure for analysis.
+
+A third method is the **Matrix Cross-Construction technique**, where the context is represented as a binary matrix. By intersecting rows (objects) and columns (attributes), one can identify maximal rectangles of 1s, which correspond to formal concepts. For small contexts, this visual or algorithmic process is feasible, as the matrix size is manageable. Once all concepts are identified, they can be ordered into a lattice diagram by comparing their extents or intents, revealing the hierarchical relationships between them.

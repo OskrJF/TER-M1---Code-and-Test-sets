@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg2_9_test1_A2
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+1. **Using the NextClosure Algorithm**: The NextClosure algorithm is a systematic method to enumerate all formal concepts in a formal context. It starts with the smallest concept (the intent of all attributes) and iteratively computes the next concept in lexical order by applying the closure operator. For contexts with fewer than 20 objects and attributes, this method is computationally feasible due to its polynomial delay time complexity. The algorithm ensures completeness, as it guarantees finding every concept without redundancy, making it a reliable choice for small contexts.  
+
+2. **Constructing the Concept Lattice via Attribute Exploration**: Attribute exploration is an interactive method that builds the concept lattice step-by-step by querying an expert to confirm or reject implications between attributes. For small contexts, this process can be done manually by listing all possible attribute combinations and verifying their closures. The resulting concepts are then organized into a lattice structure. While this approach is more labor-intensive, it is intuitive and educational, as it explicitly reveals the dependencies between attributes.  
+
+3. **Computing Concepts with Matrix Cross-Table Analysis**: For small contexts, the concepts can be derived directly from the cross-table (incidence matrix) by examining all possible object subsets and their corresponding shared attributes. For each subset of objects, compute its intent (common attributes), and for each subset of attributes, compute its extent (objects sharing all those attributes). Pairs of extents and intents that satisfy the closure property form the formal concepts. This brute-force method is practical for small scales due to its simplicity, though it becomes inefficient for larger contexts.

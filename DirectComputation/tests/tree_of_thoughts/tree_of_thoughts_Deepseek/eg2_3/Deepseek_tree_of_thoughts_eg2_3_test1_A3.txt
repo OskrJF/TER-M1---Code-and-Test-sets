@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg2_3_test1_A3
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+1. **NextClosure Algorithm**: The NextClosure algorithm is a systematic method for generating all formal concepts in a formal context by computing closures in a specific order. It starts with the smallest intent (empty set) and iteratively generates the next concept by finding the lectically smallest closed set that follows the current one. This approach is efficient for small contexts (less than 20 objects/attributes) because it avoids redundancy and ensures completeness. The algorithm leverages the closure operator to compute intents and checks for canonicity to ensure each concept is generated only once. While not the fastest for larger contexts, its simplicity makes it suitable for small-scale problems.
+
+2. **Bordat’s Algorithm**: Bordat’s algorithm constructs the concept lattice by building the Hasse diagram directly from the formal context. It starts by identifying all object concepts (minimal concepts containing each object) and then recursively computes upper neighbors by intersecting intents. This method is intuitive for small contexts because it visually builds the lattice step-by-step, making it easier to verify correctness. However, it may produce duplicate concepts, requiring checks to avoid redundancy. For contexts with fewer than 20 objects/attributes, the computational overhead is manageable, and the explicit construction aids understanding.
+
+3. **Divide-and-Conquer (Naive) Approach**: For very small contexts, a straightforward divide-and-conquer method can be employed by enumerating all possible subsets of attributes (or objects) and computing their closures to identify formal concepts. This involves generating all combinations, checking which are closed, and then pairing them with their corresponding extents. While computationally expensive for larger contexts, the brute-force nature of this method is feasible for fewer than 20 items, as the total number of subsets remains manageable. This approach is easy to implement and verify, though it lacks the elegance of more advanced algorithms.

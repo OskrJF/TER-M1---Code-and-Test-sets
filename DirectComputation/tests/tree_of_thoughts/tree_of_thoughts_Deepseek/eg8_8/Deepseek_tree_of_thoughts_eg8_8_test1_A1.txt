@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg8_8_test1_A1
+
+Date: 26 may 2025
+Model: DeepSeek-V3
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+1. **Using the NextClosure Algorithm**: The NextClosure algorithm is a systematic method for generating all formal concepts in a formal context. It works by computing closures of attribute sets in a lectic order, ensuring that each concept is generated exactly once. Starting with the smallest concept (the closure of the empty set), the algorithm iteratively finds the next concept by modifying the current attribute set and computing its closure. This method is efficient for small contexts (less than 20 objects/attributes) because it avoids redundancy and leverages the lectic order to explore the concept space exhaustively. Its simplicity and deterministic nature make it a reliable choice for small-scale FCA problems.
+
+2. **Constructing the Concept Lattice via Galois Connections**: Another approach involves explicitly computing the Galois connections between objects and attributes to derive formal concepts. For each subset of objects, compute its intent (common attributes), and for each subset of attributes, compute its extent (common objects). By iterating through all possible subsets and checking for closure (where applying the Galois connection twice returns the original set), one can enumerate all concepts. While this method is computationally intensive for larger contexts, it is feasible for small contexts (under 20 objects/attributes) and provides a clear understanding of the relationship between extents and intents.
+
+3. **Visual Inspection or Cross-Table Analysis**: For very small contexts (e.g., fewer than 10 objects/attributes), formal concepts can sometimes be identified manually by inspecting the cross-table of the context. By examining which objects share which attributes, one can list all maximal object-attribute pairs that satisfy the formal concept definition. This method is intuitive but becomes impractical as the context grows. However, for tiny contexts, it can be a quick way to grasp the structure of the lattice without algorithmic assistance, especially when combined with drawing the lattice diagram for verification.

@@ -1,0 +1,93 @@
+Deepseek_tree_of_thoughts_eg2_3_test3_B
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1B:
+Pick one of the next three ways to extract all the lattice concepts from the context in this .csv file and apply it to give me the concepts
+
+1. **Using the NextClosure Algorithm**: The NextClosure algorithm is a systematic method for computing all formal concepts in a formal context. It generates concepts in a specific order, known as the lectic order, by iteratively computing the closure of attribute sets. Starting with the smallest concept (the empty set), it repeatedly applies the closure operator to find the next concept in the sequence. This algorithm is efficient for small contexts (like those with fewer than 20 objects and attributes) because it avoids redundancies and ensures completeness. While it may not be the fastest for larger contexts, its simplicity and theoretical guarantees make it a reliable choice for smaller datasets.
+
+2. Another approach is to use **Galois connections and the Ganter-Reuter method**, which involves computing all concept intents or extents by leveraging the duality between objects and attributes. By fixing either the objects or attributes and computing their corresponding closures, one can enumerate all formal concepts systematically. For small contexts, this method is straightforward and can be implemented manually or with basic programming. The clarity of the Galois connections ensures that no concepts are missed, making it a reliable technique for small datasets where computational complexity is not a concern.
+
+3. A third method is the **Bordat algorithm**, which constructs the concept lattice by traversing the subset hierarchy of attribute extents. It begins with the top concept (all objects) and recursively decomposes it into smaller concepts by removing attributes and computing their corresponding object sets. For contexts with fewer than 20 objects and attributes, this approach is efficient and visually intuitive, as it mirrors the hierarchical structure of the lattice. The algorithm also allows for parallelization in certain steps, though this is less critical for small contexts. Its stepwise decomposition makes it easy to implement and verify correctness for smaller datasets.
+____________________
+
+OUTPUT:
+Given the small size of the context in the provided CSV file, we can use the **NextClosure algorithm** to compute all formal concepts. Here's how it works step-by-step for this context:
+
+### Formal Context:
+- **Objects**: o1, o2  
+- **Attributes**: a1, a2, a3  
+- **Incidence relation**:  
+  - o1: a1, a2  
+  - o2: a2, a3  
+
+### Step 1: Define the closure operator
+For a set of attributes \( A \), the closure \( A'' \) is computed as:  
+1. Find all objects that have all attributes in \( A \) (this is \( A' \)).  
+2. Find all attributes shared by those objects (this is \( A'' \)).  
+
+### Step 2: Generate all concepts using NextClosure
+We start with the empty set and iteratively compute the next concept in lectic order.
+
+1. **Initial concept**: \( \emptyset \)  
+   - \( \emptyset' = \{o1, o2\} \) (all objects)  
+   - \( \emptyset'' = \{a2\} \) (attributes shared by o1 and o2)  
+   - **Concept**: \( (\{o1, o2\}, \{a2\}) \)  
+
+2. **Next concept after \( \{a2\} \)**:  
+   - The next candidate is \( \{a1\} \) (lexicographically smallest after \( \emptyset \)).  
+   - \( \{a1\}' = \{o1\} \)  
+   - \( \{o1\}' = \{a1, a2\} \)  
+   - **Concept**: \( (\{o1\}, \{a1, a2\}) \)  
+
+3. **Next concept after \( \{a1, a2\} \)**:  
+   - The next candidate is \( \{a3\} \).  
+   - \( \{a3\}' = \{o2\} \)  
+   - \( \{o2\}' = \{a2, a3\} \)  
+   - **Concept**: \( (\{o2\}, \{a2, a3\}) \)  
+
+4. **Next concept after \( \{a2, a3\} \)**:  
+   - The next candidate is \( \{a1, a3\} \).  
+   - \( \{a1, a3\}' = \emptyset \) (no object has both a1 and a3)  
+   - \( \emptyset' = \{a2\} \), which is already a concept. No new concept is added here.  
+
+5. **Next concept after \( \{a3\} \)**:  
+   - The next candidate is \( \{a1, a2, a3\} \).  
+   - \( \{a1, a2, a3\}' = \emptyset \)  
+   - \( \emptyset' = \{a2\} \), which is already a concept.  
+
+### Step 3: Verify all concepts
+The algorithm terminates when no new concepts can be found. The complete list of formal concepts is:  
+1. \( (\{o1, o2\}, \{a2\}) \)  
+2. \( (\{o1\}, \{a1, a2\}) \)  
+3. \( (\{o2\}, \{a2, a3\}) \)  
+4. \( (\emptyset, \{a1, a2, a3\}) \) (the top concept with no objects)  
+
+However, the top concept \( (\emptyset, \{a1, a2, a3\}) \) is not reachable via the NextClosure steps above, indicating a correction: the initial step should include the top concept as the closure of the full attribute set.  
+
+### Final List of Concepts:
+1. \( (\{o1, o2\}, \{a2\}) \)  
+2. \( (\{o1\}, \{a1, a2\}) \)  
+3. \( (\{o2\}, \{a2, a3\}) \)  
+4. \( (\emptyset, \{a1, a2, a3\}) \)  
+
+### Concept Lattice:
+- The top concept is \( (\emptyset, \{a1, a2, a3\}) \).  
+- It has two child concepts: \( (\{o1\}, \{a1, a2\}) \) and \( (\{o2\}, \{a2, a3\}) \).  
+- The bottom concept is \( (\{o1, o2\}, \{a2\}) \), which is the intersection of the two child concepts.  
+
+This lattice captures all possible combinations of objects sharing common attributes in the given context.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a2], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a2, a3], []]]

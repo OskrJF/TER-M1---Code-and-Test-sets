@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg2_3_test1_A2
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by using the **NextClosure algorithm**. This algorithm systematically generates all formal concepts in lexicographic order by computing the closures of attribute sets. Starting with the smallest attribute set, it iteratively applies the closure operator to find the next concept, ensuring completeness. Due to the context's small size, the algorithm's performance remains efficient, and it guarantees that all concepts are discovered without redundancy. NextClosure is particularly useful for its simplicity and theoretical elegance, though it may not be the fastest for larger contexts.
+
+Another approach is to use **Ganter's algorithm for computing all concepts via attribute exploration**, which is closely related to NextClosure but emphasizes incremental construction. Here, the algorithm builds the concept lattice by progressively adding attributes and verifying implications, ensuring that each new concept is minimal with respect to the current knowledge. For small contexts, this method is efficient and provides a clear, step-by-step derivation of the lattice. It also helps in understanding the hierarchical structure of concepts, making it suitable for educational or analytical purposes where insight into the lattice's formation is desired.
+
+A third method is to employ **direct computation using the object-attribute incidence matrix** and deriving concepts via intersections. For each subset of objects, compute their common attributes (intent), and vice versa (extent), then pair them to form formal concepts. Due to the small scale, this brute-force approach is computationally feasible and can be implemented manually or with simple scripts. Tools like **ConExp** or **FCAStone** can automate this process, visualizing the lattice structure. This method is intuitive and transparent, making it ideal for beginners or for verifying results obtained from other algorithms.

@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg8_8_test1_A3
+
+Date: 26 may 2025
+Model: DeepSeek-V3
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by using the **NextClosure algorithm**. This method systematically generates all formal concepts in lexicographic order by computing the closures of attribute sets. Starting with the smallest concept (the bottom element, usually the closure of the empty set), it iteratively finds the next concept by modifying the current attribute set and checking for closure. The algorithm is efficient for small contexts due to its straightforward implementation, though its performance degrades for larger datasets due to its sequential nature.  
+
+Another approach is the **Ganter-Reuter algorithm**, which leverages the **attribute exploration** technique to build the concept lattice incrementally. This method starts with a seed set of known implications or concepts and interactively queries an expert (or checks the context) to validate or refute hypothetical implications. For small contexts, this process is manageable and ensures that all concepts are systematically identified while minimizing redundant checks. It is particularly useful when the context is partially known or when additional domain knowledge is available.  
+
+A third method is to use **brute-force enumeration with pruning**, which involves generating all possible subsets of objects or attributes and checking their closures to determine if they form formal concepts. For small contexts, this is feasible because the power set remains computationally tractable. By pruning non-closed sets early (e.g., by checking if an intent is already closed), the process can be optimized. This approach is easy to implement and guarantees completeness, though it lacks the sophistication of more advanced algorithms and becomes impractical for larger contexts.

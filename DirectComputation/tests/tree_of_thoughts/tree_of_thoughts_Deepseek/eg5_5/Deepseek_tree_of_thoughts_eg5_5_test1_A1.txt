@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg5_5_test1_A1
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by using the **NextClosure algorithm**. This method systematically generates all formal concepts in lexicographic order by computing the closures of attribute sets. Starting with the smallest concept (the bottom concept, often the empty set), it iteratively applies a closure operator to find the next concept in the order. The algorithm is efficient for small contexts due to its straightforward implementation, though it may become computationally intensive for larger datasets. Its simplicity makes it a good choice when the context is small and manageable.
+
+Another approach is the **Ganter-Reuter algorithm**, which is a variant of NextClosure but optimizes the closure computation by leveraging the lectic order more effectively. This method reduces redundancy by ensuring each concept is generated only once, making it slightly more efficient than the basic NextClosure for small contexts. It works by iterating through all possible attribute combinations, computing their closures, and checking for minimality in the lectic order. While it shares similarities with NextClosure, its optimizations can lead to faster execution in practice, especially when the number of attributes is limited.
+
+A third method is the **Bordat algorithm**, which constructs the concept lattice by building a hierarchy of concepts directly from the context. This approach starts with the top concept (all objects) and recursively splits it into sub-concepts by intersecting object intents. It uses a divide-and-conquer strategy, making it intuitive for small contexts where the lattice structure can be visualized step-by-step. The Bordat algorithm is particularly useful when the goal is not just to list concepts but also to understand their hierarchical relationships, as it explicitly constructs the lattice edges during the process. Its clarity and visualizability make it a practical choice for small-scale FCA problems.

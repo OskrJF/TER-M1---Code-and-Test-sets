@@ -1,0 +1,74 @@
+Deepseek_tree_of_thoughts_eg2_9_test2_B
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1B:
+Pick one of the next three ways to extract all the lattice concepts from the context in this .csv file and apply it to give me the concepts
+
+1. In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by using the **NextClosure algorithm**. This method systematically generates all formal concepts in lexicographic order by computing closures of attribute sets. Starting with the empty set, it iteratively applies a closure operator and checks for minimal extensions, ensuring completeness. Due to the small size of the context, the algorithm’s computational complexity remains manageable, making it a practical choice for enumerating all concepts efficiently.
+
+2. **Constructing the Concept Lattice via Galois Connections**: This approach involves computing concepts by leveraging the Galois connection between objects and attributes. For each subset of objects, compute its intent (shared attributes), and for each subset of attributes, compute its extent (shared objects). By iterating through all possible combinations, one can build the lattice by checking for closure under these operations. While this method is straightforward, it can be time-consuming due to the need to evaluate all subsets. However, for contexts with fewer than 20 objects/attributes, the number of subsets remains manageable, making this a feasible brute-force approach. 
+
+3. A third method is using **object-attribute incidence tables** to manually or semi-automatically derive concepts through **attribute exploration**. For small contexts, one can list all object subsets and compute their corresponding attribute extents (or vice versa) to identify formal concepts. This can be done using basic matrix operations or even by hand, as the limited size makes exhaustive enumeration manageable. Tools like ConExp or FCAStone can assist in visualizing the process, but the manual approach helps build intuition about concept formation. While less systematic than algorithmic methods, this hands-on technique is valuable for understanding the lattice structure in small, well-defined contexts.
+____________________
+
+OUTPUT:
+I will use the **NextClosure algorithm** (Option 1) to extract all formal concepts from the given context. Here's how it works and the resulting concepts:
+
+### Given Context:
+```
+Objet | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9
+------|----|----|----|----|----|----|----|----|----
+o1    | yes| yes| yes| yes| no | no | yes| no | yes
+o2    | yes| no | no | yes| no | yes| no | no | yes
+```
+
+### Steps:
+1. **Closure Operator**: For any attribute set \( B \), compute its closure \( B'' \) (intent of the extent of \( B \)).
+2. **Lexicographic Order**: Generate concepts by finding minimal attribute sets not yet processed, ordered lexicographically.
+3. **Iteration**: Start with the empty set and iteratively compute closures of attribute sets.
+
+### Formal Concepts Found:
+1. **Concept 1**: \( \langle \{o1, o2\}, \{a1, a4, a9\} \rangle \)  
+   - *Extent*: Both objects share attributes \( a1, a4, a9 \).  
+   - *Intent*: \( \{a1, a4, a9\}'' = \{a1, a4, a9\} \).
+
+2. **Concept 2**: \( \langle \{o1\}, \{a1, a2, a3, a4, a7, a9\} \rangle \)  
+   - *Extent*: Only \( o1 \) has all these attributes.  
+   - *Intent*: \( \{a1, a2, a3, a4, a7, a9\}'' = \{a1, a2, a3, a4, a7, a9\} \).
+
+3. **Concept 3**: \( \langle \{o2\}, \{a1, a4, a6, a9\} \rangle \)  
+   - *Extent*: Only \( o2 \) has all these attributes.  
+   - *Intent*: \( \{a1, a4, a6, a9\}'' = \{a1, a4, a6, a9\} \).
+
+4. **Concept 4**: \( \langle \emptyset, \{a1, a2, a3, a4, a5, a6, a7, a8, a9\} \rangle \)  
+   - *Extent*: No object has all attributes (top concept).  
+   - *Intent*: Full attribute set is closed.
+
+### Concept Lattice Structure:
+- The lattice has 4 concepts ordered by inclusion:  
+  - \( \langle \emptyset, \text{all attributes} \rangle \) (top)  
+    \( \swarrow \quad \searrow \)  
+  \( \langle \{o1\}, \{a1, a2, a3, a4, a7, a9\} \rangle \)  
+  \( \langle \{o2\}, \{a1, a4, a6, a9\} \rangle \)  
+    \( \searrow \quad \swarrow \)  
+  - \( \langle \{o1, o2\}, \{a1, a4, a9\} \rangle \) (bottom).
+
+### Explanation:
+- The **NextClosure algorithm** efficiently generated all concepts by leveraging the closure property and lexicographic order.  
+- For example, starting with \( \emptyset \), the closure is all attributes (no object satisfies all). The next minimal set \( \{a1\} \) leads to the bottom concept \( \{a1, a4, a9\} \), and so on.  
+
+This method is systematic and ensures completeness for small contexts like this one.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3, a4, a5, a6, a7, a8, a9], []], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a4, a9], [o1, o2]]]

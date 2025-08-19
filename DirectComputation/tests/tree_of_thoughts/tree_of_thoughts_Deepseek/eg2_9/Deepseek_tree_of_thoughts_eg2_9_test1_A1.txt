@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg2_9_test1_A1
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by using the **NextClosure algorithm**. This method systematically generates all formal concepts in lexicographic order by computing the closures of attribute sets. It starts with the smallest concept (the bottom element, usually the intent of all attributes) and iteratively applies the closure operator to find the next concept. The algorithm is efficient for small contexts due to its straightforward implementation, though it may become slow for larger datasets. Its advantage lies in its completeness, ensuring all concepts are found without redundancy.
+
+Another approach is the **Ganter-Reuter algorithm**, which is a variation of NextClosure optimized for better performance. It reduces redundancy by leveraging the canonicity test to avoid recomputing closures for already-processed sets. This method is particularly useful for small contexts where manual verification is feasible, as it ensures each concept is generated exactly once. The algorithm proceeds by exploring attribute implications and their closures, making it a reliable choice for contexts with fewer than 20 objects and attributes. Its step-by-step nature allows for easy debugging and verification of results.
+
+A third method is the **Bordat algorithm**, which constructs the concept lattice by building a precedence graph of concepts. It starts with the top concept (the set of all objects) and recursively computes lower concepts by intersecting object intents. For small contexts, this method is intuitive because it visually maps the lattice structure, making it easier to verify correctness. The Bordat algorithm is efficient for small scales, as its recursive approach avoids unnecessary computations. However, it may require more memory than closure-based methods for slightly larger contexts, but it remains practical for fewer than 20 objects and attributes.

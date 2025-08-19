@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg2_9_test2_A3
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by using the **NextClosure algorithm**. This method systematically generates all formal concepts in lexical order by computing the closures of attribute sets. Starting with the smallest concept (the bottom element, usually the empty set), it iteratively applies a closure operator to find the next concept in the order. The algorithm is efficient for small contexts due to its straightforward implementation and guaranteed completeness, though it may become computationally intensive for larger datasets. Its simplicity makes it a good choice for contexts of this scale.
+
+Another approach is the **Ganter-Reuter algorithm**, which is a variation of NextClosure optimized for practical use. It leverages the same lexical order but improves efficiency by avoiding redundant calculations. By carefully tracking previously computed closures, it reduces the number of operations needed to generate all concepts. This method is particularly suitable for small contexts where manual verification is feasible, as it ensures all concepts are found without duplication. Its step-by-step nature allows for easy debugging and verification, making it a reliable choice for educational or small-scale applications.
+
+A third method is using **object-attribute incidence tables** to manually or semi-automatically derive concepts through **attribute exploration**. For small contexts, one can list all object subsets and compute their corresponding attribute extents (or vice versa) to identify formal concepts. This can be done using basic matrix operations or even by hand, as the limited size makes exhaustive enumeration manageable. Tools like ConExp or FCAStone can assist in visualizing the process, but the manual approach helps build intuition about concept formation. While less systematic than algorithmic methods, this hands-on technique is valuable for understanding the lattice structure in small, well-defined contexts.

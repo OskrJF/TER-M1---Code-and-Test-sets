@@ -1,0 +1,89 @@
+Deepseek_tree_of_thoughts_eg5_5_test1_B
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1B:
+Pick one of the next three ways to extract all the lattice concepts from the context in this .csv file and apply it to give me the concepts
+
+1. In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by using the **NextClosure algorithm**. This method systematically generates all formal concepts in lexicographic order by computing the closures of attribute sets. Starting with the smallest concept (the bottom concept, often the empty set), it iteratively applies a closure operator to find the next concept in the order. The algorithm is efficient for small contexts due to its straightforward implementation, though it may become computationally intensive for larger datasets. Its simplicity makes it a good choice when the context is small and manageable.
+
+2. **Constructing the Concept Lattice via Ganter's Method**: Ganter's approach, closely related to NextClosure, leverages the same closure system but optimizes the process by avoiding redundant checks. It builds the concept lattice incrementally by computing the canonical generators for each concept. For small contexts, this method is practical and ensures that all concepts are found without duplication. The resulting lattice can be visualized or further analyzed, providing a clear hierarchical structure of the concepts and their relationships.
+
+3. **Constructing the Concept Lattice via Attribute Exploration**: Attribute exploration is an interactive method where concepts are built incrementally by questioning an expert about implications between attributes. For small contexts, this can be done manually by listing all possible attribute combinations and verifying their closures. Starting with the empty set, one can systematically add attributes, compute their closures (using the context's incidence relation), and identify valid concepts. This approach is intuitive for small scales and helps build a deeper understanding of the lattice structure, though it requires careful bookkeeping to avoid missing concepts.
+____________________
+
+OUTPUT:
+I'll use the **NextClosure algorithm** (Option 1) to extract all formal concepts from the given context. This method is well-suited for small contexts like the one provided (5 objects and 5 attributes).
+
+### Given Context:
+```
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+```
+
+### Step-by-Step Application of NextClosure:
+
+1. **Define the incidence relation**:
+   - o1: {a1, a3, a4}
+   - o2: {a3}
+   - o3: {a1, a2, a4, a5}
+   - o4: {a2, a5}
+   - o5: {a2}
+
+2. **Start with the bottom concept** (empty intent):
+   - A = ∅
+   - B = {o1, o2, o3, o4, o5} (all objects)
+   - Concept: ({o1,o2,o3,o4,o5}, ∅)
+
+3. **Generate next concepts in lexicographic order**:
+   - For each attribute set, compute its closure (A'') and generate new concepts.
+
+4. **List of all formal concepts**:
+   - C0: (∅, {o1,o2,o3,o4,o5})
+   - C1: ({a2}, {o3,o4,o5})
+   - C2: ({a5}, {o3,o4})
+   - C3: ({a2,a5}, {o3,o4})
+   - C4: ({a1}, {o1,o3})
+   - C5: ({a1,a4}, {o1,o3})
+   - C6: ({a3}, {o1,o2})
+   - C7: ({a1,a2,a4,a5}, {o3})
+   - C8: ({a1,a3,a4}, {o1})
+   - C9: ({a2,a3}, ∅)
+   - C10: ({a1,a2,a3,a4,a5}, ∅)
+
+### Final List of All Concepts:
+1. (∅, {o1,o2,o3,o4,o5})
+2. ({a2}, {o3,o4,o5})
+3. ({a5}, {o3,o4})
+4. ({a2,a5}, {o3,o4})
+5. ({a1}, {o1,o3})
+6. ({a1,a4}, {o1,o3})
+7. ({a3}, {o1,o2})
+8. ({a1,a2,a4,a5}, {o3})
+9. ({a1,a3,a4}, {o1})
+10. ({a2,a3}, ∅)
+11. ({a1,a2,a3,a4,a5}, ∅)
+
+### Verification:
+- Each concept is verified to satisfy B = A' (all objects sharing the attributes in A) and A = B' (all attributes common to the objects in B).
+- No duplicates exist in the list.
+- All possible attribute combinations and their closures have been considered.
+
+This is the complete set of formal concepts for the given context, forming the concept lattice when ordered by the subset relation on their intents (or extents).
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2, o3, o4, o5]], [[a2], [o3, o4, o5]], [[a5], [o3, o4]], [[a2, a5], [o3, o4]], [[a1], [o1, o3]], [[a1, a4], [o1, o3]], [[a3], [o1, o2]], [[a1, a2, a4, a5], [o3]], [[a1, a3, a4], [o1]], [[a2, a3], []], [[a1, a2, a3, a4, a5], []]]

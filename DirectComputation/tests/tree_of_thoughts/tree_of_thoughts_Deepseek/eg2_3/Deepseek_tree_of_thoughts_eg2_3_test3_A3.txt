@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg2_3_test3_A3
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by using the **NextClosure algorithm**. This algorithm systematically generates all formal concepts in lexicographic order by computing the closures of attribute sets. It starts with the smallest concept (the bottom concept, usually the empty set) and iteratively applies a closure operator to find the next concept in the order. Due to the small size of the context, the algorithm's performance remains efficient, and it guarantees completeness, ensuring all concepts are found without redundancy. The method is particularly useful for theoretical understanding, though it may not be the fastest for larger contexts.
+
+Another approach is the **Galois Connection-based method**, which leverages the duality between objects and attributes. By iteratively applying the derivation operators (intent and extent), one can build the concept lattice step-by-step. Starting with any set of objects or attributes, the algorithm computes their closures and checks for concepthood. For small contexts, this can be done manually or with simple scripts, as the limited number of objects and attributes makes the computations manageable. This method is intuitive and aligns well with the foundational principles of FCA, making it a good choice for educational purposes or small-scale analyses.
+
+A third method is the **Bordat algorithm**, which constructs the concept lattice by traversing the subset hierarchy of attribute extents. It begins with the top concept (all objects) and recursively decomposes it into smaller concepts by removing attributes and computing their corresponding object sets. For contexts with fewer than 20 objects and attributes, this approach is efficient and visually intuitive, as it mirrors the hierarchical structure of the lattice. The algorithm also allows for parallelization in certain steps, though this is less critical for small contexts. Its stepwise decomposition makes it easy to implement and verify correctness for smaller datasets.

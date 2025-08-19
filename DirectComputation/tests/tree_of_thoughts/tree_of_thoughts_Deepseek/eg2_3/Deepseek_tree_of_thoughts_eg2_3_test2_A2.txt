@@ -1,0 +1,19 @@
+Deepseek_tree_of_thoughts_eg2_3_test2_A2
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by using the **NextClosure algorithm**. This method systematically generates all formal concepts in lexicographical order by computing the closures of attribute sets. Starting with the smallest attribute subset, it iteratively applies a closure operator to find the next concept, ensuring completeness. While not the fastest for very large contexts, its simplicity and deterministic nature make it suitable for small-scale problems. The algorithm efficiently explores the concept space without redundancy, making it a reliable choice for contexts of this size.
+
+Another approach is the **Ganter-Reuter algorithm**, which is a variation of NextClosure optimized for practical efficiency. It leverages the same closure principles but may incorporate heuristic improvements to reduce computational overhead. For small contexts, this method can be implemented straightforwardly, as the limited number of objects and attributes ensures that closure computations remain manageable. The algorithm’s step-by-step progression through the concept lattice ensures that no concepts are missed, and its structure allows for easy verification of results, making it a robust choice for manual or small-scale automated analysis.
+
+A third method is the **Bordat algorithm**, which constructs the concept lattice by building a hierarchy of concepts directly from the context. It starts with the top concept (all objects) and recursively computes lower-level concepts by intersecting object intents. For small contexts, this approach is intuitive and visually interpretable, as it mirrors the natural hierarchical structure of the lattice. The algorithm’s incremental nature allows for early pruning of non-concepts, improving efficiency. Since the context is small, the computational cost of generating and organizing concepts remains low, making Bordat’s method both practical and pedagogically useful for understanding lattice formation.

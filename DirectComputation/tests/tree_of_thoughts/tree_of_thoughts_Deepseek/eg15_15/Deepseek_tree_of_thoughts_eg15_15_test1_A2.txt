@@ -1,0 +1,20 @@
+Deepseek_tree_of_thoughts_eg15_15_test1_A1
+
+Date: 26 may 2025
+Model: DeepSeek-V3
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+1. **Using the NextClosure Algorithm**: The NextClosure algorithm is a systematic method for generating all formal concepts in a formal context. It works by computing the closures of attribute sets in a lecticographic order, ensuring that each concept is generated exactly once. Starting with the smallest concept (the closure of the empty set), the algorithm iteratively finds the next concept by modifying the current attribute set and computing its closure. This method is efficient for small contexts (less than 20 objects/attributes) because it avoids redundancy and ensures completeness. Its simplicity and deterministic nature make it a reliable choice for enumerating all concepts and constructing the concept lattice.
+
+2. **Constructing the Concept Lattice via Galois Connections**: This approach leverages the Galois connection between objects and attributes to derive concepts. For each subset of objects, compute its intent (common attributes), and for each subset of attributes, compute its extent (common objects). By iterating through all possible combinations, one can identify pairs (A, B) where A is the extent of B and B is the intent of A, which are the formal concepts. Although this method involves checking all subsets, it is feasible for small contexts due to the limited number of combinations (less than 2^20 for each). The resulting concepts can then be ordered by subset inclusion to form the lattice.
+
+3. **Employing the Bordat Algorithm**: The Bordat algorithm constructs the concept lattice by building the Hasse diagram directly. It starts with the top concept (all objects) and recursively generates lower concepts by removing one object at a time and computing the corresponding attribute set. For each new concept, it checks for overlaps with existing concepts to establish the lattice edges. This method is particularly intuitive for small contexts because it visually builds the lattice structure step-by-step, making it easier to verify correctness. Its incremental nature ensures that all concepts and their relationships are captured efficiently, even for contexts with up to 20 objects or attributes.
+

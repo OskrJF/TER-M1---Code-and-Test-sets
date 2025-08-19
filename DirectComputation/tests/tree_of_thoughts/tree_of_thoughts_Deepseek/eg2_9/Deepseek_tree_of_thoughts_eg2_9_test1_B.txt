@@ -1,0 +1,112 @@
+Deepseek_tree_of_thoughts_eg2_9_test1_B
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1B:
+Pick one of the next three ways to extract all the lattice concepts from the context in this .csv file and apply it to give me the concepts
+
+1. In Formal Concept Analysis (FCA), one way to find lattice concepts in a small context (with fewer than 20 objects and attributes) is by using the **NextClosure algorithm**. This method systematically generates all formal concepts in lexicographic order by computing the closures of attribute sets. It starts with the smallest concept (the bottom element, usually the intent of all attributes) and iteratively applies the closure operator to find the next concept. The algorithm is efficient for small contexts due to its straightforward implementation, though it may become slow for larger datasets. Its advantage lies in its completeness, ensuring all concepts are found without redundancy.
+
+2. **Constructing the Concept Lattice via Attribute Exploration**: Attribute exploration is an interactive method that builds the concept lattice step-by-step by querying an expert to confirm or reject implications between attributes. For small contexts, this process can be done manually by listing all possible attribute combinations and verifying their closures. The resulting concepts are then organized into a lattice structure. While this approach is more labor-intensive, it is intuitive and educational, as it explicitly reveals the dependencies between attributes.
+
+3. **Employing the Ganter-Reuter Algorithm (AddIntent)**: The AddIntent algorithm is a depth-first approach that builds concepts by incrementally adding attributes and computing their closures. It starts with an empty intent and recursively expands it by adding one attribute at a time, checking if the new set is closed. If so, it forms a new concept. This method is efficient for small contexts because it explores the concept space in a structured manner, pruning paths where no new concepts can be found. Its recursive nature makes it suitable for implementation in programming languages, and it often outperforms brute-force methods for contexts with fewer than 20 objects and attributes.
+____________________
+
+OUTPUT:
+I'll use the **NextClosure algorithm** (Option 1) to extract all formal concepts from the given context. This method is systematic and ensures we find all concepts without redundancy.
+
+### Given Context:
+- Objects: o1, o2
+- Attributes: a1, a2, a3, a4, a5, a6, a7, a8, a9
+
+### Step-by-Step Process:
+1. **List all attributes**: {a1, a2, a3, a4, a5, a6, a7, a8, a9}
+2. **Generate all possible subsets of attributes** (since the context is small, we can enumerate them).
+3. **For each subset, compute its extent** (the set of objects that have all attributes in the subset).
+4. **For each extent, compute its intent** (the set of attributes shared by all objects in the extent).
+5. **A formal concept** is a pair (extent, intent) where the intent is the closure of the subset.
+
+### Formal Concepts:
+1. **Bottom Concept (Empty Intent)**:
+   - Intent: {} (no attributes)
+   - Extent: {o1, o2} (all objects)
+   - This is the top of the lattice in terms of the object order.
+
+2. **Intent: {a1}**:
+   - Extent: {o1, o2} (both objects have a1)
+   - Closure: {a1, a4, a9} (attributes shared by o1 and o2)
+   - New concept: ({o1, o2}, {a1, a4, a9})
+
+3. **Intent: {a2}**:
+   - Extent: {o1} (only o1 has a2)
+   - Closure: {a1, a2, a3, a4, a7, a9} (attributes of o1)
+   - New concept: ({o1}, {a1, a2, a3, a4, a7, a9})
+
+4. **Intent: {a3}**:
+   - Extent: {o1} (only o1 has a3)
+   - Same as above: ({o1}, {a1, a2, a3, a4, a7, a9})
+
+5. **Intent: {a4}**:
+   - Extent: {o1, o2} (both have a4)
+   - Same as {a1}: ({o1, o2}, {a1, a4, a9})
+
+6. **Intent: {a5}**:
+   - Extent: {} (no object has a5)
+   - Closure: all attributes (empty extent implies all attributes)
+   - This is the bottom of the lattice (not a meaningful concept here).
+
+7. **Intent: {a6}**:
+   - Extent: {o2} (only o2 has a6)
+   - Closure: {a1, a4, a6, a9} (attributes of o2)
+   - New concept: ({o2}, {a1, a4, a6, a9})
+
+8. **Intent: {a7}**:
+   - Extent: {o1} (only o1 has a7)
+   - Same as {a2}: ({o1}, {a1, a2, a3, a4, a7, a9})
+
+9. **Intent: {a8}**:
+   - Extent: {} (no object has a8)
+   - Same as {a5}: bottom concept.
+
+10. **Intent: {a9}**:
+    - Extent: {o1, o2} (both have a9)
+    - Same as {a1}: ({o1, o2}, {a1, a4, a9})
+
+11. **Intent: {a1, a4, a9}**:
+    - Extent: {o1, o2} (both have a1, a4, a9)
+    - Already found.
+
+12. **Intent: {a1, a2, a3, a4, a7, a9}**:
+    - Extent: {o1}
+    - Already found.
+
+13. **Intent: {a1, a4, a6, a9}**:
+    - Extent: {o2}
+    - Already found.
+
+### Final Formal Concepts:
+1. **({o1, o2}, {a1, a4, a9})**
+2. **({o1}, {a1, a2, a3, a4, a7, a9})**
+3. **({o2}, {a1, a4, a6, a9})**
+4. **({}, {a1, a2, a3, a4, a5, a6, a7, a8, a9})** (bottom concept, often omitted as trivial)
+
+### Concept Lattice:
+- Top: ({o1, o2}, {a1, a4, a9})
+  - Child: ({o1}, {a1, a2, a3, a4, a7, a9})
+  - Child: ({o2}, {a1, a4, a6, a9})
+    - Bottom: ({}, {all attributes}) (if included)
+
+This covers all non-redundant formal concepts for the given context. The lattice is small due to the limited number of objects and attributes.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]]

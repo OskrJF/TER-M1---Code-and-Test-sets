@@ -1,0 +1,142 @@
+Deepseek_tree_of_thoughts_eg8_8_test1_B
+
+Date: 26 may 2025
+Model: DeepSeek-V3
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1B:
+Pick one of the next three ways to extract all the lattice concepts from the context in this .csv file and apply it to give me the concepts
+
+1. **Constructing the Concept Lattice via Galois Connections**: Another approach involves explicitly computing the Galois connections between objects and attributes to derive formal concepts. For each subset of objects, compute its intent (common attributes), and for each subset of attributes, compute its extent (common objects). By iterating through all possible subsets and checking for closure (where applying the Galois connection twice returns the original set), one can enumerate all concepts. While this method is computationally intensive for larger contexts, it is feasible for small contexts (under 20 objects/attributes) and provides a clear understanding of the relationship between extents and intents.
+
+2. **Using the NextClosure Algorithm**: The NextClosure algorithm is a systematic method for computing all formal concepts in a formal context. It generates concepts in a specific order, called the lectic order, by iteratively computing the smallest concept that is larger than the current one with respect to this order. For each set of objects, it calculates the intent (shared attributes) and then verifies whether this pair forms a concept. This method is efficient for small contexts (less than 20 objects/attributes) because it avoids redundant checks and ensures all concepts are found without duplication. Its simplicity and deterministic nature make it a reliable choice for small-scale problems.  
+
+3. A third method is to use **brute-force enumeration with pruning**, which involves generating all possible subsets of objects or attributes and checking their closures to determine if they form formal concepts. For small contexts, this is feasible because the power set remains computationally tractable. By pruning non-closed sets early (e.g., by checking if an intent is already closed), the process can be optimized. This approach is easy to implement and guarantees completeness, though it lacks the sophistication of more advanced algorithms and becomes impractical for larger contexts.
+____________________
+
+OUTPUT:
+I will use the **first method (Constructing the Concept Lattice via Galois Connections)** to extract all the lattice concepts from the given context. This method is straightforward and ensures a clear understanding of the relationship between objects and attributes for small contexts like the one provided.
+
+### Step-by-Step Process:
+
+1. **Define the Formal Context**:
+   - **Objects**: O1, O2, O3, O4, O5, O6, O7, O8
+   - **Attributes**: a1, a2, a3, a4, a5, a6, a7, a8
+
+2. **Galois Connections**:
+   - For a set of objects \( A \), the intent \( A' \) is the set of attributes shared by all objects in \( A \).
+   - For a set of attributes \( B \), the extent \( B' \) is the set of objects that have all attributes in \( B \).
+   - A formal concept is a pair \((A, B)\) where \( A' = B \) and \( B' = A \).
+
+3. **Compute All Formal Concepts**:
+   - Start by computing the closure for all possible subsets of objects or attributes. For small contexts, it is feasible to compute the closure for all subsets of objects.
+
+4. **Enumerate Concepts**:
+   - Iterate through all non-empty subsets of objects, compute their intents, and then compute the extents of those intents to check for closure.
+
+### Results:
+
+After performing the computations, the following formal concepts are derived:
+
+1. **Concept 1**: \((\{\}, \{a1, a2, a3, a4, a5, a6, a7, a8\})\)  
+   - **Extent**: Empty set (no objects)  
+   - **Intent**: All attributes (since no objects restrict the attributes)
+
+2. **Concept 2**: \((\{O1\}, \{a1, a2, a3\})\)  
+   - **Extent**: O1  
+   - **Intent**: a1, a2, a3
+
+3. **Concept 3**: \((\{O2\}, \{a1, a2, a3, a6, a8\})\)  
+   - **Extent**: O2  
+   - **Intent**: a1, a2, a3, a6, a8
+
+4. **Concept 4**: \((\{O3\}, \{a1, a2, a4, a6\})\)  
+   - **Extent**: O3  
+   - **Intent**: a1, a2, a4, a6
+
+5. **Concept 5**: \((\{O4\}, \{a2, a3, a4, a5, a8\})\)  
+   - **Extent**: O4  
+   - **Intent**: a2, a3, a4, a5, a8
+
+6. **Concept 6**: \((\{O5\}, \{a2, a4, a6, a7, a8\})\)  
+   - **Extent**: O5  
+   - **Intent**: a2, a4, a6, a7, a8
+
+7. **Concept 7**: \((\{O6\}, \{a1, a2, a3, a5, a7\})\)  
+   - **Extent**: O6  
+   - **Intent**: a1, a2, a3, a5, a7
+
+8. **Concept 8**: \((\{O7, O8\}, \{a2, a3, a4, a5, a7\})\)  
+   - **Extent**: O7, O8  
+   - **Intent**: a2, a3, a4, a5, a7
+
+9. **Concept 9**: \((\{O1, O2, O6\}, \{a1, a2, a3\})\)  
+   - **Extent**: O1, O2, O6  
+   - **Intent**: a1, a2, a3
+
+10. **Concept 10**: \((\{O2, O3, O5\}, \{a2, a6\})\)  
+    - **Extent**: O2, O3, O5  
+    - **Intent**: a2, a6
+
+11. **Concept 11**: \((\{O3, O5\}, \{a2, a4, a6\})\)  
+    - **Extent**: O3, O5  
+    - **Intent**: a2, a4, a6
+
+12. **Concept 12**: \((\{O4, O7, O8\}, \{a2, a3, a4, a5\})\)  
+    - **Extent**: O4, O7, O8  
+    - **Intent**: a2, a3, a4, a5
+
+13. **Concept 13**: \((\{O5, O7, O8\}, \{a2, a4, a7\})\)  
+    - **Extent**: O5, O7, O8  
+    - **Intent**: a2, a4, a7
+
+14. **Concept 14**: \((\{O1, O2, O3, O6\}, \{a1, a2\})\)  
+    - **Extent**: O1, O2, O3, O6  
+    - **Intent**: a1, a2
+
+15. **Concept 15**: \((\{O2, O3, O5, O6\}, \{a2\})\)  
+    - **Extent**: O2, O3, O5, O6  
+    - **Intent**: a2
+
+16. **Concept 16**: \((\{O4, O5, O7, O8\}, \{a2, a4\})\)  
+    - **Extent**: O4, O5, O7, O8  
+    - **Intent**: a2, a4
+
+17. **Concept 17**: \((\{O1, O2, O3, O4, O5, O6, O7, O8\}, \{a2\})\)  
+    - **Extent**: All objects  
+    - **Intent**: a2 (the only attribute shared by all objects)
+
+### Final Answer:
+
+The formal concepts extracted from the given context are as follows:
+
+1. \((\{\}, \{a1, a2, a3, a4, a5, a6, a7, a8\})\)  
+2. \((\{O1\}, \{a1, a2, a3\})\)  
+3. \((\{O2\}, \{a1, a2, a3, a6, a8\})\)  
+4. \((\{O3\}, \{a1, a2, a4, a6\})\)  
+5. \((\{O4\}, \{a2, a3, a4, a5, a8\})\)  
+6. \((\{O5\}, \{a2, a4, a6, a7, a8\})\)  
+7. \((\{O6\}, \{a1, a2, a3, a5, a7\})\)  
+8. \((\{O7, O8\}, \{a2, a3, a4, a5, a7\})\)  
+9. \((\{O1, O2, O6\}, \{a1, a2, a3\})\)  
+10. \((\{O2, O3, O5\}, \{a2, a6\})\)  
+11. \((\{O3, O5\}, \{a2, a4, a6\})\)  
+12. \((\{O4, O7, O8\}, \{a2, a3, a4, a5\})\)  
+13. \((\{O5, O7, O8\}, \{a2, a4, a7\})\)  
+14. \((\{O1, O2, O3, O6\}, \{a1, a2\})\)  
+15. \((\{O2, O3, O5, O6\}, \{a2\})\)  
+16. \((\{O4, O5, O7, O8\}, \{a2, a4\})\)  
+17. \((\{O1, O2, O3, O4, O5, O6, O7, O8\}, \{a2\})\)  
+
+These concepts represent all possible combinations of objects and their shared attributes in the given formal context. The lattice can be visualized by ordering these concepts based on subset relationships between their extents or intents.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3, a4, a5, a6, a7, a8], []], [[a1, a2, a3], [O1]], [[a1, a2, a3, a6, a8], [O2]], [[a1, a2, a4, a6], [O3]], [[a2, a3, a4, a5, a8], [O4]], [[a2, a4, a6, a7, a8], [O5]], [[a1, a2, a3, a5, a7], [O6]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a1, a2, a3], [O1, O2, O6]], [[a2, a6], [O2, O3, O5]], [[a2, a4, a6], [O3, O5]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a4, a7], [O5, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a2], [O2, O3, O5, O6]], [[a2, a4], [O4, O5, O7, O8]], [[a2], [O1, O2, O3, O4, O5, O6, O7, O8]]]
