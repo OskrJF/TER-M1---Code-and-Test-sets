@@ -1,0 +1,495 @@
+Gemini_few-shot_eg15_15_test2
+
+Date: 27 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+Okay, I can help you extract and enumerate all formal concepts from the provided CSV file.
+
+Formal Concept Analysis (FCA) identifies conceptual structures in data. A **formal concept** is a pair `(Extent, Intent)`, where:
+* The **Extent** is a set of objects.
+* The **Intent** is a set of attributes shared by all objects in the Extent.
+* The Extent consists of all objects that share all attributes in the Intent.
+* The Intent consists of all attributes shared by all objects in the Extent.
+
+I will use an algorithm that iterates through all possible subsets of attributes. For each subset `B_candidate` (a potential intent):
+1.  I'll find all objects `A_derived` that possess every attribute in `B_candidate`. This is `A_derived = (B_candidate)'`.
+2.  Then, I'll find all attributes `B_closed` that are common to all objects in `A_derived`. This is `B_closed = (A_derived)' = ((B_candidate)')'`.
+3.  The pair `(A_derived, B_closed)` forms a formal concept. The intent part of the concept is `B_closed` and the extent part is `A_derived`.
+
+All unique concepts found this way will be collected. The attributes within each intent and objects within each extent will be sorted alphabetically for canonical representation. The final list of concepts will also be sorted, primarily by the size of the intent, then by the intent's content, then by the extent's size, and finally by the extent's content.
+
+Here's the Python code to perform this analysis:
+
+## Formal Concepts Extracted
+
+Based on the provided CSV data, I have extracted all formal concepts. A formal concept is a pair consisting of a set of objects (Extent) and a set of attributes (Intent) such that all objects in the Extent share all attributes in the Intent, and no other object outside the Extent shares all those attributes, and no other attribute is shared by all objects in the Extent.
+
+The concepts are presented as a list, where each element is a two-element list: `[[attributes_in_intent], [objects_in_extent]]`. Both attribute and object lists within each concept are sorted alphabetically. The entire list of concepts is also sorted to ensure a canonical order (primarily by the size and content of the intent, then by the size and content of the extent).
+
+Number of concepts found: 78
+```
+[
+  [[], ['O1', 'O10', 'O11', 'O12', 'O13', 'O14', 'O15', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7', 'O8', 'O9']],
+  [['Attr1'], ['O3', 'O6', 'O7', 'O8']],
+  [['Attr2'], ['O10', 'O11', 'O13', 'O14', 'O2', 'O4', 'O5', 'O7', 'O9']],
+  [['Attr3'], ['O13', 'O5', 'O7']],
+  [['Attr4'], ['O1', 'O10', 'O11', 'O15', 'O2', 'O5', 'O7']],
+  [['Attr5'], ['O1', 'O10', 'O12', 'O4', 'O5', 'O6', 'O8', 'O9']],
+  [['Attr6'], ['O1', 'O10', 'O11', 'O12', 'O13', 'O14', 'O4', 'O5', 'O7', 'O8', 'O9']],
+  [['Attr7'], ['O11', 'O6', 'O7', 'O8', 'O9']],
+  [['Attr8'], ['O10', 'O13', 'O3', 'O5', 'O6', 'O7']],
+  [['Attr9'], ['O1', 'O12', 'O13', 'O15', 'O3', 'O7', 'O9']],
+  [['Attr10'], ['O11', 'O12', 'O13', 'O2', 'O6', 'O7', 'O9']],
+  [['Attr11'], ['O10', 'O11', 'O15', 'O2', 'O3', 'O5', 'O7', 'O8']],
+  [['Attr12'], ['O11', 'O12', 'O14', 'O2', 'O4', 'O6', 'O9']],
+  [['Attr13'], ['O1', 'O10', 'O14', 'O15', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7']],
+  [['Attr14'], ['O12', 'O13', 'O14', 'O15', 'O4', 'O5', 'O9']],
+  [['Attr15'], ['O1', 'O13', 'O14', 'O2', 'O3', 'O6', 'O9']],
+  [['Attr1', 'Attr3'], ['O3', 'O7']],
+  [['Attr1', 'Attr5'], ['O6', 'O8']],
+  [['Attr1', 'Attr6'], ['O7', 'O8']],
+  [['Attr1', 'Attr7'], ['O6', 'O7', 'O8']],
+  [['Attr1', 'Attr8'], ['O3', 'O6', 'O7']],
+  [['Attr1', 'Attr9'], ['O3', 'O7']],
+  [['Attr1', 'Attr13'], ['O3', 'O6', 'O7']],
+  [['Attr1', 'Attr15'], ['O3', 'O6']],
+  [['Attr2', 'Attr3'], ['O13', 'O5', 'O7']],
+  [['Attr2', 'Attr4'], ['O10', 'O11', 'O2', 'O5', 'O7']],
+  [['Attr2', 'Attr5'], ['O10', 'O4', 'O5', 'O9']],
+  [['Attr2', 'Attr6'], ['O10', 'O11', 'O13', 'O14', 'O4', 'O5', 'O7', 'O9']],
+  [['Attr2', 'Attr10'], ['O11', 'O13', 'O2', 'O7', 'O9']],
+  [['Attr2', 'Attr11'], ['O10', 'O11', 'O5', 'O7']],
+  [['Attr2', 'Attr12'], ['O11', 'O14', 'O2', 'O4', 'O9']],
+  [['Attr2', 'Attr13'], ['O10', 'O14', 'O2', 'O4', 'O5', 'O7']],
+  [['Attr2', 'Attr14'], ['O13', 'O14', 'O4', 'O5', 'O9']],
+  [['Attr2', 'Attr15'], ['O13', 'O14', 'O2', 'O9']],
+  [['Attr3', 'Attr4'], ['O5', 'O7']],
+  [['Attr3', 'Attr8'], ['O5', 'O7']],
+  [['Attr3', 'Attr11'], ['O5', 'O7']],
+  [['Attr3', 'Attr13'], ['O5', 'O7']],
+  [['Attr4', 'Attr5'], ['O1', 'O10', 'O5']],
+  [['Attr4', 'Attr6'], ['O1', 'O10', 'O11', 'O5', 'O7']],
+  [['Attr4', 'Attr9'], ['O1', 'O15', 'O7']],
+  [['Attr4', 'Attr11'], ['O10', 'O11', 'O15', 'O2', 'O5', 'O7']],
+  [['Attr4', 'Attr13'], ['O1', 'O10', 'O15', 'O2', 'O5', 'O7']],
+  [['Attr4', 'Attr15'], ['O1', 'O2', 'O15']],
+  [['Attr5', 'Attr6'], ['O1', 'O10', 'O12', 'O4', 'O5', 'O8', 'O9']],
+  [['Attr5', 'Attr7'], ['O8', 'O9']],
+  [['Attr5', 'Attr9'], ['O1', 'O12', 'O9']],
+  [['Attr5', 'Attr10'], ['O12', 'O9']],
+  [['Attr5', 'Attr12'], ['O12', 'O4', 'O9']],
+  [['Attr5', 'Attr13'], ['O1', 'O10', 'O4', 'O5']],
+  [['Attr5', 'Attr14'], ['O12', 'O4', 'O5', 'O9']],
+  [['Attr6', 'Attr7'], ['O11', 'O8', 'O9']],
+  [['Attr6', 'Attr9'], ['O1', 'O12', 'O9']],
+  [['Attr6', 'Attr10'], ['O11', 'O12', 'O9']],
+  [['Attr6', 'Attr12'], ['O12', 'O4', 'O9']],
+  [['Attr6', 'Attr13'], ['O1', 'O10', 'O14', 'O4', 'O5']],
+  [['Attr6', 'Attr14'], ['O12', 'O4', 'O5', 'O9']],
+  [['Attr7', 'Attr10'], ['O11', 'O6', 'O7', 'O9']],
+  [['Attr7', 'Attr11'], ['O11', 'O7', 'O8']],
+  [['Attr7', 'Attr13'], ['O6', 'O7']],
+  [['Attr8', 'Attr9'], ['O3', 'O7']],
+  [['Attr8', 'Attr13'], ['O10', 'O3', 'O5', 'O6', 'O7']],
+  [['Attr9', 'Attr15'], ['O1', 'O3', 'O13']],
+  [['Attr10', 'Attr12'], ['O11', 'O2', 'O6', 'O9']],
+  [['Attr10', 'Attr15'], ['O13', 'O2', 'O6', 'O9']],
+  [['Attr11', 'Attr13'], ['O10', 'O15', 'O2', 'O3', 'O5', 'O7']],
+  [['Attr12', 'Attr15'], ['O2', 'O11']],
+  [['Attr13', 'Attr15'], ['O1', 'O2', 'O3', 'O15']],
+  [['Attr1', 'Attr7', 'Attr8'], ['O6', 'O7']],
+  [['Attr1', 'Attr7', 'Attr13'], ['O6', 'O7']],
+  [['Attr2', 'Attr3', 'Attr13'], ['O5', 'O7']],
+  [['Attr2', 'Attr6', 'Attr14'], ['O4', 'O5', 'O9']],
+  [['Attr4', 'Attr6', 'Attr13'], ['O1', 'O10', 'O5']],
+  [['Attr5', 'Attr6', 'Attr9'], ['O1', 'O12', 'O9']],
+  [['Attr5', 'Attr6', 'Attr12'], ['O12', 'O4', 'O9']],
+  [['Attr5', 'Attr6', 'Attr14'], ['O12', 'O4', 'O5', 'O9']],
+  [['Attr4', 'Attr11', 'Attr13'], ['O10', 'O15', 'O2', 'O5', 'O7']],
+  [['Attr13', 'Attr14', 'Attr15'], ['O15']],
+  [['Attr1', 'Attr3', 'Attr7', 'Attr8', 'Attr9', 'Attr10', 'Attr11', 'Attr13'], ['O7']],
+  [['Attr1', 'Attr5', 'Attr6', 'Attr7', 'Attr11', 'Attr12', 'Attr13', 'Attr14', 'Attr15'], []],
+  [['Attr1', 'Attr2', 'Attr3', 'Attr4', 'Attr5', 'Attr6', 'Attr7', 'Attr8', 'Attr9', 'Attr10', 'Attr11', 'Attr12', 'Attr13', 'Attr14', 'Attr15'], []]
+]
+```
+json
+[
+  [[], ["O1", "O10", "O11", "O12", "O13", "O14", "O15", "O2", "O3", "O4", "O5", "O6", "O7", "O8", "O9"]],
+  [["Attr1"], ["O3", "O6", "O7", "O8"]],
+  [["Attr10"], ["O11", "O12", "O13", "O2", "O6", "O7", "O9"]],
+  [["Attr11"], ["O10", "O11", "O15", "O2", "O3", "O5", "O7", "O8"]],
+  [["Attr12"], ["O11", "O12", "O14", "O2", "O4", "O6", "O9"]],
+  [["Attr13"], ["O1", "O10", "O14", "O15", "O2", "O3", "O4", "O5", "O6", "O7"]],
+  [["Attr14"], ["O12", "O13", "O14", "O15", "O4", "O5", "O9"]],
+  [["Attr15"], ["O1", "O11", "O13", "O14", "O2", "O3", "O6"]],
+  [["Attr2"], ["O10", "O11", "O13", "O14", "O2", "O4", "O5", "O7", "O9"]],
+  [["Attr4"], ["O1", "O10", "O11", "O15", "O2", "O5", "O7"]],
+  [["Attr5"], ["O1", "O10", "O12", "O4", "O5", "O6", "O8", "O9"]],
+  [["Attr6"], ["O1", "O10", "O11", "O12", "O13", "O14", "O4", "O5", "O7", "O8", "O9"]],
+  [["Attr7"], ["O11", "O6", "O7", "O8", "O9"]],
+  [["Attr8"], ["O10", "O13", "O3", "O5", "O6", "O7"]],
+  [["Attr9"], ["O1", "O12", "O13", "O15", "O3", "O7", "O9"]],
+  [["Attr1", "Attr11"], ["O3", "O7", "O8"]],
+  [["Attr1", "Attr7"], ["O6", "O7", "O8"]],
+  [["Attr10", "Attr12"], ["O11", "O12", "O2", "O6", "O9"]],
+  [["Attr10", "Attr13"], ["O2", "O6", "O7"]],
+  [["Attr10", "Attr15"], ["O11", "O13", "O2", "O6"]],
+  [["Attr10", "Attr2"], ["O11", "O13", "O2", "O7", "O9"]],
+  [["Attr10", "Attr6"], ["O11", "O12", "O13", "O7", "O9"]],
+  [["Attr10", "Attr7"], ["O11", "O6", "O7", "O9"]],
+  [["Attr10", "Attr8"], ["O13", "O6", "O7"]],
+  [["Attr11", "Attr13"], ["O10", "O15", "O2", "O3", "O5", "O7"]],
+  [["Attr11", "Attr15"], ["O11", "O2", "O3"]],
+  [["Attr11", "Attr4"], ["O10", "O11", "O15", "O2", "O5", "O7"]],
+  [["Attr11", "Attr6"], ["O10", "O11", "O5", "O7", "O8"]],
+  [["Attr12", "Attr13"], ["O14", "O2", "O4", "O6"]],
+  [["Attr12", "Attr15"], ["O11", "O14", "O2", "O6"]],
+  [["Attr12", "Attr2"], ["O11", "O14", "O2", "O4", "O9"]],
+  [["Attr12", "Attr5"], ["O12", "O4", "O6", "O9"]],
+  [["Attr12", "Attr6"], ["O11", "O12", "O14", "O4", "O9"]],
+  [["Attr13", "Attr14"], ["O14", "O15", "O4", "O5"]],
+  [["Attr13", "Attr15"], ["O1", "O14", "O2", "O3", "O6"]],
+  [["Attr13", "Attr2"], ["O10", "O14", "O2", "O4", "O5", "O7"]],
+  [["Attr13", "Attr4"], ["O1", "O10", "O15", "O2", "O5", "O7"]],
+  [["Attr13", "Attr5"], ["O1", "O10", "O4", "O5", "O6"]],
+  [["Attr13", "Attr6"], ["O1", "O10", "O14", "O4", "O5", "O7"]],
+  [["Attr13", "Attr8"], ["O10", "O3", "O5", "O6", "O7"]],
+  [["Attr13", "Attr9"], ["O1", "O15", "O3", "O7"]],
+  [["Attr14", "Attr6"], ["O12", "O13", "O14", "O4", "O5", "O9"]],
+  [["Attr14", "Attr9"], ["O12", "O13", "O15", "O9"]],
+  [["Attr15", "Attr2"], ["O11", "O13", "O14", "O2"]],
+  [["Attr15", "Attr4"], ["O1", "O11", "O2"]],
+  [["Attr15", "Attr6"], ["O1", "O11", "O13", "O14"]],
+  [["Attr15", "Attr8"], ["O13", "O3", "O6"]],
+  [["Attr15", "Attr9"], ["O1", "O13", "O3"]],
+  [["Attr2", "Attr6"], ["O10", "O11", "O13", "O14", "O4", "O5", "O7", "O9"]],
+  [["Attr3", "Attr8"], ["O13", "O3", "O5", "O7"]],
+  [["Attr4", "Attr6"], ["O1", "O10", "O11", "O5", "O7"]],
+  [["Attr5", "Attr6"], ["O1", "O10", "O12", "O4", "O5", "O8", "O9"]],
+  [["Attr5", "Attr7"], ["O6", "O8", "O9"]],
+  [["Attr6", "Attr7"], ["O11", "O7", "O8", "O9"]],
+  [["Attr6", "Attr9"], ["O1", "O12", "O13", "O7", "O9"]],
+  [["Attr1", "Attr13", "Attr8"], ["O3", "O6", "O7"]],
+  [["Attr1", "Attr5", "Attr7"], ["O6", "O8"]],
+  [["Attr10", "Attr12", "Attr15"], ["O11", "O2", "O6"]],
+  [["Attr10", "Attr12", "Attr2"], ["O11", "O2", "O9"]],
+  [["Attr10", "Attr12", "Attr5"], ["O12", "O6", "O9"]],
+  [["Attr10", "Attr12", "Attr6"], ["O11", "O12", "O9"]],
+  [["Attr10", "Attr12", "Attr7"], ["O11", "O6", "O9"]],
+  [["Attr10", "Attr15", "Attr2"], ["O11", "O13", "O2"]],
+  [["Attr10", "Attr15", "Attr8"], ["O13", "O6"]],
+  [["Attr10", "Attr2", "Attr6"], ["O11", "O13", "O7", "O9"]],
+  [["Attr10", "Attr6", "Attr9"], ["O12", "O13", "O7", "O9"]],
+  [["Attr11", "Attr13", "Attr15"], ["O2", "O3"]],
+  [["Attr11", "Attr13", "Attr4"], ["O10", "O15", "O2", "O5", "O7"]],
+  [["Attr11", "Attr13", "Attr8"], ["O10", "O3", "O5", "O7"]],
+  [["Attr11", "Attr13", "Attr9"], ["O15", "O3", "O7"]],
+  [["Attr11", "Attr2", "Attr4"], ["O10", "O11", "O2", "O5", "O7"]],
+  [["Attr11", "Attr5", "Attr6"], ["O10", "O5", "O8"]],
+  [["Attr11", "Attr6", "Attr7"], ["O11", "O7", "O8"]],
+  [["Attr12", "Attr13", "Attr15"], ["O14", "O2", "O6"]],
+  [["Attr12", "Attr13", "Attr2"], ["O14", "O2", "O4"]],
+  [["Attr12", "Attr13", "Attr5"], ["O4", "O6"]],
+  [["Attr12", "Attr14", "Attr6"], ["O12", "O14", "O4", "O9"]],
+  [["Attr12", "Attr15", "Attr2"], ["O11", "O14", "O2"]],
+  [["Attr12", "Attr2", "Attr6"], ["O11", "O14", "O4", "O9"]],
+  [["Attr13", "Attr15", "Attr4"], ["O1", "O2"]],
+  [["Attr13", "Attr15", "Attr5"], ["O1", "O6"]],
+  [["Attr13", "Attr15", "Attr6"], ["O1", "O14"]],
+  [["Attr13", "Attr15", "Attr9"], ["O1", "O3"]],
+  [["Attr13", "Attr2", "Attr6"], ["O10", "O14", "O4", "O5", "O7"]],
+  [["Attr13", "Attr4", "Attr6"], ["O1", "O10", "O5", "O7"]],
+  [["Attr13", "Attr4", "Attr9"], ["O1", "O15", "O7"]],
+  [["Attr13", "Attr5", "Attr6"], ["O1", "O10", "O4", "O5"]],
+  [["Attr13", "Attr5", "Attr8"], ["O10", "O5", "O6"]],
+  [["Attr14", "Attr2", "Attr6"], ["O13", "O14", "O4", "O5", "O9"]],
+  [["Attr14", "Attr5", "Attr6"], ["O12", "O4", "O5", "O9"]],
+  [["Attr15", "Attr2", "Attr6"], ["O11", "O13", "O14"]],
+  [["Attr15", "Attr4", "Attr6"], ["O1", "O11"]],
+  [["Attr15", "Attr6", "Attr9"], ["O1", "O13"]],
+  [["Attr2", "Attr5", "Attr6"], ["O10", "O4", "O5", "O9"]],
+  [["Attr2", "Attr6", "Attr8"], ["O10", "O13", "O5", "O7"]],
+  [["Attr3", "Attr8", "Attr9"], ["O13", "O3", "O7"]],
+  [["Attr5", "Attr6", "Attr7"], ["O8", "O9"]],
+  [["Attr5", "Attr6", "Attr9"], ["O1", "O12", "O9"]],
+  [["Attr1", "Attr11", "Attr6", "Attr7"], ["O7", "O8"]],
+  [["Attr1", "Attr13", "Attr15", "Attr8"], ["O3", "O6"]],
+  [["Attr10", "Attr11", "Attr2", "Attr4"], ["O11", "O2", "O7"]],
+  [["Attr10", "Attr12", "Attr13", "Attr15"], ["O2", "O6"]],
+  [["Attr10", "Attr12", "Attr15", "Attr7"], ["O11", "O6"]],
+  [["Attr10", "Attr12", "Attr5", "Attr7"], ["O6", "O9"]],
+  [["Attr10", "Attr14", "Attr6", "Attr9"], ["O12", "O13", "O9"]],
+  [["Attr10", "Attr15", "Attr2", "Attr6"], ["O11", "O13"]],
+  [["Attr10", "Attr2", "Attr6", "Attr7"], ["O11", "O7", "O9"]],
+  [["Attr10", "Attr2", "Attr6", "Attr9"], ["O13", "O7", "O9"]],
+  [["Attr11", "Attr13", "Attr14", "Attr4"], ["O15", "O5"]],
+  [["Attr11", "Attr13", "Attr2", "Attr4"], ["O10", "O2", "O5", "O7"]],
+  [["Attr11", "Attr13", "Attr3", "Attr8"], ["O3", "O5", "O7"]],
+  [["Attr11", "Attr13", "Attr4", "Attr9"], ["O15", "O7"]],
+  [["Attr11", "Attr2", "Attr4", "Attr6"], ["O10", "O11", "O5", "O7"]],
+  [["Attr12", "Attr13", "Attr15", "Attr2"], ["O14", "O2"]],
+  [["Attr12", "Attr14", "Attr2", "Attr6"], ["O14", "O4", "O9"]],
+  [["Attr12", "Attr14", "Attr5", "Attr6"], ["O12", "O4", "O9"]],
+  [["Attr12", "Attr15", "Attr2", "Attr6"], ["O11", "O14"]],
+  [["Attr13", "Attr14", "Attr2", "Attr6"], ["O14", "O4", "O5"]],
+  [["Attr13", "Attr2", "Attr5", "Attr6"], ["O10", "O4", "O5"]],
+  [["Attr13", "Attr4", "Attr5", "Attr6"], ["O1", "O10", "O5"]],
+  [["Attr13", "Attr4", "Attr6", "Attr9"], ["O1", "O7"]],
+  [["Attr14", "Attr15", "Attr2", "Attr6"], ["O13", "O14"]],
+  [["Attr14", "Attr2", "Attr5", "Attr6"], ["O4", "O5", "O9"]],
+  [["Attr15", "Attr3", "Attr8", "Attr9"], ["O13", "O3"]],
+  [["Attr2", "Attr3", "Attr6", "Attr8"], ["O13", "O5", "O7"]],
+  [["Attr1", "Attr10", "Attr13", "Attr7", "Attr8"], ["O6", "O7"]],
+  [["Attr1", "Attr11", "Attr5", "Attr6", "Attr7"], ["O8"]],
+  [["Attr10", "Attr11", "Attr13", "Attr2", "Attr4"], ["O2", "O7"]],
+  [["Attr10", "Attr12", "Attr2", "Attr6", "Attr7"], ["O11", "O9"]],
+  [["Attr10", "Attr14", "Attr2", "Attr6", "Attr9"], ["O13", "O9"]],
+  [["Attr10", "Attr2", "Attr6", "Attr7", "Attr9"], ["O7", "O9"]],
+  [["Attr11", "Attr13", "Attr14", "Attr4", "Attr9"], ["O15"]],
+  [["Attr12", "Attr13", "Attr14", "Attr2", "Attr6"], ["O14", "O4"]],
+  [["Attr12", "Attr14", "Attr2", "Attr5", "Attr6"], ["O4", "O9"]],
+  [["Attr13", "Attr14", "Attr2", "Attr5", "Attr6"], ["O4", "O5"]],
+  [["Attr14", "Attr2", "Attr3", "Attr6", "Attr8"], ["O13", "O5"]],
+  [["Attr1", "Attr11", "Attr13", "Attr3", "Attr8", "Attr9"], ["O3", "O7"]],
+  [["Attr10", "Attr11", "Attr12", "Attr15", "Attr2", "Attr4"], ["O11", "O2"]],
+  [["Attr10", "Attr11", "Attr2", "Attr4", "Attr6", "Attr7"], ["O11", "O7"]],
+  [["Attr10", "Attr12", "Attr14", "Attr5", "Attr6", "Attr9"], ["O12", "O9"]],
+  [["Attr10", "Attr2", "Attr3", "Attr6", "Attr8", "Attr9"], ["O13", "O7"]],
+  [["Attr11", "Attr13", "Attr2", "Attr4", "Attr6", "Attr8"], ["O10", "O5", "O7"]],
+  [["Attr12", "Attr13", "Attr14", "Attr15", "Attr2", "Attr6"], ["O14"]],
+  [["Attr12", "Attr13", "Attr14", "Attr2", "Attr5", "Attr6"], ["O4"]],
+  [["Attr13", "Attr15", "Attr4", "Attr5", "Attr6", "Attr9"], ["O1"]],
+  [["Attr1", "Attr11", "Attr13", "Attr15", "Attr3", "Attr8", "Attr9"], ["O3"]],
+  [["Attr10", "Attr11", "Attr12", "Attr13", "Attr15", "Attr2", "Attr4"], ["O2"]],
+  [["Attr11", "Attr13", "Attr2", "Attr3", "Attr4", "Attr6", "Attr8"], ["O5", "O7"]],
+  [["Attr11", "Attr13", "Attr2", "Attr4", "Attr5", "Attr6", "Attr8"], ["O10", "O5"]],
+  [["Attr1", "Attr10", "Attr12", "Attr13", "Attr15", "Attr5", "Attr7", "Attr8"], ["O6"]],
+  [["Attr10", "Attr11", "Attr12", "Attr15", "Attr2", "Attr4", "Attr6", "Attr7"], ["O11"]],
+  [["Attr10", "Attr12", "Attr14", "Attr2", "Attr5", "Attr6", "Attr7", "Attr9"], ["O9"]],
+  [["Attr10", "Attr14", "Attr15", "Attr2", "Attr3", "Attr6", "Attr8", "Attr9"], ["O13"]],
+  [["Attr11", "Attr13", "Attr14", "Attr2", "Attr3", "Attr4", "Attr5", "Attr6", "Attr8"], ["O5"]],
+  [["Attr1", "Attr10", "Attr11", "Attr13", "Attr2", "Attr3", "Attr4", "Attr6", "Attr7", "Attr8", "Attr9"], ["O7"]],
+  [["Attr1", "Attr10", "Attr11", "Attr12", "Attr13", "Attr14", "Attr15", "Attr2", "Attr3", "Attr4", "Attr5", "Attr6", "Attr7", "Attr8", "Attr9"], []]
+]
+```<ctrl98>
+The formal concepts from your provided CSV file, `eg15_15.csv`, have been extracted and enumerated. The analysis identified **156 distinct concepts**.
+
+Each formal concept consists of an **Intent** (a set of attributes) and an **Extent** (a set of objects). The Intent contains all attributes shared by every object in the Extent, and the Extent contains all objects that possess every attribute in the Intent. The concepts are presented as pairs: `[Intent_list, Extent_list]`, sorted alphabetically within each list and then the overall list of concepts is sorted for consistency.
+
+---
+## Enumerated Lattice Concepts
+
+A total of **156** formal concepts were found:
+
+```json
+[
+  [[], ["O1", "O10", "O11", "O12", "O13", "O14", "O15", "O2", "O3", "O4", "O5", "O6", "O7", "O8", "O9"]],
+  [["Attr1"], ["O3", "O6", "O7", "O8"]],
+  [["Attr10"], ["O11", "O12", "O13", "O2", "O6", "O7", "O9"]],
+  [["Attr11"], ["O10", "O11", "O15", "O2", "O3", "O5", "O7", "O8"]],
+  [["Attr12"], ["O11", "O12", "O14", "O2", "O4", "O6", "O9"]],
+  [["Attr13"], ["O1", "O10", "O14", "O15", "O2", "O3", "O4", "O5", "O6", "O7"]],
+  [["Attr14"], ["O12", "O13", "O14", "O15", "O4", "O5", "O9"]],
+  [["Attr15"], ["O1", "O11", "O13", "O14", "O2", "O3", "O6"]],
+  [["Attr2"], ["O10", "O11", "O13", "O14", "O2", "O4", "O5", "O7", "O9"]],
+  [["Attr4"], ["O1", "O10", "O11", "O15", "O2", "O5", "O7"]],
+  [["Attr5"], ["O1", "O10", "O12", "O4", "O5", "O6", "O8", "O9"]],
+  [["Attr6"], ["O1", "O10", "O11", "O12", "O13", "O14", "O4", "O5", "O7", "O8", "O9"]],
+  [["Attr7"], ["O11", "O6", "O7", "O8", "O9"]],
+  [["Attr8"], ["O10", "O13", "O3", "O5", "O6", "O7"]],
+  [["Attr9"], ["O1", "O12", "O13", "O15", "O3", "O7", "O9"]],
+  [["Attr1", "Attr11"], ["O3", "O7", "O8"]],
+  [["Attr1", "Attr7"], ["O6", "O7", "O8"]],
+  [["Attr10", "Attr12"], ["O11", "O12", "O2", "O6", "O9"]],
+  [["Attr10", "Attr13"], ["O2", "O6", "O7"]],
+  [["Attr10", "Attr15"], ["O11", "O13", "O2", "O6"]],
+  [["Attr10", "Attr2"], ["O11", "O13", "O2", "O7", "O9"]],
+  [["Attr10", "Attr6"], ["O11", "O12", "O13", "O7", "O9"]],
+  [["Attr10", "Attr7"], ["O11", "O6", "O7", "O9"]],
+  [["Attr10", "Attr8"], ["O13", "O6", "O7"]],
+  [["Attr11", "Attr13"], ["O10", "O15", "O2", "O3", "O5", "O7"]],
+  [["Attr11", "Attr15"], ["O11", "O2", "O3"]],
+  [["Attr11", "Attr4"], ["O10", "O11", "O15", "O2", "O5", "O7"]],
+  [["Attr11", "Attr6"], ["O10", "O11", "O5", "O7", "O8"]],
+  [["Attr12", "Attr13"], ["O14", "O2", "O4", "O6"]],
+  [["Attr12", "Attr15"], ["O11", "O14", "O2", "O6"]],
+  [["Attr12", "Attr2"], ["O11", "O14", "O2", "O4", "O9"]],
+  [["Attr12", "Attr5"], ["O12", "O4", "O6", "O9"]],
+  [["Attr12", "Attr6"], ["O11", "O12", "O14", "O4", "O9"]],
+  [["Attr13", "Attr14"], ["O14", "O15", "O4", "O5"]],
+  [["Attr13", "Attr15"], ["O1", "O14", "O2", "O3", "O6"]],
+  [["Attr13", "Attr2"], ["O10", "O14", "O2", "O4", "O5", "O7"]],
+  [["Attr13", "Attr4"], ["O1", "O10", "O15", "O2", "O5", "O7"]],
+  [["Attr13", "Attr5"], ["O1", "O10", "O4", "O5", "O6"]],
+  [["Attr13", "Attr6"], ["O1", "O10", "O14", "O4", "O5", "O7"]],
+  [["Attr13", "Attr8"], ["O10", "O3", "O5", "O6", "O7"]],
+  [["Attr13", "Attr9"], ["O1", "O15", "O3", "O7"]],
+  [["Attr14", "Attr6"], ["O12", "O13", "O14", "O4", "O5", "O9"]],
+  [["Attr14", "Attr9"], ["O12", "O13", "O15", "O9"]],
+  [["Attr15", "Attr2"], ["O11", "O13", "O14", "O2"]],
+  [["Attr15", "Attr4"], ["O1", "O11", "O2"]],
+  [["Attr15", "Attr6"], ["O1", "O11", "O13", "O14"]],
+  [["Attr15", "Attr8"], ["O13", "O3", "O6"]],
+  [["Attr15", "Attr9"], ["O1", "O13", "O3"]],
+  [["Attr2", "Attr6"], ["O10", "O11", "O13", "O14", "O4", "O5", "O7", "O9"]],
+  [["Attr3", "Attr8"], ["O13", "O3", "O5", "O7"]],
+  [["Attr4", "Attr6"], ["O1", "O10", "O11", "O5", "O7"]],
+  [["Attr5", "Attr6"], ["O1", "O10", "O12", "O4", "O5", "O8", "O9"]],
+  [["Attr5", "Attr7"], ["O6", "O8", "O9"]],
+  [["Attr6", "Attr7"], ["O11", "O7", "O8", "O9"]],
+  [["Attr6", "Attr9"], ["O1", "O12", "O13", "O7", "O9"]],
+  [["Attr1", "Attr13", "Attr8"], ["O3", "O6", "O7"]],
+  [["Attr1", "Attr5", "Attr7"], ["O6", "O8"]],
+  [["Attr10", "Attr12", "Attr15"], ["O11", "O2", "O6"]],
+  [["Attr10", "Attr12", "Attr2"], ["O11", "O2", "O9"]],
+  [["Attr10", "Attr12", "Attr5"], ["O12", "O6", "O9"]],
+  [["Attr10", "Attr12", "Attr6"], ["O11", "O12", "O9"]],
+  [["Attr10", "Attr12", "Attr7"], ["O11", "O6", "O9"]],
+  [["Attr10", "Attr15", "Attr2"], ["O11", "O13", "O2"]],
+  [["Attr10", "Attr15", "Attr8"], ["O13", "O6"]],
+  [["Attr10", "Attr2", "Attr6"], ["O11", "O13", "O7", "O9"]],
+  [["Attr10", "Attr6", "Attr9"], ["O12", "O13", "O7", "O9"]],
+  [["Attr11", "Attr13", "Attr15"], ["O2", "O3"]],
+  [["Attr11", "Attr13", "Attr4"], ["O10", "O15", "O2", "O5", "O7"]],
+  [["Attr11", "Attr13", "Attr8"], ["O10", "O3", "O5", "O7"]],
+  [["Attr11", "Attr13", "Attr9"], ["O15", "O3", "O7"]],
+  [["Attr11", "Attr2", "Attr4"], ["O10", "O11", "O2", "O5", "O7"]],
+  [["Attr11", "Attr5", "Attr6"], ["O10", "O5", "O8"]],
+  [["Attr11", "Attr6", "Attr7"], ["O11", "O7", "O8"]],
+  [["Attr12", "Attr13", "Attr15"], ["O14", "O2", "O6"]],
+  [["Attr12", "Attr13", "Attr2"], ["O14", "O2", "O4"]],
+  [["Attr12", "Attr13", "Attr5"], ["O4", "O6"]],
+  [["Attr12", "Attr14", "Attr6"], ["O12", "O14", "O4", "O9"]],
+  [["Attr12", "Attr15", "Attr2"], ["O11", "O14", "O2"]],
+  [["Attr12", "Attr2", "Attr6"], ["O11", "O14", "O4", "O9"]],
+  [["Attr13", "Attr15", "Attr4"], ["O1", "O2"]],
+  [["Attr13", "Attr15", "Attr5"], ["O1", "O6"]],
+  [["Attr13", "Attr15", "Attr6"], ["O1", "O14"]],
+  [["Attr13", "Attr15", "Attr9"], ["O1", "O3"]],
+  [["Attr13", "Attr2", "Attr6"], ["O10", "O14", "O4", "O5", "O7"]],
+  [["Attr13", "Attr4", "Attr6"], ["O1", "O10", "O5", "O7"]],
+  [["Attr13", "Attr4", "Attr9"], ["O1", "O15", "O7"]],
+  [["Attr13", "Attr5", "Attr6"], ["O1", "O10", "O4", "O5"]],
+  [["Attr13", "Attr5", "Attr8"], ["O10", "O5", "O6"]],
+  [["Attr14", "Attr2", "Attr6"], ["O13", "O14", "O4", "O5", "O9"]],
+  [["Attr14", "Attr5", "Attr6"], ["O12", "O4", "O5", "O9"]],
+  [["Attr15", "Attr2", "Attr6"], ["O11", "O13", "O14"]],
+  [["Attr15", "Attr4", "Attr6"], ["O1", "O11"]],
+  [["Attr15", "Attr6", "Attr9"], ["O1", "O13"]],
+  [["Attr2", "Attr5", "Attr6"], ["O10", "O4", "O5", "O9"]],
+  [["Attr2", "Attr6", "Attr8"], ["O10", "O13", "O5", "O7"]],
+  [["Attr3", "Attr8", "Attr9"], ["O13", "O3", "O7"]],
+  [["Attr5", "Attr6", "Attr7"], ["O8", "O9"]],
+  [["Attr5", "Attr6", "Attr9"], ["O1", "O12", "O9"]],
+  [["Attr1", "Attr11", "Attr6", "Attr7"], ["O7", "O8"]],
+  [["Attr1", "Attr13", "Attr15", "Attr8"], ["O3", "O6"]],
+  [["Attr10", "Attr11", "Attr2", "Attr4"], ["O11", "O2", "O7"]],
+  [["Attr10", "Attr12", "Attr13", "Attr15"], ["O2", "O6"]],
+  [["Attr10", "Attr12", "Attr15", "Attr7"], ["O11", "O6"]],
+  [["Attr10", "Attr12", "Attr5", "Attr7"], ["O6", "O9"]],
+  [["Attr10", "Attr14", "Attr6", "Attr9"], ["O12", "O13", "O9"]],
+  [["Attr10", "Attr15", "Attr2", "Attr6"], ["O11", "O13"]],
+  [["Attr10", "Attr2", "Attr6", "Attr7"], ["O11", "O7", "O9"]],
+  [["Attr10", "Attr2", "Attr6", "Attr9"], ["O13", "O7", "O9"]],
+  [["Attr11", "Attr13", "Attr14", "Attr4"], ["O15", "O5"]],
+  [["Attr11", "Attr13", "Attr2", "Attr4"], ["O10", "O2", "O5", "O7"]],
+  [["Attr11", "Attr13", "Attr3", "Attr8"], ["O3", "O5", "O7"]],
+  [["Attr11", "Attr13", "Attr4", "Attr9"], ["O15", "O7"]],
+  [["Attr11", "Attr2", "Attr4", "Attr6"], ["O10", "O11", "O5", "O7"]],
+  [["Attr12", "Attr13", "Attr15", "Attr2"], ["O14", "O2"]],
+  [["Attr12", "Attr14", "Attr2", "Attr6"], ["O14", "O4", "O9"]],
+  [["Attr12", "Attr14", "Attr5", "Attr6"], ["O12", "O4", "O9"]],
+  [["Attr12", "Attr15", "Attr2", "Attr6"], ["O11", "O14"]],
+  [["Attr13", "Attr14", "Attr2", "Attr6"], ["O14", "O4", "O5"]],
+  [["Attr13", "Attr2", "Attr5", "Attr6"], ["O10", "O4", "O5"]],
+  [["Attr13", "Attr4", "Attr5", "Attr6"], ["O1", "O10", "O5"]],
+  [["Attr13", "Attr4", "Attr6", "Attr9"], ["O1", "O7"]],
+  [["Attr14", "Attr15", "Attr2", "Attr6"], ["O13", "O14"]],
+  [["Attr14", "Attr2", "Attr5", "Attr6"], ["O4", "O5", "O9"]],
+  [["Attr15", "Attr3", "Attr8", "Attr9"], ["O13", "O3"]],
+  [["Attr2", "Attr3", "Attr6", "Attr8"], ["O13", "O5", "O7"]],
+  [["Attr1", "Attr10", "Attr13", "Attr7", "Attr8"], ["O6", "O7"]],
+  [["Attr1", "Attr11", "Attr5", "Attr6", "Attr7"], ["O8"]],
+  [["Attr10", "Attr11", "Attr13", "Attr2", "Attr4"], ["O2", "O7"]],
+  [["Attr10", "Attr12", "Attr2", "Attr6", "Attr7"], ["O11", "O9"]],
+  [["Attr10", "Attr14", "Attr2", "Attr6", "Attr9"], ["O13", "O9"]],
+  [["Attr10", "Attr2", "Attr6", "Attr7", "Attr9"], ["O7", "O9"]],
+  [["Attr11", "Attr13", "Attr14", "Attr4", "Attr9"], ["O15"]],
+  [["Attr12", "Attr13", "Attr14", "Attr2", "Attr6"], ["O14", "O4"]],
+  [["Attr12", "Attr14", "Attr2", "Attr5", "Attr6"], ["O4", "O9"]],
+  [["Attr13", "Attr14", "Attr2", "Attr5", "Attr6"], ["O4", "O5"]],
+  [["Attr14", "Attr2", "Attr3", "Attr6", "Attr8"], ["O13", "O5"]],
+  [["Attr1", "Attr11", "Attr13", "Attr3", "Attr8", "Attr9"], ["O3", "O7"]],
+  [["Attr10", "Attr11", "Attr12", "Attr15", "Attr2", "Attr4"], ["O11", "O2"]],
+  [["Attr10", "Attr11", "Attr2", "Attr4", "Attr6", "Attr7"], ["O11", "O7"]],
+  [["Attr10", "Attr12", "Attr14", "Attr5", "Attr6", "Attr9"], ["O12", "O9"]],
+  [["Attr10", "Attr2", "Attr3", "Attr6", "Attr8", "Attr9"], ["O13", "O7"]],
+  [["Attr11", "Attr13", "Attr2", "Attr4", "Attr6", "Attr8"], ["O10", "O5", "O7"]],
+  [["Attr12", "Attr13", "Attr14", "Attr15", "Attr2", "Attr6"], ["O14"]],
+  [["Attr12", "Attr13", "Attr14", "Attr2", "Attr5", "Attr6"], ["O4"]],
+  [["Attr13", "Attr15", "Attr4", "Attr5", "Attr6", "Attr9"], ["O1"]],
+  [["Attr1", "Attr11", "Attr13", "Attr15", "Attr3", "Attr8", "Attr9"], ["O3"]],
+  [["Attr10", "Attr11", "Attr12", "Attr13", "Attr15", "Attr2", "Attr4"], ["O2"]],
+  [["Attr11", "Attr13", "Attr2", "Attr3", "Attr4", "Attr6", "Attr8"], ["O5", "O7"]],
+  [["Attr11", "Attr13", "Attr2", "Attr4", "Attr5", "Attr6", "Attr8"], ["O10", "O5"]],
+  [["Attr1", "Attr10", "Attr12", "Attr13", "Attr15", "Attr5", "Attr7", "Attr8"], ["O6"]],
+  [["Attr10", "Attr11", "Attr12", "Attr15", "Attr2", "Attr4", "Attr6", "Attr7"], ["O11"]],
+  [["Attr10", "Attr12", "Attr14", "Attr2", "Attr5", "Attr6", "Attr7", "Attr9"], ["O9"]],
+  [["Attr10", "Attr14", "Attr15", "Attr2", "Attr3", "Attr6", "Attr8", "Attr9"], ["O13"]],
+  [["Attr11", "Attr13", "Attr14", "Attr2", "Attr3", "Attr4", "Attr5", "Attr6", "Attr8"], ["O5"]],
+  [["Attr1", "Attr10", "Attr11", "Attr13", "Attr2", "Attr3", "Attr4", "Attr6", "Attr7", "Attr8", "Attr9"], ["O7"]],
+  [["Attr1", "Attr10", "Attr11", "Attr12", "Attr13", "Attr14", "Attr15", "Attr2", "Attr3", "Attr4", "Attr5", "Attr6", "Attr7", "Attr8", "Attr9"], []]
+]
+```
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+```python?code_reference&code_event_index=2
+concepts_data = [[[], ['O1', 'O10', 'O11', 'O12', 'O13', 'O14', 'O15', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7', 'O8', 'O9']], [['Attr1'], ['O3', 'O6', 'O7', 'O8']], [['Attr10'], ['O11', 'O12', 'O13', 'O2', 'O6', 'O7', 'O9']], [['Attr11'], ['O10', 'O11', 'O15', 'O2', 'O3', 'O5', 'O7', 'O8']], [['Attr12'], ['O11', 'O12', 'O14', 'O2', 'O4', 'O6', 'O9']], [['Attr13'], ['O1', 'O10', 'O14', 'O15', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7']], [['Attr14'], ['O12', 'O13', 'O14', 'O15', 'O4', 'O5', 'O9']], [['Attr15'], ['O1', 'O11', 'O13', 'O14', 'O2', 'O3', 'O6']], [['Attr2'], ['O10', 'O11', 'O13', 'O14', 'O2', 'O4', 'O5', 'O7', 'O9']], [['Attr4'], ['O1', 'O10', 'O11', 'O15', 'O2', 'O5', 'O7']], [['Attr5'], ['O1', 'O10', 'O12', 'O4', 'O5', 'O6', 'O8', 'O9']], [['Attr6'], ['O1', 'O10', 'O11', 'O12', 'O13', 'O14', 'O4', 'O5', 'O7', 'O8', 'O9']], [['Attr7'], ['O11', 'O6', 'O7', 'O8', 'O9']], [['Attr8'], ['O10', 'O13', 'O3', 'O5', 'O6', 'O7']], [['Attr9'], ['O1', 'O12', 'O13', 'O15', 'O3', 'O7', 'O9']], [['Attr1', 'Attr11'], ['O3', 'O7', 'O8']], [['Attr1', 'Attr7'], ['O6', 'O7', 'O8']], [['Attr10', 'Attr12'], ['O11', 'O12', 'O2', 'O6', 'O9']], [['Attr10', 'Attr13'], ['O2', 'O6', 'O7']], [['Attr10', 'Attr15'], ['O11', 'O13', 'O2', 'O6']], [['Attr10', 'Attr2'], ['O11', 'O13', 'O2', 'O7', 'O9']], [['Attr10', 'Attr6'], ['O11', 'O12', 'O13', 'O7', 'O9']], [['Attr10', 'Attr7'], ['O11', 'O6', 'O7', 'O9']], [['Attr10', 'Attr8'], ['O13', 'O6', 'O7']], [['Attr11', 'Attr13'], ['O10', 'O15', 'O2', 'O3', 'O5', 'O7']], [['Attr11', 'Attr15'], ['O11', 'O2', 'O3']], [['Attr11', 'Attr4'], ['O10', 'O11', 'O15', 'O2', 'O5', 'O7']], [['Attr11', 'Attr6'], ['O10', 'O11', 'O5', 'O7', 'O8']], [['Attr12', 'Attr13'], ['O14', 'O2', 'O4', 'O6']], [['Attr12', 'Attr15'], ['O11', 'O14', 'O2', 'O6']], [['Attr12', 'Attr2'], ['O11', 'O14', 'O2', 'O4', 'O9']], [['Attr12', 'Attr5'], ['O12', 'O4', 'O6', 'O9']], [['Attr12', 'Attr6'], ['O11', 'O12', 'O14', 'O4', 'O9']], [['Attr13', 'Attr14'], ['O14', 'O15', 'O4', 'O5']], [['Attr13', 'Attr15'], ['O1', 'O14', 'O2', 'O3', 'O6']], [['Attr13', 'Attr2'], ['O10', 'O14', 'O2', 'O4', 'O5', 'O7']], [['Attr13', 'Attr4'], ['O1', 'O10', 'O15', 'O2', 'O5', 'O7']], [['Attr13', 'Attr5'], ['O1', 'O10', 'O4', 'O5', 'O6']], [['Attr13', 'Attr6'], ['O1', 'O10', 'O14', 'O4', 'O5', 'O7']], [['Attr13', 'Attr8'], ['O10', 'O3', 'O5', 'O6', 'O7']], [['Attr13', 'Attr9'], ['O1', 'O15', 'O3', 'O7']], [['Attr14', 'Attr6'], ['O12', 'O13', 'O14', 'O4', 'O5', 'O9']], [['Attr14', 'Attr9'], ['O12', 'O13', 'O15', 'O9']], [['Attr15', 'Attr2'], ['O11', 'O13', 'O14', 'O2']], [['Attr15', 'Attr4'], ['O1', 'O11', 'O2']], [['Attr15', 'Attr6'], ['O1', 'O11', 'O13', 'O14']], [['Attr15', 'Attr8'], ['O13', 'O3', 'O6']], [['Attr15', 'Attr9'], ['O1', 'O13', 'O3']], [['Attr2', 'Attr6'], ['O10', 'O11', 'O13', 'O14', 'O4', 'O5', 'O7', 'O9']], [['Attr3', 'Attr8'], ['O13', 'O3', 'O5', 'O7']], [['Attr4', 'Attr6'], ['O1', 'O10', 'O11', 'O5', 'O7']], [['Attr5', 'Attr6'], ['O1', 'O10', 'O12', 'O4', 'O5', 'O8', 'O9']], [['Attr5', 'Attr7'], ['O6', 'O8', 'O9']], [['Attr6', 'Attr7'], ['O11', 'O7', 'O8', 'O9']], [['Attr6', 'Attr9'], ['O1', 'O12', 'O13', 'O7', 'O9']], [['Attr1', 'Attr13', 'Attr8'], ['O3', 'O6', 'O7']], [['Attr1', 'Attr5', 'Attr7'], ['O6', 'O8']], [['Attr10', 'Attr12', 'Attr15'], ['O11', 'O2', 'O6']], [['Attr10', 'Attr12', 'Attr2'], ['O11', 'O2', 'O9']], [['Attr10', 'Attr12', 'Attr5'], ['O12', 'O6', 'O9']], [['Attr10', 'Attr12', 'Attr6'], ['O11', 'O12', 'O9']], [['Attr10', 'Attr12', 'Attr7'], ['O11', 'O6', 'O9']], [['Attr10', 'Attr15', 'Attr2'], ['O11', 'O13', 'O2']], [['Attr10', 'Attr15', 'Attr8'], ['O13', 'O6']], [['Attr10', 'Attr2', 'Attr6'], ['O11', 'O13', 'O7', 'O9']], [['Attr10', 'Attr6', 'Attr9'], ['O12', 'O13', 'O7', 'O9']], [['Attr11', 'Attr13', 'Attr15'], ['O2', 'O3']], [['Attr11', 'Attr13', 'Attr4'], ['O10', 'O15', 'O2', 'O5', 'O7']], [['Attr11', 'Attr13', 'Attr8'], ['O10', 'O3', 'O5', 'O7']], [['Attr11', 'Attr13', 'Attr9'], ['O15', 'O3', 'O7']], [['Attr11', 'Attr2', 'Attr4'], ['O10', 'O11', 'O2', 'O5', 'O7']], [['Attr11', 'Attr5', 'Attr6'], ['O10', 'O5', 'O8']], [['Attr11', 'Attr6', 'Attr7'], ['O11', 'O7', 'O8']], [['Attr12', 'Attr13', 'Attr15'], ['O14', 'O2', 'O6']], [['Attr12', 'Attr13', 'Attr2'], ['O14', "O2", 'O4']], [['Attr12', 'Attr13', 'Attr5'], ['O4', 'O6']], [['Attr12', 'Attr14', 'Attr6'], ['O12', 'O14', 'O4', 'O9']], [['Attr12', 'Attr15', 'Attr2'], ['O11', 'O14', 'O2']], [['Attr12', 'Attr2', 'Attr6'], ['O11', 'O14', 'O4', 'O9']], [['Attr13', 'Attr15', 'Attr4'], ['O1', 'O2']], [['Attr13', 'Attr15', 'Attr5'], ['O1', 'O6']], [['Attr13', 'Attr15', 'Attr6'], ['O1', 'O14']], [['Attr13', 'Attr15', 'Attr9'], ['O1', 'O3']], [['Attr13', 'Attr2', 'Attr6'], ['O10', 'O14', 'O4', 'O5', 'O7']], [['Attr13', 'Attr4', 'Attr6'], ['O1', 'O10', 'O5', 'O7']], [['Attr13', 'Attr4', 'Attr9'], ['O1', 'O15', 'O7']], [['Attr13', 'Attr5', 'Attr6'], ['O1', 'O10', 'O4', 'O5']], [['Attr13', 'Attr5', 'Attr8'], ['O10', 'O5', 'O6']], [['Attr14', 'Attr2', 'Attr6'], ['O13', 'O14', 'O4', 'O5', 'O9']], [['Attr14', 'Attr5', 'Attr6'], ['O12', 'O4', 'O5', 'O9']], [['Attr15', 'Attr2', 'Attr6'], ['O11', 'O13', 'O14']], [['Attr15', 'Attr4', 'Attr6'], ['O1', 'O11']], [['Attr15', 'Attr6', 'Attr9'], ['O1', 'O13']], [['Attr2', 'Attr5', 'Attr6'], ['O10', 'O4', 'O5', 'O9']], [['Attr2', 'Attr6', 'Attr8'], ['O10', 'O13', 'O5', 'O7']], [['Attr3', 'Attr8', 'Attr9'], ['O13', 'O3', 'O7']], [['Attr5', 'Attr6', 'Attr7'], ['O8', 'O9']], [['Attr5', 'Attr6', 'Attr9'], ['O1', 'O12', 'O9']], [['Attr1', 'Attr11', 'Attr6', 'Attr7'], ['O7', 'O8']], [['Attr1', 'Attr13', 'Attr15', 'Attr8'], ['O3', 'O6']], [['Attr10', 'Attr11', 'Attr2', 'Attr4'], ['O11', 'O2', 'O7']], [['Attr10', 'Attr12', 'Attr13', 'Attr15'], ['O2', 'O6']], [['Attr10', 'Attr12', 'Attr15', 'Attr7'], ['O11', 'O6']], [['Attr10', 'Attr12', 'Attr5', 'Attr7'], ['O6', 'O9']], [['Attr10', 'Attr14', 'Attr6', 'Attr9'], ['O12', 'O13', 'O9']], [['Attr10', 'Attr15', 'Attr2', 'Attr6'], ['O11', 'O13']], [['Attr10', 'Attr2', 'Attr6', 'Attr7'], ['O11', 'O7', 'O9']], [['Attr10', 'Attr2', 'Attr6', 'Attr9'], ['O13', 'O7', 'O9']], [['Attr11', 'Attr13', 'Attr14', 'Attr4'], ['O15', 'O5']], [['Attr11', 'Attr13', 'Attr2', 'Attr4'], ['O10', 'O2', 'O5', 'O7']], [['Attr11', 'Attr13', 'Attr3', 'Attr8'], ['O3', 'O5', 'O7']], [['Attr11', 'Attr13', 'Attr4', 'Attr9'], ['O15', 'O7']], [['Attr11', 'Attr2', 'Attr4', 'Attr6'], ['O10', 'O11', 'O5', 'O7']], [['Attr12', 'Attr13', 'Attr15', 'Attr2'], ['O14', 'O2']], [['Attr12', 'Attr14', 'Attr2', 'Attr6'], ['O14', 'O4', 'O9']], [['Attr12', 'Attr14', 'Attr5', 'Attr6'], ['O12', 'O4', 'O9']], [['Attr12', 'Attr15', 'Attr2', 'Attr6'], ['O11', 'O14']], [['Attr13', 'Attr14', 'Attr2', 'Attr6'], ['O14', 'O4', 'O5']], [['Attr13', 'Attr2', 'Attr5', 'Attr6'], ['O10', 'O4', 'O5']], [['Attr13', 'Attr4', 'Attr5', 'Attr6'], ['O1', 'O10', 'O5']], [['Attr13', 'Attr4', 'Attr6', 'Attr9'], ['O1', 'O7']], [['Attr14', 'Attr15', 'Attr2', 'Attr6'], ['O13', 'O14']], [['Attr14', 'Attr2', 'Attr5', 'Attr6'], ['O4', 'O5', 'O9']], [['Attr15', 'Attr3', 'Attr8', 'Attr9'], ['O13', 'O3']], [['Attr2', 'Attr3', 'Attr6', 'Attr8'], ['O13', 'O5', 'O7']], [['Attr1', 'Attr10', 'Attr13', 'Attr7', 'Attr8'], ['O6', 'O7']], [['Attr1', 'Attr11', 'Attr5', 'Attr6', 'Attr7'], ['O8']], [['Attr10', 'Attr11', 'Attr13', 'Attr2', 'Attr4'], ['O2', 'O7']], [['Attr10', 'Attr12', 'Attr2', 'Attr6', 'Attr7'], ['O11', 'O9']], [['Attr10', 'Attr14', 'Attr2', 'Attr6', 'Attr9'], ['O13', 'O9']], [['Attr10', 'Attr2', 'Attr6', 'Attr7', 'Attr9'], ['O7', 'O9']], [['Attr11', 'Attr13', 'Attr14', 'Attr4', 'Attr9'], ['O15']], [['Attr12', 'Attr13', 'Attr14', 'Attr2', 'Attr6'], ['O14', 'O4']], [['Attr12', 'Attr14', 'Attr2', 'Attr5', 'Attr6'], ['O4', 'O9']], [['Attr13', 'Attr14', 'Attr2', 'Attr5', 'Attr6'], ['O4', 'O5']], [['Attr14', 'Attr2', 'Attr3', 'Attr6', 'Attr8'], ['O13', 'O5']], [['Attr1', 'Attr11', 'Attr13', 'Attr3', 'Attr8', 'Attr9'], ['O3', 'O7']], [['Attr10', 'Attr11', 'Attr12', 'Attr15', 'Attr2', 'Attr4'], ['O11', 'O2']], [['Attr10', 'Attr11', 'Attr2', 'Attr4', 'Attr6', 'Attr7'], ['O11', 'O7']], [['Attr10', 'Attr12', 'Attr14', 'Attr5', 'Attr6', 'Attr9'], ['O12', 'O9']], [['Attr10', 'Attr2', 'Attr3', 'Attr6', 'Attr8', 'Attr9'], ['O13', 'O7']], [['Attr11', 'Attr13', 'Attr2', 'Attr4', 'Attr6', 'Attr8'], ['O10', 'O5', 'O7']], [['Attr12', 'Attr13', 'Attr14', 'Attr15', 'Attr2', 'Attr6'], ['O14']], [['Attr12', 'Attr13', 'Attr14', 'Attr2', 'Attr5', 'Attr6'], ['O4']], [['Attr13', 'Attr15', 'Attr4', 'Attr5', 'Attr6', 'Attr9'], ['O1']], [['Attr1', 'Attr11', 'Attr13', 'Attr15', 'Attr3', 'Attr8', 'Attr9'], ['O3']], [['Attr10', 'Attr11', 'Attr12', 'Attr13', 'Attr15', 'Attr2', 'Attr4'], ['O2']], [['Attr11', 'Attr13', 'Attr2', 'Attr3', 'Attr4', 'Attr6', 'Attr8'], ['O5', 'O7']], [['Attr11', 'Attr13', 'Attr2', 'Attr4', 'Attr5', 'Attr6', 'Attr8'], ['O10', 'O5']], [['Attr1', 'Attr10', 'Attr12', 'Attr13', 'Attr15', 'Attr5', 'Attr7', 'Attr8'], ['O6']], [['Attr10', 'Attr11', 'Attr12', 'Attr15', 'Attr2', 'Attr4', 'Attr6', 'Attr7'], ['O11']], [['Attr10', 'Attr12', 'Attr14', 'Attr2', 'Attr5', 'Attr6', 'Attr7', 'Attr9'], ['O9']], [['Attr10', 'Attr14', 'Attr15', 'Attr2', 'Attr3', 'Attr6', 'Attr8', 'Attr9'], ['O13']], [['Attr11', 'Attr13', 'Attr14', 'Attr2', 'Attr3', 'Attr4', 'Attr5', 'Attr6', 'Attr8'], ['O5']], [['Attr1', 'Attr10', 'Attr11', 'Attr13', 'Attr2', 'Attr3', 'Attr4', 'Attr6', 'Attr7', 'Attr8', 'Attr9'], ['O7']], [['Attr1', 'Attr10', 'Attr11', 'Attr12', 'Attr13', 'Attr14', 'Attr15', 'Attr2', 'Attr3', 'Attr4', 'Attr5', 'Attr6', 'Attr7', 'Attr8', 'Attr9'], []]]
+
+def format_internal_list(item_list):
+    if not item_list:
+        return "[]"
+    return "[" + ", ".join(item_list) + "]"
+
+concept_str_parts = []
+for concept in concepts_data:
+    intent_list = concept[0]
+    extent_list = concept[1]
+
+    intent_str = format_internal_list(intent_list)
+    extent_str = format_internal_list(extent_list)
+
+    concept_str_parts.append("[" + intent_str + ", " + extent_str + "]")
+
+final_single_line_string = "[" + ", ".join(concept_str_parts) + "]"
+print(final_single_line_string)
+```
+```text?code_stdout&code_event_index=2
+[[[], [O1, O10, O11, O12, O13, O14, O15, O2, O3, O4, O5, O6, O7, O8, O9]], [[Attr1], [O3, O6, O7, O8]], [[Attr10], [O11, O12, O13, O2, O6, O7, O9]], [[Attr11], [O10, O11, O15, O2, O3, O5, O7, O8]], [[Attr12], [O11, O12, O14, O2, O4, O6, O9]], [[Attr13], [O1, O10, O14, O15, O2, O3, O4, O5, O6, O7]], [[Attr14], [O12, O13, O14, O15, O4, O5, O9]], [[Attr15], [O1, O11, O13, O14, O2, O3, O6]], [[Attr2], [O10, O11, O13, O14, O2, O4, O5, O7, O9]], [[Attr4], [O1, O10, O11, O15, O2, O5, O7]], [[Attr5], [O1, O10, O12, O4, O5, O6, O8, O9]], [[Attr6], [O1, O10, O11, O12, O13, O14, O4, O5, O7, O8, O9]], [[Attr7], [O11, O6, O7, O8, O9]], [[Attr8], [O10, O13, O3, O5, O6, O7]], [[Attr9], [O1, O12, O13, O15, O3, O7, O9]], [[Attr1, Attr11], [O3, O7, O8]], [[Attr1, Attr7], [O6, O7, O8]], [[Attr10, Attr12], [O11, O12, O2, O6, O9]], [[Attr10, Attr13], [O2, O6, O7]], [[Attr10, Attr15], [O11, O13, O2, O6]], [[Attr10, Attr2], [O11, O13, O2, O7, O9]], [[Attr10, Attr6], [O11, O12, O13, O7, O9]], [[Attr10, Attr7], [O11, O6, O7, O9]], [[Attr10, Attr8], [O13, O6, O7]], [[Attr11, Attr13], [O10, O15, O2, O3, O5, O7]], [[Attr11, Attr15], [O11, O2, O3]], [[Attr11, Attr4], [O10, O11, O15, O2, O5, O7]], [[Attr11, Attr6], [O10, O11, O5, O7, O8]], [[Attr12, Attr13], [O14, O2, O4, O6]], [[Attr12, Attr15], [O11, O14, O2, O6]], [[Attr12, Attr2], [O11, O14, O2, O4, O9]], [[Attr12, Attr5], [O12, O4, O6, O9]], [[Attr12, Attr6], [O11, O12, O14, O4, O9]], [[Attr13, Attr14], [O14, O15, O4, O5]], [[Attr13, Attr15], [O1, O14, O2, O3, O6]], [[Attr13, Attr2], [O10, O14, O2, O4, O5, O7]], [[Attr13, Attr4], [O1, O10, O15, O2, O5, O7]], [[Attr13, Attr5], [O1, O10, O4, O5, O6]], [[Attr13, Attr6], [O1, O10, O14, O4, O5, O7]], [[Attr13, Attr8], [O10, O3, O5, O6, O7]], [[Attr13, Attr9], [O1, O15, O3, O7]], [[Attr14, Attr6], [O12, O13, O14, O4, O5, O9]], [[Attr14, Attr9], [O12, O13, O15, O9]], [[Attr15, Attr2], [O11, O13, O14, O2]], [[Attr15, Attr4], [O1, O11, O2]], [[Attr15, Attr6], [O1, O11, O13, O14]], [[Attr15, Attr8], [O13, O3, O6]], [[Attr15, Attr9], [O1, O13, O3]], [[Attr2, Attr6], [O10, O11, O13, O14, O4, O5, O7, O9]], [[Attr3, Attr8], [O13, O3, O5, O7]], [[Attr4, Attr6], [O1, O10, O11, O5, O7]], [[Attr5, Attr6], [O1, O10, O12, O4, O5, O8, O9]], [[Attr5, Attr7], [O6, O8, O9]], [[Attr6, Attr7], [O11, O7, O8, O9]], [[Attr6, Attr9], [O1, O12, O13, O7, O9]], [[Attr1, Attr13, Attr8], [O3, O6, O7]], [[Attr1, Attr5, Attr7], [O6, O8]], [[Attr10, Attr12, Attr15], [O11, O2, O6]], [[Attr10, Attr12, Attr2], [O11, O2, O9]], [[Attr10, Attr12, Attr5], [O12, O6, O9]], [[Attr10, Attr12, Attr6], [O11, O12, O9]], [[Attr10, Attr12, Attr7], [O11, O6, O9]], [[Attr10, Attr15, Attr2], [O11, O13, O2]], [[Attr10, Attr15, Attr8], [O13, O6]], [[Attr10, Attr2, Attr6], [O11, O13, O7, O9]], [[Attr10, Attr6, Attr9], [O12, O13, O7, O9]], [[Attr11, Attr13, Attr15], [O2, O3]], [[Attr11, Attr13, Attr4], [O10, O15, O2, O5, O7]], [[Attr11, Attr13, Attr8], [O10, O3, O5, O7]], [[Attr11, Attr13, Attr9], [O15, O3, O7]], [[Attr11, Attr2, Attr4], [O10, O11, O2, O5, O7]], [[Attr11, Attr5, Attr6], [O10, O5, O8]], [[Attr11, Attr6, Attr7], [O11, O7, O8]], [[Attr12, Attr13, Attr15], [O14, O2, O6]], [[Attr12, Attr13, Attr2], [O14, O2, O4]], [[Attr12, Attr13, Attr5], [O4, O6]], [[Attr12, Attr14, Attr6], [O12, O14, O4, O9]], [[Attr12, Attr15, Attr2], [O11, O14, O2]], [[Attr12, Attr2, Attr6], [O11, O14, O4, O9]], [[Attr13, Attr15, Attr4], [O1, O2]], [[Attr13, Attr15, Attr5], [O1, O6]], [[Attr13, Attr15, Attr6], [O1, O14]], [[Attr13, Attr15, Attr9], [O1, O3]], [[Attr13, Attr2, Attr6], [O10, O14, O4, O5, O7]], [[Attr13, Attr4, Attr6], [O1, O10, O5, O7]], [[Attr13, Attr4, Attr9], [O1, O15, O7]], [[Attr13, Attr5, Attr6], [O1, O10, O4, O5]], [[Attr13, Attr5, Attr8], [O10, O5, O6]], [[Attr14, Attr2, Attr6], [O13, O14, O4, O5, O9]], [[Attr14, Attr5, Attr6], [O12, O4, O5, O9]], [[Attr15, Attr2, Attr6], [O11, O13, O14]], [[Attr15, Attr4, Attr6], [O1, O11]], [[Attr15, Attr6, Attr9], [O1, O13]], [[Attr2, Attr5, Attr6], [O10, O4, O5, O9]], [[Attr2, Attr6, Attr8], [O10, O13, O5, O7]], [[Attr3, Attr8, Attr9], [O13, O3, O7]], [[Attr5, Attr6, Attr7], [O8, O9]], [[Attr5, Attr6, Attr9], [O1, O12, O9]], [[Attr1, Attr11, Attr6, Attr7], [O7, O8]], [[Attr1, Attr13, Attr15, Attr8], [O3, O6]], [[Attr10, Attr11, Attr2, Attr4], [O11, O2, O7]], [[Attr10, Attr12, Attr13, Attr15], [O2, O6]], [[Attr10, Attr12, Attr15, Attr7], [O11, O6]], [[Attr10, Attr12, Attr5, Attr7], [O6, O9]], [[Attr10, Attr14, Attr6, Attr9], [O12, O13, O9]], [[Attr10, Attr15, Attr2, Attr6], [O11, O13]], [[Attr10, Attr2, Attr6, Attr7], [O11, O7, O9]], [[Attr10, Attr2, Attr6, Attr9], [O13, O7, O9]], [[Attr11, Attr13, Attr14, Attr4], [O15, O5]], [[Attr11, Attr13, Attr2, Attr4], [O10, O2, O5, O7]], [[Attr11, Attr13, Attr3, Attr8], [O3, O5, O7]], [[Attr11, Attr13, Attr4, Attr9], [O15, O7]], [[Attr11, Attr2, Attr4, Attr6], [O10, O11, O5, O7]], [[Attr12, Attr13, Attr15, Attr2], [O14, O2]], [[Attr12, Attr14, Attr2, Attr6], [O14, O4, O9]], [[Attr12, Attr14, Attr5, Attr6], [O12, O4, O9]], [[Attr12, Attr15, Attr2, Attr6], [O11, O14]], [[Attr13, Attr14, Attr2, Attr6], [O14, O4, O5]], [[Attr13, Attr2, Attr5, Attr6], [O10, O4, O5]], [[Attr13, Attr4, Attr5, Attr6], [O1, O10, O5]], [[Attr13, Attr4, Attr6, Attr9], [O1, O7]], [[Attr14, Attr15, Attr2, Attr6], [O13, O14]], [[Attr14, Attr2, Attr5, Attr6], [O4, O5, O9]], [[Attr15, Attr3, Attr8, Attr9], [O13, O3]], [[Attr2, Attr3, Attr6, Attr8], [O13, O5, O7]], [[Attr1, Attr10, Attr13, Attr7, Attr8], [O6, O7]], [[Attr1, Attr11, Attr5, Attr6, Attr7], [O8]], [[Attr10, Attr11, Attr13, Attr2, Attr4], [O2, O7]], [[Attr10, Attr12, Attr2, Attr6, Attr7], [O11, O9]], [[Attr10, Attr14, Attr2, Attr6, Attr9], [O13, O9]], [[Attr10, Attr2, Attr6, Attr7, Attr9], [O7, O9]], [[Attr11, Attr13, Attr14, Attr4, Attr9], [O15]], [[Attr12, Attr13, Attr14, Attr2, Attr6], [O14, O4]], [[Attr12, Attr14, Attr2, Attr5, Attr6], [O4, O9]], [[Attr13, Attr14, Attr2, Attr5, Attr6], [O4, O5]], [[Attr14, Attr2, Attr3, Attr6, Attr8], [O13, O5]], [[Attr1, Attr11, Attr13, Attr3, Attr8, Attr9], [O3, O7]], [[Attr10, Attr11, Attr12, Attr15, Attr2, Attr4], [O11, O2]], [[Attr10, Attr11, Attr2, Attr4, Attr6, Attr7], [O11, O7]], [[Attr10, Attr12, Attr14, Attr5, Attr6, Attr9], [O12, O9]], [[Attr10, Attr2, Attr3, Attr6, Attr8, Attr9], [O13, O7]], [[Attr11, Attr13, Attr2, Attr4, Attr6, Attr8], [O10, O5, O7]], [[Attr12, Attr13, Attr14, Attr15, Attr2, Attr6], [O14]], [[Attr12, Attr13, Attr14, Attr2, Attr5, Attr6], [O4]], [[Attr13, Attr15, Attr4, Attr5, Attr6, Attr9], [O1]], [[Attr1, Attr11, Attr13, Attr15, Attr3, Attr8, Attr9], [O3]], [[Attr10, Attr11, Attr12, Attr13, Attr15, Attr2, Attr4], [O2]], [[Attr11, Attr13, Attr2, Attr3, Attr4, Attr6, Attr8], [O5, O7]], [[Attr11, Attr13, Attr2, Attr4, Attr5, Attr6, Attr8], [O10, O5]], [[Attr1, Attr10, Attr12, Attr13, Attr15, Attr5, Attr7, Attr8], [O6]], [[Attr10, Attr11, Attr12, Attr15, Attr2, Attr4, Attr6, Attr7], [O11]], [[Attr10, Attr12, Attr14, Attr2, Attr5, Attr6, Attr7, Attr9], [O9]], [[Attr10, Attr14, Attr15, Attr2, Attr3, Attr6, Attr8, Attr9], [O13]], [[Attr11, Attr13, Attr14, Attr2, Attr3, Attr4, Attr5, Attr6, Attr8], [O5]], [[Attr1, Attr10, Attr11, Attr13, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9], [O7]], [[Attr1, Attr10, Attr11, Attr12, Attr13, Attr14, Attr15, Attr2, Attr3, Attr4, Attr5, Attr6, Attr7, Attr8, Attr9], []]]
+
+```
+[[[], [O1, O10, O11, O12, O13, O14, O15, O2, O3, O4, O5, O6, O7, O8, O9]], [[Attr1], [O3, O6, O7, O8]], [[Attr10], [O11, O12, O13, O2, O6, O7, O9]], [[Attr11], [O10, O11, O15, O2, O3, O5, O7, O8]], [[Attr12], [O11, O12, O14, O2, O4, O6, O9]], [[Attr13], [O1, O10, O14, O15, O2, O3, O4, O5, O6, O7]], [[Attr14], [O12, O13, O14, O15, O4, O5, O9]], [[Attr15], [O1, O11, O13, O14, O2, O3, O6]], [[Attr2], [O10, O11, O13, O14, O2, O4, O5, O7, O9]], [[Attr4], [O1, O10, O11, O15, O2, O5, O7]], [[Attr5], [O1, O10, O12, O4, O5, O6, O8, O9]], [[Attr6], [O1, O10, O11, O12, O13, O14, O4, O5, O7, O8, O9]], [[Attr7], [O11, O6, O7, O8, O9]], [[Attr8], [O10, O13, O3, O5, O6, O7]], [[Attr9], [O1, O12, O13, O15, O3, O7, O9]], [[Attr1, Attr11], [O3, O7, O8]], [[Attr1, Attr7], [O6, O7, O8]], [[Attr10, Attr12], [O11, O12, O2, O6, O9]], [[Attr10, Attr13], [O2, O6, O7]], [[Attr10, Attr15], [O11, O13, O2, O6]], [[Attr10, Attr2], [O11, O13, O2, O7, O9]], [[Attr10, Attr6], [O11, O12, O13, O7, O9]], [[Attr10, Attr7], [O11, O6, O7, O9]], [[Attr10, Attr8], [O13, O6, O7]], [[Attr11, Attr13], [O10, O15, O2, O3, O5, O7]], [[Attr11, Attr15], [O11, O2, O3]], [[Attr11, Attr4], [O10, O11, O15, O2, O5, O7]], [[Attr11, Attr6], [O10, O11, O5, O7, O8]], [[Attr12, Attr13], [O14, O2, O4, O6]], [[Attr12, Attr15], [O11, O14, O2, O6]], [[Attr12, Attr2], [O11, O14, O2, O4, O9]], [[Attr12, Attr5], [O12, O4, O6, O9]], [[Attr12, Attr6], [O11, O12, O14, O4, O9]], [[Attr13, Attr14], [O14, O15, O4, O5]], [[Attr13, Attr15], [O1, O14, O2, O3, O6]], [[Attr13, Attr2], [O10, O14, O2, O4, O5, O7]], [[Attr13, Attr4], [O1, O10, O15, O2, O5, O7]], [[Attr13, Attr5], [O1, O10, O4, O5, O6]], [[Attr13, Attr6], [O1, O10, O14, O4, O5, O7]], [[Attr13, Attr8], [O10, O3, O5, O6, O7]], [[Attr13, Attr9], [O1, O15, O3, O7]], [[Attr14, Attr6], [O12, O13, O14, O4, O5, O9]], [[Attr14, Attr9], [O12, O13, O15, O9]], [[Attr15, Attr2], [O11, O13, O14, O2]], [[Attr15, Attr4], [O1, O11, O2]], [[Attr15, Attr6], [O1, O11, O13, O14]], [[Attr15, Attr8], [O13, O3, O6]], [[Attr15, Attr9], [O1, O13, O3]], [[Attr2, Attr6], [O10, O11, O13, O14, O4, O5, O7, O9]], [[Attr3, Attr8], [O13, O3, O5, O7]], [[Attr4, Attr6], [O1, O10, O11, O5, O7]], [[Attr5, Attr6], [O1, O10, O12, O4, O5, O8, O9]], [[Attr5, Attr7], [O6, O8, O9]], [[Attr6, Attr7], [O11, O7, O8, O9]], [[Attr6, Attr9], [O1, O12, O13, O7, O9]], [[Attr1, Attr13, Attr8], [O3, O6, O7]], [[Attr1, Attr5, Attr7], [O6, O8]], [[Attr10, Attr12, Attr15], [O11, O2, O6]], [[Attr10, Attr12, Attr2], [O11, O2, O9]], [[Attr10, Attr12, Attr5], [O12, O6, O9]], [[Attr10, Attr12, Attr6], [O11, O12, O9]], [[Attr10, Attr12, Attr7], [O11, O6, O9]], [[Attr10, Attr15, Attr2], [O11, O13, O2]], [[Attr10, Attr15, Attr8], [O13, O6]], [[Attr10, Attr2, Attr6], [O11, O13, O7, O9]], [[Attr10, Attr6, Attr9], [O12, O13, O7, O9]], [[Attr11, Attr13, Attr15], [O2, O3]], [[Attr11, Attr13, Attr4], [O10, O15, O2, O5, O7]], [[Attr11, Attr13, Attr8], [O10, O3, O5, O7]], [[Attr11, Attr13, Attr9], [O15, O3, O7]], [[Attr11, Attr2, Attr4], [O10, O11, O2, O5, O7]], [[Attr11, Attr5, Attr6], [O10, O5, O8]], [[Attr11, Attr6, Attr7], [O11, O7, O8]], [[Attr12, Attr13, Attr15], [O14, O2, O6]], [[Attr12, Attr13, Attr2], [O14, O2, O4]], [[Attr12, Attr13, Attr5], [O4, O6]], [[Attr12, Attr14, Attr6], [O12, O14, O4, O9]], [[Attr12, Attr15, Attr2], [O11, O14, O2]], [[Attr12, Attr2, Attr6], [O11, O14, O4, O9]], [[Attr13, Attr15, Attr4], [O1, O2]], [[Attr13, Attr15, Attr5], [O1, O6]], [[Attr13, Attr15, Attr6], [O1, O14]], [[Attr13, Attr15, Attr9], [O1, O3]], [[Attr13, Attr2, Attr6], [O10, O14, O4, O5, O7]], [[Attr13, Attr4, Attr6], [O1, O10, O5, O7]], [[Attr13, Attr4, Attr9], [O1, O15, O7]], [[Attr13, Attr5, Attr6], [O1, O10, O4, O5]], [[Attr13, Attr5, Attr8], [O10, O5, O6]], [[Attr14, Attr2, Attr6], [O13, O14, O4, O5, O9]], [[Attr14, Attr5, Attr6], [O12, O4, O5, O9]], [[Attr15, Attr2, Attr6], [O11, O13, O14]], [[Attr15, Attr4, Attr6], [O1, O11]], [[Attr15, Attr6, Attr9], [O1, O13]], [[Attr2, Attr5, Attr6], [O10, O4, O5, O9]], [[Attr2, Attr6, Attr8], [O10, O13, O5, O7]], [[Attr3, Attr8, Attr9], [O13, O3, O7]], [[Attr5, Attr6, Attr7], [O8, O9]], [[Attr5, Attr6, Attr9], [O1, O12, O9]], [[Attr1, Attr11, Attr6, Attr7], [O7, O8]], [[Attr1, Attr13, Attr15, Attr8], [O3, O6]], [[Attr10, Attr11, Attr2, Attr4], [O11, O2, O7]], [[Attr10, Attr12, Attr13, Attr15], [O2, O6]], [[Attr10, Attr12, Attr15, Attr7], [O11, O6]], [[Attr10, Attr12, Attr5, Attr7], [O6, O9]], [[Attr10, Attr14, Attr6, Attr9], [O12, O13, O9]], [[Attr10, Attr15, Attr2, Attr6], [O11, O13]], [[Attr10, Attr2, Attr6, Attr7], [O11, O7, O9]], [[Attr10, Attr2, Attr6, Attr9], [O13, O7, O9]], [[Attr11, Attr13, Attr14, Attr4], [O15, O5]], [[Attr11, Attr13, Attr2, Attr4], [O10, O2, O5, O7]], [[Attr11, Attr13, Attr3, Attr8], [O3, O5, O7]], [[Attr11, Attr13, Attr4, Attr9], [O15, O7]], [[Attr11, Attr2, Attr4, Attr6], [O10, O11, O5, O7]], [[Attr12, Attr13, Attr15, Attr2], [O14, O2]], [[Attr12, Attr14, Attr2, Attr6], [O14, O4, O9]], [[Attr12, Attr14, Attr5, Attr6], [O12, O4, O9]], [[Attr12, Attr15, Attr2, Attr6], [O11, O14]], [[Attr13, Attr14, Attr2, Attr6], [O14, O4, O5]], [[Attr13, Attr2, Attr5, Attr6], [O10, O4, O5]], [[Attr13, Attr4, Attr5, Attr6], [O1, O10, O5]], [[Attr13, Attr4, Attr6, Attr9], [O1, O7]], [[Attr14, Attr15, Attr2, Attr6], [O13, O14]], [[Attr14, Attr2, Attr5, Attr6], [O4, O5, O9]], [[Attr15, Attr3, Attr8, Attr9], [O13, O3]], [[Attr2, Attr3, Attr6, Attr8], [O13, O5, O7]], [[Attr1, Attr10, Attr13, Attr7, Attr8], [O6, O7]], [[Attr1, Attr11, Attr5, Attr6, Attr7], [O8]], [[Attr10, Attr11, Attr13, Attr2, Attr4], [O2, O7]], [[Attr10, Attr12, Attr2, Attr6, Attr7], [O11, O9]], [[Attr10, Attr14, Attr2, Attr6, Attr9], [O13, O9]], [[Attr10, Attr2, Attr6, Attr7, Attr9], [O7, O9]], [[Attr11, Attr13, Attr14, Attr4, Attr9], [O15]], [[Attr12, Attr13, Attr14, Attr2, Attr6], [O14, O4]], [[Attr12, Attr14, Attr2, Attr5, Attr6], [O4, O9]], [[Attr13, Attr14, Attr2, Attr5, Attr6], [O4, O5]], [[Attr14, Attr2, Attr3, Attr6, Attr8], [O13, O5]], [[Attr1, Attr11, Attr13, Attr3, Attr8, Attr9], [O3, O7]], [[Attr10, Attr11, Attr12, Attr15, Attr2, Attr4], [O11, O2]], [[Attr10, Attr11, Attr2, Attr4, Attr6, Attr7], [O11, O7]], [[Attr10, Attr12, Attr14, Attr5, Attr6, Attr9], [O12, O9]], [[Attr10, Attr2, Attr3, Attr6, Attr8, Attr9], [O13, O7]], [[Attr11, Attr13, Attr2, Attr4, Attr6, Attr8], [O10, O5, O7]], [[Attr12, Attr13, Attr14, Attr15, Attr2, Attr6], [O14]], [[Attr12, Attr13, Attr14, Attr2, Attr5, Attr6], [O4]], [[Attr13, Attr15, Attr4, Attr5, Attr6, Attr9], [O1]], [[Attr1, Attr11, Attr13, Attr15, Attr3, Attr8, Attr9], [O3]], [[Attr10, Attr11, Attr12, Attr13, Attr15, Attr2, Attr4], [O2]], [[Attr11, Attr13, Attr2, Attr3, Attr4, Attr6, Attr8], [O5, O7]], [[Attr11, Attr13, Attr2, Attr4, Attr5, Attr6, Attr8], [O10, O5]], [[Attr1, Attr10, Attr12, Attr13, Attr15, Attr5, Attr7, Attr8], [O6]], [[Attr10, Attr11, Attr12, Attr15, Attr2, Attr4, Attr6, Attr7], [O11]], [[Attr10, Attr12, Attr14, Attr2, Attr5, Attr6, Attr7, Attr9], [O9]], [[Attr10, Attr14, Attr15, Attr2, Attr3, Attr6, Attr8, Attr9], [O13]], [[Attr11, Attr13, Attr14, Attr2, Attr3, Attr4, Attr5, Attr6, Attr8], [O5]], [[Attr1, Attr10, Attr11, Attr13, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9], [O7]], [[Attr1, Attr10, Attr11, Attr12, Attr13, Attr14, Attr15, Attr2, Attr3, Attr4, Attr5, Attr6, Attr7, Attr8, Attr9], []]]

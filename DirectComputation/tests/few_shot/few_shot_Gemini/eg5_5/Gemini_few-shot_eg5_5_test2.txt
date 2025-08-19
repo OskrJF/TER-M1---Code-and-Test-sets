@@ -1,0 +1,257 @@
+Gemini_few-shot_eg5_5_test2
+
+Date: 27 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+Okay, I can help you extract and enumerate all lattice concepts from the provided CSV file.
+
+Formal Concept Analysis (FCA) identifies concepts as pairs (A, B), where A is a set of objects (extent) and B is a set of attributes (intent). The condition is that all objects in A share all attributes in B, no object outside A shares all attributes in B, and no attribute outside B is shared by all objects in A.
+
+Here's the process:
+1.  **Parse the CSV data**: The objects, attributes, and their relationships are extracted.
+2.  **Compute Closures**:
+    * For a set of objects O, its *intent* (O') is the set of all attributes shared by these objects.
+    * For a set of attributes A, its *extent* (A') is the set of all objects possessing these attributes.
+3.  **Identify Concepts**: A pair (Extent, Intent) is a formal concept if Extent' = Intent and Intent' = Extent. The algorithm iterates through all possible subsets of objects, calculates their intent, and then calculates the extent of that intent. This pair (Extent'', Intent') forms a concept.
+
+## Formal Context
+
+The provided CSV data[cite: 1]:
+```
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+```
+
+This translates to the following relationships:
+* **Objects**: {o1, o2, o3, o4, o5}
+* **Attributes**: {a1, a2, a3, a4, a5}
+* **Context**:
+    * o1: {a1, a3, a4}
+    * o2: {a3}
+    * o3: {a1, a2, a4, a5}
+    * o4: {a2, a5}
+    * o5: {a2}
+
+## Extracted Lattice Concepts
+
+Based on this context, the enumerated formal concepts are as follows. Each concept is represented as a list containing two lists: the first is the set of attributes (intent), and the second is the set of objects (extent).
+
+```python
+import csv
+import io
+import itertools
+
+def parse_csv_content(csv_content_string):
+    f = io.StringIO(csv_content_string)
+    reader = csv.reader(f, delimiter=';')
+    
+    header = next(reader)
+    attributes_list = header[1:]
+    
+    objects_dict = {}
+    objects_list = []
+    
+    for row in reader:
+        obj_name = row[0]
+        objects_list.append(obj_name)
+        obj_attrs = set()
+        for i, val in enumerate(row[1:]):
+            if val.lower() == 'yes':
+                obj_attrs.add(attributes_list[i])
+        objects_dict[obj_name] = obj_attrs
+        
+    return objects_list, attributes_list, objects_dict
+
+def get_prime_attributes(current_objects_set, objects_dict, all_attributes_set):
+    if not current_objects_set:
+        return all_attributes_set.copy()
+
+    shared_attributes = None
+    is_first = True
+    for obj in current_objects_set:
+        if obj not in objects_dict:
+            continue
+        if is_first:
+            shared_attributes = objects_dict[obj].copy()
+            is_first = False
+        else:
+            shared_attributes.intersection_update(objects_dict[obj])
+            
+    return shared_attributes if shared_attributes is not None else set()
+
+def get_prime_objects(current_attributes_set, objects_dict, all_objects_set):
+    if not current_attributes_set:
+        return all_objects_set.copy()
+        
+    matching_objects = set()
+    for obj, attrs in objects_dict.items():
+        if current_attributes_set.issubset(attrs):
+            matching_objects.add(obj)
+    return matching_objects
+
+def find_formal_concepts(objects_list, attributes_list, objects_dict):
+    all_objects_set = set(objects_list)
+    all_attributes_set = set(attributes_list)
+    
+    found_concepts = set()
+
+    for i in range(len(objects_list) + 1):
+        for obj_subset_tuple in itertools.combinations(objects_list, i):
+            current_obj_set = set(obj_subset_tuple)
+            
+            intent_b = get_prime_attributes(current_obj_set, objects_dict, all_attributes_set)
+            extent_a = get_prime_objects(intent_b, objects_dict, all_objects_set)
+            
+            concept_extent_sorted = sorted(list(extent_a))
+            concept_intent_sorted = sorted(list(intent_b))
+            
+            found_concepts.add((tuple(concept_extent_sorted), tuple(concept_intent_sorted)))
+            
+    result_list = []
+    for extent, intent in found_concepts:
+        result_list.append([list(intent), list(extent)])
+
+    result_list.sort(key=lambda x: (str(x[0]), str(x[1]))) # Sort by intent then extent
+            
+    return result_list
+
+csv_file_content = """Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no""" # [cite: 1]
+
+objects_list_data, attributes_list_data, objects_dict_data = parse_csv_content(csv_file_content)
+all_concepts_data = find_formal_concepts(objects_list_data, attributes_list_data, objects_dict_data)
+
+# For display
+import json
+print(json.dumps(all_concepts_data, indent=2))
+
+```
+```json
+[
+  [
+    [],
+    [
+      "o1",
+      "o2",
+      "o3",
+      "o4",
+      "o5"
+    ]
+  ],
+  [
+    [
+      "a1",
+      "a2",
+      "a3",
+      "a4",
+      "a5"
+    ],
+    []
+  ],
+  [
+    [
+      "a1",
+      "a2",
+      "a4",
+      "a5"
+    ],
+    [
+      "o3"
+    ]
+  ],
+  [
+    [
+      "a1",
+      "a3",
+      "a4"
+    ],
+    [
+      "o1"
+    ]
+  ],
+  [
+    [
+      "a1",
+      "a4"
+    ],
+    [
+      "o1",
+      "o3"
+    ]
+  ],
+  [
+    [
+      "a2"
+    ],
+    [
+      "o3",
+      "o4",
+      "o5"
+    ]
+  ],
+  [
+    [
+      "a2",
+      "a5"
+    ],
+    [
+      "o3",
+      "o4"
+    ]
+  ],
+  [
+    [
+      "a3"
+    ],
+    [
+      "o1",
+      "o2"
+    ]
+  ]
+]
+```
+
+The list of lattice concepts is:
+1.  `[[], [o1, o2, o3, o4, o5]]` (Bottom concept: all objects, common attributes to all of them - none)
+2.  `[[a1, a2, a3, a4, a5], []]` (Top concept: all attributes, common objects to all of them - none)
+3.  `[[a1, a2, a4, a5], [o3]]`
+4.  `[[a1, a3, a4], [o1]]`
+5.  `[[a1, a4], [o1, o3]]`
+6.  `[[a2], [o3, o4, o5]]`
+7.  `[[a2, a5], [o3, o4]]`
+8.  `[[a3], [o1, o2]]`
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[], [o1, o2, o3, o4, o5]], [[a1, a2, a3, a4, a5], []], [[a1, a2, a4, a5], [o3]], [[a1, a3, a4], [o1]], [[a1, a4], [o1, o3]], [[a2], [o3, o4, o5]], [[a2, a5], [o3, o4]], [[a3], [o1, o2]]]

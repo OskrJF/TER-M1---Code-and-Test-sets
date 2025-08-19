@@ -1,0 +1,72 @@
+Gemini_few-shot_eg2_3_test1
+
+Date: 27 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+Based on the provided CSV file[cite: 1], the formal context is defined as follows:
+Objects (G): {o1, o2}
+Attributes (M): {a1, a2, a3}
+
+The relationships (I) between objects and attributes are:
+* o1 has attributes a1, a2. [cite: 1]
+* o2 has attributes a2, a3. [cite: 1]
+
+This can be represented in a table:
+
+| Objet | a1  | a2  | a3  |
+|-------|-----|-----|-----|
+| o1    | yes | yes | no  | [cite: 1]
+| o2    | no  | yes | yes | [cite: 1]
+
+A formal concept is a pair (A, B), where A is a set of objects (extent) and B is a set of attributes (intent), such that A' = B and B' = A. Here, A' denotes the set of common attributes of objects in A, and B' denotes the set of objects that possess all attributes in B.
+
+The extracted lattice concepts are:
+
+1.  **Concept 1:**
+    * **Extent (Objects):** ∅ (empty set)
+    * **Intent (Attributes):** {a1, a2, a3}
+    * *Explanation:* The set of attributes common to no objects is, by definition, all attributes. The set of objects possessing all attributes {a1, a2, a3} is empty, as no single object has all three.
+
+2.  **Concept 2:**
+    * **Extent (Objects):** {o1} [cite: 1]
+    * **Intent (Attributes):** {a1, a2} [cite: 1]
+    * *Explanation:* Object o1 possesses attributes a1 and a2[cite: 1]. Object o1 is the only object that possesses both attributes a1 and a2 (o2 does not have a1)[cite: 1].
+
+3.  **Concept 3:**
+    * **Extent (Objects):** {o2} [cite: 1]
+    * **Intent (Attributes):** {a2, a3} [cite: 1]
+    * *Explanation:* Object o2 possesses attributes a2 and a3[cite: 1]. Object o2 is the only object that possesses both attributes a2 and a3 (o1 does not have a3)[cite: 1].
+
+4.  **Concept 4:**
+    * **Extent (Objects):** {o1, o2} [cite: 1]
+    * **Intent (Attributes):** {a2} [cite: 1]
+    * *Explanation:* The attribute common to both o1 and o2 is a2[cite: 1]. Both objects o1 and o2 possess attribute a2[cite: 1].
+
+These four pairs are all the formal concepts for the given context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]

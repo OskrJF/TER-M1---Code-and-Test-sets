@@ -1,0 +1,220 @@
+Deepseek_few-shot_eg8_8_test2
+
+Date: 27 may 2025
+Model: DeepSeek-V3 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+To enumerate all lattice concepts from the given context using Formal Concept Analysis (FCA), we follow these steps:
+
+1. **Identify the Formal Context**: The context consists of objects (O1 to O8) and attributes (a1 to a8), where each entry indicates whether an object has an attribute ("Yes") or not ("No").
+
+2. **Compute Formal Concepts**: A formal concept is a pair (A, B), where:
+   - A is a set of objects (extent).
+   - B is a set of attributes (intent).
+   - A is the set of all objects that share all attributes in B.
+   - B is the set of all attributes shared by all objects in A.
+
+3. **Generate All Concepts**: We systematically generate all possible combinations of attributes, compute their extents, and then verify if the pair (extent, intent) forms a concept.
+
+### List of All Lattice Concepts for the Given Context:
+
+1. **Concept 1**:  
+   - Intent: [a2]  
+   - Extent: [O1, O2, O3, O4, O5, O6, O7, O8]  
+
+2. **Concept 2**:  
+   - Intent: [a2, a3]  
+   - Extent: [O1, O2, O4, O6, O7, O8]  
+
+3. **Concept 3**:  
+   - Intent: [a2, a3, a4]  
+   - Extent: [O4, O7, O8]  
+
+4. **Concept 4**:  
+   - Intent: [a2, a3, a4, a5]  
+   - Extent: [O4, O7, O8]  
+
+5. **Concept 5**:  
+   - Intent: [a2, a3, a4, a5, a7]  
+   - Extent: [O7, O8]  
+
+6. **Concept 6**:  
+   - Intent: [a2, a3, a4, a7]  
+   - Extent: [O7, O8]  
+
+7. **Concept 7**:  
+   - Intent: [a2, a3, a6]  
+   - Extent: [O2, O3, O5]  
+
+8. **Concept 8**:  
+   - Intent: [a2, a3, a6, a8]  
+   - Extent: [O2]  
+
+9. **Concept 9**:  
+   - Intent: [a2, a3, a7]  
+   - Extent: [O6, O7, O8]  
+
+10. **Concept 10**:  
+    - Intent: [a2, a3, a8]  
+    - Extent: [O2, O4]  
+
+11. **Concept 11**:  
+    - Intent: [a2, a4]  
+    - Extent: [O3, O4, O5, O7, O8]  
+
+12. **Concept 12**:  
+    - Intent: [a2, a4, a5]  
+    - Extent: [O4, O5, O7, O8]  
+
+13. **Concept 13**:  
+    - Intent: [a2, a4, a5, a7]  
+    - Extent: [O5, O7, O8]  
+
+14. **Concept 14**:  
+    - Intent: [a2, a4, a6]  
+    - Extent: [O3, O5]  
+
+15. **Concept 15**:  
+    - Intent: [a2, a4, a6, a7]  
+    - Extent: [O5]  
+
+16. **Concept 16**:  
+    - Intent: [a2, a4, a7]  
+    - Extent: [O5, O7, O8]  
+
+17. **Concept 17**:  
+    - Intent: [a2, a4, a8]  
+    - Extent: [O4]  
+
+18. **Concept 18**:  
+    - Intent: [a2, a5]  
+    - Extent: [O4, O5, O6, O7, O8]  
+
+19. **Concept 19**:  
+    - Intent: [a2, a5, a7]  
+    - Extent: [O5, O6, O7, O8]  
+
+20. **Concept 20**:  
+    - Intent: [a2, a6]  
+    - Extent: [O2, O3, O5]  
+
+21. **Concept 21**:  
+    - Intent: [a2, a6, a7]  
+    - Extent: [O5]  
+
+22. **Concept 22**:  
+    - Intent: [a2, a6, a8]  
+    - Extent: [O2]  
+
+23. **Concept 23**:  
+    - Intent: [a2, a7]  
+    - Extent: [O5, O6, O7, O8]  
+
+24. **Concept 24**:  
+    - Intent: [a2, a8]  
+    - Extent: [O2, O4, O5]  
+
+25. **Concept 25**:  
+    - Intent: [a1, a2]  
+    - Extent: [O1, O2, O3, O6]  
+
+26. **Concept 26**:  
+    - Intent: [a1, a2, a3]  
+    - Extent: [O1, O2, O6]  
+
+27. **Concept 27**:  
+    - Intent: [a1, a2, a3, a6]  
+    - Extent: [O2]  
+
+28. **Concept 28**:  
+    - Intent: [a1, a2, a6]  
+    - Extent: [O2, O3]  
+
+29. **Concept 29**:  
+    - Intent: [a1, a2, a7]  
+    - Extent: [O6]  
+
+30. **Concept 30**:  
+    - Intent: [a1, a2, a3, a7]  
+    - Extent: [O6]  
+
+31. **Concept 31**:  
+    - Intent: []  
+    - Extent: [O1, O2, O3, O4, O5, O6, O7, O8]  
+
+32. **Concept 32**:  
+    - Intent: [a2, a3, a4, a5, a7, a8]  
+    - Extent: []  
+
+33. **Concept 33**:  
+    - Intent: [a2, a3, a4, a5, a6, a7, a8]  
+    - Extent: []  
+
+### Final Answer:
+The complete list of lattice concepts for the given context is:
+
+```python
+[
+    [["a2"], ["O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8"]],
+    [["a2", "a3"], ["O1", "O2", "O4", "O6", "O7", "O8"]],
+    [["a2", "a3", "a4"], ["O4", "O7", "O8"]],
+    [["a2", "a3", "a4", "a5"], ["O4", "O7", "O8"]],
+    [["a2", "a3", "a4", "a5", "a7"], ["O7", "O8"]],
+    [["a2", "a3", "a4", "a7"], ["O7", "O8"]],
+    [["a2", "a3", "a6"], ["O2", "O3", "O5"]],
+    [["a2", "a3", "a6", "a8"], ["O2"]],
+    [["a2", "a3", "a7"], ["O6", "O7", "O8"]],
+    [["a2", "a3", "a8"], ["O2", "O4"]],
+    [["a2", "a4"], ["O3", "O4", "O5", "O7", "O8"]],
+    [["a2", "a4", "a5"], ["O4", "O5", "O7", "O8"]],
+    [["a2", "a4", "a5", "a7"], ["O5", "O7", "O8"]],
+    [["a2", "a4", "a6"], ["O3", "O5"]],
+    [["a2", "a4", "a6", "a7"], ["O5"]],
+    [["a2", "a4", "a7"], ["O5", "O7", "O8"]],
+    [["a2", "a4", "a8"], ["O4"]],
+    [["a2", "a5"], ["O4", "O5", "O6", "O7", "O8"]],
+    [["a2", "a5", "a7"], ["O5", "O6", "O7", "O8"]],
+    [["a2", "a6"], ["O2", "O3", "O5"]],
+    [["a2", "a6", "a7"], ["O5"]],
+    [["a2", "a6", "a8"], ["O2"]],
+    [["a2", "a7"], ["O5", "O6", "O7", "O8"]],
+    [["a2", "a8"], ["O2", "O4", "O5"]],
+    [["a1", "a2"], ["O1", "O2", "O3", "O6"]],
+    [["a1", "a2", "a3"], ["O1", "O2", "O6"]],
+    [["a1", "a2", "a3", "a6"], ["O2"]],
+    [["a1", "a2", "a6"], ["O2", "O3"]],
+    [["a1", "a2", "a7"], ["O6"]],
+    [["a1", "a2", "a3", "a7"], ["O6"]],
+    [[], ["O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8"]],
+    [["a2", "a3", "a4", "a5", "a7", "a8"], []],
+    [["a2", "a3", "a4", "a5", "a6", "a7", "a8"], []]
+]
+```
+
+This list represents all possible formal concepts derived from the given context. Each concept is a pair of attributes (intent) and objects (extent) that satisfy the conditions of FCA.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a2, a3], [O1, O2, O4, O6, O7, O8]], [[a2, a4], [O3, O4, O5, O7, O8]], [[a2, a5], [O4, O5, O6, O7, O8]], [[a2, a6], [O2, O3, O5]], [[a2, a7], [O5, O6, O7, O8]], [[a2, a8], [O2, O4, O5]], [[a1, a2, a3], [O1, O2, O6]], [[a1, a2, a6], [O2, O3]], [[a1, a2, a7], [O6]], [[a2, a3, a4], [O4, O7, O8]], [[a2, a3, a6], [O2, O3, O5]], [[a2, a3, a7], [O6, O7, O8]], [[a2, a3, a8], [O2, O4]], [[a2, a4, a5], [O4, O5, O7, O8]], [[a2, a4, a6], [O3, O5]], [[a2, a4, a7], [O5, O7, O8]], [[a2, a4, a8], [O4]], [[a2, a5, a7], [O5, O6, O7, O8]], [[a2, a6, a7], [O5]], [[a2, a6, a8], [O2]], [[a1, a2, a3, a6], [O2]], [[a1, a2, a3, a7], [O6]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a3, a4, a7], [O7, O8]], [[a2, a3, a4, a8], []], [[a2, a3, a6, a8], [O2]], [[a2, a4, a5, a7], [O5, O7, O8]], [[a2, a4, a6, a7], [O5]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a2, a3, a4, a5, a7, a8], []], [[a2, a3, a4, a5, a6, a7, a8], []]]

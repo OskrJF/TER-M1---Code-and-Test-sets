@@ -1,0 +1,870 @@
+Gemini_few-shot_eg8_8_test2
+
+Date: 27 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+```python?code_reference&code_event_index=2
+import pandas as pd
+from itertools import combinations
+
+# Load the dataframe.
+df_eg8_8 = pd.read_csv(filename="uploaded/eg8_8.csv", sep=';', index_col=0)
+
+# Print some info.
+print("DataFrame head:")
+print(df_eg8_8.head())
+print("\nDataFrame info:")
+df_eg8_8.info()
+
+# Display the dataframe to understand its structure
+print("\nDataFrame content:")
+print(df_eg8_8)
+```
+```text?code_stderr&code_event_index=2
+Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+  File "_decorators.py", line 211, in wrapper
+    return func(*args, **kwargs)
+  File "_decorators.py", line 331, in wrapper
+    return func(*args, **kwargs)
+TypeError: read_csv() got an unexpected keyword argument 'filename'
+
+```
+```python?code_reference&code_event_index=6
+import pandas as pd
+from itertools import combinations
+
+# Load the dataframe.
+try:
+    df_eg8_8 = pd.read_csv("uploaded/eg8_8.csv", sep=';', index_col=0)
+
+    # Print some info.
+    print("DataFrame head:")
+    print(df_eg8_8.head())
+    print("\nDataFrame info:")
+    df_eg8_8.info()
+
+    # Display the dataframe to understand its structure
+    print("\nDataFrame content:")
+    print(df_eg8_8)
+
+    # Preprocessing: Convert 'yes'/'no' to boolean (True/False)
+    # Assuming 'yes' means True and anything else (like 'no' or NaN) means False
+    context_matrix = df_eg8_8.applymap(lambda x: x.strip().lower() == 'yes' if isinstance(x, str) else False)
+
+    print("\nProcessed Context Matrix (boolean):")
+    print(context_matrix.head())
+
+    objects = list(context_matrix.index)
+    attributes = list(context_matrix.columns)
+
+    print(f"\nObjects (G): {objects}")
+    print(f"Attributes (M): {attributes}")
+
+    # Galois connection operators
+    def get_intent(object_subset_indices, current_context_matrix, all_attributes):
+        """Given a subset of objects (by index), return their common attributes."""
+        if not object_subset_indices:
+            return frozenset(all_attributes) # Or an empty set, depending on definition of intent of empty set.
+                                           # For concept lattice, intent of empty set of objects is all attributes.
+        
+        # Convert object names to their actual presence in the context
+        actual_object_subset = [obj_name for i, obj_name in enumerate(objects) if i in object_subset_indices]
+        if not actual_object_subset: # if indices were out of bounds or mapped to no valid objects
+             return frozenset(all_attributes)
+
+
+        shared_attributes = set(all_attributes)
+        first = True
+        for obj_name in actual_object_subset:
+            if obj_name not in current_context_matrix.index:
+                continue # Should not happen if object_subset_indices are derived correctly
+            
+            obj_attributes = set()
+            for attr in all_attributes:
+                if current_context_matrix.loc[obj_name, attr]:
+                    obj_attributes.add(attr)
+            
+            if first:
+                shared_attributes = obj_attributes
+                first = False
+            else:
+                shared_attributes.intersection_update(obj_attributes)
+        return frozenset(shared_attributes)
+
+    def get_extent(attribute_subset, current_context_matrix, all_objects):
+        """Given a subset of attributes, return objects that have all these attributes."""
+        if not attribute_subset:
+             return frozenset(all_objects) # Extent of empty set of attributes is all objects.
+
+        common_objects = set()
+        first_obj_iteration = True
+        for obj_name in all_objects:
+            has_all_attributes = True
+            for attr in attribute_subset:
+                if attr not in current_context_matrix.columns or not current_context_matrix.loc[obj_name, attr]:
+                    has_all_attributes = False
+                    break
+            if has_all_attributes:
+                common_objects.add(obj_name)
+        return frozenset(common_objects)
+
+    # Find all formal concepts
+    formal_concepts = set() # Use a set of tuples (frozenset_extent, frozenset_intent) to store concepts
+
+    # Iterate through all non-empty subsets of objects
+    # Using object names directly now.
+    num_objects = len(objects)
+    for i in range(1, 1 << num_objects): # Iterate from 1 to 2^num_objects - 1
+        current_object_subset_names = []
+        for j in range(num_objects):
+            if (i >> j) & 1:
+                current_object_subset_names.append(objects[j])
+        
+        current_object_subset_fset = frozenset(current_object_subset_names)
+
+        # Calculate intent: B = A'
+        intent_b = set()
+        if current_object_subset_fset: # if not empty
+            first_obj = True
+            for obj_name in current_object_subset_fset:
+                obj_attrs = {attr for attr in attributes if context_matrix.loc[obj_name, attr]}
+                if first_obj:
+                    intent_b = obj_attrs
+                    first_obj = False
+                else:
+                    intent_b.intersection_update(obj_attrs)
+        intent_b_fset = frozenset(intent_b)
+        
+        # Calculate extent of the intent: A_check = B'
+        extent_a_check = set()
+        if not intent_b_fset: # If intent is empty, its extent is all objects
+            extent_a_check = set(objects)
+        else:
+            for obj_name in objects:
+                obj_has_all_attrs_in_intent = True
+                for attr_in_intent in intent_b_fset:
+                    if not context_matrix.loc[obj_name, attr_in_intent]:
+                        obj_has_all_attrs_in_intent = False
+                        break
+                if obj_has_all_attrs_in_intent:
+                    extent_a_check.add(obj_name)
+        extent_a_check_fset = frozenset(extent_a_check)
+
+        # If A_check == current_object_subset, then (A, B) is a concept
+        if extent_a_check_fset == current_object_subset_fset:
+            # Sort for consistent output, as per example
+            sorted_extent = sorted(list(extent_a_check_fset))
+            sorted_intent = sorted(list(intent_b_fset))
+            formal_concepts.add((tuple(sorted_extent), tuple(sorted_intent)))
+
+    # Add the concept for all objects (if not already found) -> intent is common attributes to ALL objects
+    all_obj_fset = frozenset(objects)
+    intent_all_obj = set(attributes)
+    if objects: # if there are any objects
+        first_obj = True
+        for obj_name in all_obj_fset:
+            obj_attrs = {attr for attr in attributes if context_matrix.loc[obj_name, attr]}
+            if first_obj:
+                intent_all_obj = obj_attrs
+                first_obj = False
+            else:
+                intent_all_obj.intersection_update(obj_attrs)
+    else: # no objects
+        intent_all_obj = set()
+        
+    intent_all_obj_fset = frozenset(intent_all_obj)
+    # extent_all_obj_intent = get_extent(intent_all_obj_fset, context_matrix, objects) # this should be all_obj_fset
+    # We add (all_objects, common_attributes_to_all_objects)
+    # And (common_objects_to_all_attributes, all_attributes)
+    
+    # Concept 1: (G, G') - Extent: all objects, Intent: attributes common to all objects
+    concept1_extent = frozenset(objects)
+    concept1_intent_set = set(attributes)
+    if objects:
+        first = True
+        for obj_name in objects:
+            obj_attrs = {attr for attr in attributes if context_matrix.loc[obj_name, attr]}
+            if first:
+                concept1_intent_set = obj_attrs
+                first = False
+            else:
+                concept1_intent_set.intersection_update(obj_attrs)
+    else: # no objects
+        concept1_intent_set = set()
+        
+    formal_concepts.add((tuple(sorted(list(concept1_extent))), tuple(sorted(list(concept1_intent_set)))))
+
+    # Concept 2: (M', M) - Extent: objects common to all attributes, Intent: all attributes
+    concept2_intent = frozenset(attributes)
+    concept2_extent_set = set(objects)
+    if attributes:
+        for obj_name in objects:
+            has_all_attrs = True
+            for attr_name in attributes:
+                if not context_matrix.loc[obj_name, attr_name]:
+                    has_all_attrs = False
+                    break
+            if not has_all_attrs:
+                concept2_extent_set.discard(obj_name) # if obj doesn't have all attrs, remove it
+    else: # no attributes
+        concept2_extent_set = set(objects) # all objects have all (zero) attributes
+
+    formal_concepts.add((tuple(sorted(list(concept2_extent_set))), tuple(sorted(list(concept2_intent)))))
+    
+    # Re-check the algorithm for concept generation.
+    # A standard approach is to iterate through subsets of objects (or attributes),
+    # compute closure, and add if unique.
+
+    # Using a more robust algorithm based on iterating intents (subsets of attributes)
+    # or extents (subsets of objects) and applying both derivation operators.
+    
+    calculated_concepts = set()
+
+    # Option A: Iterate through all subsets of objects (Extents)
+    for i in range(1 << len(objects)): # Iterate 0 to 2^N - 1 for objects
+        obj_subset_names = []
+        for j in range(len(objects)):
+            if (i >> j) & 1:
+                obj_subset_names.append(objects[j])
+        
+        current_extent = frozenset(obj_subset_names)
+        
+        # Calculate intent_X = X'
+        if not current_extent: # Intent of empty set of objects is M (all attributes)
+            current_intent = frozenset(attributes)
+        else:
+            intent_set = set(attributes)
+            first = True
+            for obj_name in current_extent:
+                obj_attrs = {attr for attr in attributes if context_matrix.loc[obj_name, attr]}
+                if first:
+                    intent_set = obj_attrs
+                    first = False
+                else:
+                    intent_set.intersection_update(obj_attrs)
+            current_intent = frozenset(intent_set)
+            
+        # Calculate extent_intent_X = (intent_X)' = X''
+        if not current_intent: # Extent of empty set of attributes is G (all objects)
+            extent_closure = frozenset(objects)
+        else:
+            extent_closure_set = set()
+            for obj_name in objects:
+                has_all_attrs = True
+                for attr_name in current_intent:
+                    if not context_matrix.loc[obj_name, attr_name]:
+                        has_all_attrs = False
+                        break
+                if has_all_attrs:
+                    extent_closure_set.add(obj_name)
+            extent_closure = frozenset(extent_closure_set)
+        
+        # If extent_closure == current_extent, then (current_extent, current_intent) is a concept.
+        # No, this is not correct. A concept (A,B) is such that A' = B and B' = A.
+        # We calculated A (current_extent), then B = A' (current_intent).
+        # Then we need to check if B' = A. So if get_extent(current_intent) == current_extent.
+        # The calculated extent_closure IS B'. So we need extent_closure == current_extent.
+        
+        # No, the condition is simpler: (X'', X') is always a concept for any X subset of G.
+        # So (extent_closure, current_intent) is the concept.
+        
+        # Store as (sorted_tuple_extent, sorted_tuple_intent)
+        sorted_extent = tuple(sorted(list(extent_closure)))
+        sorted_intent = tuple(sorted(list(current_intent)))
+        calculated_concepts.add((sorted_extent, sorted_intent))
+
+    # Format the output as requested: [[list_intent, list_extent], ...]
+    # The example shows: [[[attributes], [objects]], ...]
+    # So it's [[intent_list, extent_list], ...]
+    
+    # Sort concepts for consistent output, e.g., by size of intent, then by content.
+    # The example output does not seem to have a very strict sorting order,
+    # but sorting helps in comparing results.
+    # Sorting by first element of intent, then by first element of extent
+    
+    # The example: [[a9], [o1, o2, o3]] -> intent=[a9], extent=[o1,o2,o3]
+    # My tuples are (extent, intent). So ( (o1,o2,o3), (a9,) )
+    
+    output_list = []
+    for extent_tuple, intent_tuple in calculated_concepts:
+        output_list.append([list(intent_tuple), list(extent_tuple)])
+        
+    # Sort the list of concepts. The example's sorting is not obvious.
+    # Let's sort by the intent list (attributes) first, then by the extent list (objects).
+    # Convert lists to string representations for sorting to mimic a common practice.
+    output_list.sort(key=lambda x: (str(x[0]), str(x[1])))
+
+
+    print("\nList of Lattice Concepts:")
+    # Standard representation for a concept is (Extent, Intent)
+    # The example wants [[Intent], [Extent]]
+    
+    # Let's re-verify the example:
+    # For the next context
+    # ;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+    # o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+    # o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+    # o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+    #
+    # the list of lattice concepts is the next
+    # [[[a9], [o1, o2, o3]],                         # C1: Intent={a9}, Extent={o1,o2,o3}
+    #  [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]],  # C2: Intent={a1,a3,a5,a8,a9,a12,a13,a14}, Extent={o2}
+    #  [[a1..a16], []],                              # C3: Intent={all attributes}, Extent={} (empty set of objects) -> This is (M, M')
+    #  [[a2, a5, a7, a9, a10, a12], [o3]],           # C4
+    #  [[a5, a9, a12], [o2, o3]],                    # C5
+    #  [[a9, a11, a14, a15], [o1]],                  # C6
+    #  [[a9, a14], [o1, o2]]]                        # C7
+
+    # My current `calculated_concepts` stores (extent_tuple, intent_tuple)
+    # So when I create `output_list`, it is `[[list(intent_tuple), list(extent_tuple)]]` which matches the example format.
+
+    # Let's test the specific example concept: C1: Intent={a9}, Extent={o1,o2,o3}
+    # objects_o1_o2_o3 = {'o1', 'o2', 'o3'}
+    #   o1 has {a9, a11, a14, a15}
+    #   o2 has {a1, a3, a5, a8, a9, a12, a13, a14}
+    #   o3 has {a2, a5, a7, a9, a10, a12}
+    #   Intent({o1,o2,o3}) = {a9} (Intersection)
+    # attributes_a9 = {'a9'}
+    #   Extent({a9}):
+    #     o1 has a9? Yes
+    #     o2 has a9? Yes
+    #     o3 has a9? Yes
+    #   So Extent({a9}) = {o1,o2,o3}
+    #   So ({o1,o2,o3}, {a9}) is a concept. In output format: [[a9], [o1,o2,o3]] - matches.
+
+    # Let's test C3: [[a1..a16], []]
+    # This means Intent = {all attributes}, Extent = {} (empty set of objects)
+    # This is the concept (M', M) where M' is the set of objects that have ALL attributes.
+    # If no object has all attributes, then M' is empty.
+    # This corresponds to iterating with an object_subset that is empty.
+    # If current_extent is empty (i=0 in my loop), then:
+    #   current_intent = frozenset(attributes)  (i.e. M)
+    #   extent_closure = get_extent(frozenset(attributes), ...) (i.e. M')
+    # So the concept is (M', M).
+    # Example has [[attributes], []], implying extent is empty.
+    # This means objects_common_to_all_attributes is empty.
+
+    # My loop `for i in range(1 << len(objects))` covers the empty set of objects (when i=0).
+    # When i=0, current_extent = frozenset().
+    # current_intent = frozenset(attributes). (All attributes, M)
+    # extent_closure = get_extent(frozenset(attributes), ...) (Objects that have all attributes, M')
+    # The concept added is (M', M).
+    # Example: Intent = [a1..a16], Extent = []. This means M' is empty.
+    # So the concept is ( {}, {a1..a16} ).
+    # This is correctly added.
+
+    # What about the top concept (G, G')?
+    # G' is attributes common to all objects.
+    # This concept is (G, G'). In output: [[G'], [G]].
+    # This is generated when `current_intent` becomes G' (attributes common to all objects).
+    # Then `extent_closure` for G' must be G.
+    # Example does not show a concept like [[attributes common to all objects], [all objects]].
+    # Example shows [[a1..a16], []]. This is the bottom concept (M', M) assuming M' is empty.
+    # The top concept (G, G') is usually (all objects, attributes common to all objects).
+    # The example output format: [[Intent attributes], [Extent objects]]
+
+    # Let's check the provided example's context and concepts
+    # o1: a9,a11,a14,a15
+    # o2: a1,a3,a5,a8,a9,a12,a13,a14
+    # o3: a2,a5,a7,a9,a10,a12
+
+    # All objects = {o1,o2,o3}
+    # G' = Intent({o1,o2,o3}) = {a9,a11,a14,a15} intersect {a1,a3,a5,a8,a9,a12,a13,a14} intersect {a2,a5,a7,a9,a10,a12}
+    # G' = {a9}
+    # So, top concept related to objects is ({o1,o2,o3}, {a9}).
+    # In output format: [[[a9], [o1,o2,o3]]]. This is the first concept in the example. This seems correct.
+
+    # All attributes = {a1..a16}
+    # M' = Extent({a1..a16}) = objects that have ALL attributes.
+    # Does any object have all a1..a16? Likely no. So M' = {}
+    # The bottom concept related to attributes is ({}, {a1..a16}).
+    # In output format: [[[a1..a16], []]]. This is the third concept in the example. This seems correct.
+
+    # So my `calculated_concepts` set which stores `(extent_tuple, intent_tuple)` should be correct.
+    # And `output_list.append([list(intent_tuple), list(extent_tuple)])` matches the required format.
+
+    # The sorting needs to match the example if possible, or be deterministic.
+    # Example sort order:
+    # 1. [[a9], [o1, o2, o3]]
+    # 2. [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]]
+    # 3. [[a1,...,a16], []] (assuming it's sorted attribute list)
+    # 4. [[a2, a5, a7, a9, a10, a12], [o3]]
+    # 5. [[a5, a9, a12], [o2, o3]]
+    # 6. [[a9, a11, a14, a15], [o1]]
+    # 7. [[a9, a14], [o1, o2]]
+
+    # This sorting seems arbitrary or based on some internal generation order.
+    # I will sort by intent length, then intent content, then extent length, then extent content for determinism.
+
+    output_list.sort(key=lambda concept: (
+        len(concept[0]), # length of intent
+        str(concept[0]), # content of intent (attributes)
+        len(concept[1]), # length of extent
+        str(concept[1])  # content of extent (objects)
+    ))
+    
+    print(output_list)
+
+except FileNotFoundError:
+    print(f"Error: The file 'uploaded/eg8_8.csv' was not found.")
+except pd.errors.EmptyDataError:
+    print("Error: The CSV file is empty.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+    import traceback
+    traceback.print_exc()
+```
+```text?code_stdout&code_event_index=6
+Error: The file 'uploaded/eg8_8.csv' was not found.
+
+```
+```python?code_reference&code_event_index=10
+import pandas as pd
+from itertools import combinations
+
+# Load the dataframe.
+file_path = "eg8_8.csv" # Use the fileName directly
+
+try:
+    df_eg8_8 = pd.read_csv(file_path, sep=';', index_col=0)
+
+    print("DataFrame head:")
+    print(df_eg8_8.head())
+    print("\nDataFrame info:")
+    df_eg8_8.info()
+
+    # Preprocessing: Convert 'yes'/'no' to boolean (True/False)
+    context_matrix = df_eg8_8.applymap(lambda x: x.strip().lower() == 'yes' if isinstance(x, str) else False)
+
+    print("\nProcessed Context Matrix (boolean):")
+    print(context_matrix.head())
+
+    objects = list(context_matrix.index)
+    attributes = list(context_matrix.columns)
+
+    print(f"\nObjects (G): {objects}")
+    print(f"Attributes (M): {attributes}")
+
+    calculated_concepts = set() # Stores (tuple_sorted_extent, tuple_sorted_intent)
+
+    # Iterate through all subsets of objects (power set of G)
+    # This includes the empty set of objects.
+    num_objects = len(objects)
+    for i in range(1 << num_objects):
+        current_extent_list = []
+        for j in range(num_objects):
+            if (i >> j) & 1:
+                current_extent_list.append(objects[j])
+        
+        current_extent = frozenset(current_extent_list)
+        
+        # Calculate intent: B = A' (where A is current_extent)
+        # If A (current_extent) is empty, its intent B is M (all attributes).
+        if not current_extent:
+            current_intent_set = set(attributes)
+        else:
+            # Initialize intent with attributes of the first object in the current_extent
+            # Then intersect with attributes of subsequent objects.
+            first_obj_in_subset = True
+            current_intent_set = set() 
+            for obj_name in current_extent:
+                obj_attrs = {attr for attr in attributes if context_matrix.loc[obj_name, attr]}
+                if first_obj_in_subset:
+                    current_intent_set = obj_attrs
+                    first_obj_in_subset = False
+                else:
+                    current_intent_set.intersection_update(obj_attrs)
+        current_intent = frozenset(current_intent_set)
+            
+        # Calculate extent_closure: A_check = B' (where B is current_intent)
+        # This A_check is the extent part of the concept (A_check, B).
+        # If B (current_intent) is empty, its extent A_check is G (all objects).
+        if not current_intent:
+            extent_closure_set = set(objects)
+        else:
+            extent_closure_set = set()
+            for obj_name in objects: # Check all objects in G
+                obj_has_all_attrs_in_intent = True
+                for attr_in_intent in current_intent:
+                    if not context_matrix.loc[obj_name, attr_in_intent]:
+                        obj_has_all_attrs_in_intent = False
+                        break
+                if obj_has_all_attrs_in_intent:
+                    extent_closure_set.add(obj_name)
+        extent_closure = frozenset(extent_closure_set)
+        
+        # The formal concept is (extent_closure, current_intent)
+        # (A'', A') is always a concept for any A subset G.
+        # Here, A = current_extent, A' = current_intent, A'' = extent_closure
+        
+        sorted_extent_tuple = tuple(sorted(list(extent_closure)))
+        sorted_intent_tuple = tuple(sorted(list(current_intent)))
+        calculated_concepts.add((sorted_extent_tuple, sorted_intent_tuple))
+
+    # Format the output as requested: [[list_intent, list_extent], ...]
+    output_list = []
+    for extent_tuple, intent_tuple in calculated_concepts:
+        output_list.append([list(intent_tuple), list(extent_tuple)])
+        
+    # Sort the list of concepts for deterministic output.
+    # Sorting by:
+    # 1. Number of attributes in intent (ascending)
+    # 2. String representation of sorted intent attributes (lexicographical)
+    # 3. Number of objects in extent (ascending)
+    # 4. String representation of sorted extent objects (lexicographical)
+    output_list.sort(key=lambda concept: (
+        len(concept[0]), 
+        str(concept[0]),  
+        len(concept[1]), 
+        str(concept[1])   
+    ))
+
+    print("\nList of Lattice Concepts (Intent, Extent):")
+    # Print in the specified format: [[[attributes], [objects]], ...]
+    # This matches the structure of output_list items.
+    final_output_string = "["
+    for i, concept in enumerate(output_list):
+        intent_str = str(concept[0]).replace("'", "") # Remove quotes from list elements
+        extent_str = str(concept[1]).replace("'", "")
+        final_output_string += f"[{intent_str}, {extent_str}]"
+        if i < len(output_list) - 1:
+            final_output_string += ", "
+    final_output_string += "]"
+    print(final_output_string)
+
+except FileNotFoundError:
+    print(f"Error: The file '{file_path}' was not found. Please ensure the file name is correct and it's in the accessible path.")
+except pd.errors.EmptyDataError:
+    print(f"Error: The CSV file '{file_path}' is empty.")
+except Exception as e:
+    print(f"An error occurred while processing the file '{file_path}': {e}")
+    import traceback
+    traceback.print_exc()
+```
+```text?code_stdout&code_event_index=10
+DataFrame head:
+        a1   a2   a3   a4   a5   a6   a7   a8
+Objet                                        
+O1     Yes  Yes  Yes   No   No   No   No   No
+O2     Yes  Yes  Yes   No   No  Yes   No  Yes
+O3     Yes  Yes   No  Yes   No  Yes   No   No
+O4      No  Yes  Yes  Yes  Yes   No   No  Yes
+O5      No  Yes   No  Yes   No  Yes  Yes  Yes
+
+DataFrame info:
+<class 'pandas.core.frame.DataFrame'>
+Index: 8 entries, O1 to O8
+Data columns (total 8 columns):
+ #   Column  Non-Null Count  Dtype 
+---  ------  --------------  ----- 
+ 0   a1      8 non-null      object
+ 1   a2      8 non-null      object
+ 2   a3      8 non-null      object
+ 3   a4      8 non-null      object
+ 4   a5      8 non-null      object
+ 5   a6      8 non-null      object
+ 6   a7      8 non-null      object
+ 7   a8      8 non-null      object
+dtypes: object(8)
+memory usage: 576.0+ bytes
+
+Processed Context Matrix (boolean):
+          a1    a2     a3     a4     a5     a6     a7     a8
+Objet                                                       
+O1      True  True   True  False  False  False  False  False
+O2      True  True   True  False  False   True  False   True
+O3      True  True  False   True  False   True  False  False
+O4     False  True   True   True   True  False  False   True
+O5     False  True  False   True  False   True   True   True
+
+Objects (G): ['O1', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7', 'O8']
+Attributes (M): ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8']
+
+List of Lattice Concepts (Intent, Extent):
+[[[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a2, a3], [O1, O2, O4, O6, O7, O8]], [[a2, a4], [O3, O4, O5, O7, O8]], [[a2, a6], [O2, O3, O5]], [[a2, a7], [O5, O6, O7, O8]], [[a2, a8], [O2, O4, O5]], [[a1, a2, a3], [O1, O2, O6]], [[a1, a2, a6], [O2, O3]], [[a2, a3, a5], [O4, O6, O7, O8]], [[a2, a3, a8], [O2, O4]], [[a2, a4, a6], [O3, O5]], [[a2, a4, a7], [O5, O7, O8]], [[a2, a4, a8], [O4, O5]], [[a2, a6, a8], [O2, O5]], [[a1, a2, a4, a6], [O3]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a3, a5, a7], [O6, O7, O8]], [[a1, a2, a3, a5, a7], [O6]], [[a1, a2, a3, a6, a8], [O2]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a2, a3, a4, a5, a8], [O4]], [[a2, a4, a6, a7, a8], [O5]], [[a1, a2, a3, a4, a5, a6, a7, a8], []]]
+
+```
+Here are the lattice concepts extracted from your CSV file `eg8_8.csv`:
+
+## Formal Concepts
+
+The concepts are presented in the format `[[intent_attributes], [extent_objects]]`. The list has been sorted based on the size and content of the intents, followed by the size and content of the extents, to ensure a consistent order.
+
+```
+[[[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a2, a3], [O1, O2, O4, O6, O7, O8]], [[a2, a4], [O3, O4, O5, O7, O8]], [[a2, a6], [O2, O3, O5]], [[a2, a7], [O5, O6, O7, O8]], [[a2, a8], [O2, O4, O5]], [[a1, a2, a3], [O1, O2, O6]], [[a1, a2, a6], [O2, O3]], [[a2, a3, a5], [O4, O6, O7, O8]], [[a2, a3, a8], [O2, O4]], [[a2, a4, a6], [O3, O5]], [[a2, a4, a7], [O5, O7, O8]], [[a2, a4, a8], [O4, O5]], [[a2, a6, a8], [O2, O5]], [[a1, a2, a4, a6], [O3]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a3, a5, a7], [O6, O7, O8]], [[a1, a2, a3, a5, a7], [O6]], [[a1, a2, a3, a6, a8], [O2]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a2, a3, a4, a5, a8], [O4]], [[a2, a4, a6, a7, a8], [O5]], [[a1, a2, a3, a4, a5, a6, a7, a8], []]]
+```
+
+The **objects** identified are: `['O1', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7', 'O8']`
+The **attributes** identified are: `['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8']`
+
+Each pair in the list above represents a formal concept $(A, B)$, where $A$ is the set of attributes (intent) and $B$ is the set of objects (extent).
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+```python?code_reference&code_event_index=2
+import pandas as pd
+from itertools import combinations
+
+# Load the dataframe.
+file_path = "eg8_8.csv" # Use the fileName directly
+
+try:
+    df_eg8_8 = pd.read_csv(file_path, sep=';', index_col=0)
+
+    # Preprocessing: Convert 'yes'/'no' to boolean (True/False)
+    context_matrix = df_eg8_8.applymap(lambda x: x.strip().lower() == 'yes' if isinstance(x, str) else False)
+
+    objects = list(context_matrix.index)
+    attributes = list(context_matrix.columns)
+
+    calculated_concepts = set() # Stores (tuple_sorted_extent, tuple_sorted_intent)
+
+    num_objects = len(objects)
+    for i in range(1 << num_objects):
+        current_extent_list = []
+        for j in range(num_objects):
+            if (i >> j) & 1:
+                current_extent_list.append(objects[j])
+        
+        current_extent = frozenset(current_extent_list)
+        
+        if not current_extent:
+            current_intent_set = set(attributes)
+        else:
+            first_obj_in_subset = True
+            current_intent_set = set() 
+            for obj_name in current_extent:
+                obj_attrs = {attr for attr in attributes if context_matrix.loc[obj_name, attr]}
+                if first_obj_in_subset:
+                    current_intent_set = obj_attrs
+                    first_obj_in_subset = False
+                else:
+                    current_intent_set.intersection_update(obj_attrs)
+        current_intent = frozenset(current_intent_set)
+            
+        if not current_intent:
+            extent_closure_set = set(objects)
+        else:
+            extent_closure_set = set()
+            for obj_name in objects: 
+                obj_has_all_attrs_in_intent = True
+                for attr_in_intent in current_intent:
+                    if not context_matrix.loc[obj_name, attr_in_intent]:
+                        obj_has_all_attrs_in_intent = False
+                        break
+                if obj_has_all_attrs_in_intent:
+                    extent_closure_set.add(obj_name)
+        extent_closure = frozenset(extent_closure_set)
+        
+        sorted_extent_tuple = tuple(sorted(list(extent_closure)))
+        sorted_intent_tuple = tuple(sorted(list(current_intent)))
+        calculated_concepts.add((sorted_extent_tuple, sorted_intent_tuple))
+
+    output_list_structured = [] # list of [intent_list, extent_list]
+    for extent_tuple, intent_tuple in calculated_concepts:
+        output_list_structured.append([list(intent_tuple), list(extent_tuple)])
+        
+    output_list_structured.sort(key=lambda concept: (
+        len(concept[0]), 
+        str(concept[0]),  
+        len(concept[1]), 
+        str(concept[1])   
+    ))
+
+    # New formatting for single line, no quotes for elements
+    single_line_concept_strings = []
+    for concept_pair in output_list_structured: # concept_pair is [intent_list, extent_list]
+        intent_list_str = concept_pair[0]
+        extent_list_str = concept_pair[1]
+
+        # Format intent_list: e.g., [a1, a2] (no quotes around a1, a2)
+        # If intent_list_str is empty, it results in "[]"
+        # If intent_list_str is ['a1','a2'], join results in "a1, a2", then add brackets
+        formatted_intent = "[" + ", ".join(intent_list_str) + "]"
+        
+        # Format extent_list: e.g., [o1, o2] (no quotes around o1, o2)
+        formatted_extent = "[" + ", ".join(extent_list_str) + "]"
+        
+        single_line_concept_strings.append(f"[{formatted_intent}, {formatted_extent}]")
+    
+    # Join all concept strings with ", " and enclose in an outer "[]"
+    # If there are no concepts, result should be "[]"
+    if not single_line_concept_strings:
+        final_single_line_output = "[]"
+    else:
+        final_single_line_output = "[" + ", ".join(single_line_concept_strings) + "]"
+    
+    print("Single line list of all concepts:")
+    print(final_single_line_output)
+
+except FileNotFoundError:
+    print(f"Error: The file '{file_path}' was not found. Please ensure the file name is correct and it's in the accessible path.")
+except pd.errors.EmptyDataError:
+    print(f"Error: The CSV file '{file_path}' is empty.")
+except Exception as e:
+    print(f"An error occurred while processing the file '{file_path}': {e}")
+    import traceback
+    traceback.print_exc()
+```
+```text?code_stderr&code_event_index=2
+Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+  File "_decorators.py", line 211, in wrapper
+    return func(*args, **kwargs)
+  File "_decorators.py", line 331, in wrapper
+    return func(*args, **kwargs)
+TypeError: read_csv() got an unexpected keyword argument 'filename'
+
+```
+```python?code_reference&code_event_index=6
+import pandas as pd
+from itertools import combinations
+
+# Load the dataframe.
+file_path = "eg8_8.csv" # Use the fileName directly
+
+try:
+    # Corrected file loading
+    df_eg8_8 = pd.read_csv(file_path, sep=';', index_col=0)
+
+    # Preprocessing: Convert 'yes'/'no' to boolean (True/False)
+    context_matrix = df_eg8_8.applymap(lambda x: x.strip().lower() == 'yes' if isinstance(x, str) else False)
+
+    objects = list(context_matrix.index)
+    attributes = list(context_matrix.columns)
+
+    calculated_concepts = set() # Stores (tuple_sorted_extent, tuple_sorted_intent)
+
+    num_objects = len(objects)
+    for i in range(1 << num_objects):
+        current_extent_list = []
+        for j in range(num_objects):
+            if (i >> j) & 1:
+                current_extent_list.append(objects[j])
+        
+        current_extent = frozenset(current_extent_list)
+        
+        if not current_extent:
+            current_intent_set = set(attributes)
+        else:
+            first_obj_in_subset = True
+            current_intent_set = set() 
+            for obj_name in current_extent:
+                obj_attrs = {attr for attr in attributes if context_matrix.loc[obj_name, attr]}
+                if first_obj_in_subset:
+                    current_intent_set = obj_attrs
+                    first_obj_in_subset = False
+                else:
+                    current_intent_set.intersection_update(obj_attrs)
+        current_intent = frozenset(current_intent_set)
+            
+        if not current_intent:
+            extent_closure_set = set(objects)
+        else:
+            extent_closure_set = set()
+            for obj_name in objects: 
+                obj_has_all_attrs_in_intent = True
+                for attr_in_intent in current_intent:
+                    if not context_matrix.loc[obj_name, attr_in_intent]:
+                        obj_has_all_attrs_in_intent = False
+                        break
+                if obj_has_all_attrs_in_intent:
+                    extent_closure_set.add(obj_name)
+        extent_closure = frozenset(extent_closure_set)
+        
+        sorted_extent_tuple = tuple(sorted(list(extent_closure)))
+        sorted_intent_tuple = tuple(sorted(list(current_intent)))
+        calculated_concepts.add((sorted_extent_tuple, sorted_intent_tuple))
+
+    output_list = []
+    for extent_tuple, intent_tuple in calculated_concepts:
+        output_list.append([list(intent_tuple), list(extent_tuple)])
+        
+    output_list.sort(key=lambda concept: (
+        len(concept[0]), 
+        str(concept[0]),  
+        len(concept[1]), 
+        str(concept[1])   
+    ))
+
+    # New formatting logic for single-line output without quotes for elements
+    single_line_concept_strings = []
+    for concept_pair in output_list: # concept_pair is [intent_list, extent_list]
+        intent_list_str = concept_pair[0]
+        extent_list_str = concept_pair[1]
+
+        # Format intent_list: e.g., [a1, a2] (no quotes around a1, a2)
+        # If intent_list is empty, join results in "", so "[]" is correct.
+        # If intent_list is ['a1','a2'], join results in "a1, a2", so "[a1, a2]" is correct.
+        formatted_intent = "[" + ", ".join(intent_list_str) + "]"
+
+        # Format extent_list: e.g., [o1, o2] (no quotes around o1, o2)
+        formatted_extent = "[" + ", ".join(extent_list_str) + "]"
+        
+        single_line_concept_strings.append(f"[{formatted_intent}, {formatted_extent}]")
+    
+    # Join all concept strings and enclose in an outer list
+    final_single_line_output = "[" + ", ".join(single_line_concept_strings) + "]"
+    
+    print("Objects (G):")
+    print(objects)
+    print("Attributes (M):")
+    print(attributes)
+    print("\nList of Lattice Concepts (Intent, Extent) - internal structure:")
+    print(output_list) # For debugging the structure before final formatting
+    
+    print("\nSingle line formatted concepts:")
+    print(final_single_line_output)
+
+except FileNotFoundError:
+    print(f"Error: The file '{file_path}' was not found. Please ensure the file name is correct and it's in the accessible path.")
+except pd.errors.EmptyDataError:
+    print(f"Error: The CSV file '{file_path}' is empty.")
+except Exception as e:
+    print(f"An error occurred while processing the file '{file_path}': {e}")
+    import traceback
+    traceback.print_exc()
+```
+```text?code_stdout&code_event_index=6
+Objects (G):
+['O1', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7', 'O8']
+Attributes (M):
+['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8']
+
+List of Lattice Concepts (Intent, Extent) - internal structure:
+[[['a2'], ['O1', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7', 'O8']], [['a1', 'a2'], ['O1', 'O2', 'O3', 'O6']], [['a2', 'a3'], ['O1', 'O2', 'O4', 'O6', 'O7', 'O8']], [['a2', 'a4'], ['O3', 'O4', 'O5', 'O7', 'O8']], [['a2', 'a6'], ['O2', 'O3', 'O5']], [['a2', 'a7'], ['O5', 'O6', 'O7', 'O8']], [['a2', 'a8'], ['O2', 'O4', 'O5']], [['a1', 'a2', 'a3'], ['O1', 'O2', 'O6']], [['a1', 'a2', 'a6'], ['O2', 'O3']], [['a2', 'a3', 'a5'], ['O4', 'O6', 'O7', 'O8']], [['a2', 'a3', 'a8'], ['O2', 'O4']], [['a2', 'a4', 'a6'], ['O3', 'O5']], [['a2', 'a4', 'a7'], ['O5', 'O7', 'O8']], [['a2', 'a4', 'a8'], ['O4', 'O5']], [['a2', 'a6', 'a8'], ['O2', 'O5']], [['a1', 'a2', 'a4', 'a6'], ['O3']], [['a2', 'a3', 'a4', 'a5'], ['O4', 'O7', 'O8']], [['a2', 'a3', 'a5', 'a7'], ['O6', 'O7', 'O8']], [['a1', 'a2', 'a3', 'a5', 'a7'], ['O6']], [['a1', 'a2', 'a3', 'a6', 'a8'], ['O2']], [['a2', 'a3', 'a4', 'a5', 'a7'], ['O7', 'O8']], [['a2', 'a3', 'a4', 'a5', 'a8'], ['O4']], [['a2', 'a4', 'a6', 'a7', 'a8'], ['O5']], [['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'], []]]
+
+Single line formatted concepts:
+[[[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a2, a3], [O1, O2, O4, O6, O7, O8]], [[a2, a4], [O3, O4, O5, O7, O8]], [[a2, a6], [O2, O3, O5]], [[a2, a7], [O5, O6, O7, O8]], [[a2, a8], [O2, O4, O5]], [[a1, a2, a3], [O1, O2, O6]], [[a1, a2, a6], [O2, O3]], [[a2, a3, a5], [O4, O6, O7, O8]], [[a2, a3, a8], [O2, O4]], [[a2, a4, a6], [O3, O5]], [[a2, a4, a7], [O5, O7, O8]], [[a2, a4, a8], [O4, O5]], [[a2, a6, a8], [O2, O5]], [[a1, a2, a4, a6], [O3]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a3, a5, a7], [O6, O7, O8]], [[a1, a2, a3, a5, a7], [O6]], [[a1, a2, a3, a6, a8], [O2]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a2, a3, a4, a5, a8], [O4]], [[a2, a4, a6, a7, a8], [O5]], [[a1, a2, a3, a4, a5, a6, a7, a8], []]]
+
+```
+Here is the list of all concepts from the file `eg8_8.csv`, formatted as requested in a single line:
+
+```
+[[[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a2, a3], [O1, O2, O4, O6, O7, O8]], [[a2, a4], [O3, O4, O5, O7, O8]], [[a2, a6], [O2, O3, O5]], [[a2, a7], [O5, O6, O7, O8]], [[a2, a8], [O2, O4, O5]], [[a1, a2, a3], [O1, O2, O6]], [[a1, a2, a6], [O2, O3]], [[a2, a3, a5], [O4, O6, O7, O8]], [[a2, a3, a8], [O2, O4]], [[a2, a4, a6], [O3, O5]], [[a2, a4, a7], [O5, O7, O8]], [[a2, a4, a8], [O4, O5]], [[a2, a6, a8], [O2, O5]], [[a1, a2, a4, a6], [O3]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a3, a5, a7], [O6, O7, O8]], [[a1, a2, a3, a5, a7], [O6]], [[a1, a2, a3, a6, a8], [O2]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a2, a3, a4, a5, a8], [O4]], [[a2, a4, a6, a7, a8], [O5]], [[a1, a2, a3, a4, a5, a6, a7, a8], []]]
+```
+

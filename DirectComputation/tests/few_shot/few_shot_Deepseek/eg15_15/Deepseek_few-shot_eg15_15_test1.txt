@@ -1,0 +1,160 @@
+Deepseek_few-shot_eg15_15_test1
+
+Date: 27 may 2025
+Model: DeepSeek-V3 
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+To enumerate all lattice concepts from the given context using Formal Concept Analysis (FCA), we need to find all pairs of sets (A, B), where A is a set of attributes (Attr1 to Attr15) and B is a set of objects (O1 to O15) such that:
+
+- Every object in B has all attributes in A.
+- Every attribute in A is possessed by all objects in B.
+
+This process involves computing the closure of all possible combinations of objects and attributes to identify these concept pairs. Below is the list of all lattice concepts for the provided context:
+
+### List of Lattice Concepts:
+
+1. **Concept 1**:  
+   - Attributes: []  
+   - Objects: [O1, O2, O3, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15]  
+   *(This is the top concept, where no attributes are shared by all objects.)*
+
+2. **Concept 2**:  
+   - Attributes: [Attr4, Attr6, Attr13]  
+   - Objects: [O1, O4, O5, O6, O8, O9, O10, O12]  
+   *(These objects share Attr4, Attr6, and Attr13.)*
+
+3. **Concept 3**:  
+   - Attributes: [Attr2, Attr4, Attr6, Attr13]  
+   - Objects: [O1, O4, O5, O9, O10]  
+   *(These objects share Attr2, Attr4, Attr6, and Attr13.)*
+
+4. **Concept 4**:  
+   - Attributes: [Attr4, Attr6, Attr10, Attr13]  
+   - Objects: [O1, O5, O10]  
+   *(These objects share Attr4, Attr6, Attr10, and Attr13.)*
+
+5. **Concept 5**:  
+   - Attributes: [Attr1, Attr3, Attr7, Attr8, Attr11]  
+   - Objects: [O3, O6, O7, O8]  
+   *(These objects share Attr1, Attr3, Attr7, Attr8, and Attr11.)*
+
+6. **Concept 6**:  
+   - Attributes: [Attr1, Attr3, Attr7, Attr8, Attr11, Attr15]  
+   - Objects: [O3, O6, O8]  
+   *(These objects share Attr1, Attr3, Attr7, Attr8, Attr11, and Attr15.)*
+
+7. **Concept 7**:  
+   - Attributes: [Attr1, Attr3, Attr7, Attr8, Attr9, Attr11, Attr15]  
+   - Objects: [O3, O6]  
+   *(These objects share Attr1, Attr3, Attr7, Attr8, Attr9, Attr11, and Attr15.)*
+
+8. **Concept 8**:  
+   - Attributes: [Attr2, Attr5, Attr6, Attr12, Attr14]  
+   - Objects: [O4, O9, O12]  
+   *(These objects share Attr2, Attr5, Attr6, Attr12, and Attr14.)*
+
+9. **Concept 9**:  
+   - Attributes: [Attr2, Attr5, Attr6, Attr12, Attr13, Attr14]  
+   - Objects: [O4, O9]  
+   *(These objects share Attr2, Attr5, Attr6, Attr12, Attr13, and Attr14.)*
+
+10. **Concept 10**:  
+    - Attributes: [Attr2, Attr4, Attr6, Attr10, Attr13]  
+    - Objects: [O1, O5]  
+    *(These objects share Attr2, Attr4, Attr6, Attr10, and Attr13.)*
+
+11. **Concept 11**:  
+    - Attributes: [Attr2, Attr4, Attr5, Attr6, Attr10, Attr13]  
+    - Objects: [O5]  
+    *(Only O5 has these attributes.)*
+
+12. **Concept 12**:  
+    - Attributes: [Attr1, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr10, Attr11, Attr13]  
+    - Objects: [O7]  
+    *(Only O7 has these attributes.)*
+
+13. **Concept 13**:  
+    - Attributes: [Attr2, Attr6, Attr11, Attr13, Attr15]  
+    - Objects: [O2, O11]  
+    *(These objects share Attr2, Attr6, Attr11, Attr13, and Attr15.)*
+
+14. **Concept 14**:  
+    - Attributes: [Attr2, Attr6, Attr11, Attr13, Attr14, Attr15]  
+    - Objects: [O2]  
+    *(Only O2 has these attributes.)*
+
+15. **Concept 15**:  
+    - Attributes: [Attr3, Attr8, Attr9, Attr11, Attr15]  
+    - Objects: [O3, O13]  
+    *(These objects share Attr3, Attr8, Attr9, Attr11, and Attr15.)*
+
+16. **Concept 16**:  
+    - Attributes: [Attr6, Attr14, Attr15]  
+    - Objects: [O2, O14]  
+    *(These objects share Attr6, Attr14, and Attr15.)*
+
+17. **Concept 17**:  
+    - Attributes: [Attr9, Attr12, Attr14]  
+    - Objects: [O12, O15]  
+    *(These objects share Attr9, Attr12, and Attr14.)*
+
+18. **Concept 18**:  
+    - Attributes: [All attributes (Attr1 to Attr15)]  
+    - Objects: []  
+    *(This is the bottom concept, where no object has all attributes.)*
+
+### Final Answer:
+The complete list of lattice concepts for the given context is as follows:
+
+```python
+[
+    [[], ["O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8", "O9", "O10", "O11", "O12", "O13", "O14", "O15"]],
+    [["Attr4", "Attr6", "Attr13"], ["O1", "O4", "O5", "O6", "O8", "O9", "O10", "O12"]],
+    [["Attr2", "Attr4", "Attr6", "Attr13"], ["O1", "O4", "O5", "O9", "O10"]],
+    [["Attr4", "Attr6", "Attr10", "Attr13"], ["O1", "O5", "O10"]],
+    [["Attr1", "Attr3", "Attr7", "Attr8", "Attr11"], ["O3", "O6", "O7", "O8"]],
+    [["Attr1", "Attr3", "Attr7", "Attr8", "Attr11", "Attr15"], ["O3", "O6", "O8"]],
+    [["Attr1", "Attr3", "Attr7", "Attr8", "Attr9", "Attr11", "Attr15"], ["O3", "O6"]],
+    [["Attr2", "Attr5", "Attr6", "Attr12", "Attr14"], ["O4", "O9", "O12"]],
+    [["Attr2", "Attr5", "Attr6", "Attr12", "Attr13", "Attr14"], ["O4", "O9"]],
+    [["Attr2", "Attr4", "Attr6", "Attr10", "Attr13"], ["O1", "O5"]],
+    [["Attr2", "Attr4", "Attr5", "Attr6", "Attr10", "Attr13"], ["O5"]],
+    [["Attr1", "Attr2", "Attr3", "Attr4", "Attr6", "Attr7", "Attr8", "Attr10", "Attr11", "Attr13"], ["O7"]],
+    [["Attr2", "Attr6", "Attr11", "Attr13", "Attr15"], ["O2", "O11"]],
+    [["Attr2", "Attr6", "Attr11", "Attr13", "Attr14", "Attr15"], ["O2"]],
+    [["Attr3", "Attr8", "Attr9", "Attr11", "Attr15"], ["O3", "O13"]],
+    [["Attr6", "Attr14", "Attr15"], ["O2", "O14"]],
+    [["Attr9", "Attr12", "Attr14"], ["O12", "O15"]],
+    [["Attr1", "Attr2", "Attr3", "Attr4", "Attr5", "Attr6", "Attr7", "Attr8", "Attr9", "Attr10", "Attr11", "Attr12", "Attr13", "Attr14", "Attr15"], []]
+]
+```
+
+This list represents all formal concepts in the lattice derived from the given context. Each concept is a maximal pair of shared attributes and corresponding objects. The concepts are ordered from the most general (top concept) to the most specific (bottom concept).
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all concepts in the requested single-line format without quotation marks:  
+
+[[[], [O1, O2, O3, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15]], [[Attr4, Attr6, Attr13], [O1, O4, O5, O6, O8, O9, O10, O12]], [[Attr2, Attr4, Attr6, Attr13], [O1, O4, O5, O9, O10]], [[Attr4, Attr6, Attr10, Attr13], [O1, O5, O10]], [[Attr1, Attr3, Attr7, Attr8, Attr11], [O3, O6, O7, O8]], [[Attr1, Attr3, Attr7, Attr8, Attr11, Attr15], [O3, O6, O8]], [[Attr1, Attr3, Attr7, Attr8, Attr9, Attr11, Attr15], [O3, O6]], [[Attr2, Attr5, Attr6, Attr12, Attr14], [O4, O9, O12]], [[Attr2, Attr5, Attr6, Attr12, Attr13, Attr14], [O4, O9]], [[Attr2, Attr4, Attr6, Attr10, Attr13], [O1, O5]], [[Attr2, Attr4, Attr5, Attr6, Attr10, Attr13], [O5]], [[Attr1, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr10, Attr11, Attr13], [O7]], [[Attr2, Attr6, Attr11, Attr13, Attr15], [O2, O11]], [[Attr2, Attr6, Attr11, Attr13, Attr14, Attr15], [O2]], [[Attr3, Attr8, Attr9, Attr11, Attr15], [O3, O13]], [[Attr6, Attr14, Attr15], [O2, O14]], [[Attr9, Attr12, Attr14], [O12, O15]], [[Attr1, Attr2, Attr3, Attr4, Attr5, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr12, Attr13, Attr14, Attr15], []]]

@@ -1,0 +1,751 @@
+Gemini_few-shot_eg2_9_test1
+
+Date: 27 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+Okay, I can help you extract and enumerate all formal concepts from the provided CSV file.
+
+The process involves:
+1.  Reading the formal context from your CSV file (`eg2_9.csv`). Objects are typically rows, and attributes are columns.
+2.  Implementing the derivation operators:
+    * $A' = \{m \in M \mid \forall g \in A: (g,m) \in I\}$ (attributes common to all objects in A)
+    * $B' = \{g \in G \mid \forall m \in B: (g,m) \in I\}$ (objects possessing all attributes in B)
+3.  Iterating through all possible subsets of attributes ($B_{cand} \subseteq M$) as potential intents.
+4.  For each $B_{cand}$:
+    a.  Calculate the extent $A = (B_{cand})'$.
+    b.  Calculate the closed intent $B_{closed} = A'$.
+    c.  The pair $(A, B_{closed})$ forms a formal concept.
+5.  Storing these unique concepts (typically as pairs of sorted intent and extent lists) and presenting them in the format `[[intent_list, extent_list], ...]`.
+
+I will now prepare the Python code to perform this. After execution, I'll provide the list of extracted concepts.
+
+First, let's inspect the head and structure of your CSV file to ensure correct parsing.
+```python?code_reference&code_event_index=3
+import pandas as pd
+
+# Load the uploaded CSV file
+file_path = "eg2_9.csv"
+df = pd.read_csv(file_path, sep=';', index_col=0)
+
+# Print some info about the DataFrame
+print("DataFrame Head:")
+print(df.head())
+print("\nDataFrame Info:")
+df.info()
+
+# Extract object and attribute names
+object_names = list(df.index)
+attribute_names = list(df.columns)
+
+print(f"\nObjects (G): {object_names}")
+print(f"Number of objects: {len(object_names)}")
+print(f"Attributes (M): {attribute_names}")
+print(f"Number of attributes: {len(attribute_names)}")
+
+# Convert 'yes'/'no' to boolean
+# Ensuring 'yes' is treated case-insensitively and others become False
+bool_df = df.map(lambda x: str(x).strip().lower() == 'yes')
+
+print("\nBoolean DataFrame Head:")
+print(bool_df.head())
+np_matrix = bool_df.to_numpy()
+obj_map = {name: i for i, name in enumerate(object_names)}
+attr_map = {name: i for i, name in enumerate(attribute_names)}
+print("\nReady for concept extraction.")
+# Store for later use if needed, or pass to the main function
+# For now, these global-like variables will be accessible by functions defined in next step.
+global_data = {
+    "object_names": object_names,
+    "attribute_names": attribute_names,
+    "np_matrix": np_matrix,
+    "obj_map": obj_map,
+    "attr_map": attr_map
+}
+
+```
+```text?code_stderr&code_event_index=3
+Traceback (most recent call last):
+  File "<string>", line 24, in <module>
+  File "generic.py", line 5902, in __getattr__
+    return object.__getattribute__(self, name)
+AttributeError: 'DataFrame' object has no attribute 'map'
+
+```
+```python?code_reference&code_event_index=7
+import pandas as pd
+import itertools
+
+# --- Helper Functions ---
+def get_objects_for_intent(potential_intent_set, object_names, attribute_names, np_matrix, attr_map):
+    """
+    Calculates the set of objects that have all attributes in the potential_intent_set.
+    (B' = A)
+    """
+    if not potential_intent_set:
+        return set(object_names)
+
+    obj_indices_in_extent = set(range(len(object_names)))
+    for attr_name in potential_intent_set:
+        if attr_name not in attr_map: # Should not happen if data is clean
+            continue
+        attr_idx = attr_map[attr_name]
+        current_attr_obj_indices = set()
+        for obj_idx in range(len(object_names)):
+            if np_matrix[obj_idx, attr_idx]:
+                current_attr_obj_indices.add(obj_idx)
+        obj_indices_in_extent.intersection_update(current_attr_obj_indices)
+        if not obj_indices_in_extent: # Early exit if intersection is empty
+            break
+            
+    return {object_names[i] for i in obj_indices_in_extent}
+
+def get_intent_for_objects(extent_set, object_names, attribute_names, np_matrix, obj_map):
+    """
+    Calculates the set of attributes common to all objects in the extent_set.
+    (A' = B)
+    """
+    if not extent_set:
+        return set(attribute_names)
+
+    attr_indices_in_intent = set(range(len(attribute_names)))
+    for obj_name in extent_set:
+        if obj_name not in obj_map: # Should not happen
+            continue
+        obj_idx = obj_map[obj_name]
+        current_obj_attr_indices = set()
+        for attr_idx in range(len(attribute_names)):
+            if np_matrix[obj_idx, attr_idx]:
+                current_obj_attr_indices.add(attr_idx)
+        attr_indices_in_intent.intersection_update(current_obj_attr_indices)
+        if not attr_indices_in_intent: # Early exit
+            break
+            
+    return {attribute_names[i] for i in attr_indices_in_intent}
+
+# --- Main FCA Logic ---
+def extract_formal_concepts(file_path):
+    """
+    Extracts and enumerates all formal concepts from a CSV file.
+    """
+    try:
+        df = pd.read_csv(file_path, sep=';', index_col=0)
+    except FileNotFoundError:
+        return "Error: The file was not found.", None
+    except Exception as e:
+        return f"Error reading CSV: {e}", None
+
+    if df.empty:
+        return "Error: The CSV file is empty or could not be parsed correctly.", None
+
+    object_names = list(df.index)
+    attribute_names = list(df.columns)
+
+    if not object_names:
+        return "Error: No objects found in the CSV (no rows or empty index).", None
+    if not attribute_names:
+        return "Error: No attributes found in the CSV (no columns after index).", None
+
+    # Convert 'yes'/'no' to boolean
+    try:
+        bool_df = df.applymap(lambda x: str(x).strip().lower() == 'yes')
+    except Exception as e:
+         return f"Error converting data to boolean: {e}", None
+
+    np_matrix = bool_df.to_numpy()
+    obj_map = {name: i for i, name in enumerate(object_names)}
+    attr_map = {name: i for i, name in enumerate(attribute_names)}
+
+    found_concepts_tuples = set()
+    num_attributes = len(attribute_names)
+
+    # Iterate through all possible subsets of attributes (potential intents)
+    # 2^num_attributes iterations
+    for i in range(1 << num_attributes): # This is 2**num_attributes
+        current_potential_intent = set()
+        for j in range(num_attributes):
+            if (i >> j) & 1:  # If j-th bit is set in i
+                current_potential_intent.add(attribute_names[j])
+        
+        # Calculate A = (current_potential_intent)'
+        extent_A = get_objects_for_intent(current_potential_intent, object_names, attribute_names, np_matrix, attr_map)
+        
+        # Calculate B_closed = (extent_A)'
+        intent_B_closed = get_intent_for_objects(extent_A, object_names, attribute_names, np_matrix, obj_map)
+        
+        # Store the concept (intent_B_closed, extent_A)
+        # Sorting lists before tupling ensures canonical representation for the set
+        concept_tuple = (tuple(sorted(list(intent_B_closed))), tuple(sorted(list(extent_A))))
+        found_concepts_tuples.add(concept_tuple)
+
+    # Format for final output
+    result_list = []
+    for intent_tuple, extent_tuple in found_concepts_tuples:
+        result_list.append([list(intent_tuple), list(extent_tuple)])
+        
+    # For easier comparison with example, sort concepts (e.g., by intent size then intent content)
+    # This is an arbitrary but consistent ordering.
+    result_list.sort(key=lambda x: (len(x[0]), sorted(x[0]), len(x[1]), sorted(x[1])))
+
+    return None, result_list
+
+# --- Execution ---
+file_path = "eg2_9.csv"
+error_message, concepts = extract_formal_concepts(file_path)
+
+if error_message:
+    print(error_message)
+else:
+    print("Formal Concepts (Intent, Extent):")
+    if not concepts:
+        print("No concepts found.")
+    else:
+        # For readability, print one concept per line.
+        # The problem asks for the list, so we'll construct the string representation of the list.
+        concepts_str_list = []
+        for concept in concepts:
+            intent_str = str(concept[0]).replace("'", "") # Basic string representation
+            extent_str = str(concept[1]).replace("'", "")
+            concepts_str_list.append(f"[{intent_str}, {extent_str}]")
+        
+        final_output_str = "[" + ",\n ".join(concepts_str_list) + "]"
+        print(final_output_str)
+        
+        # Also printing the number of concepts found
+        print(f"\nTotal number of concepts found: {len(concepts)}")
+
+        # If the example context was in eg2_9.csv, we would compare.
+        # Example output from prompt:
+        # [[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]],
+        #  [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []],
+        #  [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]],
+        #  [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]] - 7 concepts
+
+        # Let's check against the example given in the prompt if the data matches
+        # For this, I would need to manually create the example CSV content if it's not the one uploaded.
+        # Assuming eg2_9.csv IS the example data.
+        # (The problem statement says "given *this* .csv file" referring to eg2_9.csv,
+        #  and then "EXAMPLE: For the *next* context..." which might be different)
+        # The prompt implies eg2_9.csv is the one to process.
+        # Let's analyze the output for eg2_9.csv.
+        
+        # Verify against the example provided in the prompt for structure and rough number.
+        # The example had 7 concepts.
+        # If the uploaded eg2_9.csv *is* the example context, the output should match.
+
+```
+```text?code_stderr&code_event_index=7
+Traceback (most recent call last):
+  File "<string>", line 161
+    ```
+    ^
+SyntaxError: invalid syntax
+
+```
+# Create a dummy eg2_9.csv if it's the example context to test
+example_data_for_testing = """;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+"""
+# To test with the example from the prompt, one would write this string to "eg2_9.csv"
+# For this execution, it will use the actual uploaded "eg2_9.csv"
+```
+```
+```python?code_reference&code_event_index=11
+import pandas as pd
+import itertools
+
+# --- Helper Functions ---
+def get_objects_for_intent(potential_intent_set, object_names, attribute_names, np_matrix, attr_map):
+    """
+    Calculates the set of objects that have all attributes in the potential_intent_set.
+    (B' = A)
+    """
+    if not potential_intent_set:
+        return set(object_names)
+
+    # Start with all object indices
+    obj_indices_in_extent = set(range(len(object_names)))
+    
+    for attr_name in potential_intent_set:
+        if attr_name not in attr_map: 
+            # This case should ideally not be hit if attribute_names and attr_map are consistent
+            # If it does, it means an attribute in potential_intent_set is not in our known attributes
+            # For robustness, we can skip or raise an error. Here, we'll skip.
+            # Or, if an empty set of objects is desired when an unknown attribute is encountered:
+            # return set()
+            continue 
+        attr_idx = attr_map[attr_name]
+        
+        current_attr_obj_indices = set()
+        for obj_idx in range(len(object_names)):
+            if np_matrix[obj_idx, attr_idx]:
+                current_attr_obj_indices.add(obj_idx)
+        
+        obj_indices_in_extent.intersection_update(current_attr_obj_indices)
+        
+        if not obj_indices_in_extent: # Early exit if intersection is empty
+            break
+            
+    return {object_names[i] for i in obj_indices_in_extent}
+
+def get_intent_for_objects(extent_set, object_names, attribute_names, np_matrix, obj_map):
+    """
+    Calculates the set of attributes common to all objects in the extent_set.
+    (A' = B)
+    """
+    if not extent_set:
+        return set(attribute_names)
+
+    # Start with all attribute indices
+    attr_indices_in_intent = set(range(len(attribute_names)))
+
+    for obj_name in extent_set:
+        if obj_name not in obj_map:
+             # Similar to above, handle unknown object names if necessary
+             # return set()
+            continue
+        obj_idx = obj_map[obj_name]
+        
+        current_obj_attr_indices = set()
+        for attr_idx in range(len(attribute_names)):
+            if np_matrix[obj_idx, attr_idx]:
+                current_obj_attr_indices.add(attr_idx)
+        
+        attr_indices_in_intent.intersection_update(current_obj_attr_indices)
+        
+        if not attr_indices_in_intent: # Early exit
+            break
+            
+    return {attribute_names[i] for i in attr_indices_in_intent}
+
+# --- Main FCA Logic ---
+def extract_formal_concepts(file_path):
+    """
+    Extracts and enumerates all formal concepts from a CSV file.
+    """
+    try:
+        df = pd.read_csv(file_path, sep=';', index_col=0)
+    except FileNotFoundError:
+        return "Error: The file was not found.", None
+    except Exception as e:
+        return f"Error reading CSV: {e}", None
+
+    if df.empty:
+        # Check if index or columns are also empty, which can happen with an empty file
+        if not df.index.tolist() and not df.columns.tolist():
+             return "Error: The CSV file appears to be completely empty (no rows, no columns).", None
+        elif not df.index.tolist():
+             return "Error: No objects found in the CSV (no rows or empty index).", None
+        # If there are rows but no columns (after index_col=0), df.columns might be empty.
+        # If index_col=0 fails on a file with only one column, df might be non-empty but attributes empty.
+
+    object_names = list(df.index)
+    attribute_names = list(df.columns)
+
+    if not object_names and not attribute_names and df.shape == (0,0) : #Truly empty file after header
+         return "Error: The CSV file is empty or could not be parsed into objects and attributes.", None
+    if not object_names:
+        return "Error: No objects (rows) found in the CSV file after setting the first column as index.", None
+    if not attribute_names:
+        return "Error: No attributes (columns) found in the CSV file after setting the first column as index.", None
+
+
+    try:
+        # Ensure all data is string before applying .strip().lower()
+        bool_df = df.astype(str).applymap(lambda x: x.strip().lower() == 'yes')
+
+    except Exception as e:
+         return f"Error converting data to boolean: {e}", None
+
+    np_matrix = bool_df.to_numpy()
+    obj_map = {name: i for i, name in enumerate(object_names)}
+    attr_map = {name: i for i, name in enumerate(attribute_names)}
+
+    found_concepts_tuples = set()
+    num_attributes = len(attribute_names)
+
+    # Iterate through all possible subsets of attributes (potential intents)
+    for i in range(1 << num_attributes): # This is 2**num_attributes
+        current_potential_intent = set()
+        for j in range(num_attributes):
+            if (i >> j) & 1:
+                current_potential_intent.add(attribute_names[j])
+        
+        extent_A = get_objects_for_intent(current_potential_intent, object_names, attribute_names, np_matrix, attr_map)
+        intent_B_closed = get_intent_for_objects(extent_A, object_names, attribute_names, np_matrix, obj_map)
+        
+        concept_tuple = (tuple(sorted(list(intent_B_closed))), tuple(sorted(list(extent_A))))
+        found_concepts_tuples.add(concept_tuple)
+
+    result_list = []
+    for intent_tuple, extent_tuple in found_concepts_tuples:
+        result_list.append([list(intent_tuple), list(extent_tuple)])
+        
+    result_list.sort(key=lambda x: (len(x[0]), sorted(x[0]), len(x[1]), sorted(x[1])))
+
+    return None, result_list
+
+# --- Execution ---
+file_path = "eg2_9.csv" # This uses the uploaded file
+error_message, concepts = extract_formal_concepts(file_path)
+
+if error_message:
+    print(error_message)
+else:
+    print("Formal Concepts (Intent, Extent):")
+    if not concepts:
+        print("No concepts found.")
+    else:
+        concepts_str_list = []
+        for concept in concepts:
+            # Using repr() for lists to get the standard list string representation
+            intent_str = repr(concept[0])
+            extent_str = repr(concept[1])
+            concepts_str_list.append(f"[{intent_str}, {extent_str}]")
+        
+        final_output_str = "[" + ",\n ".join(concepts_str_list) + "]"
+        print(final_output_str)
+        print(f"\nTotal number of concepts found: {len(concepts)}")
+```
+```text?code_stdout&code_event_index=11
+Formal Concepts (Intent, Extent):
+[[['a1', 'a4', 'a9'], ['o1', 'o2']],
+ [['a1', 'a4', 'a6', 'a9'], ['o2']],
+ [['a1', 'a2', 'a3', 'a4', 'a7', 'a9'], ['o1']],
+ [['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9'], []]]
+
+Total number of concepts found: 4
+
+```
+I have successfully processed the CSV file `eg2_9.csv` and extracted the formal concepts. The algorithm iterated through all possible attribute combinations to find valid concepts, which are pairs of (intent, extent).
+
+Here is the list of lattice concepts extracted from your file:
+
+```
+[[['a1', 'a4', 'a9'], ['o1', 'o2']],
+ [['a1', 'a4', 'a6', 'a9'], ['o2']],
+ [['a1', 'a2', 'a3', 'a4', 'a7', 'a9'], ['o1']],
+ [['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9'], []]]
+```
+
+A total of **4 concepts** were found.
+
+It's important to note that this output is based on the actual content of `eg2_9.csv` you provided, not the example context described in the prompt (which had 3 objects and 16 attributes, resulting in 7 concepts). If `eg2_9.csv` was supposed to be that example context, the content of the file was different.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Okay, I will reformat the list of concepts for `eg2_9.csv` into a single line string as per your specifications.
+
+This involves:
+1.  Re-calculating the concepts from `eg2_9.csv` (to ensure we have the data fresh).
+2.  Formatting each concept `[intent, extent]` as `[[item1, item2], [obj1, obj2]]` without any quotation marks around the item/object names.
+3.  Joining all these formatted concepts into a single line string that looks like `[[concept1], [concept2], ..., [conceptN]]`.
+
+Here's the Python code to do this:
+```python?code_reference&code_event_index=3
+import pandas as pd
+import itertools
+
+# --- Helper Functions (same as before) ---
+def get_objects_for_intent(potential_intent_set, object_names, attribute_names, np_matrix, attr_map):
+    if not potential_intent_set:
+        return set(object_names)
+    obj_indices_in_extent = set(range(len(object_names)))
+    for attr_name in potential_intent_set:
+        if attr_name not in attr_map: 
+            continue 
+        attr_idx = attr_map[attr_name]
+        current_attr_obj_indices = set()
+        for obj_idx in range(len(object_names)):
+            if np_matrix[obj_idx, attr_idx]:
+                current_attr_obj_indices.add(obj_idx)
+        obj_indices_in_extent.intersection_update(current_attr_obj_indices)
+        if not obj_indices_in_extent:
+            break
+    return {object_names[i] for i in obj_indices_in_extent}
+
+def get_intent_for_objects(extent_set, object_names, attribute_names, np_matrix, obj_map):
+    if not extent_set:
+        return set(attribute_names)
+    attr_indices_in_intent = set(range(len(attribute_names)))
+    for obj_name in extent_set:
+        if obj_name not in obj_map:
+            continue
+        obj_idx = obj_map[obj_name]
+        current_obj_attr_indices = set()
+        for attr_idx in range(len(attribute_names)):
+            if np_matrix[obj_idx, attr_idx]:
+                current_obj_attr_indices.add(attr_idx)
+        attr_indices_in_intent.intersection_update(current_obj_attr_indices)
+        if not attr_indices_in_intent:
+            break
+    return {attribute_names[i] for i in attr_indices_in_intent}
+
+# --- Main FCA Logic (same as before) ---
+def extract_formal_concepts(file_path):
+    try:
+        df = pd.read_csv(file_path, sep=';', index_col=0)
+    except FileNotFoundError:
+        return "Error: File not found.", None
+    except Exception as e:
+        return f"Error reading CSV: {e}", None
+
+    if df.empty:
+        if not df.index.tolist() and not df.columns.tolist():
+             return "Error: The CSV file appears to be completely empty.", None
+        elif not df.index.tolist():
+             return "Error: No objects found in the CSV.", None
+    
+    object_names = list(df.index)
+    attribute_names = list(df.columns)
+
+    if not object_names and not attribute_names and df.shape == (0,0) :
+         return "Error: The CSV file is empty or could not be parsed into objects and attributes.", None
+    if not object_names:
+        return "Error: No objects (rows) found.", None
+    if not attribute_names:
+        return "Error: No attributes (columns) found.", None
+
+    try:
+        bool_df = df.astype(str).applymap(lambda x: x.strip().lower() == 'yes')
+    except Exception as e:
+         return f"Error converting data to boolean: {e}", None
+
+    np_matrix = bool_df.to_numpy()
+    obj_map = {name: i for i, name in enumerate(object_names)}
+    attr_map = {name: i for i, name in enumerate(attribute_names)}
+
+    found_concepts_tuples = set()
+    num_attributes = len(attribute_names)
+
+    for i in range(1 << num_attributes):
+        current_potential_intent = set()
+        for j in range(num_attributes):
+            if (i >> j) & 1:
+                current_potential_intent.add(attribute_names[j])
+        
+        extent_A = get_objects_for_intent(current_potential_intent, object_names, attribute_names, np_matrix, attr_map)
+        intent_B_closed = get_intent_for_objects(extent_A, object_names, attribute_names, np_matrix, obj_map)
+        
+        concept_tuple = (tuple(sorted(list(intent_B_closed))), tuple(sorted(list(extent_A))))
+        found_concepts_tuples.add(concept_tuple)
+
+    result_list = []
+    for intent_tuple, extent_tuple in found_concepts_tuples:
+        result_list.append([list(intent_tuple), list(extent_tuple)])
+        
+    result_list.sort(key=lambda x: (len(x[0]), sorted(x[0]), len(x[1]), sorted(x[1])))
+    return None, result_list
+
+# --- Execution and New Formatting ---
+file_path = "eg2_9.csv" 
+error_message, concepts_data = extract_formal_concepts(file_path)
+
+if error_message:
+    print(error_message)
+else:
+    if not concepts_data:
+        print("[]") # No concepts found, print empty list
+    else:
+        formatted_concepts_list = []
+        for concept in concepts_data:
+            intent_list = concept[0]
+            extent_list = concept[1]
+            
+            intent_elements_str = ", ".join(intent_list)
+            intent_str_formatted = f"[{intent_elements_str}]"
+            
+            extent_elements_str = ", ".join(extent_list)
+            extent_str_formatted = f"[{extent_elements_str}]"
+            
+            single_concept_output_str = f"[{intent_str_formatted}, {extent_str_formatted}]"
+            formatted_concepts_list.append(single_concept_output_str)
+        
+        final_output_string = "[" + ", ".join(formatted_concepts_list) + "]"
+        print(final_output_string)
+```
+```text?code_stderr&code_event_index=3
+Traceback (most recent call last):
+  File "<string>", line 24, in <module>
+  File "generic.py", line 5902, in __getattr__
+    return object.__getattribute__(self, name)
+AttributeError: 'DataFrame' object has no attribute 'map'
+
+```
+```text?code_stdout&code_event_index=3
+DataFrame Head:
+        a1   a2   a3   a4  a5   a6   a7  a8   a9
+Objet                                           
+o1     yes  yes  yes  yes  no   no  yes  no  yes
+o2     yes   no   no  yes  no  yes   no  no  yes
+
+DataFrame Info:
+<class 'pandas.core.frame.DataFrame'>
+Index: 2 entries, o1 to o2
+Data columns (total 9 columns):
+ #   Column  Non-Null Count  Dtype 
+---  ------  --------------  ----- 
+ 0   a1      2 non-null      object
+ 1   a2      2 non-null      object
+ 2   a3      2 non-null      object
+ 3   a4      2 non-null      object
+ 4   a5      2 non-null      object
+ 5   a6      2 non-null      object
+ 6   a7      2 non-null      object
+ 7   a8      2 non-null      object
+ 8   a9      2 non-null      object
+dtypes: object(9)
+memory usage: 160.0+ bytes
+
+Objects (G): ['o1', 'o2']
+Number of objects: 2
+Attributes (M): ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9']
+Number of attributes: 9
+
+```
+Okay, I understand. I'll provide the list of formal concepts from `eg2_9.csv` in the exact single-line format you've requested. I'll correct the DataFrame processing step and ensure the final output string is structured as specified.
+
+Here's the complete process in one go:
+```python?code_reference&code_event_index=8
+import pandas as pd
+
+# --- Helper Functions ---
+def get_objects_for_intent(potential_intent_set, object_names, attribute_names, np_matrix, attr_map):
+    if not potential_intent_set:
+        return set(object_names)
+    obj_indices_in_extent = set(range(len(object_names)))
+    for attr_name in potential_intent_set:
+        if attr_name not in attr_map: continue
+        attr_idx = attr_map[attr_name]
+        current_attr_obj_indices = set()
+        for obj_idx in range(len(object_names)):
+            if np_matrix[obj_idx, attr_idx]:
+                current_attr_obj_indices.add(obj_idx)
+        obj_indices_in_extent.intersection_update(current_attr_obj_indices)
+        if not obj_indices_in_extent: break
+    return {object_names[i] for i in obj_indices_in_extent}
+
+def get_intent_for_objects(extent_set, object_names, attribute_names, np_matrix, obj_map):
+    if not extent_set:
+        return set(attribute_names)
+    attr_indices_in_intent = set(range(len(attribute_names)))
+    for obj_name in extent_set:
+        if obj_name not in obj_map: continue
+        obj_idx = obj_map[obj_name]
+        current_obj_attr_indices = set()
+        for attr_idx in range(len(attribute_names)):
+            if np_matrix[obj_idx, attr_idx]:
+                current_obj_attr_indices.add(attr_idx)
+        attr_indices_in_intent.intersection_update(current_obj_attr_indices)
+        if not attr_indices_in_intent: break
+    return {attribute_names[i] for i in attr_indices_in_intent}
+
+# --- Main FCA Logic ---
+def extract_and_format_concepts(file_path):
+    try:
+        df = pd.read_csv(file_path, sep=';', index_col=0)
+    except Exception:
+        # Fallback for simple print in case of error, actual error handling would be more robust
+        print(f"Error: Could not read or parse CSV file: {file_path}")
+        return 
+
+    if df.empty and not df.index.tolist() and not df.columns.tolist():
+        print("Error: The CSV file appears to be completely empty.")
+        return
+        
+    object_names = list(df.index)
+    attribute_names = list(df.columns)
+
+    if not object_names:
+        print("Error: No objects (rows) found.")
+        return
+    if not attribute_names:
+        print("Error: No attributes (columns) found after index.")
+        return
+
+    try:
+        # Corrected: Use applymap for DataFrame
+        bool_df = df.astype(str).applymap(lambda x: x.strip().lower() == 'yes')
+    except Exception as e:
+        print(f"Error converting data to boolean: {e}")
+        return
+
+    np_matrix = bool_df.to_numpy()
+    obj_map = {name: i for i, name in enumerate(object_names)}
+    attr_map = {name: i for i, name in enumerate(attribute_names)}
+
+    found_concepts_tuples = set()
+    num_attributes = len(attribute_names)
+
+    for i in range(1 << num_attributes):
+        current_potential_intent = set()
+        for j in range(num_attributes):
+            if (i >> j) & 1:
+                current_potential_intent.add(attribute_names[j])
+        
+        extent_A = get_objects_for_intent(current_potential_intent, object_names, attribute_names, np_matrix, attr_map)
+        intent_B_closed = get_intent_for_objects(extent_A, object_names, attribute_names, np_matrix, obj_map)
+        
+        concept_tuple = (tuple(sorted(list(intent_B_closed))), tuple(sorted(list(extent_A))))
+        found_concepts_tuples.add(concept_tuple)
+
+    concepts_list_of_lists = []
+    for intent_tuple, extent_tuple in found_concepts_tuples:
+        concepts_list_of_lists.append([list(intent_tuple), list(extent_tuple)])
+    
+    # Sort for consistent output
+    concepts_list_of_lists.sort(key=lambda x: (len(x[0]), sorted(x[0]), len(x[1]), sorted(x[1])))
+
+    # --- Formatting to the specified single-line string ---
+    if not concepts_list_of_lists:
+        print("[]") # No concepts found, print empty list
+        return
+
+    formatted_concepts_str_parts = []
+    for concept in concepts_list_of_lists:
+        intent_list_str = ", ".join(concept[0])
+        formatted_intent = f"[{intent_list_str}]"
+        
+        extent_list_str = ", ".join(concept[1])
+        formatted_extent = f"[{extent_list_str}]"
+        
+        formatted_concepts_str_parts.append(f"[{formatted_intent}, {formatted_extent}]")
+    
+    final_output_string = "[" + ", ".join(formatted_concepts_str_parts) + "]"
+    print(final_output_string)
+
+# --- Execution ---
+file_to_process = "eg2_9.csv" 
+extract_and_format_concepts(file_to_process)
+```
+```text?code_stdout&code_event_index=8
+[[[a1, a4, a9], [o1, o2]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]]
+
+```
+Here is the list of all concepts from the file `eg2_9.csv`, formatted in a single line as requested:
+
+`[[[a1, a4, a9], [o1, o2]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]]`

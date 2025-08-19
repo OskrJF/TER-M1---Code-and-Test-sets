@@ -1,0 +1,77 @@
+Gemini_few-shot_eg2_9_test2
+
+Date: 27 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+Okay, I can help you extract and enumerate all formal concepts from the provided CSV file.
+
+Based on the data in `eg2_9.csv`[cite: 1]:
+* **Objects (G):** {o1, o2}
+* **Attributes (M):** {a1, a2, a3, a4, a5, a6, a7, a8, a9}
+
+The relationships are[cite: 1]:
+* o1: {a1, a2, a3, a4, a7, a9}
+* o2: {a1, a4, a6, a9}
+
+A formal concept is a pair (Extent, Intent), where Extent is a set of objects and Intent is a set of attributes, such that all objects in the Extent share all attributes in the Intent, and no other object shares all attributes in the Intent, and no other attribute is shared by all objects in the Extent.
+
+By systematically analyzing the subsets of objects and their common attributes, and then finding all objects that share these common attributes, we can identify all formal concepts.
+
+Here is the list of all formal concepts derived from the provided context[cite: 1]. The concepts are presented in the format `[[Intent], [Extent]]`, where Intent is a list of attributes and Extent is a list of objects. Both lists are alphabetically sorted.
+
+## Lattice Concepts from eg2_9.csv
+
+The lattice concepts are:
+* **Concept 1:**
+    * Intent: {a1, a2, a3, a4, a5, a6, a7, a8, a9}
+    * Extent: {}
+    * Formatted: `[[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]`
+* **Concept 2:**
+    * Intent: {a1, a2, a3, a4, a7, a9}
+    * Extent: {o1}
+    * Formatted: `[[a1, a2, a3, a4, a7, a9], [o1]]`
+* **Concept 3:**
+    * Intent: {a1, a4, a6, a9}
+    * Extent: {o2}
+    * Formatted: `[[a1, a4, a6, a9], [o2]]`
+* **Concept 4:**
+    * Intent: {a1, a4, a9}
+    * Extent: {o1, o2}
+    * Formatted: `[[a1, a4, a9], [o1, o2]]`
+
+Enumerated list of lattice concepts:
+```
+[
+  [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []],
+  [[a1, a2, a3, a4, a7, a9], [o1]],
+  [[a1, a4, a6, a9], [o2]],
+  [[a1, a4, a9], [o1, o2]]
+]
+```
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3, a4, a5, a6, a7, a8, a9], []], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a4, a9], [o1, o2]]]

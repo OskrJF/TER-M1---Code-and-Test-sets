@@ -1,0 +1,66 @@
+Deepseek_few_shot_eg2_3_test2
+
+Date: 15 may 2025
+Model:Deepseek V3
+Context file: eg2_3
+Type of solution: Applied code
+Number of test:2
+
+
+Prompt:
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+
+PROMPT 2:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+-----------------------------------
+
+OUTPUT:
+
+Here is the complete enumeration of all lattice concepts for your given context:
+
+```
+[
+[[a2], [o1, o2]],
+[[a1, a2], [o1]],
+[[a2, a3], [o2]],
+[[a1, a2, a3], []]
+]
+```
+
+### Concept Explanation:
+
+1. **Bottom Concept (Most General)**
+   - `[[a2], [o1, o2]]`: Both objects share attribute a2
+
+2. **Object-Specific Concepts**
+   - `[[a1, a2], [o1]]`: Unique to object o1 (has a1 and a2)
+   - `[[a2, a3], [o2]]`: Unique to object o2 (has a2 and a3)
+
+3. **Top Concept (Most Specific)**
+   - `[[a1, a2, a3], []]`: No object has all three attributes
+
+### Lattice Structure:
+This forms a diamond-shaped lattice with:
+- The bottom concept `[[a2], [o1, o2]]` at the base
+- Two middle concepts `[[a1, a2], [o1]]` and `[[a2, a3], [o2]]` 
+- The top concept `[[a1, a2, a3], []]` at the peak
+
+### Verification:
+This is the complete set of formal concepts for this context. Each concept satisfies:
+1. All listed objects have all listed attributes
+2. No additional objects share all those attributes
+3. No additional attributes are shared by all those objects
+
+Would you like me to show the Hasse diagram for this lattice or explain how to compute these concepts step-by-step?

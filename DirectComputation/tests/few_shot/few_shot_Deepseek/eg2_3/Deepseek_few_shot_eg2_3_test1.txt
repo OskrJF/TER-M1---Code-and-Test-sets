@@ -1,0 +1,115 @@
+Deepseek_few_shot_eg2_3_test1
+
+Date: 15 may 2025
+Model:Deepseek V3
+Context file: eg2_3
+Type of solution: Applied code
+Number of test:1	
+
+
+Prompt:
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+
+PROMPT 2:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+-----------------------------------
+
+OUTPUT:
+
+To enumerate all lattice concepts in Formal Concept Analysis (FCA) for the given context, we follow these steps:
+
+### Given Context:
+| Object | a1 | a2 | a3 |
+|--------|----|----|----|
+| o1     | yes | yes | no |
+| o2     | no | yes | yes |
+
+### Step 1: Compute All Possible Formal Concepts
+A **formal concept** is a pair \((A, B)\), where:
+- \(A\) (extent) is a set of objects,
+- \(B\) (intent) is a set of attributes,
+- Every object in \(A\) has all attributes in \(B\),
+- Every attribute in \(B\) is shared by all objects in \(A\).
+
+### Step 2: Generate All Concepts
+We compute all possible combinations of objects and their shared attributes.
+
+#### 1. **Bottom Concept (All objects, shared attributes)**
+- **Extent:** \(\{o1, o2\}\) (all objects)
+- **Intent:** Intersection of their attributes:
+  - \(o1\): \(\{a1, a2\}\)
+  - \(o2\): \(\{a2, a3\}\)
+  - **Shared attributes:** \(\{a2\}\)
+- **Concept:** \(\left[\{a2\}, \{o1, o2\}\right]\)
+
+#### 2. **Concepts from Single Objects**
+- **For \(o1\):**
+  - **Extent:** \(\{o1\}\)
+  - **Intent:** \(\{a1, a2\}\)
+  - **Concept:** \(\left[\{a1, a2\}, \{o1\}\right]\)
+
+- **For \(o2\):**
+  - **Extent:** \(\{o2\}\)
+  - **Intent:** \(\{a2, a3\}\)
+  - **Concept:** \(\left[\{a2, a3\}, \{o2\}\right]\)
+
+#### 3. **Concept from Intersection of Single-Object Intents**
+- **Intersection of \(\{a1, a2\}\) and \(\{a2, a3\}\):** \(\{a2\}\)
+- This leads back to the bottom concept \(\left[\{a2\}, \{o1, o2\}\right]\), which we already have.
+
+#### 4. **Top Concept (Empty extent, all attributes)**
+- **Extent:** \(\{\}\) (no object has all attributes)
+- **Intent:** \(\{a1, a2, a3\}\)
+- **Concept:** \(\left[\{a1, a2, a3\}, \{\}\right]\)
+
+### Step 3: Verify No Additional Concepts Exist
+- No other combinations of objects or attributes yield new closed sets.
+
+### Final List of Lattice Concepts
+\[
+\begin{align*}
+&\left[\{a2\}, \{o1, o2\}\right], \\
+&\left[\{a1, a2\}, \{o1\}\right], \\
+&\left[\{a2, a3\}, \{o2\}\right], \\
+&\left[\{a1, a2, a3\}, \{\}\right]
+\end{align*}
+\]
+
+### Explanation of Concepts:
+1. **\(\left[\{a2\}, \{o1, o2\}\right]\)**:
+   - Both \(o1\) and \(o2\) share attribute \(a2\).
+2. **\(\left[\{a1, a2\}, \{o1\}\right]\)**:
+   - Only \(o1\) has both \(a1\) and \(a2\).
+3. **\(\left[\{a2, a3\}, \{o2\}\right]\)**:
+   - Only \(o2\) has both \(a2\) and \(a3\).
+4. **\(\left[\{a1, a2, a3\}, \{\}\right]\)**:
+   - No object has all three attributes.
+
+### Lattice Diagram (Hasse Diagram):
+- The concepts form a lattice where:
+  - The **top concept** (\(\{a1, a2, a3\}, \{\}\)) is at the top.
+  - The **bottom concept** (\(\{a2\}, \{o1, o2\}\)) is at the bottom.
+  - The other two concepts are in between, connected by inclusion relations.
+
+### Conclusion:
+The complete set of formal concepts for the given context is:
+```python
+[
+    [{'a2'}, {'o1', 'o2'}],
+    [{'a1', 'a2'}, {'o1'}],
+    [{'a2', 'a3'}, {'o2'}],
+    [{'a1', 'a2', 'a3'}, set()]
+]
+```

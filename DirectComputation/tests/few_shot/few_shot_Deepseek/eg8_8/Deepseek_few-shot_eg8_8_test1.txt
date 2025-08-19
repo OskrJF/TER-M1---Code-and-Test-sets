@@ -1,0 +1,91 @@
+Deepseek_few-shot_eg8_8_test1
+
+Date: 27 may 2025
+Model: DeepSeek-V3 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+To enumerate all lattice concepts from the given context using Formal Concept Analysis (FCA), we follow these steps:
+
+1. **Formal Context**: The context consists of objects (O1 to O8) and attributes (a1 to a8). Each object is described by a set of attributes marked as "Yes" or "No".
+
+2. **Formal Concept**: A formal concept is a pair (A, B), where:
+   - A is a set of objects (extent).
+   - B is a set of attributes (intent).
+   - Every object in A has all attributes in B, and every attribute in B is shared by all objects in A.
+
+3. **Process**:
+   - For each possible combination of objects, find the common attributes (intent).
+   - For each possible combination of attributes, find the common objects (extent).
+   - Ensure the pairs (A, B) are maximal, meaning no additional object can be added to A without removing an attribute from B, and vice versa.
+
+4. **Resulting Concepts**:
+   - The lattice concepts are derived by systematically exploring all possible combinations and verifying the maximality condition.
+
+### List of Lattice Concepts for the Given Context:
+
+```python
+[
+    [[], ["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8"]],  # All attributes, no objects
+    [["O1"], ["a1", "a2", "a3"]],
+    [["O2"], ["a1", "a2", "a3", "a6", "a8"]],
+    [["O3"], ["a1", "a2", "a4", "a6"]],
+    [["O4"], ["a2", "a3", "a4", "a5", "a8"]],
+    [["O5"], ["a2", "a4", "a6", "a7", "a8"]],
+    [["O6"], ["a1", "a2", "a3", "a5", "a7"]],
+    [["O7", "O8"], ["a2", "a3", "a4", "a5", "a7"]],
+    [["O1", "O2"], ["a1", "a2", "a3"]],
+    [["O1", "O2", "O6"], ["a1", "a2", "a3"]],
+    [["O2", "O3"], ["a1", "a2", "a6"]],
+    [["O2", "O3", "O5"], ["a2", "a6"]],
+    [["O3", "O5"], ["a2", "a4", "a6"]],
+    [["O4", "O7", "O8"], ["a2", "a3", "a4", "a5"]],
+    [["O5", "O6", "O7", "O8"], ["a2", "a7"]],
+    [["O1", "O2", "O3", "O6"], ["a1", "a2"]],
+    [["O2", "O3", "O5", "O6"], ["a2"]],
+    [["O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8"], []]  # All objects, no attributes
+]
+```
+
+### Explanation:
+- Each concept is represented as `[extent, intent]`, where the extent is a list of objects and the intent is a list of attributes.
+- The concepts are ordered from the most specific (smallest extent, largest intent) to the most general (largest extent, smallest intent).
+- The top concept contains all objects and no common attributes, while the bottom concept contains no objects and all attributes.
+- Intermediate concepts represent clusters of objects sharing specific sets of attributes, forming a hierarchical lattice structure.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the corrected list of all formal concepts in the required format, with attributes first and objects second in each pair:  
+
+```python
+[[[a1, a2, a3, a4, a5, a6, a7, a8], []], [[a1, a2, a3], [O1]], [[a1, a2, a3, a6, a8], [O2]], [[a1, a2, a4, a6], [O3]], [[a2, a3, a4, a5, a8], [O4]], [[a2, a4, a6, a7, a8], [O5]], [[a1, a2, a3, a5, a7], [O6]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a1, a2, a3], [O1, O2]], [[a1, a2, a3], [O1, O2, O6]], [[a1, a2, a6], [O2, O3]], [[a2, a6], [O2, O3, O5]], [[a2, a4, a6], [O3, O5]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a7], [O5, O6, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a2], [O2, O3, O5, O6]], [[], [O1, O2, O3, O4, O5, O6, O7, O8]]]
+```
+
+### Explanation:
+- Each concept is structured as `[attributes, objects]`.  
+- The **top concept** (most general) has all attributes and no objects: `[a1, a2, a3, a4, a5, a6, a7, a8], []`.  
+- The **bottom concept** (most specific) has all objects and no common attributes: `[], [O1, O2, O3, O4, O5, O6, O7, O8]`.  
+- Intermediate concepts represent clusters where certain objects share specific attributes (e.g., `[a1, a2, a3], [O1, O2]` means O1 and O2 share a1, a2, and a3).  
+
+This list represents the complete concept lattice for the given context.
