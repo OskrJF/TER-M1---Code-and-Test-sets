@@ -1,0 +1,132 @@
+Gemini_contextual-prompting_eg8_8_test1
+
+Date: 29 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+To extract all formal concepts from the given context, we'll use a method based on computing closed sets of attributes (intents) and their corresponding sets of objects (extents). A pair (A, B) is a formal concept if A is the set of all objects that have all attributes in B, and B is the set of all attributes common to all objects in A.
+
+Let O = {O1, O2, O3, O4, O5, O6, O7, O8} be the set of objects and M = {a1, a2, a3, a4, a5, a6, a7, a8} be the set of attributes.
+The relation I ⊆ O × M is given by the .csv file. [cite: 1]
+
+The attributes for each object are as follows[cite: 1]:
+* **O1**: {a1, a2, a3}
+* **O2**: {a1, a2, a3, a6, a8}
+* **O3**: {a1, a2, a4, a6}
+* **O4**: {a2, a3, a4, a5, a8}
+* **O5**: {a2, a4, a6, a7, a8}
+* **O6**: {a1, a2, a3, a5, a7}
+* **O7**: {a2, a3, a4, a5, a7}
+* **O8**: {a2, a3, a4, a5, a7}
+    (Note: Objects O7 and O8 have identical attributes. Thus, they will always appear together in the extent of any concept.)
+
+We denote g(A) as the set of common attributes for objects in A, and f(B) as the set of common objects for attributes in B. A concept is a pair (A, B) such that A = f(B) and B = g(A).
+
+Here are the enumerated formal concepts:
+
+---
+## Formal Concepts
+
+1.  **Concept 0**:
+    * Extent (Objects): {}
+    * Intent (Attributes): {a1, a2, a3, a4, a5, a6, a7, a8}
+    * *Explanation*: No object possesses all attributes. The set of attributes common to an empty set of objects is all attributes.
+
+2.  **Concept 1**:
+    * Extent (Objects): {O1, O2, O3, O4, O5, O6, O7, O8}
+    * Intent (Attributes): {a2}
+    * *Explanation*: Attribute a2 is common to all objects. All objects possess attribute a2.
+
+3.  **Concept 2**:
+    * Extent (Objects): {O1, O2, O6}
+    * Intent (Attributes): {a1, a2, a3}
+
+4.  **Concept 3**:
+    * Extent (Objects): {O2}
+    * Intent (Attributes): {a1, a2, a3, a6, a8}
+
+5.  **Concept 4**:
+    * Extent (Objects): {O3}
+    * Intent (Attributes): {a1, a2, a4, a6}
+
+6.  **Concept 5**:
+    * Extent (Objects): {O4}
+    * Intent (Attributes): {a2, a3, a4, a5, a8}
+
+7.  **Concept 6**:
+    * Extent (Objects): {O5}
+    * Intent (Attributes): {a2, a4, a6, a7, a8}
+
+8.  **Concept 7**:
+    * Extent (Objects): {O6}
+    * Intent (Attributes): {a1, a2, a3, a5, a7}
+
+9.  **Concept 8**:
+    * Extent (Objects): {O7, O8}
+    * Intent (Attributes): {a2, a3, a4, a5, a7}
+
+10. **Concept 9**:
+    * Extent (Objects): {O1, O2, O3, O6}
+    * Intent (Attributes): {a1, a2}
+
+11. **Concept 10**:
+    * Extent (Objects): {O1, O2, O4, O6, O7, O8}
+    * Intent (Attributes): {a2, a3}
+
+12. **Concept 11**:
+    * Extent (Objects): {O3, O4, O5, O7, O8}
+    * Intent (Attributes): {a2, a4}
+
+13. **Concept 12**:
+    * Extent (Objects): {O4, O6, O7, O8}
+    * Intent (Attributes): {a2, a3, a5}
+
+14. **Concept 13**:
+    * Extent (Objects): {O2, O3, O5}
+    * Intent (Attributes): {a2, a6}
+
+15. **Concept 14**:
+    * Extent (Objects): {O5, O6, O7, O8}
+    * Intent (Attributes): {a2, a7}
+
+16. **Concept 15**:
+    * Extent (Objects): {O2, O4, O5}
+    * Intent (Attributes): {a2, a8}
+
+17. **Concept 16**:
+    * Extent (Objects): {O4, O7, O8}
+    * Intent (Attributes): {a2, a3, a4, a5}
+
+18. **Concept 17**:
+    * Extent (Objects): {O6, O7, O8}
+    * Intent (Attributes): {a2, a3, a5, a7}
+
+19. **Concept 18**:
+    * Extent (Objects): {O2, O3}
+    * Intent (Attributes): {a1, a2, a6}
+
+20. **Concept 19**:
+    * Extent (Objects): {O4, O5}
+    * Intent (Attributes): {a2, a4, a8}
+
+---
+These 20 formal concepts represent all the maximal rectangles of "Yes" values in the provided context table when rows and columns are appropriately rearranged.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+```
+[[[a1,a2,a3,a4,a5,a6,a7,a8], []], [[a2], [o1,o2,o3,o4,o5,o6,o7,o8]], [[a1,a2,a3], [o1,o2,o6]], [[a1,a2,a3,a6,a8], [o2]], [[a1,a2,a4,a6], [o3]], [[a2,a3,a4,a5,a8], [o4]], [[a2,a4,a6,a7,a8], [o5]], [[a1,a2,a3,a5,a7], [o6]], [[a2,a3,a4,a5,a7], [o7,o8]], [[a1,a2], [o1,o2,o3,o6]], [[a2,a3], [o1,o2,o4,o6,o7,o8]], [[a2,a4], [o3,o4,o5,o7,o8]], [[a2,a3,a5], [o4,o6,o7,o8]], [[a2,a6], [o2,o3,o5]], [[a2,a7], [o5,o6,o7,o8]], [[a2,a8], [o2,o4,o5]], [[a2,a3,a4,a5], [o4,o7,o8]], [[a2,a3,a5,a7], [o6,o7,o8]], [[a1,a2,a6], [o2,o3]], [[a2,a4,a8], [o4,o5]]]
+```

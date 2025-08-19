@@ -1,0 +1,894 @@
+Gemini_contextual-prompting_eg2_3_test1
+
+Date: 19 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+```python?code_reference&code_event_index=2
+# Ensure pandas is available. It's a common library.
+try:
+    import pandas as pd
+except ImportError:
+    print("Pandas library is not installed. Please install it to run this script.")
+    exit()
+
+from itertools import combinations # Not strictly needed for the chosen method, but good to have for FCA tasks usually.
+
+# Function to parse the formal context from a CSV file
+def parse_context_from_csv(file_path, delimiter=';'):
+    """
+    Parses a CSV file representing a formal context.
+    Assumes objects are rows (index column 0) and attributes are columns (headers).
+    A cell containing 'x', 'X', '1', 'true', or 'yes' (case-insensitive, stripped) indicates a relationship.
+
+    Args:
+        file_path (str): The path to the CSV file.
+        delimiter (str): The delimiter used in the CSV file.
+
+    Returns:
+        tuple: (list_of_object_names, list_of_attribute_names, list_of_lists_context_matrix)
+               The context_matrix[i][j] is True if object i has attribute j.
+    """
+    try:
+        df = pd.read_csv(file_path, delimiter=delimiter, index_col=0, dtype=str) # Read all as string initially
+    except FileNotFoundError:
+        return None, None, None, f"Error: File not found at {file_path}"
+    except Exception as e:
+        return None, None, None, f"Error reading CSV: {e}"
+
+    objects = list(df.index.astype(str))
+    attributes = list(df.columns.astype(str))
+    
+    context_matrix = []
+    for obj_idx, obj_name in enumerate(objects):
+        row = []
+        for attr_idx, attr_name in enumerate(attributes):
+            value = str(df.loc[obj_name, attr_name]).strip().lower()
+            if value in ['x', '1', 'true', 'yes']:
+                row.append(True)
+            else:
+                row.append(False)
+        context_matrix.append(row)
+        
+    if not objects:
+        return None, None, None, "Error: No objects found. Ensure the CSV has an index column for objects."
+    if not attributes:
+        return None, None, None, "Error: No attributes found. Ensure the CSV has header columns for attributes."
+
+    return objects, attributes, context_matrix, None
+
+# Derivation operator: Get intent (attributes common to a set of objects)
+def get_intent(object_indices_set, attributes, context_matrix):
+    """
+    Calculates the intent for a given set of object indices.
+    The intent is the set of attribute indices common to all objects in object_indices_set.
+    """
+    num_attributes = len(attributes)
+    if not object_indices_set:
+        # The intent of the empty set of objects is the set of all attributes.
+        return set(range(num_attributes))
+
+    intent_indices = set()
+    for attr_idx in range(num_attributes):
+        is_common_to_all_in_set = True
+        for obj_idx in object_indices_set:
+            if not context_matrix[obj_idx][attr_idx]:
+                is_common_to_all_in_set = False
+                break
+        if is_common_to_all_in_set:
+            intent_indices.add(attr_idx)
+    return intent_indices
+
+# Derivation operator: Get extent (objects possessing all attributes in a set)
+def get_extent(attribute_indices_set, objects, context_matrix):
+    """
+    Calculates the extent for a given set of attribute indices.
+    The extent is the set of object indices that possess all attributes in attribute_indices_set.
+    """
+    num_objects = len(objects)
+    if not attribute_indices_set:
+        # The extent of the empty set of attributes is the set of all objects.
+        return set(range(num_objects))
+
+    extent_indices = set()
+    for obj_idx in range(num_objects):
+        has_all_attributes_in_set = True
+        for attr_idx in attribute_indices_set:
+            if not context_matrix[obj_idx][attr_idx]:
+                has_all_attributes_in_set = False
+                break
+        if has_all_attributes_in_set:
+            extent_indices.add(obj_idx)
+    return extent_indices
+
+# Function to find all formal concepts
+def find_formal_concepts(objects, attributes, context_matrix):
+    """
+    Finds all formal concepts in the given context.
+    A concept is a pair (Extent, Intent).
+    Extent: set of objects. Intent: set of attributes.
+    Such that Extent' = Intent and Intent' = Extent.
+
+    The method iterates through all subsets of objects X, computes B = X',
+    then computes A = B'. The pair (A, B) is a formal concept.
+    """
+    num_objects = len(objects)
+    
+    # Using a set to store concepts to automatically handle duplicates.
+    # Concepts are stored as (tuple_of_sorted_extent_names, tuple_of_sorted_intent_names).
+    found_concepts_set = set()
+
+    # Iterate over all possible subsets of objects (2^num_objects)
+    for i in range(1 << num_objects):
+        current_object_indices_subset = set()
+        for j in range(num_objects):
+            if (i >> j) & 1:  # Check if j-th object is in the current subset
+                current_object_indices_subset.add(j)
+        
+        # B = (current_object_indices_subset)'
+        intent_indices = get_intent(current_object_indices_subset, attributes, context_matrix)
+        
+        # A_closed = (intent_indices)'
+        extent_indices_closed = get_extent(intent_indices, objects, context_matrix)
+        
+        # Convert indices to names for the concept representation
+        # Sort names to ensure canonical form for storage in the set
+        concept_extent_names = tuple(sorted([objects[idx] for idx in extent_indices_closed]))
+        concept_intent_names = tuple(sorted([attributes[idx] for idx in intent_indices]))
+        
+        found_concepts_set.add((concept_extent_names, concept_intent_names))
+        
+    # Convert set to list for ordered output (optional, but good for display)
+    # Sorting concepts can be tricky (e.g., by extent size then intent size, or lexicographically)
+    # For now, just a list from the set.
+    return list(found_concepts_set)
+
+# Main execution
+file_path = "eg2_3.csv" # This is the file name provided by the user.
+
+objects, attributes, context_matrix, error_msg = parse_context_from_csv(file_path)
+
+if error_msg:
+    print(error_msg)
+else:
+    print(f"Successfully parsed context from '{file_path}'")
+    print(f"Objects (G): {objects}")
+    print(f"Attributes (M): {attributes}")
+    # print("Context Matrix (I):")
+    # for i, obj_name in enumerate(objects):
+    #     print(f"  {obj_name}: {[1 if context_matrix[i][j] else 0 for j in range(len(attributes))]}")
+    
+    print("\nFinding formal concepts...")
+    formal_concepts = find_formal_concepts(objects, attributes, context_matrix)
+    
+    print(f"\nFound {len(formal_concepts)} formal concepts:")
+    print("--------------------------------------------------")
+    # Sort concepts for consistent output, e.g., by size of extent then extent content, then intent.
+    # This is a simple sort that mostly works for typical viewing.
+    formal_concepts.sort(key=lambda c: (len(c[0]), c[0], len(c[1]), c[1]))
+
+    for i, (extent, intent) in enumerate(formal_concepts):
+        # Make empty sets more readable
+        extent_str = "{" + ", ".join(extent) + "}" if extent else "{}"
+        intent_str = "{" + ", ".join(intent) + "}" if intent else "{}"
+        print(f"Concept {i+1}:")
+        print(f"  Extent: {extent_str}")
+        print(f"  Intent: {intent_str}")
+        print("--------------------------------------------------")
+
+# Example of how to use with a dummy context if eg2_3.csv is not available in this environment
+# but the tool environment should make it available.
+# If you want to test this code locally, create a file 'eg2_3.csv'
+# For example:
+# ;attr1;attr2;attr3
+# obj1;x;;x
+# obj2;x;x;
+# obj3;;x;x
+
+# Test with the example provided in the thought process
+# objects_test = ["o1", "o2"]
+# attributes_test = ["a1", "a2"]
+# context_matrix_test = [[True, False], [False, True]]
+# concepts_test = find_formal_concepts(objects_test, attributes_test, context_matrix_test)
+# concepts_test.sort(key=lambda c: (len(c[0]), c[0], len(c[1]), c[1]))
+# print("\nTest Concepts:")
+# for i, (extent, intent) in enumerate(concepts_test):
+#     extent_str = "{" + ", ".join(extent) + "}" if extent else "{}"
+#     intent_str = "{" + ", ".join(intent) + "}" if intent else "{}"
+#     print(f"  Concept {i+1}: Extent: {extent_str}, Intent: {intent_str}")
+# Expected for test:
+# Concept 1: Extent: {}, Intent: {a1, a2}
+# Concept 2: Extent: {o1}, Intent: {a1}
+# Concept 3: Extent: {o2}, Intent: {a2}
+# Concept 4: Extent: {o1, o2}, Intent: {}
+```
+
+````text?code_stderr&code_event_index=2
+Traceback (most recent call last):
+  File "<string>", line 197
+    ```
+    ^
+SyntaxError: invalid syntax
+
+````
+
+````
+```python?code_reference&code_event_index=5
+# Ensure pandas is available. It's a common library.
+try:
+    import pandas as pd
+except ImportError:
+    # This part is for local execution, in a notebook environment it might behave differently
+    # or pandas might be pre-installed.
+    print("Pandas library is not installed. Please ensure it is available in the environment.")
+    raise # Re-raise the exception to halt execution if pandas is critical and missing
+
+from itertools import combinations # Not strictly needed for the chosen method, but good to have for FCA tasks usually.
+
+# Function to parse the formal context from a CSV file
+def parse_context_from_csv(file_path, delimiter=';'):
+    """
+    Parses a CSV file representing a formal context.
+    Assumes objects are rows (index column 0) and attributes are columns (headers).
+    A cell containing 'x', 'X', '1', 'true', or 'yes' (case-insensitive, stripped) indicates a relationship.
+
+    Args:
+        file_path (str): The path to the CSV file.
+        delimiter (str): The delimiter used in the CSV file.
+
+    Returns:
+        tuple: (list_of_object_names, list_of_attribute_names, list_of_lists_context_matrix, error_message)
+               The context_matrix[i][j] is True if object i has attribute j.
+               error_message is None if successful, otherwise a string describing the error.
+    """
+    try:
+        # Read all data as string initially to handle various True/False markers robustly
+        df = pd.read_csv(file_path, delimiter=delimiter, index_col=0, dtype=str)
+    except FileNotFoundError:
+        return None, None, None, f"Error: File not found at {file_path}"
+    except pd.errors.EmptyDataError:
+        return None, None, None, f"Error: The file '{file_path}' is empty or does not contain data."
+    except ValueError as ve: # Catch errors like no columns to parse if index_col is misbehaving
+        return None, None, None, f"Error: Could not parse CSV. Check format (delimiter, index). Details: {ve}"
+    except Exception as e:
+        return None, None, None, f"Error reading CSV: {e}"
+
+    if df.index.has_duplicates:
+        return None, None, None, "Error: Duplicate object names (index column) found in the CSV."
+    if df.columns.has_duplicates:
+        return None, None, None, "Error: Duplicate attribute names (header columns) found in the CSV."
+
+    objects = list(df.index.astype(str))
+    attributes = list(df.columns.astype(str))
+    
+    if not objects:
+        return None, None, None, "Error: No objects found. Ensure the CSV has a valid index column for objects."
+    if not attributes:
+        return None, None, None, "Error: No attributes found. Ensure the CSV has valid header columns for attributes."
+
+    context_matrix = []
+    for obj_idx, obj_name in enumerate(objects):
+        row = []
+        for attr_idx, attr_name in enumerate(attributes):
+            value_series = df.loc[obj_name, attr_name]
+            # Handle cases where df.loc might return a Series if object names are not unique (already checked)
+            # or if attribute names are not unique (already checked)
+            # For a single cell, it should be a scalar.
+            value = str(value_series).strip().lower()
+            if value in ['x', '1', 'true', 'yes']:
+                row.append(True)
+            else:
+                row.append(False)
+        context_matrix.append(row)
+        
+    return objects, attributes, context_matrix, None
+
+# Derivation operator: Get intent (attributes common to a set of objects)
+def get_intent(object_indices_set, attributes, context_matrix):
+    """
+    Calculates the intent for a given set of object indices.
+    The intent is the set of attribute indices common to all objects in object_indices_set.
+    """
+    num_attributes = len(attributes)
+    if not object_indices_set:
+        # The intent of the empty set of objects is the set of all attributes.
+        return set(range(num_attributes))
+
+    intent_indices = set()
+    # Start by assuming all attributes could be in the intent
+    potential_intent_indices = set(range(num_attributes))
+    
+    for attr_idx in potential_intent_indices:
+        is_common_to_all_in_set = True
+        for obj_idx in object_indices_set: # Iterate only over objects in the current subset
+            if not context_matrix[obj_idx][attr_idx]:
+                is_common_to_all_in_set = False
+                break
+        if is_common_to_all_in_set:
+            intent_indices.add(attr_idx)
+    return intent_indices
+
+# Derivation operator: Get extent (objects possessing all attributes in a set)
+def get_extent(attribute_indices_set, objects, context_matrix):
+    """
+    Calculates the extent for a given set of attribute indices.
+    The extent is the set of object indices that possess all attributes in attribute_indices_set.
+    """
+    num_objects = len(objects)
+    if not attribute_indices_set:
+        # The extent of the empty set of attributes is the set of all objects.
+        return set(range(num_objects))
+
+    extent_indices = set()
+    for obj_idx in range(num_objects):
+        has_all_attributes_in_set = True
+        for attr_idx in attribute_indices_set: # Iterate only over attributes in the current subset
+            if not context_matrix[obj_idx][attr_idx]:
+                has_all_attributes_in_set = False
+                break
+        if has_all_attributes_in_set:
+            extent_indices.add(obj_idx)
+    return extent_indices
+
+# Function to find all formal concepts
+def find_formal_concepts(objects, attributes, context_matrix):
+    """
+    Finds all formal concepts in the given context.
+    A concept is a pair (Extent, Intent).
+    Extent: set of objects. Intent: set of attributes.
+    Such that Extent' = Intent and Intent' = Extent.
+
+    The method iterates through all subsets of objects X, computes B = X',
+    then computes A = B'. The pair (A, B) is a formal concept.
+    """
+    num_objects = len(objects)
+    
+    found_concepts_set = set()
+
+    for i in range(1 << num_objects): # Iterate 2^num_objects times for all subsets
+        current_object_indices_subset = set()
+        for j in range(num_objects):
+            if (i >> j) & 1:
+                current_object_indices_subset.add(j)
+        
+        intent_indices = get_intent(current_object_indices_subset, attributes, context_matrix)
+        extent_indices_closed = get_extent(intent_indices, objects, context_matrix)
+        
+        concept_extent_names = tuple(sorted([objects[idx] for idx in extent_indices_closed]))
+        concept_intent_names = tuple(sorted([attributes[idx] for idx in intent_indices]))
+        
+        found_concepts_set.add((concept_extent_names, concept_intent_names))
+        
+    return list(found_concepts_set)
+
+# Main execution
+file_path = "eg2_3.csv" 
+
+objects, attributes, context_matrix, error_msg = parse_context_from_csv(file_path)
+
+if error_msg:
+    print(error_msg)
+else:
+    print(f"Successfully parsed context from '{file_path}'")
+    print(f"Objects (G) [{len(objects)}]: {objects}")
+    print(f"Attributes (M) [{len(attributes)}]: {attributes}")
+    # print_context_matrix = False # Set to True for debugging small contexts
+    # if print_context_matrix:
+    #     print("Context Matrix (I):")
+    #     header = "      " + " ".join([attr[:5].ljust(5) for attr in attributes]) # Abbreviate long attr names
+    #     print(header)
+    #     for i, obj_name in enumerate(objects):
+    #         row_str = obj_name[:5].ljust(5) + ": " + " ".join(["  X  " if context_matrix[i][j] else "  .  " for j in range(len(attributes))])
+    #         print(row_str)
+    
+    if not objects or not attributes:
+        print("Cannot proceed without objects and attributes.")
+    elif len(objects) >= 20 or len(attributes) >= 20:
+         print(f"Warning: The context size ({len(objects)} objects, {len(attributes)} attributes) is near the upper limit for this simple method.")
+         print("Computation might be slow. The problem stated 'less than 20'.")
+
+
+    print("\nFinding formal concepts...")
+    formal_concepts = find_formal_concepts(objects, attributes, context_matrix)
+    
+    print(f"\nFound {len(formal_concepts)} formal concepts:")
+    print("--------------------------------------------------")
+    
+    # Sort concepts for consistent output: primarily by size of extent, then by extent content,
+    # then by size of intent, then by intent content.
+    formal_concepts.sort(key=lambda c: (len(c[0]), c[0], len(c[1]), c[1]))
+
+    for i, (extent, intent) in enumerate(formal_concepts):
+        extent_str = "{" + ", ".join(sorted(list(extent))) + "}" if extent else "{}" # Ensure elements within are sorted
+        intent_str = "{" + ", ".join(sorted(list(intent))) + "}" if intent else "{}" # Ensure elements within are sorted
+        print(f"Concept {i+1}:")
+        print(f"  Extent: {extent_str}")
+        print(f"  Intent: {intent_str}")
+        print("--------------------------------------------------")
+
+# Example of a local test CSV content for "eg2_3.csv":
+# ;attrA;attrB;attrC
+# obj1;x;;x
+# obj2;x;x;
+# obj3;;x;x
+#
+# Expected output for this example:
+# Objects (G) [3]: ['obj1', 'obj2', 'obj3']
+# Attributes (M) [3]: ['attrA', 'attrB', 'attrC']
+# Found 7 formal concepts:
+# Concept 1: Extent: {}, Intent: {attrA, attrB, attrC}
+# Concept 2: Extent: {obj1}, Intent: {attrA, attrC}
+# Concept 3: Extent: {obj2}, Intent: {attrA, attrB}
+# Concept 4: Extent: {obj3}, Intent: {attrB, attrC}
+# Concept 5: Extent: {obj1, obj2}, Intent: {attrA}
+# Concept 6: Extent: {obj2, obj3}, Intent: {attrB}
+# Concept 7: Extent: {obj1, obj2, obj3}, Intent: {}
+# Note: The exact order or content depends on the actual eg2_3.csv file provided.
+# The order above for the example is one possible sorted output.
+# My `get_intent` for empty object set -> all attributes.
+# My `get_extent` for (`all attributes`) -> objects with all attributes.
+# For the example:
+# ({}, {attrA, attrB, attrC}) -> extent of (attrA,B,C) is {} -> concept ({}, {attrA, attrB, attrC})
+# ({obj1, obj2, obj3})' -> {}
+# ({})' -> {obj1, obj2, obj3} -> concept ({obj1,obj2,obj3}, {})
+# These extreme concepts are standard.
+````
+
+````text?code_stderr&code_event_index=5
+Traceback (most recent call last):
+  File "<string>", line 219
+    ```
+    ^
+SyntaxError: invalid syntax
+
+````
+
+````
+```python?code_reference&code_event_index=8
+# Ensure pandas is available. It's a common library.
+try:
+    import pandas as pd
+except ImportError:
+    # This part is for local execution, in a notebook environment it might behave differently
+    # or pandas might be pre-installed.
+    print("Pandas library is not installed. Please ensure it is available in the environment.")
+    raise # Re-raise the exception to halt execution if pandas is critical and missing
+
+# Function to parse the formal context from a CSV file
+def parse_context_from_csv(file_path, delimiter=';'):
+    """
+    Parses a CSV file representing a formal context.
+    Assumes objects are rows (index column 0) and attributes are columns (headers).
+    A cell containing 'x', 'X', '1', 'true', or 'yes' (case-insensitive, stripped) indicates a relationship.
+
+    Args:
+        file_path (str): The path to the CSV file.
+        delimiter (str): The delimiter used in the CSV file.
+
+    Returns:
+        tuple: (list_of_object_names, list_of_attribute_names, list_of_lists_context_matrix, error_message)
+               The context_matrix[i][j] is True if object i has attribute j.
+               error_message is None if successful, otherwise a string describing the error.
+    """
+    try:
+        # Read all data as string initially to handle various True/False markers robustly
+        df = pd.read_csv(file_path, delimiter=delimiter, index_col=0, dtype=str)
+    except FileNotFoundError:
+        return None, None, None, f"Error: File not found at {file_path}"
+    except pd.errors.EmptyDataError:
+        return None, None, None, f"Error: The file '{file_path}' is empty or does not contain data."
+    except ValueError as ve: # Catch errors like no columns to parse if index_col is misbehaving
+        return None, None, None, f"Error: Could not parse CSV. Check format (delimiter, index). Details: {ve}"
+    except Exception as e:
+        return None, None, None, f"Error reading CSV: {e}"
+
+    if df.index.has_duplicates:
+        return None, None, None, "Error: Duplicate object names (index column) found in the CSV."
+    if df.columns.has_duplicates:
+        return None, None, None, "Error: Duplicate attribute names (header columns) found in the CSV."
+
+    objects = list(df.index.astype(str))
+    attributes = list(df.columns.astype(str))
+    
+    if not objects:
+        return None, None, None, "Error: No objects found. Ensure the CSV has a valid index column for objects."
+    if not attributes:
+        return None, None, None, "Error: No attributes found. Ensure the CSV has valid header columns for attributes."
+
+    context_matrix = []
+    for obj_idx, obj_name in enumerate(objects):
+        row = []
+        for attr_idx, attr_name in enumerate(attributes):
+            value_series = df.loc[obj_name, attr_name]
+            value = str(value_series).strip().lower()
+            if value in ['x', '1', 'true', 'yes']:
+                row.append(True)
+            else:
+                row.append(False)
+        context_matrix.append(row)
+        
+    return objects, attributes, context_matrix, None
+
+# Derivation operator: Get intent (attributes common to a set of objects)
+def get_intent(object_indices_set, attributes, context_matrix):
+    """
+    Calculates the intent for a given set of object indices.
+    The intent is the set of attribute indices common to all objects in object_indices_set.
+    """
+    num_attributes = len(attributes)
+    if not object_indices_set:
+        return set(range(num_attributes))
+
+    intent_indices = set()
+    potential_intent_indices = set(range(num_attributes))
+    
+    for attr_idx in potential_intent_indices:
+        is_common_to_all_in_set = True
+        for obj_idx in object_indices_set:
+            if not context_matrix[obj_idx][attr_idx]:
+                is_common_to_all_in_set = False
+                break
+        if is_common_to_all_in_set:
+            intent_indices.add(attr_idx)
+    return intent_indices
+
+# Derivation operator: Get extent (objects possessing all attributes in a set)
+def get_extent(attribute_indices_set, objects, context_matrix):
+    """
+    Calculates the extent for a given set of attribute indices.
+    The extent is the set of object indices that possess all attributes in attribute_indices_set.
+    """
+    num_objects = len(objects)
+    if not attribute_indices_set:
+        return set(range(num_objects))
+
+    extent_indices = set()
+    for obj_idx in range(num_objects):
+        has_all_attributes_in_set = True
+        for attr_idx in attribute_indices_set:
+            if not context_matrix[obj_idx][attr_idx]:
+                has_all_attributes_in_set = False
+                break
+        if has_all_attributes_in_set:
+            extent_indices.add(obj_idx)
+    return extent_indices
+
+# Function to find all formal concepts
+def find_formal_concepts(objects, attributes, context_matrix):
+    """
+    Finds all formal concepts in the given context.
+    A concept is a pair (Extent, Intent).
+    Extent: set of objects. Intent: set of attributes.
+    Such that Extent' = Intent and Intent' = Extent.
+
+    The method iterates through all subsets of objects X, computes B = X',
+    then computes A = B'. The pair (A, B) is a formal concept.
+    """
+    num_objects = len(objects)
+    
+    found_concepts_set = set()
+
+    for i in range(1 << num_objects): 
+        current_object_indices_subset = set()
+        for j in range(num_objects):
+            if (i >> j) & 1:
+                current_object_indices_subset.add(j)
+        
+        intent_indices = get_intent(current_object_indices_subset, attributes, context_matrix)
+        extent_indices_closed = get_extent(intent_indices, objects, context_matrix)
+        
+        concept_extent_names = tuple(sorted([objects[idx] for idx in extent_indices_closed]))
+        concept_intent_names = tuple(sorted([attributes[idx] for idx in intent_indices]))
+        
+        found_concepts_set.add((concept_extent_names, concept_intent_names))
+        
+    return list(found_concepts_set)
+
+# Main execution
+file_path = "eg2_3.csv" 
+
+objects, attributes, context_matrix, error_msg = parse_context_from_csv(file_path)
+
+if error_msg:
+    print(error_msg)
+else:
+    print(f"Successfully parsed context from '{file_path}'")
+    print(f"Objects (G) [{len(objects)}]: {objects}")
+    print(f"Attributes (M) [{len(attributes)}]: {attributes}")
+    
+    if not objects or not attributes:
+        print("Cannot proceed without objects and attributes.")
+    elif len(objects) >= 20 or len(attributes) >= 20:
+         print(f"Warning: The context size ({len(objects)} objects, {len(attributes)} attributes) is near the upper limit for this simple method.")
+         print("Computation might be slow. The problem stated 'less than 20'.")
+
+    print("\nFinding formal concepts...")
+    formal_concepts = find_formal_concepts(objects, attributes, context_matrix)
+    
+    print(f"\nFound {len(formal_concepts)} formal concepts:")
+    print("--------------------------------------------------")
+    
+    formal_concepts.sort(key=lambda c: (len(c[0]), c[0], len(c[1]), c[1]))
+
+    for i, (extent, intent) in enumerate(formal_concepts):
+        extent_str = "{" + ", ".join(sorted(list(extent))) + "}" if extent else "{}"
+        intent_str = "{" + ", ".join(sorted(list(intent))) + "}" if intent else "{}"
+        print(f"Concept {i+1}:")
+        print(f"  Extent: {extent_str}")
+        print(f"  Intent: {intent_str}")
+        print("--------------------------------------------------")
+````
+
+````text?code_stderr&code_event_index=8
+Traceback (most recent call last):
+  File "<string>", line 173
+    ```
+    ^
+SyntaxError: invalid syntax
+
+````
+
+````
+```python?code_reference&code_event_index=11
+# Ensure pandas is available. It's a common library.
+try:
+    import pandas as pd
+except ImportError:
+    # This part is for local execution, in a notebook environment it might behave differently
+    # or pandas might be pre-installed.
+    print("Pandas library is not installed. Please ensure it is available in the environment.")
+    raise # Re-raise the exception to halt execution if pandas is critical and missing
+
+# Function to parse the formal context from a CSV file
+def parse_context_from_csv(file_path, delimiter=';'):
+    """
+    Parses a CSV file representing a formal context.
+    Assumes objects are rows (index column 0) and attributes are columns (headers).
+    A cell containing 'x', 'X', '1', 'true', or 'yes' (case-insensitive, stripped) indicates a relationship.
+
+    Args:
+        file_path (str): The path to the CSV file.
+        delimiter (str): The delimiter used in the CSV file.
+
+    Returns:
+        tuple: (list_of_object_names, list_of_attribute_names, list_of_lists_context_matrix, error_message)
+               The context_matrix[i][j] is True if object i has attribute j.
+               error_message is None if successful, otherwise a string describing the error.
+    """
+    try:
+        # Read all data as string initially to handle various True/False markers robustly
+        df = pd.read_csv(file_path, delimiter=delimiter, index_col=0, dtype=str)
+    except FileNotFoundError:
+        return None, None, None, f"Error: File not found at {file_path}"
+    except pd.errors.EmptyDataError:
+        return None, None, None, f"Error: The file '{file_path}' is empty or does not contain data."
+    except ValueError as ve: # Catch errors like no columns to parse if index_col is misbehaving
+        return None, None, None, f"Error: Could not parse CSV. Check format (delimiter, index). Details: {ve}"
+    except Exception as e:
+        return None, None, None, f"Error reading CSV: {e}"
+
+    if df.index.has_duplicates:
+        return None, None, None, "Error: Duplicate object names (index column) found in the CSV."
+    if df.columns.has_duplicates:
+        return None, None, None, "Error: Duplicate attribute names (header columns) found in the CSV."
+
+    objects = list(df.index.astype(str))
+    attributes = list(df.columns.astype(str))
+    
+    if not objects:
+        return None, None, None, "Error: No objects found. Ensure the CSV has a valid index column for objects."
+    if not attributes:
+        return None, None, None, "Error: No attributes found. Ensure the CSV has valid header columns for attributes."
+
+    context_matrix = []
+    for obj_idx, obj_name in enumerate(objects):
+        row = []
+        for attr_idx, attr_name in enumerate(attributes):
+            value_series = df.loc[obj_name, attr_name]
+            value = str(value_series).strip().lower()
+            if value in ['x', '1', 'true', 'yes']:
+                row.append(True)
+            else:
+                row.append(False)
+        context_matrix.append(row)
+        
+    return objects, attributes, context_matrix, None
+
+# Derivation operator: Get intent (attributes common to a set of objects)
+def get_intent(object_indices_set, attributes, context_matrix):
+    """
+    Calculates the intent for a given set of object indices.
+    The intent is the set of attribute indices common to all objects in object_indices_set.
+    """
+    num_attributes = len(attributes)
+    if not object_indices_set: # Intent of empty set of objects is all attributes
+        return set(range(num_attributes))
+
+    intent_indices = set()
+    # Iterate through all attributes to check if they belong to the intent
+    for attr_idx in range(num_attributes):
+        is_common_to_all_in_set = True
+        for obj_idx in object_indices_set: # Iterate only over objects in the current subset
+            if not context_matrix[obj_idx][attr_idx]:
+                is_common_to_all_in_set = False
+                break
+        if is_common_to_all_in_set:
+            intent_indices.add(attr_idx)
+    return intent_indices
+
+# Derivation operator: Get extent (objects possessing all attributes in a set)
+def get_extent(attribute_indices_set, objects, context_matrix):
+    """
+    Calculates the extent for a given set of attribute indices.
+    The extent is the set of object indices that possess all attributes in attribute_indices_set.
+    """
+    num_objects = len(objects)
+    if not attribute_indices_set: # Extent of empty set of attributes is all objects
+        return set(range(num_objects))
+
+    extent_indices = set()
+    # Iterate through all objects to check if they belong to the extent
+    for obj_idx in range(num_objects):
+        has_all_attributes_in_set = True
+        for attr_idx in attribute_indices_set: # Iterate only over attributes in the current subset
+            if not context_matrix[obj_idx][attr_idx]:
+                has_all_attributes_in_set = False
+                break
+        if has_all_attributes_in_set:
+            extent_indices.add(obj_idx)
+    return extent_indices
+
+# Function to find all formal concepts
+def find_formal_concepts(objects, attributes, context_matrix):
+    """
+    Finds all formal concepts in the given context.
+    A concept is a pair (Extent, Intent).
+    Extent: set of objects. Intent: set of attributes.
+    Such that Extent' = Intent and Intent' = Extent.
+
+    The method iterates through all subsets of objects X, computes B = X',
+    then computes A = B'. The pair (A, B) is a formal concept.
+    """
+    num_objects = len(objects)
+    
+    found_concepts_set = set() # Use a set to store concepts to automatically handle duplicates
+
+    # Iterate over all possible subsets of objects (2^num_objects)
+    for i in range(1 << num_objects): 
+        current_object_indices_subset = set()
+        for j in range(num_objects):
+            if (i >> j) & 1: # Check if j-th object is in the current subset
+                current_object_indices_subset.add(j)
+        
+        # B = (current_object_indices_subset)'
+        intent_indices = get_intent(current_object_indices_subset, attributes, context_matrix)
+        
+        # A_closed = (intent_indices)'
+        # The pair (A_closed, intent_indices) is a formal concept.
+        extent_indices_closed = get_extent(intent_indices, objects, context_matrix)
+        
+        # Convert indices to names for the concept representation
+        # Sort names to ensure canonical form for storage in the set
+        concept_extent_names = tuple(sorted([objects[idx] for idx in extent_indices_closed]))
+        concept_intent_names = tuple(sorted([attributes[idx] for idx in intent_indices]))
+        
+        found_concepts_set.add((concept_extent_names, concept_intent_names))
+        
+    return list(found_concepts_set)
+
+# Main execution
+file_path = "eg2_3.csv" 
+
+objects, attributes, context_matrix, error_msg = parse_context_from_csv(file_path)
+
+if error_msg:
+    print(error_msg)
+else:
+    print(f"Successfully parsed context from '{file_path}'")
+    print(f"Objects (G) [{len(objects)}]: {objects}")
+    print(f"Attributes (M) [{len(attributes)}]: {attributes}")
+    
+    if not objects or not attributes: # Should be caught by parse_context_from_csv returning error_msg
+        print("Cannot proceed without objects and attributes.")
+    elif len(objects) >= 20 or len(attributes) >= 20: # Check against stated problem constraints
+         print(f"Warning: The context size ({len(objects)} objects, {len(attributes)} attributes) is at or exceeds the 'less than 20' guideline for this simple method.")
+         print("Computation might be slow.")
+
+    print("\nFinding formal concepts...")
+    formal_concepts = find_formal_concepts(objects, attributes, context_matrix)
+    
+    print(f"\nFound {len(formal_concepts)} formal concepts:")
+    print("--------------------------------------------------")
+    
+    # Sort concepts for consistent and readable output:
+    # Primarily by size of extent, then by extent content (lexicographically),
+    # then by size of intent, then by intent content (lexicographically).
+    formal_concepts.sort(key=lambda c: (len(c[0]), c[0], len(c[1]), c[1]))
+
+    for i, (extent, intent) in enumerate(formal_concepts):
+        # Ensure elements within extent/intent tuples are also strings and sorted for display
+        extent_str = "{" + ", ".join(str(e_item) for e_item in extent) + "}" if extent else "{}"
+        intent_str = "{" + ", ".join(str(i_item) for i_item in intent) + "}" if intent else "{}"
+        print(f"Concept {i+1}:")
+        print(f"  Extent: {extent_str}")
+        print(f"  Intent: {intent_str}")
+        print("--------------------------------------------------")
+
+````
+
+```text?code_stdout&code_event_index=11
+Successfully parsed context from 'eg2_3.csv'
+Objects (G) [2]: ['o1', 'o2']
+Attributes (M) [3]: ['a1', 'a2', 'a3']
+
+Finding formal concepts...
+
+Found 4 formal concepts:
+--------------------------------------------------
+Concept 1:
+  Extent: {}
+  Intent: {a1, a2, a3}
+--------------------------------------------------
+Concept 2:
+  Extent: {o1}
+  Intent: {a1, a2}
+--------------------------------------------------
+Concept 3:
+  Extent: {o2}
+  Intent: {a2, a3}
+--------------------------------------------------
+Concept 4:
+  Extent: {o1, o2}
+  Intent: {a2}
+--------------------------------------------------
+
+```
+
+I have successfully extracted and enumerated all formal concepts from the provided CSV file `eg2_3.csv`. The process involved parsing the file to understand the relationships between objects and attributes, and then applying the standard definitions of formal concept analysis to derive the concepts.
+
+Here is the enumeration of the lattice concepts found:
+
+Successfully parsed context from 'eg2\_3.csv'
+Objects (G) [2]: ['o1', 'o2']
+Attributes (M) [3]: ['a1', 'a2', 'a3']
+
+Finding formal concepts...
+
+## Found 4 formal concepts:
+
+## Concept 1: Extent: {} Intent: {a1, a2, a3}
+
+## Concept 2: Extent: {o1} Intent: {a1, a2}
+
+## Concept 3: Extent: {o2} Intent: {a2, a3}
+
+## Concept 4: Extent: {o1, o2} Intent: {a2}
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Okay, I will format the list of concepts found previously into a single line as per your specifications. The concepts are ordered as they were in the previous output.
+
+The formal concepts identified were:
+
+    Extent: {}, Intent: {a1, a2, a3}
+    Extent: {o1}, Intent: {a1, a2}
+    Extent: {o2}, Intent: {a2, a3}
+    Extent: {o1, o2}, Intent: {a2}
+
+Using the format [[Intent, Extent], [Intent, Extent], ...] and removing quotation marks from the object and attribute names, the single line representation is:
+
+[[[a1,a2,a3],[]],[[a1,a2],[o1]],[[a2,a3],[o2]],[[a2],[o1,o2]]]
+

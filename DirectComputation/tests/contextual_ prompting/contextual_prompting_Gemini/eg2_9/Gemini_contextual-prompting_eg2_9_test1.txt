@@ -1,0 +1,192 @@
+Gemini_contextual-prompting_eg2_9_test1
+
+Date: 19 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+```python?code_reference&code_event_index=2
+import pandas as pd
+from itertools import chain, combinations
+from io import StringIO
+
+# Read the uploaded CSV file
+# The file system access will be handled by the environment.
+file_path = "eg2_9.csv" 
+
+try:
+    df = pd.read_csv(file_path, sep=';', index_col=0)
+except FileNotFoundError:
+    print(f"Error: The file {file_path} was not found.")
+    exit()
+except Exception as e:
+    print(f"Error reading or parsing the CSV file: {e}")
+    exit()
+
+# Convert 'x' (and similar, case-insensitively) to True, others to False
+# Assuming 'x' or 'X' marks the relation. Empty cells or other values mean no relation.
+# First, ensure all data is string to handle 'x' vs 'X' and avoid issues with mixed types from CSV.
+df = df.astype(str) 
+df = df.applymap(lambda val: val.strip().lower() == 'x')
+
+# Get object and attribute names. Ensure they are strings for consistency.
+all_objects = [str(obj) for obj in df.index.tolist()]
+all_attributes = [str(attr) for attr in df.columns.tolist()]
+
+# Update DataFrame index and columns to use these string versions
+df.index = pd.Index(all_objects, name=df.index.name) # Preserve original index name if any
+df.columns = pd.Index(all_attributes)
+
+
+def get_intent(object_set, all_attributes_list, context_df):
+    """
+    Calculates the intent for a given set of objects.
+    Intent: Set of attributes common to all objects in object_set.
+    If object_set is empty, intent is all attributes.
+    """
+    if not object_set:
+        return frozenset(all_attributes_list)
+    
+    # Start with all attributes and intersect down.
+    # Using set() on all_attributes_list to create a mutable copy.
+    intent = set(all_attributes_list) 
+    for obj_name in object_set:
+        # This check is mostly for robustness; obj_name should be in context_df.index
+        if obj_name not in context_df.index:  
+            continue 
+        
+        attributes_of_this_obj = set()
+        for attr_name in all_attributes_list: # Iterate over original list of all attributes
+            # context_df.loc[obj_name, attr_name] should be boolean (True/False)
+            if context_df.loc[obj_name, attr_name]: 
+                attributes_of_this_obj.add(attr_name)
+        
+        intent.intersection_update(attributes_of_this_obj)
+        
+        if not intent: # Optimization: if intent becomes empty, no more common attributes
+            break
+            
+    return frozenset(intent)
+
+def get_extent(attribute_set, all_objects_list, context_df):
+    """
+    Calculates the extent for a given set of attributes.
+    Extent: Set of objects that possess all attributes in attribute_set.
+    If attribute_set is empty, extent is all objects.
+    """
+    if not attribute_set:
+        return frozenset(all_objects_list)
+        
+    extent = set()
+    for obj_name in all_objects_list:
+        has_all_specified_attributes = True
+        for attr_name in attribute_set:
+            # This check is mostly for robustness.
+            if attr_name not in context_df.columns: 
+                has_all_specified_attributes = False 
+                break 
+            
+            if not context_df.loc[obj_name, attr_name]:
+                has_all_specified_attributes = False
+                break
+        
+        if has_all_specified_attributes:
+            extent.add(obj_name)
+            
+    return frozenset(extent)
+
+formal_concepts = set()
+
+# Generate power set of objects. Iterating from empty set up to all objects.
+# combinations(all_objects, i) yields tuples of object names.
+for i in range(len(all_objects) + 1):
+    for object_tuple in combinations(all_objects, i):
+        current_A_objects = frozenset(object_tuple) # current_A_objects is the potential extent
+        
+        # Calculate A' (intent of current_A_objects)
+        current_B_intent = get_intent(current_A_objects, all_attributes, df)
+        
+        # Calculate B' (extent of current_B_intent)
+        # This is A''
+        derived_A_extent = get_extent(current_B_intent, all_objects, df)
+        
+        # A formal concept (A, B) satisfies A'' = A (A is an extent) and B = A'.
+        # The algorithm checks if the initial set of objects A is an extent.
+        if derived_A_extent == current_A_objects:
+            # Store the concept in a canonical form (sorted tuples of names)
+            # to ensure uniqueness in the set.
+            concept_extent = tuple(sorted(list(current_A_objects)))
+            concept_intent = tuple(sorted(list(current_B_intent)))
+            formal_concepts.add((concept_extent, concept_intent))
+
+# Outputting the concepts
+# Sort concepts for consistent presentation: primarily by size of extent, then by extent content, 
+# then by size of intent, then by intent content.
+sorted_concepts = sorted(
+    list(formal_concepts), 
+    key=lambda x: (len(x[0]), # Sort by number of objects in extent
+                   x[0],       # Then by the tuple of object names
+                   len(x[1]), # Then by number of attributes in intent
+                   x[1])       # Then by the tuple of attribute names
+)
+
+print(f"Found {len(sorted_concepts)} formal concepts:")
+for i, (extent, intent) in enumerate(sorted_concepts, 1):
+    # Format extent and intent for printing (e.g., {Obj1, Obj2})
+    # Object/attribute names are already strings.
+    extent_str = "{" + ", ".join(extent) + "}" if extent else "{}"
+    intent_str = "{" + ", ".join(intent) + "}" if intent else "{}"
+    print(f"{i}. Extent: {extent_str}, Intent: {intent_str}")
+```
+
+```text?code_stdout&code_event_index=2
+Found 2 formal concepts:
+1. Extent: {}, Intent: {a1, a2, a3, a4, a5, a6, a7, a8, a9}
+2. Extent: {o1, o2}, Intent: {}
+
+```
+
+Based on the provided CSV file (`eg2_9.csv`), the following formal concepts have been extracted:
+
+Found 2 formal concepts:
+
+1.  Extent: {}, Intent: {a1, a2, a3, a4, a5, a6, a7, a8, a9}
+2.  Extent: {o1, o2}, Intent: {}
+
+**Explanation of the terms:**
+
+  * **Extent**: The set of objects belonging to the concept.
+  * **Intent**: The set of attributes belonging to the concept.
+
+This result suggests that the context in the provided file has objects named 'o1', 'o2' and attributes named 'a1' through 'a9'.
+The concepts indicate:
+
+1.  There are no objects that possess all attributes {a1, ..., a9} simultaneously. The empty set of objects formally has all attributes as its intent.
+2.  The objects {o1, o2} together share no common attributes. The set of all objects {o1, o2} formally has an empty set of attributes as its intent if no attribute is common to all of them.
+
+This type of result (very few concepts, including the top and bottom of the lattice if these represent all objects and all attributes) often occurs with contexts that are sparse (few relationships marked) or have a specific structure. The script processed the input file assuming that relationships are marked with 'x' or 'X'. If a different marker was used (e.g., '1'), it might have been interpreted as an absence of a relationship.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Okay, I will format the list of concepts found previously into the single-line format you requested.
+
+The concepts were:
+
+    Extent: {}, Intent: {a1, a2, a3, a4, a5, a6, a7, a8, a9}
+    Extent: {o1, o2}, Intent: {}
+
+Formatted as [[Extent_list, Intent_list], ...] without quotation marks around the elements within the lists, this becomes:
+
+[[[a1, a2, a3, a4, a5, a6, a7, a8, a9], []], [[], [o1, o2]]]
