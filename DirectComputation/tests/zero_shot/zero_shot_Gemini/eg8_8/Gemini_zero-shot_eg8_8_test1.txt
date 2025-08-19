@@ -1,0 +1,123 @@
+Gemini_zero-shot_eg8_8_test1
+
+Date: 29 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+Okay, I can help you extract and enumerate all the formal concepts from the provided CSV file.
+
+A formal concept in Formal Concept Analysis (FCA) is a pair (A, B), where:
+* A is a set of **objects** (called the *extent*).
+* B is a set of **attributes** (called the *intent*).
+such that:
+* B is the set of all attributes shared by all objects in A (i.e., B = A').
+* A is the set of all objects that possess all attributes in B (i.e., A = B').
+
+First, let's represent the context from your CSV file `eg8_8.csv`[cite: 1]:
+
+**Objects:** O1, O2, O3, O4, O5, O6, O7, O8
+**Attributes:** a1, a2, a3, a4, a5, a6, a7, a8
+
+**Context Table:**
+| Object | a1  | a2  | a3  | a4  | a5  | a6  | a7  | a8  |
+|--------|-----|-----|-----|-----|-----|-----|-----|-----|
+| O1     | Yes | Yes | Yes | No  | No  | No  | No  | No  |
+| O2     | Yes | Yes | Yes | No  | No  | Yes | No  | Yes |
+| O3     | Yes | Yes | No  | Yes | No  | Yes | No  | No  |
+| O4     | No  | Yes | Yes | Yes | Yes | No  | No  | Yes |
+| O5     | No  | Yes | No  | Yes | No  | Yes | Yes | Yes |
+| O6     | Yes | Yes | Yes | No  | Yes | No  | Yes | No  |
+| O7     | No  | Yes | Yes | Yes | Yes | No  | Yes | No  |
+| O8     | No  | Yes | Yes | Yes | Yes | No  | Yes | No  |
+
+Note that objects **O7 and O8 have identical attribute sets**.
+
+---
+## Enumerated Formal Concepts
+
+Here are the formal concepts extracted from the context. Each concept is presented as a pair: (Set of Objects, Set of Attributes).
+
+1.  **Concept 1 (Top Concept):**
+    * Extent: {O1, O2, O3, O4, O5, O6, O7, O8}
+    * Intent: {a2}
+2.  **Concept 2:**
+    * Extent: {O1, O2, O3, O6}
+    * Intent: {a1, a2}
+3.  **Concept 3:**
+    * Extent: {O1, O2, O4, O6, O7, O8}
+    * Intent: {a2, a3}
+4.  **Concept 4:**
+    * Extent: {O3, O4, O5, O7, O8}
+    * Intent: {a2, a4}
+5.  **Concept 5:**
+    * Extent: {O4, O6, O7, O8}
+    * Intent: {a2, a3, a5}
+6.  **Concept 6:**
+    * Extent: {O2, O3, O5}
+    * Intent: {a2, a6}
+7.  **Concept 7:**
+    * Extent: {O5, O6, O7, O8}
+    * Intent: {a2, a7}
+8.  **Concept 8:**
+    * Extent: {O2, O4, O5}
+    * Intent: {a2, a8}
+9.  **Concept 9:**
+    * Extent: {O1, O2, O6}
+    * Intent: {a1, a2, a3}
+10. **Concept 10:**
+    * Extent: {O2, O3}
+    * Intent: {a1, a2, a6}
+11. **Concept 11:**
+    * Extent: {O4, O7, O8}
+    * Intent: {a2, a3, a4, a5}
+12. **Concept 12:**
+    * Extent: {O4, O5}
+    * Intent: {a2, a4, a8}
+13. **Concept 13:**
+    * Extent: {O6, O7, O8}
+    * Intent: {a2, a3, a5, a7}
+14. **Concept 14:**
+    * Extent: {O2}
+    * Intent: {a1, a2, a3, a6, a8}
+15. **Concept 15:**
+    * Extent: {O3}
+    * Intent: {a1, a2, a4, a6}
+16. **Concept 16:**
+    * Extent: {O4}
+    * Intent: {a2, a3, a4, a5, a8}
+17. **Concept 17:**
+    * Extent: {O5}
+    * Intent: {a2, a4, a6, a7, a8}
+18. **Concept 18:**
+    * Extent: {O6}
+    * Intent: {a1, a2, a3, a5, a7}
+19. **Concept 19:**
+    * Extent: {O7, O8}
+    * Intent: {a2, a3, a4, a5, a7}
+20. **Concept 20 (Bottom Concept):**
+    * Extent: ∅ (empty set)
+    * Intent: {a1, a2, a3, a4, a5, a6, a7, a8}
+
+This list comprises all 20 formal concepts for the given context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all 20 formal concepts in the requested single-line format:
+
+```
+[[[a2], [O1,O2,O3,O4,O5,O6,O7,O8]], [[a1,a2], [O1,O2,O3,O6]], [[a2,a3], [O1,O2,O4,O6,O7,O8]], [[a2,a4], [O3,O4,O5,O7,O8]], [[a2,a3,a5], [O4,O6,O7,O8]], [[a2,a6], [O2,O3,O5]], [[a2,a7], [O5,O6,O7,O8]], [[a2,a8], [O2,O4,O5]], [[a1,a2,a3], [O1,O2,O6]], [[a1,a2,a6], [O2,O3]], [[a2,a3,a4,a5], [O4,O7,O8]], [[a2,a4,a8], [O4,O5]], [[a2,a3,a5,a7], [O6,O7,O8]], [[a1,a2,a3,a6,a8], [O2]], [[a1,a2,a4,a6], [O3]], [[a2,a3,a4,a5,a8], [O4]], [[a2,a4,a6,a7,a8], [O5]], [[a1,a2,a3,a5,a7], [O6]], [[a2,a3,a4,a5,a7], [O7,O8]], [[a1,a2,a3,a4,a5,a6,a7,a8], []]]
+```
+
+

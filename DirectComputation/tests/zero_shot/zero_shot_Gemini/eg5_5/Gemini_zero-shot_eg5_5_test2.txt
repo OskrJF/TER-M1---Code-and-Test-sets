@@ -1,0 +1,542 @@
+Gemini_zero-shot_eg5_5_test2
+
+Date: 29 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+```python?code_reference&code_event_index=2
+import pandas as pd
+
+# Load the CSV file
+file_path = "eg5_5.csv"
+try:
+    # Attempt to read with semicolon delimiter
+    df = pd.read_csv(file_path, delimiter=';')
+except Exception as e:
+    print(f"Error reading CSV with semicolon delimiter: {e}")
+    try:
+        # Attempt to read with comma delimiter as a fallback
+        df = pd.read_csv(file_path)
+        print("Successfully read with comma delimiter.")
+    except Exception as e_comma:
+        print(f"Error reading CSV with comma delimiter: {e_comma}")
+        df = None
+
+# Inspect the data
+if df is not None:
+    print("DataFrame Head:")
+    print(df.head())
+    print("\nDataFrame Info:")
+    df.info()
+    print("\nDataFrame Description:")
+    print(df.describe(include='all'))
+    print("\nDataFrame Shape:")
+    print(df.shape)
+
+    # Check if the first column should be the index
+    if df.iloc[:, 0].nunique() == len(df):
+        print(f"\nSetting the first column ('{df.columns[0]}') as index.")
+        df = df.set_index(df.columns[0])
+        print("\nDataFrame Head after setting index:")
+        print(df.head())
+        print("\nDataFrame Info after setting index:")
+        df.info()
+
+    # Convert to boolean matrix, assuming 'x' or 1 indicates presence of attribute
+    # and empty or 0 or other values indicate absence.
+    # For this dataset, it appears 'x' marks presence and NaN (or empty) marks absence.
+    context_matrix = df.applymap(lambda x: True if str(x).strip().lower() == 'x' else False)
+    print("\nBoolean Context Matrix Head:")
+    print(context_matrix.head())
+    print("\nBoolean Context Matrix Info:")
+    context_matrix.info()
+
+else:
+    print("Failed to load the DataFrame.")
+```
+```text?code_stdout&code_event_index=2
+DataFrame Head:
+  Objet   a1   a2   a3   a4   a5
+0    o1  yes   no  yes  yes   no
+1    o2   no   no  yes   no   no
+2    o3  yes  yes   no  yes  yes
+3    o4   no  yes   no   no  yes
+4    o5   no  yes   no   no   no
+
+DataFrame Info:
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 5 entries, 0 to 4
+Data columns (total 6 columns):
+ #   Column  Non-Null Count  Dtype 
+---  ------  --------------  ----- 
+ 0   Objet   5 non-null      object
+ 1   a1      5 non-null      object
+ 2   a2      5 non-null      object
+ 3   a3      5 non-null      object
+ 4   a4      5 non-null      object
+ 5   a5      5 non-null      object
+dtypes: object(6)
+memory usage: 368.0+ bytes
+
+DataFrame Description:
+       Objet  a1   a2  a3  a4  a5
+count      5   5    5   5   5   5
+unique     5   2    2   2   2   2
+top       o1  no  yes  no  no  no
+freq       1   3    3   3   3   3
+
+DataFrame Shape:
+(5, 6)
+
+Setting the first column ('Objet') as index.
+
+DataFrame Head after setting index:
+        a1   a2   a3   a4   a5
+Objet                         
+o1     yes   no  yes  yes   no
+o2      no   no  yes   no   no
+o3     yes  yes   no  yes  yes
+o4      no  yes   no   no  yes
+o5      no  yes   no   no   no
+
+DataFrame Info after setting index:
+<class 'pandas.core.frame.DataFrame'>
+Index: 5 entries, o1 to o5
+Data columns (total 5 columns):
+ #   Column  Non-Null Count  Dtype 
+---  ------  --------------  ----- 
+ 0   a1      5 non-null      object
+ 1   a2      5 non-null      object
+ 2   a3      5 non-null      object
+ 3   a4      5 non-null      object
+ 4   a5      5 non-null      object
+dtypes: object(5)
+memory usage: 240.0+ bytes
+
+Boolean Context Matrix Head:
+          a1     a2     a3     a4     a5
+Objet                                   
+o1     False  False  False  False  False
+o2     False  False  False  False  False
+o3     False  False  False  False  False
+o4     False  False  False  False  False
+o5     False  False  False  False  False
+
+Boolean Context Matrix Info:
+<class 'pandas.core.frame.DataFrame'>
+Index: 5 entries, o1 to o5
+Data columns (total 5 columns):
+ #   Column  Non-Null Count  Dtype
+---  ------  --------------  -----
+ 0   a1      5 non-null      bool 
+ 1   a2      5 non-null      bool 
+ 2   a3      5 non-null      bool 
+ 3   a4      5 non-null      bool 
+ 4   a5      5 non-null      bool 
+dtypes: bool(5)
+memory usage: 65.0+ bytes
+
+```
+```python?code_reference&code_event_index=6
+import pandas as pd
+
+# Load the CSV file
+file_path = "eg5_5.csv"
+df = pd.read_csv(file_path, delimiter=';')
+
+# Set the first column as index
+df = df.set_index(df.columns[0])
+
+# Convert to boolean matrix
+# 'yes' maps to True, 'no' (or anything else) maps to False
+context_matrix = df.applymap(lambda x: True if str(x).strip().lower() == 'yes' else False)
+
+print("Corrected Boolean Context Matrix Head:")
+print(context_matrix.head())
+print("\nCorrected Boolean Context Matrix Info:")
+context_matrix.info()
+
+# Get objects and attributes
+objects = list(context_matrix.index)
+attributes = list(context_matrix.columns)
+
+print("\nObjects:", objects)
+print("Attributes:", attributes)
+
+# Helper function to get attributes common to a set of objects (prime operator for objects)
+def get_common_attributes(obj_indices, current_context_matrix):
+    if not obj_indices:
+        return set(current_context_matrix.columns) # All attributes if no objects
+    
+    # Get actual object names from indices for safe row access
+    obj_names = [current_context_matrix.index[i] for i in obj_indices]
+
+    # Start with attributes of the first object
+    common_attrs = set(current_context_matrix.columns[current_context_matrix.loc[obj_names[0]]])
+    for obj_name in obj_names[1:]:
+        common_attrs.intersection_update(set(current_context_matrix.columns[current_context_matrix.loc[obj_name]]))
+    return common_attrs
+
+# Helper function to get objects common to a set of attributes (prime operator for attributes)
+def get_common_objects(attr_names, current_context_matrix):
+    if not attr_names:
+        return set(range(len(current_context_matrix.index))) # All objects if no attributes
+    
+    # Start with objects of the first attribute
+    # Ensure the attribute is in the columns
+    valid_attrs = [attr for attr in attr_names if attr in current_context_matrix.columns]
+    if not valid_attrs: # If no valid attributes are provided (e.g. empty set or all invalid)
+        return set(range(len(current_context_matrix.index)))
+
+
+    common_objs_indices = set(i for i, obj_name in enumerate(current_context_matrix.index)
+                              if current_context_matrix.loc[obj_name, valid_attrs[0]])
+
+    for attr_name in valid_attrs[1:]:
+        current_attr_objs_indices = set(i for i, obj_name in enumerate(current_context_matrix.index)
+                                        if current_context_matrix.loc[obj_name, attr_name])
+        common_objs_indices.intersection_update(current_attr_objs_indices)
+    return common_objs_indices
+
+
+# NextClosure Algorithm (simplified version based on Ganter & Wille's description)
+def find_formal_concepts(current_context_matrix):
+    object_names = list(current_context_matrix.index)
+    attribute_names = list(current_context_matrix.columns)
+    num_objects = len(object_names)
+    num_attributes = len(attribute_names)
+    
+    concepts = []
+
+    # Function to compute closure
+    def closure(obj_set_indices, attr_set_names):
+        # (A)'' = A''
+        # (B)'' = B''
+        
+        # A -> A'
+        derived_attrs = get_common_attributes(obj_set_indices, current_context_matrix)
+        
+        # A' -> A''
+        derived_objs_indices = get_common_objects(derived_attrs, current_context_matrix)
+        
+        return (derived_objs_indices, derived_attrs)
+
+    # Initial concept: ({all objects}', {all objects}'')
+    # or start with (emptyset, M)'' where M is all attributes
+    
+    # Start with the bottom concept: (O', O'') where O is the set of all objects
+    all_obj_indices = list(range(num_objects))
+    initial_intent = get_common_attributes(all_obj_indices, current_context_matrix)
+    initial_extent_indices = get_common_objects(initial_intent, current_context_matrix)
+    
+    # Convert indices and names to sorted tuples for consistent representation
+    initial_extent_tuple = tuple(sorted([object_names[i] for i in initial_extent_indices]))
+    initial_intent_tuple = tuple(sorted(list(initial_intent)))
+    
+    concepts.append((initial_extent_tuple, initial_intent_tuple))
+    
+    # This is a placeholder for a full NextClosure or similar algorithm.
+    # For simplicity and because a full implementation is complex,
+    # we will iterate through all possible subsets of objects, compute their closure,
+    # and add unique concepts. This is computationally expensive but illustrative.
+    
+    # More robust approach: Iterate and close
+    # Based on "Computing the Lattice of Concepts" from Ganter's "Formal Concept Analysis: Mathematical Foundations"
+    
+    # The set L of all concepts (A, B)
+    L = set()
+
+    # The concept (G'', G') where G is the set of all objects
+    # This is the bottom concept.
+    current_A_indices = set(range(num_objects))
+    current_B_names = get_common_attributes(current_A_indices, current_context_matrix)
+    current_A_indices_closed = get_common_objects(current_B_names, current_context_matrix)
+
+    L.add((tuple(sorted(object_names[i] for i in current_A_indices_closed)), tuple(sorted(list(current_B_names)))))
+
+    # The concept (emptyset', emptyset'') = (M, M') where M is the set of all attributes
+    # This is the top concept if we interpret emptyset of objects
+    top_B_names = set(attribute_names) # All attributes
+    top_A_indices = get_common_objects(top_B_names, current_context_matrix)
+    top_B_names_closed = get_common_attributes(top_A_indices, current_context_matrix)
+
+    L.add((tuple(sorted(object_names[i] for i in top_A_indices)), tuple(sorted(list(top_B_names_closed)))))
+
+
+    # Iterate through all subsets of objects (extents) - This is the naive brute-force way.
+    # Not efficient for larger contexts.
+    # A proper algorithm like NextClosure or InClose is needed for efficiency.
+    
+    # Simplified iterative approach to find concepts:
+    # Start with the concept derived from the empty set of attributes (all objects, their common attributes)
+    # For each object g in G:
+    #   A = {g}
+    #   loop:
+    #     B = A'
+    #     A_closed = B'
+    #     if (A_closed, B) is a new concept, add it.
+    #     Find attribute m not in B such that A_closed is not (A_closed union {m})'
+    #     if no such m: break
+    #     A = A_closed union (A_closed union {m})' intersected with objects < m lexicographically?
+
+    # Using a basic algorithm: Iterate through subsets of objects, compute closure, add to set.
+    # This is computationally expensive for large datasets but feasible for small ones.
+    
+    # To implement NextClosure or similar:
+    # 1. Initialize L with (emptyset'', emptyset') -> (M, M') which is (all attributes, objects common to all attributes)
+    #    This corresponds to the top concept.
+    #    Actually Ganter starts with (emptyset, M) so A = emptyset, A' = M (all attributes)
+    #    (A', A'') = (M, M')
+    
+    # Let's try to implement a more standard approach.
+    # The NextConcept algorithm as described by Ganter & Wille:
+    # Concepts are generated in lexicographical order of their intents.
+
+    # The following is a simplified version inspired by several FCA algorithms, not strictly NextClosure by Ganter.
+    # It computes all extents and their corresponding intents.
+    
+    # For a small dataset, iterating through all subsets of objects is feasible.
+    from itertools import combinations
+
+    found_concepts = set()
+
+    for i in range(num_objects + 1): # Iterate over subset sizes
+        for subset_obj_indices_tuple in combinations(range(num_objects), i):
+            subset_obj_indices = set(subset_obj_indices_tuple)
+            
+            # A'
+            intent_names = get_common_attributes(list(subset_obj_indices), current_context_matrix)
+            
+            # (A')'
+            extent_indices = get_common_objects(intent_names, current_context_matrix)
+            
+            # Convert to canonical form (sorted tuples of names)
+            extent_obj_names = tuple(sorted([object_names[idx] for idx in extent_indices]))
+            intent_attr_names = tuple(sorted(list(intent_names)))
+            
+            found_concepts.add((extent_obj_names, intent_attr_names))
+            
+    # Sort concepts for consistent output (e.g., by size of extent, then by extent content)
+    # Sorting by extent size (descending), then intent size (ascending) is common for lattices
+    sorted_concepts = sorted(list(found_concepts), key=lambda c: (-len(c[0]), len(c[1]), c[0], c[1]))
+    
+    return sorted_concepts
+
+
+# Find and print the concepts
+if 'context_matrix' in locals() and context_matrix is not None:
+    formal_concepts = find_formal_concepts(context_matrix)
+    print(f"\nFound {len(formal_concepts)} formal concepts:")
+    for i, (extent, intent) in enumerate(formal_concepts):
+        print(f"Concept {i+1}:")
+        print(f"  Extent (Objects): {extent if extent else '{}'}") # Handle empty extent
+        print(f"  Intent (Attributes): {intent if intent else '{}'}") # Handle empty intent
+else:
+    print("Context matrix not available. Cannot find concepts.")
+```
+```text?code_stdout&code_event_index=6
+Corrected Boolean Context Matrix Head:
+          a1     a2     a3     a4     a5
+Objet                                   
+o1      True  False   True   True  False
+o2     False  False   True  False  False
+o3      True   True  False   True   True
+o4     False   True  False  False   True
+o5     False   True  False  False  False
+
+Corrected Boolean Context Matrix Info:
+<class 'pandas.core.frame.DataFrame'>
+Index: 5 entries, o1 to o5
+Data columns (total 5 columns):
+ #   Column  Non-Null Count  Dtype
+---  ------  --------------  -----
+ 0   a1      5 non-null      bool 
+ 1   a2      5 non-null      bool 
+ 2   a3      5 non-null      bool 
+ 3   a4      5 non-null      bool 
+ 4   a5      5 non-null      bool 
+dtypes: bool(5)
+memory usage: 65.0+ bytes
+
+Objects: ['o1', 'o2', 'o3', 'o4', 'o5']
+Attributes: ['a1', 'a2', 'a3', 'a4', 'a5']
+
+Found 8 formal concepts:
+Concept 1:
+  Extent (Objects): ('o1', 'o2', 'o3', 'o4', 'o5')
+  Intent (Attributes): {}
+Concept 2:
+  Extent (Objects): ('o3', 'o4', 'o5')
+  Intent (Attributes): ('a2',)
+Concept 3:
+  Extent (Objects): ('o1', 'o2')
+  Intent (Attributes): ('a3',)
+Concept 4:
+  Extent (Objects): ('o1', 'o3')
+  Intent (Attributes): ('a1', 'a4')
+Concept 5:
+  Extent (Objects): ('o3', 'o4')
+  Intent (Attributes): ('a2', 'a5')
+Concept 6:
+  Extent (Objects): ('o1',)
+  Intent (Attributes): ('a1', 'a3', 'a4')
+Concept 7:
+  Extent (Objects): ('o3',)
+  Intent (Attributes): ('a1', 'a2', 'a4', 'a5')
+Concept 8:
+  Extent (Objects): {}
+  Intent (Attributes): ('a1', 'a2', 'a3', 'a4', 'a5')
+
+```
+Okay, I've processed your CSV file and extracted the formal concepts from the provided context.
+
+## Formal Context
+
+First, I loaded the data and interpreted it as a formal context. The objects are 'o1' through 'o5', and the attributes are 'a1' through 'a5'. The presence of an attribute for an object was marked by 'yes' in your file.
+
+Here's the boolean representation of your formal context:
+
+| Objet | a1    | a2    | a3    | a4    | a5    |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| o1    | True  | False | True  | True  | False |
+| o2    | False | False | True  | False | False |
+| o3    | True  | True  | False | True  | True  |
+| o4    | False | True  | False | False | True  |
+| o5    | False | True  | False | False | False |
+
+---
+## Extracted Formal Concepts 📜
+
+Using this context, I identified **8 formal concepts**. Each concept consists of an **Extent** (a set of objects) and an **Intent** (a set of attributes) such that:
+* The Extent contains all objects sharing the attributes in the Intent.
+* The Intent contains all attributes shared by the objects in the Extent.
+
+Here are the enumerated concepts:
+
+1.  **Concept 1**:
+    * **Extent (Objects)**: ('o1', 'o2', 'o3', 'o4', 'o5')
+    * **Intent (Attributes)**: {}
+    *(This is often called the "bottom" concept of the lattice, representing all objects and the attributes common to all of them, which in this case is none.)*
+
+2.  **Concept 2**:
+    * **Extent (Objects)**: ('o3', 'o4', 'o5')
+    * **Intent (Attributes)**: ('a2',)
+
+3.  **Concept 3**:
+    * **Extent (Objects)**: ('o1', 'o2')
+    * **Intent (Attributes)**: ('a3',)
+
+4.  **Concept 4**:
+    * **Extent (Objects)**: ('o1', 'o3')
+    * **Intent (Attributes)**: ('a1', 'a4')
+
+5.  **Concept 5**:
+    * **Extent (Objects)**: ('o3', 'o4')
+    * **Intent (Attributes)**: ('a2', 'a5')
+
+6.  **Concept 6**:
+    * **Extent (Objects)**: ('o1',)
+    * **Intent (Attributes)**: ('a1', 'a3', 'a4')
+
+7.  **Concept 7**:
+    * **Extent (Objects)**: ('o3',)
+    * **Intent (Attributes)**: ('a1', 'a2', 'a4', 'a5')
+
+8.  **Concept 8**:
+    * **Extent (Objects)**: {}
+    * **Intent (Attributes)**: ('a1', 'a2', 'a3', 'a4', 'a5')
+    *(This is often called the "top" concept of the lattice, representing all attributes and the objects that share all of them, which in this case is none.)*
+
+These concepts form the building blocks of the concept lattice for your given data.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+```python?code_reference&code_event_index=2
+# This code assumes 'formal_concepts' variable is available from the previous execution.
+# If not, the concept generation part would need to be re-run.
+# For the purpose of this step, we'll redefine it if it's not found,
+# based on the output from the previous step.
+
+try:
+    # Check if formal_concepts is defined and has the expected structure
+    if not isinstance(formal_concepts, list) or \
+       not all(isinstance(c, tuple) and len(c) == 2 and \
+               isinstance(c[0], tuple) and isinstance(c[1], tuple) for c in formal_concepts):
+        raise NameError("formal_concepts not defined or has wrong structure")
+except NameError:
+    print("formal_concepts not found or has an incorrect structure. Re-defining based on previous output.")
+    # Based on the previous output:
+    # Concept 1: Extent: ('o1', 'o2', 'o3', 'o4', 'o5'), Intent: {}
+    # Concept 2: Extent: ('o3', 'o4', 'o5'), Intent: ('a2',)
+    # Concept 3: Extent: ('o1', 'o2'), Intent: ('a3',)
+    # Concept 4: Extent: ('o1', 'o3'), Intent: ('a1', 'a4')
+    # Concept 5: Extent: ('o3', 'o4'), Intent: ('a2', 'a5')
+    # Concept 6: Extent: ('o1',), Intent: ('a1', 'a3', 'a4')
+    # Concept 7: Extent: ('o3',), Intent: ('a1', 'a2', 'a4', 'a5')
+    # Concept 8: Extent: {}, Intent: ('a1', 'a2', 'a3', 'a4', 'a5')
+    # Stored as (Extent, Intent)
+    formal_concepts = [
+        (('o1', 'o2', 'o3', 'o4', 'o5'), ()),
+        (('o3', 'o4', 'o5'), ('a2',)),
+        (('o1', 'o2'), ('a3',)),
+        (('o1', 'o3'), ('a1', 'a4')),
+        (('o3', 'o4'), ('a2', 'a5')),
+        (('o1',), ('a1', 'a3', 'a4')),
+        (('o3',), ('a1', 'a2', 'a4', 'a5')),
+        ((), ('a1', 'a2', 'a3', 'a4', 'a5'))
+    ]
+
+formatted_concept_pairs = []
+
+for extent, intent in formal_concepts:
+    # Format intent: [attr1, attr2,...] without quotes
+    intent_str_list = [str(attr) for attr in intent]
+    intent_str = "[" + ", ".join(intent_str_list) + "]"
+
+    # Format extent: [obj1, obj2,...] without quotes
+    extent_str_list = [str(obj) for obj in extent]
+    extent_str = "[" + ", ".join(extent_str_list) + "]"
+    
+    # Structure: [intent, extent]
+    # User example was: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]]... ]
+    # So each element in the main list is [intent_list, extent_list]
+    
+    # My previous response had (Extent, Intent). Let's stick to the user's format for the inner pair.
+    # User's requested format for a single pair: [intent, extent]
+    
+    # Let's make sure the input to this loop is (extent, intent) as derived from my code.
+    # And the output format is [ [intent_items_as_strings_no_quotes], [extent_items_as_strings_no_quotes] ]
+
+    # Example from user: [[a1], [o1, o3, o4]]
+    # This means 'a1' is the intent, 'o1, o3, o4' is the extent.
+    
+    current_pair_str = f"[{intent_str}, {extent_str}]"
+    formatted_concept_pairs.append(current_pair_str)
+
+# Join all formatted pairs into a single line list
+# Result: "[[intent1, extent1], [intent2, extent2], ...]"
+final_output_string = "[" + ", ".join(formatted_concept_pairs) + "]"
+
+print(final_output_string)
+```
+```text?code_stdout&code_event_index=2
+[[[], [o1, o2, o3, o4, o5]], [[a2], [o3, o4, o5]], [[a3], [o1, o2]], [[a1, a4], [o1, o3]], [[a2, a5], [o3, o4]], [[a1, a3, a4], [o1]], [[a1, a2, a4, a5], [o3]], [[a1, a2, a3, a4, a5], []]]
+
+```
+Here is the list of all concepts in the single-line format you requested:
+
+`[[[], [o1, o2, o3, o4, o5]], [[a2], [o3, o4, o5]], [[a3], [o1, o2]], [[a1, a4], [o1, o3]], [[a2, a5], [o3, o4]], [[a1, a3, a4], [o1]], [[a1, a2, a4, a5], [o3]], [[a1, a2, a3, a4, a5], []]]`
+
+

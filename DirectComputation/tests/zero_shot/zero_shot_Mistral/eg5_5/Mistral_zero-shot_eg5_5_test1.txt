@@ -1,0 +1,47 @@
+Mistral_zero-shot_eg5_5_test1
+
+Date: 29 may 2025
+Model: Mistral Large 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+Formal Concept Analysis (FCA) is a method used to analyze data by identifying conceptual hierarchies or "concept lattices" within the data. A formal context in FCA is typically represented as a table with objects, attributes, and a relation between them indicating whether an object has an attribute.
+
+To extract all lattice concepts from the given context, we need to identify all pairs of object sets (extents) and attribute sets (intents) such that they form a complete lattice structure. This involves finding all possible concepts where the extent consists of objects sharing certain attributes, and the intent consists of attributes shared by certain objects.
+
+Let's proceed to extract these concepts from the given context.It seems there was an error in the code due to the use of a set as an indexer, which is not supported in pandas. Let's fix that and try again to extract the lattice concepts from the given context.Here are the lattice concepts extracted from the given formal context:
+
+| Extent | Intent |
+|--------|--------|
+| {o1, o2, o3, o4, o5} | {} |
+| {o1} | {a1, a3, a4} |
+| {o1, o2} | {a3} |
+| {o3} | {a1, a2, a4, a5} |
+| {o3, o4} | {a2, a5} |
+| {o3, o4, o5} | {a2} |
+| {o1, o3} | {a1, a4} |
+
+Each row represents a formal concept, where the "Extent" is a set of objects and the "Intent" is a set of attributes shared by those objects.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all concepts in the specified format:
+
+[[[], [o1, o2, o3, o4, o5]], [[a3], [o1, o2]], [[a1, a3, a4], [o1]], [[a3, a4], [o1, o3]], [[a2], [o3, o4, o5]], [[a2, a5], [o3, o4]], [[a1, a2, a4, a5], [o3]]]

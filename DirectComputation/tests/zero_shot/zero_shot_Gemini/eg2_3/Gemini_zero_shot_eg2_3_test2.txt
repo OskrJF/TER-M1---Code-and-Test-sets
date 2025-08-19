@@ -1,0 +1,37 @@
+Gemini_zero_shot_eg2_3_test2
+
+Date: 14 may 2025
+Model:Gemini 2.5 PRO
+Context file: eg2_3
+Type of solution: Applied code
+Number of test:2	
+
+
+Prompt:
+Within the context of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+
+
+-----------------------------------
+
+OUTPUT:
+
+Okay, I understand. Based on the provided CSV data, the formal context is:
+
+Objects (G): {o1, o2}
+Attributes (M): {a1, a2, a3}
+Incidence Relation (I):
+(o1, a1) ∈ I
+(o1, a2) ∈ I
+(o2, a2) ∈ I
+(o2, a3) ∈ I
+Now, let's identify all the lattice concepts:
+
+The set of all objects {o1, o2} has the common attribute {a2}. This gives us the concept ({o1, o2}, {a2}).
+The object {o1} has the attributes {a1, a2}. This gives us the concept ({o1}, {a1, a2}).
+The object {o2} has the attributes {a2, a3}. This gives us the concept ({o2}, {a2, a3}).
+There are no objects that share all three attributes {a1, a2, a3}, so we look at combinations of attributes. The objects that have {a1, a2} are {o1}. The objects that have {a1, a3} is the empty set. The objects that have {a2, a3} are {o2}.
+The set of all attributes {a1, a2, a3} is shared by no objects, giving us the concept ({}, {a1, a2, a3}).
+Therefore, the lattice concepts are:
+
+[[[], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]
