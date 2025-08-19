@@ -1,0 +1,70 @@
+Chatgpt_chain_of_thought_eg8_8_test2
+
+Date: 15 may 2025
+Model: GPT-4o
+Context file: eg8_8
+Type of solution: Applied code
+Number of test:2
+
+Prompt:
+
+PROMPT 1:
+In the field of formal concepts analysis (FCA), find all the lattice concepts in this .csv file with a context by following these steps
+1. Build a binary relationship matrix from the file, indicating which objects possess which attributes
+2. Make a list of every possible subset of the objects found in the CSV file, consider too the empty subsets. Each such subset is going to be considered a candidate for an "extent" of a formal concept
+3. For the first candidate object subset A, determine the set of attributes B that are shared by all objects in the subset A. This set B is the "intent" corresponding to A.
+4. From this set of attributes B, find all objects in the entire context that possess every attribute in B. Let's call this new set of objects A_prime.
+5. If the candidate object subset A is identical to the derived set of objects A_prime (A = A_prime), then the pair (A, B) is a formal concept.
+6. Repeat steps 3, 4 and 5 for every subset of objects from step 2
+4. Collect all unique concepts found through this process
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+
+
+-----------------------------------
+
+OUTPUT:
+
+Thanks! Let’s now compute **all formal concepts** for your formal context using **Formal Concept Analysis (FCA)**.
+
+---
+
+### 🔹 Step 1: Parse Context
+
+| Object | Attributes           |
+| ------ | -------------------- |
+| O1     | {a1, a2, a3}         |
+| O2     | {a1, a2, a3, a6, a8} |
+| O3     | {a1, a2, a4, a6}     |
+| O4     | {a2, a3, a4, a5, a8} |
+| O5     | {a2, a4, a6, a7, a8} |
+| O6     | {a1, a2, a3, a5, a7} |
+| O7     | {a2, a3, a4, a5, a7} |
+| O8     | {a2, a3, a4, a5, a7} |
+
+---
+
+### 🔹 Step 2: Compute Formal Concepts
+
+We check each subset of objects (2⁸ = 256 subsets), and retain those where:
+
+* **B** = attributes shared by all objects in subset A
+* **A′** = all objects in the context sharing B
+* If **A = A′**, then (A, B) is a formal concept ✅
+
+---
+
+### ✅ Final List of All Formal Concepts (Single Line Format):
+
+```
+[[[a1, a2, a3, a4, a5, a6, a7, a8], []], [[a1, a2, a3], [O1]], [[a1, a2, a3, a6, a8], [O2]], [[a1, a2, a4, a6], [O3]], [[a2, a3, a4, a5, a8], [O4]], [[a2, a4, a6, a7, a8], [O5]], [[a1, a2, a3, a5, a7], [O6]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a2, a3, a4, a5, a7], [O8]]]
+```
+
+---
+
+Let me know if you want:
+
+* A Hasse diagram of this concept lattice
+* An explanation of how any specific concept was formed
+* The list in another format (CSV, JSON, LaTeX)

@@ -1,0 +1,561 @@
+Claude_chain-of-thought_eg15_15_test2
+
+Date: 28 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concepts analysis (FCA), find all the lattice concepts in this .csv file with a context by following these steps
+1. Build a binary relationship matrix from the file, indicating which objects possess which attributes
+2. Make a list of every possible subset of the objects found in the CSV file, consider too the empty subsets. Each such subset is going to be considered a candidate for an "extent" of a formal concept
+3. For the first candidate object subset A, determine the set of attributes B that are shared by all objects in the subset A. This set B is the "intent" corresponding to A.
+4. From this set of attributes B, find all objects in the entire context that possess every attribute in B. Let's call this new set of objects A_prime.
+5. If the candidate object subset A is identical to the derived set of objects A_prime (A = A_prime), then the pair (A, B) is a formal concept.
+6. Repeat steps 3, 4 and 5 for every subset of objects from step 2
+4. Collect all unique concepts found through this process
+____________________
+
+OUTPUT:
+I'll analyze this CSV file to find all lattice concepts using Formal Concept Analysis (FCA). Let me start by reading and processing the data.I've created an interactive analysis tool that follows the exact FCA methodology you outlined. The tool will:
+
+1. **Build the binary relationship matrix** from your CSV file, showing which objects (O1-O15) possess which attributes (Attr1-Attr15)
+
+2. **Generate all possible object subsets** - there are 2^15 = 32,768 possible subsets of the 15 objects
+
+3. **For each subset A**, it:
+   - Determines the intent B (attributes shared by all objects in A)
+   - Finds the extent A' (all objects that possess every attribute in B) 
+   - Checks if A = A' to confirm it's a formal concept
+
+4. **Collects all unique formal concepts** found through this process
+
+The analysis runs automatically and shows:
+- The complete binary matrix visualization
+- Real-time progress as it processes all 32,768 subsets
+- Summary statistics (objects, attributes, total subsets, concepts found)
+- All formal concepts with their extents and intents displayed as cards
+
+Each formal concept (A, B) represents a maximal relationship where:
+- **Extent A**: The set of objects
+- **Intent B**: The set of attributes shared by all objects in A
+
+The tool uses the formal mathematical definition where a concept (A, B) satisfies:
+- A = {o ∈ Objects | ∀a ∈ B: (o,a) ∈ relation}
+- B = {a ∈ Attributes | ∀o ∈ A: (o,a) ∈ relation}
+
+This will find all the lattice concepts in your formal context according to the standard FCA algorithm.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Perfect! I've updated the analysis tool to include the single-line format you requested. The tool will now display all formal concepts in the exact format you specified: `[[intent], [extent]]` for each concept, all on a single line without quotation marks.
+
+The format follows your example structure where:
+- Each concept is represented as `[[attributes], [objects]]`
+- The intent (shared attributes) comes first
+- The extent (objects) comes second
+- All concepts are collected in one large array
+
+The tool will automatically generate this format after completing the FCA analysis of your CSV data. You'll see both the individual concept cards for easy reading and the complete single-line format ready for copy-paste or further processing.
+
+
+🔍 Formal Concept Analysis
+Step 1: Binary Relationship Matrix
+Object	Attr1	Attr2	Attr3	Attr4	Attr5	Attr6	Attr7	Attr8	Attr9	Attr10	Attr11	Attr12	Attr13	Attr14	Attr15
+O1	No	No	No	Yes	Yes	Yes	No	No	Yes	No	No	No	Yes	No	Yes
+O2	No	Yes	No	Yes	No	No	No	No	No	Yes	Yes	Yes	Yes	No	Yes
+O3	Yes	No	Yes	No	No	No	No	Yes	Yes	No	Yes	No	Yes	No	Yes
+O4	No	Yes	No	No	Yes	Yes	No	No	No	No	No	Yes	Yes	Yes	No
+O5	No	Yes	Yes	Yes	Yes	Yes	No	Yes	No	No	Yes	No	Yes	Yes	No
+O6	Yes	No	No	No	Yes	No	Yes	Yes	No	Yes	No	Yes	Yes	No	Yes
+O7	Yes	Yes	Yes	Yes	No	Yes	Yes	Yes	Yes	Yes	Yes	No	Yes	No	No
+O8	Yes	No	No	No	Yes	Yes	Yes	No	No	No	Yes	No	No	No	No
+O9	No	Yes	No	No	Yes	Yes	Yes	No	Yes	Yes	No	Yes	No	Yes	No
+O10	No	Yes	No	Yes	Yes	Yes	No	Yes	No	No	Yes	No	Yes	No	No
+O11	No	Yes	No	Yes	No	Yes	Yes	No	No	Yes	Yes	Yes	No	No	Yes
+O12	No	No	No	No	Yes	Yes	No	No	Yes	Yes	No	Yes	No	Yes	No
+O13	No	Yes	Yes	No	No	Yes	No	Yes	Yes	Yes	No	No	No	Yes	Yes
+O14	No	Yes	No	No	No	Yes	No	No	No	No	No	Yes	Yes	Yes	Yes
+O15	No	No	No	Yes	No	No	No	No	Yes	No	Yes	No	Yes	Yes	No
+Step 2: Analysis Progress
+Analysis complete!
+Step 3: Summary Statistics
+15 Objects
+15 Attributes
+32768 Total Subsets
+155 Formal Concepts
+Step 4: All Formal Concepts
+Concept 1
+Extent: {}
+Intent: {Attr1, Attr2, Attr3, Attr4, Attr5, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr12, Attr13, Attr14, Attr15}
+Concept 2
+Extent: {O1}
+Intent: {Attr4, Attr5, Attr6, Attr9, Attr13, Attr15}
+Concept 3
+Extent: {O2}
+Intent: {Attr2, Attr4, Attr10, Attr11, Attr12, Attr13, Attr15}
+Concept 4
+Extent: {O1, O2}
+Intent: {Attr4, Attr13, Attr15}
+Concept 5
+Extent: {O3}
+Intent: {Attr1, Attr3, Attr8, Attr9, Attr11, Attr13, Attr15}
+Concept 6
+Extent: {O1, O3}
+Intent: {Attr9, Attr13, Attr15}
+Concept 7
+Extent: {O2, O3}
+Intent: {Attr11, Attr13, Attr15}
+Concept 8
+Extent: {O4}
+Intent: {Attr2, Attr5, Attr6, Attr12, Attr13, Attr14}
+Concept 9
+Extent: {O5}
+Intent: {Attr2, Attr3, Attr4, Attr5, Attr6, Attr8, Attr11, Attr13, Attr14}
+Concept 10
+Extent: {O4, O5}
+Intent: {Attr2, Attr5, Attr6, Attr13, Attr14}
+Concept 11
+Extent: {O6}
+Intent: {Attr1, Attr5, Attr7, Attr8, Attr10, Attr12, Attr13, Attr15}
+Concept 12
+Extent: {O1, O6}
+Intent: {Attr5, Attr13, Attr15}
+Concept 13
+Extent: {O2, O6}
+Intent: {Attr10, Attr12, Attr13, Attr15}
+Concept 14
+Extent: {O3, O6}
+Intent: {Attr1, Attr8, Attr13, Attr15}
+Concept 15
+Extent: {O4, O6}
+Intent: {Attr5, Attr12, Attr13}
+Concept 16
+Extent: {O7}
+Intent: {Attr1, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr13}
+Concept 17
+Extent: {O1, O7}
+Intent: {Attr4, Attr6, Attr9, Attr13}
+Concept 18
+Extent: {O2, O7}
+Intent: {Attr2, Attr4, Attr10, Attr11, Attr13}
+Concept 19
+Extent: {O3, O7}
+Intent: {Attr1, Attr3, Attr8, Attr9, Attr11, Attr13}
+Concept 20
+Extent: {O5, O7}
+Intent: {Attr2, Attr3, Attr4, Attr6, Attr8, Attr11, Attr13}
+Concept 21
+Extent: {O3, O5, O7}
+Intent: {Attr3, Attr8, Attr11, Attr13}
+Concept 22
+Extent: {O6, O7}
+Intent: {Attr1, Attr7, Attr8, Attr10, Attr13}
+Concept 23
+Extent: {O2, O6, O7}
+Intent: {Attr10, Attr13}
+Concept 24
+Extent: {O3, O6, O7}
+Intent: {Attr1, Attr8, Attr13}
+Concept 25
+Extent: {O8}
+Intent: {Attr1, Attr5, Attr6, Attr7, Attr11}
+Concept 26
+Extent: {O6, O8}
+Intent: {Attr1, Attr5, Attr7}
+Concept 27
+Extent: {O7, O8}
+Intent: {Attr1, Attr6, Attr7, Attr11}
+Concept 28
+Extent: {O3, O7, O8}
+Intent: {Attr1, Attr11}
+Concept 29
+Extent: {O6, O7, O8}
+Intent: {Attr1, Attr7}
+Concept 30
+Extent: {O3, O6, O7, O8}
+Intent: {Attr1}
+Concept 31
+Extent: {O9}
+Intent: {Attr2, Attr5, Attr6, Attr7, Attr9, Attr10, Attr12, Attr14}
+Concept 32
+Extent: {O4, O9}
+Intent: {Attr2, Attr5, Attr6, Attr12, Attr14}
+Concept 33
+Extent: {O4, O5, O9}
+Intent: {Attr2, Attr5, Attr6, Attr14}
+Concept 34
+Extent: {O6, O9}
+Intent: {Attr5, Attr7, Attr10, Attr12}
+Concept 35
+Extent: {O7, O9}
+Intent: {Attr2, Attr6, Attr7, Attr9, Attr10}
+Concept 36
+Extent: {O8, O9}
+Intent: {Attr5, Attr6, Attr7}
+Concept 37
+Extent: {O6, O8, O9}
+Intent: {Attr5, Attr7}
+Concept 38
+Extent: {O5, O10}
+Intent: {Attr2, Attr4, Attr5, Attr6, Attr8, Attr11, Attr13}
+Concept 39
+Extent: {O1, O5, O10}
+Intent: {Attr4, Attr5, Attr6, Attr13}
+Concept 40
+Extent: {O4, O5, O10}
+Intent: {Attr2, Attr5, Attr6, Attr13}
+Concept 41
+Extent: {O1, O4, O5, O10}
+Intent: {Attr5, Attr6, Attr13}
+Concept 42
+Extent: {O5, O6, O10}
+Intent: {Attr5, Attr8, Attr13}
+Concept 43
+Extent: {O1, O4, O5, O6, O10}
+Intent: {Attr5, Attr13}
+Concept 44
+Extent: {O5, O7, O10}
+Intent: {Attr2, Attr4, Attr6, Attr8, Attr11, Attr13}
+Concept 45
+Extent: {O1, O5, O7, O10}
+Intent: {Attr4, Attr6, Attr13}
+Concept 46
+Extent: {O2, O5, O7, O10}
+Intent: {Attr2, Attr4, Attr11, Attr13}
+Concept 47
+Extent: {O3, O5, O7, O10}
+Intent: {Attr8, Attr11, Attr13}
+Concept 48
+Extent: {O3, O5, O6, O7, O10}
+Intent: {Attr8, Attr13}
+Concept 49
+Extent: {O5, O8, O10}
+Intent: {Attr5, Attr6, Attr11}
+Concept 50
+Extent: {O4, O5, O9, O10}
+Intent: {Attr2, Attr5, Attr6}
+Concept 51
+Extent: {O11}
+Intent: {Attr2, Attr4, Attr6, Attr7, Attr10, Attr11, Attr12, Attr15}
+Concept 52
+Extent: {O1, O11}
+Intent: {Attr4, Attr6, Attr15}
+Concept 53
+Extent: {O2, O11}
+Intent: {Attr2, Attr4, Attr10, Attr11, Attr12, Attr15}
+Concept 54
+Extent: {O1, O2, O11}
+Intent: {Attr4, Attr15}
+Concept 55
+Extent: {O2, O3, O11}
+Intent: {Attr11, Attr15}
+Concept 56
+Extent: {O6, O11}
+Intent: {Attr7, Attr10, Attr12, Attr15}
+Concept 57
+Extent: {O2, O6, O11}
+Intent: {Attr10, Attr12, Attr15}
+Concept 58
+Extent: {O7, O11}
+Intent: {Attr2, Attr4, Attr6, Attr7, Attr10, Attr11}
+Concept 59
+Extent: {O2, O7, O11}
+Intent: {Attr2, Attr4, Attr10, Attr11}
+Concept 60
+Extent: {O7, O8, O11}
+Intent: {Attr6, Attr7, Attr11}
+Concept 61
+Extent: {O9, O11}
+Intent: {Attr2, Attr6, Attr7, Attr10, Attr12}
+Concept 62
+Extent: {O2, O9, O11}
+Intent: {Attr2, Attr10, Attr12}
+Concept 63
+Extent: {O6, O9, O11}
+Intent: {Attr7, Attr10, Attr12}
+Concept 64
+Extent: {O7, O9, O11}
+Intent: {Attr2, Attr6, Attr7, Attr10}
+Concept 65
+Extent: {O6, O7, O9, O11}
+Intent: {Attr7, Attr10}
+Concept 66
+Extent: {O7, O8, O9, O11}
+Intent: {Attr6, Attr7}
+Concept 67
+Extent: {O6, O7, O8, O9, O11}
+Intent: {Attr7}
+Concept 68
+Extent: {O5, O7, O10, O11}
+Intent: {Attr2, Attr4, Attr6, Attr11}
+Concept 69
+Extent: {O1, O5, O7, O10, O11}
+Intent: {Attr4, Attr6}
+Concept 70
+Extent: {O2, O5, O7, O10, O11}
+Intent: {Attr2, Attr4, Attr11}
+Concept 71
+Extent: {O5, O7, O8, O10, O11}
+Intent: {Attr6, Attr11}
+Concept 72
+Extent: {O9, O12}
+Intent: {Attr5, Attr6, Attr9, Attr10, Attr12, Attr14}
+Concept 73
+Extent: {O1, O9, O12}
+Intent: {Attr5, Attr6, Attr9}
+Concept 74
+Extent: {O4, O9, O12}
+Intent: {Attr5, Attr6, Attr12, Attr14}
+Concept 75
+Extent: {O4, O5, O9, O12}
+Intent: {Attr5, Attr6, Attr14}
+Concept 76
+Extent: {O6, O9, O12}
+Intent: {Attr5, Attr10, Attr12}
+Concept 77
+Extent: {O4, O6, O9, O12}
+Intent: {Attr5, Attr12}
+Concept 78
+Extent: {O1, O4, O5, O8, O9, O10, O12}
+Intent: {Attr5, Attr6}
+Concept 79
+Extent: {O1, O4, O5, O6, O8, O9, O10, O12}
+Intent: {Attr5}
+Concept 80
+Extent: {O9, O11, O12}
+Intent: {Attr6, Attr10, Attr12}
+Concept 81
+Extent: {O2, O6, O9, O11, O12}
+Intent: {Attr10, Attr12}
+Concept 82
+Extent: {O13}
+Intent: {Attr2, Attr3, Attr6, Attr8, Attr9, Attr10, Attr14, Attr15}
+Concept 83
+Extent: {O1, O13}
+Intent: {Attr6, Attr9, Attr15}
+Concept 84
+Extent: {O3, O13}
+Intent: {Attr3, Attr8, Attr9, Attr15}
+Concept 85
+Extent: {O1, O3, O13}
+Intent: {Attr9, Attr15}
+Concept 86
+Extent: {O5, O13}
+Intent: {Attr2, Attr3, Attr6, Attr8, Attr14}
+Concept 87
+Extent: {O6, O13}
+Intent: {Attr8, Attr10, Attr15}
+Concept 88
+Extent: {O3, O6, O13}
+Intent: {Attr8, Attr15}
+Concept 89
+Extent: {O7, O13}
+Intent: {Attr2, Attr3, Attr6, Attr8, Attr9, Attr10}
+Concept 90
+Extent: {O3, O7, O13}
+Intent: {Attr3, Attr8, Attr9}
+Concept 91
+Extent: {O5, O7, O13}
+Intent: {Attr2, Attr3, Attr6, Attr8}
+Concept 92
+Extent: {O3, O5, O7, O13}
+Intent: {Attr3, Attr8}
+Concept 93
+Extent: {O6, O7, O13}
+Intent: {Attr8, Attr10}
+Concept 94
+Extent: {O9, O13}
+Intent: {Attr2, Attr6, Attr9, Attr10, Attr14}
+Concept 95
+Extent: {O7, O9, O13}
+Intent: {Attr2, Attr6, Attr9, Attr10}
+Concept 96
+Extent: {O5, O7, O10, O13}
+Intent: {Attr2, Attr6, Attr8}
+Concept 97
+Extent: {O3, O5, O6, O7, O10, O13}
+Intent: {Attr8}
+Concept 98
+Extent: {O11, O13}
+Intent: {Attr2, Attr6, Attr10, Attr15}
+Concept 99
+Extent: {O2, O11, O13}
+Intent: {Attr2, Attr10, Attr15}
+Concept 100
+Extent: {O2, O6, O11, O13}
+Intent: {Attr10, Attr15}
+Concept 101
+Extent: {O7, O9, O11, O13}
+Intent: {Attr2, Attr6, Attr10}
+Concept 102
+Extent: {O2, O7, O9, O11, O13}
+Intent: {Attr2, Attr10}
+Concept 103
+Extent: {O9, O12, O13}
+Intent: {Attr6, Attr9, Attr10, Attr14}
+Concept 104
+Extent: {O7, O9, O12, O13}
+Intent: {Attr6, Attr9, Attr10}
+Concept 105
+Extent: {O1, O7, O9, O12, O13}
+Intent: {Attr6, Attr9}
+Concept 106
+Extent: {O7, O9, O11, O12, O13}
+Intent: {Attr6, Attr10}
+Concept 107
+Extent: {O2, O6, O7, O9, O11, O12, O13}
+Intent: {Attr10}
+Concept 108
+Extent: {O14}
+Intent: {Attr2, Attr6, Attr12, Attr13, Attr14, Attr15}
+Concept 109
+Extent: {O1, O14}
+Intent: {Attr6, Attr13, Attr15}
+Concept 110
+Extent: {O2, O14}
+Intent: {Attr2, Attr12, Attr13, Attr15}
+Concept 111
+Extent: {O4, O14}
+Intent: {Attr2, Attr6, Attr12, Attr13, Attr14}
+Concept 112
+Extent: {O2, O4, O14}
+Intent: {Attr2, Attr12, Attr13}
+Concept 113
+Extent: {O4, O5, O14}
+Intent: {Attr2, Attr6, Attr13, Attr14}
+Concept 114
+Extent: {O2, O6, O14}
+Intent: {Attr12, Attr13, Attr15}
+Concept 115
+Extent: {O1, O2, O3, O6, O14}
+Intent: {Attr13, Attr15}
+Concept 116
+Extent: {O2, O4, O6, O14}
+Intent: {Attr12, Attr13}
+Concept 117
+Extent: {O4, O9, O14}
+Intent: {Attr2, Attr6, Attr12, Attr14}
+Concept 118
+Extent: {O4, O5, O7, O10, O14}
+Intent: {Attr2, Attr6, Attr13}
+Concept 119
+Extent: {O1, O4, O5, O7, O10, O14}
+Intent: {Attr6, Attr13}
+Concept 120
+Extent: {O2, O4, O5, O7, O10, O14}
+Intent: {Attr2, Attr13}
+Concept 121
+Extent: {O11, O14}
+Intent: {Attr2, Attr6, Attr12, Attr15}
+Concept 122
+Extent: {O2, O11, O14}
+Intent: {Attr2, Attr12, Attr15}
+Concept 123
+Extent: {O2, O6, O11, O14}
+Intent: {Attr12, Attr15}
+Concept 124
+Extent: {O4, O9, O11, O14}
+Intent: {Attr2, Attr6, Attr12}
+Concept 125
+Extent: {O2, O4, O9, O11, O14}
+Intent: {Attr2, Attr12}
+Concept 126
+Extent: {O4, O9, O12, O14}
+Intent: {Attr6, Attr12, Attr14}
+Concept 127
+Extent: {O4, O9, O11, O12, O14}
+Intent: {Attr6, Attr12}
+Concept 128
+Extent: {O2, O4, O6, O9, O11, O12, O14}
+Intent: {Attr12}
+Concept 129
+Extent: {O13, O14}
+Intent: {Attr2, Attr6, Attr14, Attr15}
+Concept 130
+Extent: {O4, O5, O9, O13, O14}
+Intent: {Attr2, Attr6, Attr14}
+Concept 131
+Extent: {O11, O13, O14}
+Intent: {Attr2, Attr6, Attr15}
+Concept 132
+Extent: {O1, O11, O13, O14}
+Intent: {Attr6, Attr15}
+Concept 133
+Extent: {O2, O11, O13, O14}
+Intent: {Attr2, Attr15}
+Concept 134
+Extent: {O1, O2, O3, O6, O11, O13, O14}
+Intent: {Attr15}
+Concept 135
+Extent: {O4, O5, O7, O9, O10, O11, O13, O14}
+Intent: {Attr2, Attr6}
+Concept 136
+Extent: {O2, O4, O5, O7, O9, O10, O11, O13, O14}
+Intent: {Attr2}
+Concept 137
+Extent: {O4, O5, O9, O12, O13, O14}
+Intent: {Attr6, Attr14}
+Concept 138
+Extent: {O1, O4, O5, O7, O8, O9, O10, O11, O12, O13, O14}
+Intent: {Attr6}
+Concept 139
+Extent: {O15}
+Intent: {Attr4, Attr9, Attr11, Attr13, Attr14}
+Concept 140
+Extent: {O5, O15}
+Intent: {Attr4, Attr11, Attr13, Attr14}
+Concept 141
+Extent: {O7, O15}
+Intent: {Attr4, Attr9, Attr11, Attr13}
+Concept 142
+Extent: {O1, O7, O15}
+Intent: {Attr4, Attr9, Attr13}
+Concept 143
+Extent: {O3, O7, O15}
+Intent: {Attr9, Attr11, Attr13}
+Concept 144
+Extent: {O1, O3, O7, O15}
+Intent: {Attr9, Attr13}
+Concept 145
+Extent: {O2, O5, O7, O10, O15}
+Intent: {Attr4, Attr11, Attr13}
+Concept 146
+Extent: {O1, O2, O5, O7, O10, O15}
+Intent: {Attr4, Attr13}
+Concept 147
+Extent: {O2, O3, O5, O7, O10, O15}
+Intent: {Attr11, Attr13}
+Concept 148
+Extent: {O2, O5, O7, O10, O11, O15}
+Intent: {Attr4, Attr11}
+Concept 149
+Extent: {O1, O2, O5, O7, O10, O11, O15}
+Intent: {Attr4}
+Concept 150
+Extent: {O2, O3, O5, O7, O8, O10, O11, O15}
+Intent: {Attr11}
+Concept 151
+Extent: {O9, O12, O13, O15}
+Intent: {Attr9, Attr14}
+Concept 152
+Extent: {O1, O3, O7, O9, O12, O13, O15}
+Intent: {Attr9}
+Concept 153
+Extent: {O4, O5, O14, O15}
+Intent: {Attr13, Attr14}
+Concept 154
+Extent: {O1, O2, O3, O4, O5, O6, O7, O10, O14, O15}
+Intent: {Attr13}
+Concept 155
+Extent: {O4, O5, O9, O12, O13, O14, O15}
+Intent: {Attr14}
+Single Line Format:
+[[[Attr1, Attr2, Attr3, Attr4, Attr5, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr12, Attr13, Attr14, Attr15], []], [[Attr4, Attr5, Attr6, Attr9, Attr13, Attr15], [O1]], [[Attr2, Attr4, Attr10, Attr11, Attr12, Attr13, Attr15], [O2]], [[Attr4, Attr13, Attr15], [O1, O2]], [[Attr1, Attr3, Attr8, Attr9, Attr11, Attr13, Attr15], [O3]], [[Attr9, Attr13, Attr15], [O1, O3]], [[Attr11, Attr13, Attr15], [O2, O3]], [[Attr2, Attr5, Attr6, Attr12, Attr13, Attr14], [O4]], [[Attr2, Attr3, Attr4, Attr5, Attr6, Attr8, Attr11, Attr13, Attr14], [O5]], [[Attr2, Attr5, Attr6, Attr13, Attr14], [O4, O5]], [[Attr1, Attr5, Attr7, Attr8, Attr10, Attr12, Attr13, Attr15], [O6]], [[Attr5, Attr13, Attr15], [O1, O6]], [[Attr10, Attr12, Attr13, Attr15], [O2, O6]], [[Attr1, Attr8, Attr13, Attr15], [O3, O6]], [[Attr5, Attr12, Attr13], [O4, O6]], [[Attr1, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr13], [O7]], [[Attr4, Attr6, Attr9, Attr13], [O1, O7]], [[Attr2, Attr4, Attr10, Attr11, Attr13], [O2, O7]], [[Attr1, Attr3, Attr8, Attr9, Attr11, Attr13], [O3, O7]], [[Attr2, Attr3, Attr4, Attr6, Attr8, Attr11, Attr13], [O5, O7]], [[Attr3, Attr8, Attr11, Attr13], [O3, O5, O7]], [[Attr1, Attr7, Attr8, Attr10, Attr13], [O6, O7]], [[Attr10, Attr13], [O2, O6, O7]], [[Attr1, Attr8, Attr13], [O3, O6, O7]], [[Attr1, Attr5, Attr6, Attr7, Attr11], [O8]], [[Attr1, Attr5, Attr7], [O6, O8]], [[Attr1, Attr6, Attr7, Attr11], [O7, O8]], [[Attr1, Attr11], [O3, O7, O8]], [[Attr1, Attr7], [O6, O7, O8]], [[Attr1], [O3, O6, O7, O8]], [[Attr2, Attr5, Attr6, Attr7, Attr9, Attr10, Attr12, Attr14], [O9]], [[Attr2, Attr5, Attr6, Attr12, Attr14], [O4, O9]], [[Attr2, Attr5, Attr6, Attr14], [O4, O5, O9]], [[Attr5, Attr7, Attr10, Attr12], [O6, O9]], [[Attr2, Attr6, Attr7, Attr9, Attr10], [O7, O9]], [[Attr5, Attr6, Attr7], [O8, O9]], [[Attr5, Attr7], [O6, O8, O9]], [[Attr2, Attr4, Attr5, Attr6, Attr8, Attr11, Attr13], [O5, O10]], [[Attr4, Attr5, Attr6, Attr13], [O1, O5, O10]], [[Attr2, Attr5, Attr6, Attr13], [O4, O5, O10]], [[Attr5, Attr6, Attr13], [O1, O4, O5, O10]], [[Attr5, Attr8, Attr13], [O5, O6, O10]], [[Attr5, Attr13], [O1, O4, O5, O6, O10]], [[Attr2, Attr4, Attr6, Attr8, Attr11, Attr13], [O5, O7, O10]], [[Attr4, Attr6, Attr13], [O1, O5, O7, O10]], [[Attr2, Attr4, Attr11, Attr13], [O2, O5, O7, O10]], [[Attr8, Attr11, Attr13], [O3, O5, O7, O10]], [[Attr8, Attr13], [O3, O5, O6, O7, O10]], [[Attr5, Attr6, Attr11], [O5, O8, O10]], [[Attr2, Attr5, Attr6], [O4, O5, O9, O10]], [[Attr2, Attr4, Attr6, Attr7, Attr10, Attr11, Attr12, Attr15], [O11]], [[Attr4, Attr6, Attr15], [O1, O11]], [[Attr2, Attr4, Attr10, Attr11, Attr12, Attr15], [O2, O11]], [[Attr4, Attr15], [O1, O2, O11]], [[Attr11, Attr15], [O2, O3, O11]], [[Attr7, Attr10, Attr12, Attr15], [O6, O11]], [[Attr10, Attr12, Attr15], [O2, O6, O11]], [[Attr2, Attr4, Attr6, Attr7, Attr10, Attr11], [O7, O11]], [[Attr2, Attr4, Attr10, Attr11], [O2, O7, O11]], [[Attr6, Attr7, Attr11], [O7, O8, O11]], [[Attr2, Attr6, Attr7, Attr10, Attr12], [O9, O11]], [[Attr2, Attr10, Attr12], [O2, O9, O11]], [[Attr7, Attr10, Attr12], [O6, O9, O11]], [[Attr2, Attr6, Attr7, Attr10], [O7, O9, O11]], [[Attr7, Attr10], [O6, O7, O9, O11]], [[Attr6, Attr7], [O7, O8, O9, O11]], [[Attr7], [O6, O7, O8, O9, O11]], [[Attr2, Attr4, Attr6, Attr11], [O5, O7, O10, O11]], [[Attr4, Attr6], [O1, O5, O7, O10, O11]], [[Attr2, Attr4, Attr11], [O2, O5, O7, O10, O11]], [[Attr6, Attr11], [O5, O7, O8, O10, O11]], [[Attr5, Attr6, Attr9, Attr10, Attr12, Attr14], [O9, O12]], [[Attr5, Attr6, Attr9], [O1, O9, O12]], [[Attr5, Attr6, Attr12, Attr14], [O4, O9, O12]], [[Attr5, Attr6, Attr14], [O4, O5, O9, O12]], [[Attr5, Attr10, Attr12], [O6, O9, O12]], [[Attr5, Attr12], [O4, O6, O9, O12]], [[Attr5, Attr6], [O1, O4, O5, O8, O9, O10, O12]], [[Attr5], [O1, O4, O5, O6, O8, O9, O10, O12]], [[Attr6, Attr10, Attr12], [O9, O11, O12]], [[Attr10, Attr12], [O2, O6, O9, O11, O12]], [[Attr2, Attr3, Attr6, Attr8, Attr9, Attr10, Attr14, Attr15], [O13]], [[Attr6, Attr9, Attr15], [O1, O13]], [[Attr3, Attr8, Attr9, Attr15], [O3, O13]], [[Attr9, Attr15], [O1, O3, O13]], [[Attr2, Attr3, Attr6, Attr8, Attr14], [O5, O13]], [[Attr8, Attr10, Attr15], [O6, O13]], [[Attr8, Attr15], [O3, O6, O13]], [[Attr2, Attr3, Attr6, Attr8, Attr9, Attr10], [O7, O13]], [[Attr3, Attr8, Attr9], [O3, O7, O13]], [[Attr2, Attr3, Attr6, Attr8], [O5, O7, O13]], [[Attr3, Attr8], [O3, O5, O7, O13]], [[Attr8, Attr10], [O6, O7, O13]], [[Attr2, Attr6, Attr9, Attr10, Attr14], [O9, O13]], [[Attr2, Attr6, Attr9, Attr10], [O7, O9, O13]], [[Attr2, Attr6, Attr8], [O5, O7, O10, O13]], [[Attr8], [O3, O5, O6, O7, O10, O13]], [[Attr2, Attr6, Attr10, Attr15], [O11, O13]], [[Attr2, Attr10, Attr15], [O2, O11, O13]], [[Attr10, Attr15], [O2, O6, O11, O13]], [[Attr2, Attr6, Attr10], [O7, O9, O11, O13]], [[Attr2, Attr10], [O2, O7, O9, O11, O13]], [[Attr6, Attr9, Attr10, Attr14], [O9, O12, O13]], [[Attr6, Attr9, Attr10], [O7, O9, O12, O13]], [[Attr6, Attr9], [O1, O7, O9, O12, O13]], [[Attr6, Attr10], [O7, O9, O11, O12, O13]], [[Attr10], [O2, O6, O7, O9, O11, O12, O13]], [[Attr2, Attr6, Attr12, Attr13, Attr14, Attr15], [O14]], [[Attr6, Attr13, Attr15], [O1, O14]], [[Attr2, Attr12, Attr13, Attr15], [O2, O14]], [[Attr2, Attr6, Attr12, Attr13, Attr14], [O4, O14]], [[Attr2, Attr12, Attr13], [O2, O4, O14]], [[Attr2, Attr6, Attr13, Attr14], [O4, O5, O14]], [[Attr12, Attr13, Attr15], [O2, O6, O14]], [[Attr13, Attr15], [O1, O2, O3, O6, O14]], [[Attr12, Attr13], [O2, O4, O6, O14]], [[Attr2, Attr6, Attr12, Attr14], [O4, O9, O14]], [[Attr2, Attr6, Attr13], [O4, O5, O7, O10, O14]], [[Attr6, Attr13], [O1, O4, O5, O7, O10, O14]], [[Attr2, Attr13], [O2, O4, O5, O7, O10, O14]], [[Attr2, Attr6, Attr12, Attr15], [O11, O14]], [[Attr2, Attr12, Attr15], [O2, O11, O14]], [[Attr12, Attr15], [O2, O6, O11, O14]], [[Attr2, Attr6, Attr12], [O4, O9, O11, O14]], [[Attr2, Attr12], [O2, O4, O9, O11, O14]], [[Attr6, Attr12, Attr14], [O4, O9, O12, O14]], [[Attr6, Attr12], [O4, O9, O11, O12, O14]], [[Attr12], [O2, O4, O6, O9, O11, O12, O14]], [[Attr2, Attr6, Attr14, Attr15], [O13, O14]], [[Attr2, Attr6, Attr14], [O4, O5, O9, O13, O14]], [[Attr2, Attr6, Attr15], [O11, O13, O14]], [[Attr6, Attr15], [O1, O11, O13, O14]], [[Attr2, Attr15], [O2, O11, O13, O14]], [[Attr15], [O1, O2, O3, O6, O11, O13, O14]], [[Attr2, Attr6], [O4, O5, O7, O9, O10, O11, O13, O14]], [[Attr2], [O2, O4, O5, O7, O9, O10, O11, O13, O14]], [[Attr6, Attr14], [O4, O5, O9, O12, O13, O14]], [[Attr6], [O1, O4, O5, O7, O8, O9, O10, O11, O12, O13, O14]], [[Attr4, Attr9, Attr11, Attr13, Attr14], [O15]], [[Attr4, Attr11, Attr13, Attr14], [O5, O15]], [[Attr4, Attr9, Attr11, Attr13], [O7, O15]], [[Attr4, Attr9, Attr13], [O1, O7, O15]], [[Attr9, Attr11, Attr13], [O3, O7, O15]], [[Attr9, Attr13], [O1, O3, O7, O15]], [[Attr4, Attr11, Attr13], [O2, O5, O7, O10, O15]], [[Attr4, Attr13], [O1, O2, O5, O7, O10, O15]], [[Attr11, Attr13], [O2, O3, O5, O7, O10, O15]], [[Attr4, Attr11], [O2, O5, O7, O10, O11, O15]], [[Attr4], [O1, O2, O5, O7, O10, O11, O15]], [[Attr11], [O2, O3, O5, O7, O8, O10, O11, O15]], [[Attr9, Attr14], [O9, O12, O13, O15]], [[Attr9], [O1, O3, O7, O9, O12, O13, O15]], [[Attr13, Attr14], [O4, O5, O14, O15]], [[Attr13], [O1, O2, O3, O4, O5, O6, O7, O10, O14, O15]], [[Attr14], [O4, O5, O9, O12, O13, O14, O15]]]
+
