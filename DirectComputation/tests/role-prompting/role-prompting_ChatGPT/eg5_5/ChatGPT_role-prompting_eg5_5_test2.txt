@@ -1,0 +1,197 @@
+ChatGPT_role-prompting_eg5_5_test2
+
+Date: 27 may 2025
+Model: ChatGPT-4o 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+Great! Let's walk through this step-by-step as if we're in a computer science class studying **Formal Concept Analysis (FCA)**.
+
+---
+
+### 🔷 Step 1: Understanding the Context Table
+
+We are given a formal context — a cross table indicating which objects have which attributes:
+
+| Object | a1  | a2  | a3  | a4  | a5  |
+| ------ | --- | --- | --- | --- | --- |
+| o1     | yes | no  | yes | yes | no  |
+| o2     | no  | no  | yes | no  | no  |
+| o3     | yes | yes | no  | yes | yes |
+| o4     | no  | yes | no  | no  | yes |
+| o5     | no  | yes | no  | no  | no  |
+
+---
+
+### 🔷 Step 2: Basic Terminology
+
+In FCA, a **formal concept** is a pair **(Extent, Intent)** where:
+
+* **Extent** is the set of objects that share all the attributes in the intent.
+* **Intent** is the set of attributes common to all objects in the extent.
+
+These concepts form a **concept lattice** when ordered by inclusion.
+
+---
+
+### 🔷 Step 3: Calculating Concepts
+
+We'll compute all formal concepts from the context. To do this, we can use the **Next Closure algorithm** or brute-force approach for small tables like this.
+
+We'll define:
+
+* **G**: the set of all objects = {o1, o2, o3, o4, o5}
+* **M**: the set of all attributes = {a1, a2, a3, a4, a5}
+
+Let’s compute all concepts manually.
+
+---
+
+### ✅ All Formal Concepts:
+
+We compute each **intent**, then determine the **extent** — or vice versa.
+
+#### Concept 1:
+
+* Extent: {o1, o2, o3, o4, o5}
+* Intent: ∅ (no attribute shared by all)
+
+#### Concept 2:
+
+* Intent: {a3}
+* Extent: {o1, o2}
+
+#### Concept 3:
+
+* Intent: {a2}
+* Extent: {o3, o4, o5}
+
+#### Concept 4:
+
+* Intent: {a5}
+* Extent: {o3, o4}
+
+#### Concept 5:
+
+* Intent: {a1}
+* Extent: {o1, o3}
+
+#### Concept 6:
+
+* Intent: {a4}
+* Extent: {o1, o3}
+
+#### Concept 7:
+
+* Intent: {a2, a5}
+* Extent: {o3, o4}
+
+#### Concept 8:
+
+* Intent: {a1, a4}
+* Extent: {o1, o3}
+
+#### Concept 9:
+
+* Intent: {a1, a4, a3}
+* Extent: {o1}
+
+#### Concept 10:
+
+* Intent: {a1, a2, a4, a5}
+* Extent: {o3}
+
+#### Concept 11:
+
+* Intent: {a2, a5}
+* Extent: {o3, o4} → Already listed
+
+#### Concept 12:
+
+* Intent: {a2, a5, a1}
+* Extent: {o3}
+
+#### Concept 13:
+
+* Intent: {a2, a5, a4}
+* Extent: {o3}
+
+#### Concept 14:
+
+* Intent: {a2, a5, a1, a4}
+* Extent: {o3}
+
+#### Concept 15:
+
+* Intent: {a2, a5}
+* Extent: {o3, o4} → again already listed
+
+#### Concept 16:
+
+* Intent: {a2, a5}
+* Extent: {o3, o4} (repeats because it's stable)
+
+#### Concept 17:
+
+* Intent: {a2, a5}
+* Extent: {o3, o4}
+
+#### Concept 18:
+
+* Intent: {a2}
+* Extent: {o3, o4, o5}
+
+(You can see how intents repeat for the same extents — the number of unique concepts is finite.)
+
+---
+
+### 🔢 Final Unique Concepts (Enumerated):
+
+We can now list the **distinct** formal concepts:
+
+1. ({o1, o2, o3, o4, o5}, ∅)
+2. ({o1, o2}, {a3})
+3. ({o3, o4, o5}, {a2})
+4. ({o3, o4}, {a2, a5})
+5. ({o1, o3}, {a1, a4})
+6. ({o1}, {a1, a3, a4})
+7. ({o3}, {a1, a2, a4, a5})
+8. ({o4}, {a2, a5})
+9. ({o5}, {a2})
+10. ({o2}, {a3})
+11. ({o1, o3}, {a4})
+12. ({o3, o4}, {a5})
+
+---
+
+### ✅ Total: 12 Unique Formal Concepts
+
+These form the nodes of the **concept lattice**, where each concept is ordered by inclusion of extents (or dually by reverse inclusion of intents).
+
+Would you like me to draw the **concept lattice diagram** for this?
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Sure! Here's the list of all unique formal concepts from your context, in the requested format:
+
+```
+[[[], [o1, o2, o3, o4, o5]], [[a3], [o1, o2]], [[a2], [o3, o4, o5]], [[a2, a5], [o3, o4]], [[a1, a4], [o1, o3]], [[a1, a3, a4], [o1]], [[a1, a2, a4, a5], [o3]], [[a2, a5], [o4]], [[a2], [o5]], [[a3], [o2]], [[a4], [o1, o3]], [[a5], [o3, o4]]]
+```
+

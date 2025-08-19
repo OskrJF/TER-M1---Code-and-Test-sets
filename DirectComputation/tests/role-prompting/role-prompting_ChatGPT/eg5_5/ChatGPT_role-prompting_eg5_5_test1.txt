@@ -1,0 +1,118 @@
+ChatGPT_role-prompting_eg5_5_test1
+
+Date: 27 may 2025
+Model: ChatGPT-4o 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+Great! Let's dive into **Formal Concept Analysis (FCA)** with the goal of extracting **formal concepts** (or lattice concepts) from a **formal context**.
+
+---
+
+### 👨‍🏫 Background: What is FCA?
+
+In FCA, we analyze data structured in a **formal context**, which is a table consisting of:
+
+* **Objects** (here: o1 to o5),
+* **Attributes** (here: a1 to a5),
+* A binary relation (here: *yes* = the object has the attribute, *no* = it doesn't).
+
+Each **formal concept** is a pair:
+
+* **Extent**: a set of objects,
+* **Intent**: a set of attributes,
+  such that:
+
+1. Every object in the extent has all the attributes in the intent,
+2. Every attribute in the intent is shared by all objects in the extent.
+
+---
+
+### 🧮 Step-by-step: Finding Formal Concepts
+
+Let's denote:
+
+* **G**: set of objects = {o1, o2, o3, o4, o5}
+* **M**: set of attributes = {a1, a2, a3, a4, a5}
+
+We will compute the **closure system** — that is, the set of all (extent, intent) pairs.
+
+We apply a **derivation operator**:
+
+* For a set of objects $A \subseteq G$, $A'$ is the set of all attributes shared by all objects in $A$.
+* For a set of attributes $B \subseteq M$, $B'$ is the set of all objects having all attributes in $B$.
+* A formal concept is a pair $(A, B)$ such that $A' = B$ and $B' = A$.
+
+---
+
+### 📋 Given Context Table
+
+| Object | a1 | a2 | a3 | a4 | a5 |
+| ------ | -- | -- | -- | -- | -- |
+| o1     | ✔️ | ❌  | ✔️ | ✔️ | ❌  |
+| o2     | ❌  | ❌  | ✔️ | ❌  | ❌  |
+| o3     | ✔️ | ✔️ | ❌  | ✔️ | ✔️ |
+| o4     | ❌  | ✔️ | ❌  | ❌  | ✔️ |
+| o5     | ❌  | ✔️ | ❌  | ❌  | ❌  |
+
+---
+
+### 🔎 Extracting All Formal Concepts
+
+Let’s find all combinations of objects (subsets of G), compute their attribute closure, and test for concept validity.
+
+Below are all formal concepts extracted:
+
+| #  | Extent               | Intent               |
+| -- | -------------------- | -------------------- |
+| 1  | {o1, o2, o3, o4, o5} | {}                   |
+| 2  | {o2}                 | {a3}                 |
+| 3  | {o1, o2}             | {a3}                 |
+| 4  | {o1}                 | {a1, a3, a4}         |
+| 5  | {o3}                 | {a1, a2, a4, a5}     |
+| 6  | {o4, o5}             | {a2}                 |
+| 7  | {o3, o4}             | {a2, a5}             |
+| 8  | {o3, o4, o5}         | {a2}                 |
+| 9  | {o4}                 | {a2, a5}             |
+| 10 | {o5}                 | {a2}                 |
+| 11 | {o1, o3}             | {a1, a4}             |
+| 12 | {o3, o5}             | {a2}                 |
+| 13 | {}                   | {a1, a2, a3, a4, a5} |
+
+✔️ **Total Concepts Found: 13**
+
+---
+
+### 🧠 Interpretation
+
+* Concept 1 is the **bottom** concept (all objects, no attributes).
+* Concept 13 is the **top** concept (no objects, all attributes).
+* All others form the **body** of the concept lattice.
+
+Would you like me to draw the **concept lattice diagram** for these concepts or explain how to build it?
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Sure! Here's the list of all formal concepts from your context, formatted in a single line as requested:
+
+```
+[[[], [o1, o2, o3, o4, o5]], [[a3], [o1, o2]], [[a1, a3, a4], [o1]], [[a1, a4], [o1, o3]], [[a1, a2, a4, a5], [o3]], [[a2, a5], [o3, o4]], [[a2], [o3, o4, o5]], [[a2], [o4, o5]], [[a2, a5], [o4]], [[a2], [o5]], [[a3], [o2]], [[a1, a2, a3, a4, a5], []]]
+```
+

@@ -1,0 +1,68 @@
+Chatgpt_role_prompting_eg2_3_test1
+
+Date: 15 may 2025
+Model:GPT 4o
+Context file: eg2_3
+Type of solution: Applied code
+Number of test:1
+
+
+
+Prompt:
+
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+
+PROMPT 2:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+-----------------------------------
+
+OUTPUT:
+
+Perfect! You've provided the following **formal context**:
+
+|        | a1 | a2 | a3 |
+| ------ | -- | -- | -- |
+| **o1** | ✔️ | ✔️ | ❌  |
+| **o2** | ❌  | ✔️ | ✔️ |
+
+We interpret "yes" as indicating a relation (i.e., the object has that attribute), and "no" as its absence.
+
+---
+
+### 📊 Step-by-step Breakdown (for the class):
+
+Let’s define:
+
+* $G = \{o1, o2\}$
+* $M = \{a1, a2, a3\}$
+* The incidence relation $I$:
+
+  * o1 → a1, a2
+  * o2 → a2, a3
+
+We now compute all **formal concepts**, which are pairs $(A, B)$ where:
+
+* $B = A'$: all common attributes of objects in $A$
+* $A = B'$: all objects that share attributes in $B$
+
+---
+
+### ✅ All Formal Concepts
+
+In your requested format (no quotes, single line):
+
+```
+[[[], [o1, o2]], [[a1], [o1]], [[a2], [o1, o2]], [[a3], [o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a2, a3], []]]
+```
+
+---
+
+### 🧠 Explanation:
+
+* `[[a2], [o1, o2]]` means: attribute `a2` is common to both `o1` and `o2`
+* `[[a1], [o1]]` means: only `o1` has `a1`
+* `[[a1, a2, a3], []]` is a formal concept with **no object** that satisfies **all three attributes** — still valid!
+
+Let me know if you want this represented as a **Hasse diagram** or need further explanation of the lattice structure!

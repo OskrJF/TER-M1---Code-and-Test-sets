@@ -1,0 +1,76 @@
+Chatgpt_role_prompting_eg2_3_test3
+
+Date: 15 may 2025
+Model:GPT 4o
+Context file: eg2_3
+Type of solution: Applied code
+Number of test:3
+
+
+
+Prompt:
+
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+
+PROMPT 2:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+-----------------------------------
+
+OUTPUT:
+
+Thanks again! Let's now **reprocess this exact context** step-by-step to ensure 100% accuracy and extract **all formal concepts** using **Formal Concept Analysis (FCA)**.
+
+---
+
+### ✅ Step 1: Parse the Context
+
+| Objet  | a1  | a2  | a3  |
+| ------ | --- | --- | --- |
+| **o1** | yes | yes | no  |
+| **o2** | no  | yes | yes |
+
+**Incidence relation (I)**:
+
+* **o1** has {a1, a2}
+* **o2** has {a2, a3}
+
+So we define:
+
+* **Objects** $G = \{o1, o2\}$
+* **Attributes** $M = \{a1, a2, a3\}$
+
+---
+
+### ✅ Step 2: Find All Formal Concepts
+
+We compute all pairs $(A, B)$ such that:
+
+* $A' = B$: All attributes common to all objects in $A$
+* $B' = A$: All objects that have all attributes in $B$
+
+---
+
+### ✅ Final Answer — Your Required Format
+
+```
+[[[], [o1, o2]], [[a1], [o1]], [[a2], [o1, o2]], [[a3], [o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a2, a3], []]]
+```
+
+---
+
+### 📌 Explanation of Concepts
+
+Each pair `[[intent], [extent]]` means:
+
+* The objects in the extent all share the attributes in the intent.
+* The attributes in the intent are exactly the ones shared by the objects in the extent.
+
+For example:
+
+* `[[a2], [o1, o2]]` — both o1 and o2 share a2.
+* `[[a1], [o1]]` — only o1 has a1.
+* `[[a1, a2, a3], []]` — no object has all three attributes.
+
+Let me know if you want the concept lattice visualized or if you'd like Python code to compute this from any `.csv`!
