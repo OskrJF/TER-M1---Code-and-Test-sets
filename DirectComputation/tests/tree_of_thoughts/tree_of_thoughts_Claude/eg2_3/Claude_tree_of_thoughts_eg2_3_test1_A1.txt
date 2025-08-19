@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg2_3_test1_A1
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Next Closure Algorithm (Ganter's Algorithm)**: This systematic approach generates all formal concepts by iteratively computing concept intents using lexicographic ordering. Starting with the empty set, the algorithm applies the closure operator repeatedly, ensuring each new intent is lexicographically greater than the previous one by adding the smallest possible attribute that maintains this ordering. The process continues until no new intents can be generated, guaranteeing that all maximal rectangles in the formal context are discovered. This method is particularly efficient for contexts with fewer than 20 objects and attributes because it avoids redundant computations and generates concepts in a predictable order, making it ideal for systematic enumeration of the complete concept lattice.
+
+**Direct Enumeration via Galois Connection**: This straightforward method exploits the fundamental Galois connection between object and attribute sets by systematically examining all possible subsets. For each subset of objects, you compute its common attributes (the intent), then find all objects sharing those attributes (the extent), creating formal concepts from these extent-intent pairs. Similarly, you can start with attribute subsets and compute their corresponding object sets. While this approach has exponential complexity in the worst case, it becomes manageable for small contexts and provides an intuitive understanding of how concepts emerge from the incidence relation between objects and attributes.
+
+**Incremental Construction Through Object Addition**: This dynamic approach builds the concept lattice by processing objects one at a time, updating the existing lattice structure with each addition. When a new object is introduced, the algorithm identifies which existing concepts need modification by checking attribute compatibility, then creates new concepts or merges existing ones accordingly. The lattice structure is maintained throughout the process using efficient data structures that track the hierarchical relationships between concepts. This method is particularly useful for small contexts because it allows you to observe how individual objects contribute to the lattice formation and provides insight into the stability and evolution of the conceptual structure.

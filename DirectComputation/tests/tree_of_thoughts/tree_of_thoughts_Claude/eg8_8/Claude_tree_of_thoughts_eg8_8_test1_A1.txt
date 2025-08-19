@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg8_8_test1_A1
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**NextClosure Algorithm**: The NextClosure algorithm systematically generates all formal concepts by computing closures of attribute sets in lexicographic order. Starting with the empty set, it finds the closure of each attribute combination using the derivation operators, ensuring that each closure corresponds to a formal concept's intent while its derivation gives the corresponding extent. The algorithm maintains lexicographic ordering to avoid redundant computations and guarantees that every formal concept is found exactly once. This method is particularly efficient for small contexts because it exploits the mathematical structure of the closure system and can terminate early when no new concepts can be generated.
+
+**Norris Algorithm**: The Norris algorithm builds the concept lattice incrementally by processing objects one at a time and updating the existing lattice structure. For each new object, it identifies which existing concepts need to be modified or split, creating new concepts where the object intersects with existing intents in a non-trivial way. The algorithm maintains the hierarchical relationships between concepts throughout the construction process, making it especially suitable for contexts where objects can be added dynamically. With fewer than 20 objects and attributes, this approach remains computationally tractable and provides clear insight into how each object contributes to the final lattice structure.
+
+**Brute Force Enumeration with Galois Connection**: For small contexts, a straightforward approach involves systematically checking all possible subsets of objects and attributes to identify which pairs form valid formal concepts through the Galois connection. This method computes the derivation A' for every subset A of objects and the derivation B' for every subset B of attributes, then identifies pairs (A,B) where A'' = A and B'' = B, indicating a formal concept. While computationally intensive for larger contexts, this exhaustive approach is feasible for contexts under 20×20 and offers the advantage of being conceptually simple to implement and verify, making it useful for educational purposes or when mathematical certainty is required over computational efficiency.

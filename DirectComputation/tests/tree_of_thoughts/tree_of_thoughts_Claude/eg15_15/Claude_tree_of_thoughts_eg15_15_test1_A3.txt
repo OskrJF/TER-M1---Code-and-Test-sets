@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg15_15_test1_A3
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Manual Construction via Closure Operators**: The most straightforward approach for small contexts involves manually computing formal concepts by systematically applying the derivation operators. For each subset of objects, you compute its common attributes (the "prime" operator ′), then find all objects sharing those attributes (applying ′ again), checking if this yields a closure. Similarly, you can start with attribute subsets and apply the same dual process. This method works well for contexts under 20×20 because you can feasibly enumerate and check all potential concept-forming sets, though it becomes tedious as the context grows since the number of possible subsets grows exponentially.
+
+**Algorithmic Approaches Using Established Algorithms**: Several well-established algorithms like Ganter's Next Closure algorithm, Bordat's algorithm, or the AddIntent algorithm can efficiently generate all formal concepts even by hand for small contexts. Next Closure is particularly systematic as it generates concepts in lexicographic order by incrementally building closures, making it easier to track progress manually. These algorithms are designed to avoid redundant computations and can be executed step-by-step on paper or with simple computational aids, making them practical for contexts with fewer than 400 possible object-attribute pairs.
+
+**Visual Matrix Analysis and Pattern Recognition**: For small contexts, you can construct the formal context as a binary matrix and visually identify maximal rectangles of crosses (1s) after appropriate reordering of rows and columns. Each maximal rectangle corresponds to a formal concept, where the rectangle's rows represent the concept's extent (objects) and columns represent its intent (attributes). This visual approach leverages human pattern recognition abilities and works particularly well when the context has clear clustering or when you can rearrange the matrix to reveal block structures, making it an intuitive method for contexts that can be comfortably viewed on a single page.

@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg2_9_test2_A1
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Manual Construction via Cross-Table Analysis**: The most straightforward approach for small contexts involves systematically examining the formal context's cross-table to identify all possible object-attribute combinations that form valid concepts. You start by listing all possible subsets of objects, then for each subset, determine its common attributes (the intent), and verify that these attributes don't apply to any objects outside the original subset. This manual verification ensures each concept satisfies the closure property where the extent (objects) and intent (attributes) are maximal with respect to each other. While labor-intensive, this method provides complete understanding of the concept formation process and is entirely feasible for contexts under 20×20.
+
+**Algorithmic Computation Using Ganter's NextClosure**: This systematic algorithm generates all formal concepts by computing closures in lexicographic order, ensuring no concept is missed or duplicated. Starting with the empty set, NextClosure iteratively finds the next concept by identifying the smallest attribute that can be added while maintaining the closure property, then computing the full closure of this extended set. The algorithm's efficiency stems from its ability to skip many intermediate computations by jumping directly to valid concepts, making it particularly suitable for contexts of moderate size where manual enumeration becomes error-prone but the search space remains manageable.
+
+**Incremental Lattice Construction**: This approach builds the concept lattice incrementally by processing objects or attributes one at a time and updating the existing partial lattice structure. For each new element added to the context, you identify how it intersects with existing concepts, potentially splitting them into subconcepts or creating new concepts altogether. This method is especially useful when the context is being built dynamically or when you want to understand how each object or attribute contributes to the overall lattice structure, as it provides insight into the lattice's evolution and makes it easier to visualize the hierarchical relationships between concepts as they emerge.

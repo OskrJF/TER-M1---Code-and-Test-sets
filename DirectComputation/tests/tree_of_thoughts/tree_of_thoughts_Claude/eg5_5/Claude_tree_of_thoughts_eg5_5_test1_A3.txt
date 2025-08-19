@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg5_5_test1_A3
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**NextClosure Algorithm**: The NextClosure algorithm systematically generates all formal concepts by computing closures of attribute sets in lexicographic order. Starting with the empty set, it iteratively finds the next closure in canonical order by testing each attribute position and ensuring the resulting closure maintains lexicographic precedence. For small contexts under 20×20, this method is highly efficient because it avoids redundant computations and generates concepts in a predictable sequence. The algorithm works by taking an intent (set of attributes), finding its extent (corresponding objects), then computing the intent of that extent to get the proper closure, ensuring each concept is discovered exactly once while maintaining the mathematical structure needed for lattice construction.
+
+**Norris Algorithm**: The Norris algorithm builds the concept lattice incrementally by processing objects one at a time and maintaining the lattice structure through intersection operations. When adding each new object, it examines existing concepts and creates new ones by intersecting the object's attribute set with existing concept intents, then updates the hierarchical relationships accordingly. This approach is particularly suitable for contexts with fewer than 20 objects because the incremental nature allows for easy visualization of how each object contributes to the final lattice structure. The algorithm naturally maintains the cover relations between concepts as it builds upward, making it intuitive for understanding the lattice formation process in small-scale formal concept analysis problems.
+
+**Direct Enumeration with Galois Connection**: This straightforward approach systematically examines all possible subsets of attributes (or objects) and applies the Galois connection operators to determine which form valid formal concepts. For each subset of attributes A, you compute A'' (the closure under both derivation operators) and check if A = A'', indicating a valid concept intent. With fewer than 20 attributes, this means checking at most 2^20 subsets, but in practice, many can be pruned early when their closures have already been computed. While this method may seem brute-force, it's often practical for small contexts because modern computers can handle the enumeration quickly, and it provides clear insight into why certain attribute combinations form concepts while others do not.

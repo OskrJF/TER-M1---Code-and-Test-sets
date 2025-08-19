@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg2_9_test1_A3
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Manual Enumeration with Closure Operators**: The most straightforward approach for small contexts involves systematically examining all possible subsets of objects and applying the derivation operators to find formal concepts. You start by taking each subset of objects, compute their common attributes using the prime operator ('), then apply the double prime operator ('') to check if the resulting object set equals your original subset. If so, you've found a formal concept. This method works well for contexts with fewer than 20 objects and attributes because the computational complexity remains manageable, and you can easily verify each step by hand or with simple computational tools.
+
+**Incremental Construction Algorithm**: This approach builds the concept lattice incrementally by processing one object at a time and updating the existing partial lattice structure. You begin with an empty context and add objects sequentially, maintaining the lattice structure by identifying where new concepts need to be inserted and how existing concepts are modified. When adding a new object, you examine its attribute set against existing concepts, split concepts where necessary, and establish the proper ordering relationships. This method is particularly effective for smaller contexts because it provides insight into how the lattice structure evolves and allows for easy visualization of the construction process.
+
+**Attribute Exploration with Implications**: This technique leverages the connection between formal concepts and attribute implications to systematically discover the lattice structure. You examine all possible attribute combinations and their corresponding object sets, using implication rules to identify which attribute sets can be extended and which form maximal rectangles in the context matrix. By working through the implication base and closure system, you can identify all concept-forming attribute sets and their corresponding object extents. For small contexts, this approach is highly effective because you can manually trace through the implication chains and verify the completeness of your concept set through the fundamental theorem of formal concept analysis.

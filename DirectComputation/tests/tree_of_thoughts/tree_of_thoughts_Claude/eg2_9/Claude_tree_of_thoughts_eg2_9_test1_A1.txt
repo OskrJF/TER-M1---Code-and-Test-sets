@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg2_9_test1_A1
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Brute Force Enumeration**: The most straightforward approach for small contexts is to systematically examine all possible subsets of objects and attributes to identify formal concepts. For each subset of objects, compute its corresponding attribute set by finding all attributes shared by those objects, then verify if the resulting attribute set's object set equals the original object subset. This creates a one-to-one correspondence that defines a formal concept. While computationally intensive with O(2^n) complexity, this method is entirely feasible for contexts under 20×20 and guarantees finding all concepts without requiring sophisticated algorithms or data structures.
+
+**Ganter's NextClosure Algorithm**: This algorithm efficiently generates all formal concepts by systematically traversing the concept lattice using lexicographic ordering of attribute sets. Starting with the empty set, NextClosure computes the closure of each attribute combination and generates the next lexicographically larger closed set that hasn't been encountered. The algorithm maintains a canonical form by ensuring each concept is represented by its minimal generating set, making it particularly efficient for moderately sized contexts. For contexts under 20×20, NextClosure typically outperforms brute force methods significantly while maintaining mathematical rigor and completeness.
+
+**Incremental Construction via Object/Attribute Addition**: This approach builds the concept lattice incrementally by adding one object or attribute at a time to an initially empty context. When adding a new element, the algorithm identifies how existing concepts must be modified, merged, or split to accommodate the new relationships, then updates the lattice structure accordingly. This method is particularly useful when the context is being constructed dynamically or when you want to understand how each element contributes to the final lattice structure. For small contexts, this approach offers good performance while providing insight into the lattice's construction process.

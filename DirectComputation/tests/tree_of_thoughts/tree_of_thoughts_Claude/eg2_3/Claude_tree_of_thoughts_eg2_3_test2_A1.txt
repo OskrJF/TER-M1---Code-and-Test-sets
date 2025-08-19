@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg2_3_test2_A1
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Algorithm-based enumeration** is the most straightforward computational approach for small contexts, where you can systematically generate all possible formal concepts by iterating through every subset of objects and checking if their common attributes form a valid concept. For contexts under 20×20, this brute-force method remains feasible since you're dealing with at most 2^20 subsets, and modern computers can handle this computational load efficiently. The algorithm works by taking each subset of objects, computing their shared attributes (the intent), then finding all objects that possess exactly those attributes (the extent), and verifying that this forms a closed pair that constitutes a formal concept.
+
+**Manual cross-table analysis** leverages the human ability to recognize patterns in small datasets by systematically examining the incidence matrix to identify maximal rectangles of crosses (or ones). This method involves visually scanning the context table to find groups of objects that share identical attribute patterns, then verifying these form valid extents by ensuring no additional objects can be added without losing some shared attributes. While time-intensive, this approach provides deep intuitive understanding of the concept structure and is particularly valuable for educational purposes or when you need to understand the semantic relationships between objects and attributes in your specific domain.
+
+**Incremental construction using closure operators** builds the concept lattice step-by-step by starting with individual objects or attributes and applying closure operations to systematically derive all concepts. This method uses the Galois connection between object sets and attribute sets, where you repeatedly apply the derivation operators (') until you reach fixed points that represent formal concepts. For small contexts, you can trace through this process manually or with simple computational tools, making it easier to understand how concepts relate to each other hierarchically and providing insight into which objects and attributes are most central to the lattice structure.

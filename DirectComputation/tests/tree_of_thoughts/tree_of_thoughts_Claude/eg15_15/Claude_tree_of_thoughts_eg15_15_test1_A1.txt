@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg15_15_test1_A1
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Ganter's NextClosure Algorithm** is a highly efficient method for computing all formal concepts by systematically generating concept intents in lexicographic order. The algorithm starts with the empty set and iteratively computes the next closure in canonical order, ensuring each concept is generated exactly once without redundancy. For contexts with fewer than 20 objects and attributes, this approach is particularly effective because it avoids the exponential blowup of naive enumeration methods and can handle the complete lattice construction in reasonable time, making it ideal for educational purposes and small-scale analysis where you need the complete concept hierarchy.
+
+**Object-based incremental construction** involves building the concept lattice by processing one object at a time and updating the existing lattice structure. Starting with an empty lattice, each new object is examined to determine which existing concepts it modifies or which new concepts it creates through intersection with existing concept extents. This method is intuitive and allows for dynamic lattice construction, making it suitable for small contexts where you want to understand how each object contributes to the final lattice structure, and it's particularly useful when the context might be extended incrementally during analysis.
+
+**Direct enumeration through intent intersection** works by systematically examining all possible combinations of attributes to determine which form valid concept intents. For each subset of attributes, you compute its extent (all objects having those attributes) and then verify if the intent of that extent equals the original attribute subset, confirming it as a formal concept. While this brute-force approach has exponential complexity, it remains feasible for small contexts and provides a straightforward implementation that clearly demonstrates the mathematical definition of formal concepts, making it valuable for learning and verification purposes.

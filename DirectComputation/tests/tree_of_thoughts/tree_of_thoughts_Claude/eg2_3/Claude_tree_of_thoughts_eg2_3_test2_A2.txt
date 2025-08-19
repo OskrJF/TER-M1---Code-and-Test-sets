@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg2_3_test2_A2
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Next Closure Algorithm (Ganter's Algorithm)**: This canonical approach systematically generates all formal concepts by computing the closure of attribute sets in lexicographic order. Starting with the empty set, the algorithm iteratively finds the next valid attribute combination by checking if adding an attribute creates a new concept that hasn't been encountered before. For each candidate set, it computes the closure (all attributes shared by objects that have all attributes in the set) and checks if this closure, when restricted back to objects, yields a proper concept. This method guarantees complete enumeration without duplicates and works efficiently for small contexts since it avoids redundant computations through its lexicographic ordering constraint.
+
+**Direct Enumeration via Object Powerset**: For small contexts, you can systematically examine all possible subsets of objects and compute their corresponding attribute closures to identify formal concepts. Start by listing all 2^n possible object combinations, then for each subset, find all attributes that are possessed by every object in that subset. If the resulting attribute set, when mapped back to objects (finding all objects that have all these attributes), yields the original object subset, then you have found a formal concept. This brute-force approach becomes computationally feasible with fewer than 20 objects since you're dealing with at most 2^20 subsets, and the direct nature makes it easy to implement and understand.
+
+**Incremental Lattice Construction**: Build the concept lattice incrementally by starting with the top concept (all objects, common attributes) and bottom concept (common objects, all attributes), then systematically adding intermediate concepts by examining attribute-object relationships. Begin by identifying objects that share the maximum number of attributes, then progressively consider smaller attribute intersections to find concepts at each level of the lattice hierarchy. For each potential concept, verify that the intent (attribute set) and extent (object set) form a valid Galois connection, where the objects sharing those attributes are exactly the extent, and the attributes shared by those objects are exactly the intent. This method naturally reveals the hierarchical structure while constructing the lattice.

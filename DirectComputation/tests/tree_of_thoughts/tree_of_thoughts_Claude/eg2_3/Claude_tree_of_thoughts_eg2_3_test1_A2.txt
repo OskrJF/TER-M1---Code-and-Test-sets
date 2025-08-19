@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg2_3_test1_A2
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Next Closure Algorithm (Ganter's Algorithm)** is one of the most efficient methods for computing formal concepts in small contexts. This algorithm systematically generates all concept intents by iterating through attribute subsets in lexicographic order, using a closure operation to determine if each subset forms a valid concept intent. For each candidate intent, it computes the closure by finding all attributes that are shared by every object possessing the attributes in the current set. If the closure equals the original set, it represents a formal concept. The algorithm's strength lies in its ability to generate concepts without duplication while maintaining polynomial delay between outputs, making it particularly suitable for contexts with fewer than 20 objects and attributes where the concept lattice size remains manageable.
+
+**Brute Force Enumeration with Intent-Extent Pairs** offers a straightforward approach where you systematically examine all possible subsets of attributes (or objects) to identify valid formal concepts. For each subset of attributes, you compute its extent by finding all objects that possess every attribute in the subset, then compute the intent of this extent to verify if it matches the original attribute subset. This bidirectional verification ensures that both the Galois connection properties are satisfied: the intent of the extent equals the original attribute set, and the extent of the intent equals the derived object set. While computationally intensive with O(2^n) complexity, this method is practical for small contexts and provides clear insight into the concept formation process, making it valuable for educational purposes and verification of other algorithms.
+
+**Incremental Lattice Construction** builds the concept lattice by processing objects one at a time, maintaining the lattice structure as each new object is incorporated. Starting with the top concept (empty intent, all objects), the algorithm examines each object's attributes and determines where it fits within the existing partial lattice. For each new object, it identifies concepts whose intents are subsets of the object's attribute set, creating new concepts by intersecting the object's attributes with existing concept intents where necessary. This method dynamically updates the lattice structure, adding new concepts and adjusting the hierarchy relationships as objects are processed. The incremental approach is particularly effective for small contexts because it allows for early termination if the lattice becomes too large and provides intuitive understanding of how each object contributes to the final concept structure.

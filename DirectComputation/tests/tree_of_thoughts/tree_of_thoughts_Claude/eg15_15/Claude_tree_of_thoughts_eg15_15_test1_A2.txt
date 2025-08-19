@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg15_15_test1_A2
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Next Neighbors Algorithm**: This approach systematically constructs formal concepts by starting with the top concept (containing all objects with their common attributes) and iteratively generating new concepts through the "next neighbors" relationship. For each existing concept, the algorithm examines objects not yet included and determines which can be added while maintaining closure properties. When an object is added to a concept's extent, the intent is reduced to include only those attributes shared by all objects in the new extent. This method ensures that all maximal rectangles in the concept lattice are discovered by following a systematic traversal pattern, making it particularly effective for smaller contexts where the complete lattice structure needs to be explicitly constructed.
+
+**Close-by-One Algorithm**: This method generates formal concepts by incrementally building them through a systematic exploration of attribute combinations. Starting from the empty set of attributes, the algorithm applies closure operations to generate concepts by adding one attribute at a time and computing the corresponding closure under the derivation operators. For each attribute subset, it computes the intent closure (all objects having those attributes) and then the extent closure (all attributes shared by those objects), ensuring that only genuine formal concepts are generated. This approach is computationally efficient for small contexts because it avoids redundant calculations and directly produces the canonical form of each concept through the closure operations.
+
+**Direct Matrix Computation**: This straightforward approach leverages the small size of the context by directly examining all possible combinations of objects and attributes to identify valid formal concepts. The method involves systematically checking each subset of objects to determine its corresponding attribute set (intent) and verifying closure properties, or alternatively examining each subset of attributes to find its corresponding object set (extent). While computationally intensive for larger contexts, this brute-force approach becomes feasible and even practical for contexts under 20×20, as it requires examining at most 2^20 combinations, and modern computers can handle this scale while providing a clear, conceptually simple way to enumerate all formal concepts without complex algorithmic overhead.

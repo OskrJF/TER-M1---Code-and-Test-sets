@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg5_5_test1_A1
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Brute Force Enumeration**: The most straightforward approach for small contexts is to systematically examine all possible subsets of objects and check which ones form valid formal concepts. For each subset of objects, compute its attribute closure (the set of attributes shared by all objects in the subset), then compute the object closure of those attributes (all objects possessing those attributes). If the original object set equals this double closure, you have found a formal concept. This method has exponential complexity but remains feasible for contexts under 20×20 due to the limited search space, and it guarantees finding all concepts without requiring sophisticated algorithms or data structures.
+
+**Ganter's Next Closure Algorithm**: This algorithm efficiently generates all formal concepts by systematically traversing the concept lattice using lexicographic ordering of attribute sets. Starting with the empty attribute set, it computes closures and generates the next concept by finding the smallest attribute that can be added while maintaining the lexicographic order constraint. The algorithm uses the closure operator to ensure each generated set corresponds to a valid concept intent, and it avoids redundant computations by following a specific traversal pattern. For small contexts, this method is particularly effective because it generates concepts in a predictable order and requires minimal memory overhead compared to storing all possible subsets.
+
+**Incremental Concept Construction**: This approach builds the concept lattice incrementally by processing objects one at a time and updating the existing lattice structure. When adding a new object, the algorithm identifies which existing concepts can accommodate this object (those whose intents are subsets of the object's attributes) and creates new concepts by intersecting the object's attribute set with existing concept intents. The lattice structure is maintained by establishing proper subconcept-superconcept relationships between new and existing concepts. This method is especially suitable for small contexts because the overhead of maintaining lattice relationships remains manageable, and it provides intuitive insight into how each object contributes to the final concept structure.

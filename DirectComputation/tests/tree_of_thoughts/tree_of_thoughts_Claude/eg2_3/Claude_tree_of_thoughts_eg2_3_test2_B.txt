@@ -1,0 +1,59 @@
+Claude_tree_of_thoughts_eg2_3_test2_B
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1B:
+Pick one of the next three ways to extract all the lattice concepts from the context in this .csv file and apply it to give me the concepts
+
+1. **Algorithm-based enumeration** is the most straightforward computational approach for small contexts, where you can systematically generate all possible formal concepts by iterating through every subset of objects and checking if their common attributes form a valid concept. For contexts under 20×20, this brute-force method remains feasible since you're dealing with at most 2^20 subsets, and modern computers can handle this computational load efficiently. The algorithm works by taking each subset of objects, computing their shared attributes (the intent), then finding all objects that possess exactly those attributes (the extent), and verifying that this forms a closed pair that constitutes a formal concept.
+
+2. **Next Closure Algorithm (Ganter's Algorithm)**: This canonical approach systematically generates all formal concepts by computing the closure of attribute sets in lexicographic order. Starting with the empty set, the algorithm iteratively finds the next valid attribute combination by checking if adding an attribute creates a new concept that hasn't been encountered before. For each candidate set, it computes the closure (all attributes shared by objects that have all attributes in the set) and checks if this closure, when restricted back to objects, yields a proper concept. This method guarantees complete enumeration without duplicates and works efficiently for small contexts since it avoids redundant computations through its lexicographic ordering constraint.
+
+3. **Incremental Construction via Object Addition**: This approach builds the concept lattice incrementally by processing objects one at a time and updating the existing lattice structure. Beginning with an empty context, each new object is added along with its attributes, and the algorithm identifies which existing concepts need to be modified or split, while also determining if new concepts need to be created. The method maintains the lattice structure throughout the process by computing meet and join operations between existing concepts and the new object's attribute set. For contexts with fewer than 20 objects, this approach is particularly intuitive and allows for easy visualization of how each additional object affects the final lattice structure.
+____________________
+
+OUTPUT:
+Looking at your CSV file, I can see you have a formal context with 2 objects (o1, o2) and 3 attributes (a1, a2, a3). Let me apply **Algorithm 1: Algorithm-based enumeration** since it's the most straightforward for this small context.
+
+I've applied **Algorithm 1: Algorithm-based enumeration** to your CSV data. Here's what the algorithm found:
+
+**Your Context:**
+- Objects: o1, o2  
+- Attributes: a1, a2, a3
+- Relations: o1 has {a1, a2}, o2 has {a2, a3}
+
+**Extracted Formal Concepts:**
+
+1. **Concept 1**: ∅ (empty set) - ∅ (empty set)
+2. **Concept 2**: {o1, o2} - {a2} (both objects share attribute a2)
+3. **Concept 3**: {o1} - {a1, a2} (object o1 has attributes a1 and a2)
+4. **Concept 4**: {o2} - {a2, a3} (object o2 has attributes a2 and a3)
+
+The algorithm works by:
+1. Generating all possible subsets of objects (∅, {o1}, {o2}, {o1,o2})
+2. For each subset, computing the intent (common attributes)
+3. Computing the extent (all objects having those attributes)
+4. Verifying the closure property to confirm it's a valid formal concept
+
+This gives you the complete set of formal concepts that form the nodes of your concept lattice. The concept lattice structure would show how these concepts are ordered by the subset relation on their extents (or dually on their intents).
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Based on your CSV data, here are all the lattice concepts in the requested format:
+
+[[[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]], [[], []]]
+
+This represents:
+- Concept 1: attributes {a1, a2} shared by objects {o1}
+- Concept 2: attributes {a2, a3} shared by objects {o2} 
+- Concept 3: attribute {a2} shared by objects {o1, o2}
+- Concept 4: no attributes shared by no objects (top and bottom concept)

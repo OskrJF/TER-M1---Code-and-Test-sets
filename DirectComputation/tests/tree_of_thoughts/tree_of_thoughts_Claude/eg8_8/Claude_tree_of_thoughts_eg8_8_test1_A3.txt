@@ -1,0 +1,19 @@
+Claude_tree_of_thoughts_eg8_8_test1_A3
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+**Next Closure Algorithm (Ganter's Algorithm)**: This method systematically generates all formal concepts by computing the closure of attribute sets in lexicographic order. Starting with the empty set, the algorithm iteratively finds the next closed set by adding the lexicographically smallest attribute that creates a proper closure. For each closed attribute set, it computes the corresponding object set (extent) by finding all objects that possess all attributes in the set. The algorithm ensures completeness by guaranteeing that every formal concept is generated exactly once, making it particularly efficient for small contexts where the lexicographic ordering can be easily managed and the closure computations remain tractable.
+
+**Direct Enumeration with Closure Operators**: This approach involves systematically examining all possible subsets of objects and attributes, then applying the derivation operators (′) to find their closures. For each subset A of attributes, compute A′ (objects having all attributes in A), then compute A′′ (attributes common to all objects in A′) to obtain the formal concept (A′, A′′). Similarly, for each subset B of objects, compute B′ and B′′ to get (B′′, B′). This brute-force method works well for small contexts because the exponential complexity (2^n subsets) remains manageable, and it provides a clear understanding of how the derivation operators work while guaranteeing that all concepts are found.
+
+**Incremental Construction Using Object/Attribute Insertion**: This method builds the concept lattice incrementally by processing objects or attributes one at a time and updating the existing lattice structure. Starting with an empty context, each new object or attribute is inserted by identifying where it fits in the current lattice, splitting existing concepts when necessary, and maintaining the proper ordering relationships. When adding an object, the algorithm finds all concepts whose attribute sets are subsets of the object's attributes, creates new concepts by intersecting the object with existing extents, and updates the lattice structure accordingly. This approach is intuitive for small contexts because it mirrors how humans might naturally build understanding by adding one element at a time while maintaining the mathematical properties of the concept lattice.
