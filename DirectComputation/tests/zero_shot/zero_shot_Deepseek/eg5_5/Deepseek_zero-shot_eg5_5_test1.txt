@@ -1,0 +1,120 @@
+Deepseek_zero-shot_eg5_5_test1
+
+Date: 29 may 2025
+Model: DeepSeek-V3 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), a formal concept is a pair \((A, B)\) where \(A\) is a set of objects (extent) and \(B\) is a set of attributes (intent) such that every object in \(A\) has all attributes in \(B\), and every attribute in \(B\) is shared by all objects in \(A\). 
+
+Given the context from the file `eg5_5.csv`, we can extract all formal concepts by systematically examining all possible combinations of objects and their shared attributes, and vice versa. Here’s how we can enumerate all the lattice concepts:
+
+### Step 1: Represent the Context
+First, let's represent the context as a table where each row corresponds to an object and each column to an attribute. A "yes" indicates that the object has the attribute, and "no" indicates it does not.
+
+| Objet | a1  | a2  | a3  | a4  | a5  |
+|-------|-----|-----|-----|-----|-----|
+| o1    | yes | no  | yes | yes | no  |
+| o2    | no  | no  | yes | no  | no  |
+| o3    | yes | yes | no  | yes | yes |
+| o4    | no  | yes | no  | no  | yes |
+| o5    | no  | yes | no  | no  | no  |
+
+### Step 2: Find All Formal Concepts
+We will use the NextClosure algorithm or a brute-force method to find all concepts. Here’s the step-by-step process:
+
+1. **Start with the empty intent (all attributes) and find the corresponding extent.**
+   - Intent: \(\{\}\) (no attributes). The extent is all objects: \(\{o1, o2, o3, o4, o5\}\).
+   - Concept: \((\{o1, o2, o3, o4, o5\}, \{\})\).
+
+2. **For each attribute, find the largest set of objects that share it, and then find the corresponding intent.**
+   - For \(a1\):
+     - Extent: Objects with \(a1\): \(\{o1, o3\}\).
+     - Intent: Attributes shared by \(\{o1, o3\}\): \(\{a1, a4\}\).
+     - Concept: \((\{o1, o3\}, \{a1, a4\})\).
+   - For \(a2\):
+     - Extent: Objects with \(a2\): \(\{o3, o4, o5\}\).
+     - Intent: Attributes shared by \(\{o3, o4, o5\}\): \(\{a2\}\).
+     - Concept: \((\{o3, o4, o5\}, \{a2\})\).
+   - For \(a3\):
+     - Extent: Objects with \(a3\): \(\{o1, o2\}\).
+     - Intent: Attributes shared by \(\{o1, o2\}\): \(\{a3\}\).
+     - Concept: \((\{o1, o2\}, \{a3\})\).
+   - For \(a4\):
+     - Extent: Objects with \(a4\): \(\{o1, o3\}\).
+     - Intent: Attributes shared by \(\{o1, o3\}\): \(\{a1, a4\}\) (same as above).
+   - For \(a5\):
+     - Extent: Objects with \(a5\): \(\{o3, o4\}\).
+     - Intent: Attributes shared by \(\{o3, o4\}\): \(\{a2, a5\}\).
+     - Concept: \((\{o3, o4\}, \{a2, a5\})\).
+
+3. **Combine attributes and find intersections.**
+   - For \(\{a1, a2\}\):
+     - Extent: \(\{o3\}\).
+     - Intent: Attributes shared by \(\{o3\}\): \(\{a1, a2, a4, a5\}\).
+     - Concept: \((\{o3\}, \{a1, a2, a4, a5\})\).
+   - For \(\{a2, a5\}\):
+     - Extent: \(\{o3, o4\}\) (already found).
+   - For \(\{a1, a4\}\):
+     - Extent: \(\{o1, o3\}\) (already found).
+   - For \(\{a3, a5\}\):
+     - Extent: \(\{\}\) (no objects have both \(a3\) and \(a5\)).
+   - For \(\{a2, a3\}\):
+     - Extent: \(\{\}\) (no objects have both \(a2\) and \(a3\)).
+
+4. **Check other combinations and ensure no duplicates.**
+   - For \(\{a1, a2, a4, a5\}\):
+     - Extent: \(\{o3\}\) (already found).
+   - For \(\{a2, a4\}\):
+     - Extent: \(\{o3\}\) (same as above).
+
+5. **Include the top concept (empty extent, all attributes).**
+   - Extent: \(\{\}\) (no objects). The intent is all attributes: \(\{a1, a2, a3, a4, a5\}\).
+   - Concept: \((\{\}, \{a1, a2, a3, a4, a5\})\).
+
+### Step 3: Enumerate All Formal Concepts
+After systematically checking all combinations, the complete list of formal concepts is:
+
+1. \((\{o1, o2, o3, o4, o5\}, \{\})\)  
+2. \((\{o1, o3\}, \{a1, a4\})\)  
+3. \((\{o3, o4, o5\}, \{a2\})\)  
+4. \((\{o1, o2\}, \{a3\})\)  
+5. \((\{o3, o4\}, \{a2, a5\})\)  
+6. \((\{o3\}, \{a1, a2, a4, a5\})\)  
+7. \((\{\}, \{a1, a2, a3, a4, a5\})\)  
+
+### Step 4: Verify the Concepts
+Each concept satisfies the definition:
+- For example, for \((\{o1, o3\}, \{a1, a4\})\):
+  - Every object in \(\{o1, o3\}\) has all attributes in \(\{a1, a4\}\).
+  - Every attribute in \(\{a1, a4\}\) is shared by all objects in \(\{o1, o3\}\).
+
+### Final Answer:
+The lattice for the given context consists of the following 7 formal concepts:
+
+1. \((\{o1, o2, o3, o4, o5\}, \{\})\)  
+2. \((\{o1, o3\}, \{a1, a4\})\)  
+3. \((\{o3, o4, o5\}, \{a2\})\)  
+4. \((\{o1, o2\}, \{a3\})\)  
+5. \((\{o3, o4\}, \{a2, a5\})\)  
+6. \((\{o3\}, \{a1, a2, a4, a5\})\)  
+7. \((\{\}, \{a1, a2, a3, a4, a5\})\)  
+
+These concepts form the complete concept lattice for the given context. The lattice can be visualized with the bottom concept (all objects, no attributes) at the bottom and the top concept (no objects, all attributes) at the top, with the other concepts arranged in between based on their subset relations.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2, o3, o4, o5]], [[a1, a4], [o1, o3]], [[a2], [o3, o4, o5]], [[a3], [o1, o2]], [[a2, a5], [o3, o4]], [[a1, a2, a4, a5], [o3]], [[a1, a2, a3, a4, a5], []]
+
+

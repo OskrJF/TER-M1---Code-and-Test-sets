@@ -1,0 +1,32 @@
+Deepseek_zero_shot_eg2_9_test3
+
+Date: 14 may 2025
+Model:Deepseek V3
+Context file: eg2_9
+Type of solution: Applied code
+Number of test:3	
+
+
+Prompt:
+Within the context of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+
+
+-----------------------------------
+
+OUTPUT:
+
+[[[[], [o1, o2]], [[a9], [o1, o2]], [[a4, a9], [o1, o2]], [[a1, a9], [o1, o2]], [[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]]]
+
+Let me explain the key concepts:
+
+1. [[], [o1, o2]] - The bottom concept containing all objects with no shared attributes
+2. [[a9], [o1, o2]] - Both objects share attribute a9
+3. [[a4, a9], [o1, o2]] - Both objects share attributes a4 and a9
+4. [[a1, a9], [o1, o2]] - Both objects share attributes a1 and a9
+5. [[a1, a4, a9], [o1, o2]] - Both objects share attributes a1, a4 and a9
+6. [[a1, a2, a3, a4, a7, a9], [o1]] - Object o1's full attribute set
+7. [[a1, a4, a6, a9], [o2]] - Object o2's full attribute set
+8. [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []] - The top concept with all attributes
+
+The lattice structure shows how concepts are ordered by specificity, from the most general (all objects) to most specific (all attributes). Each concept represents a maximal rectangle in the context table where all objects share all attributes.

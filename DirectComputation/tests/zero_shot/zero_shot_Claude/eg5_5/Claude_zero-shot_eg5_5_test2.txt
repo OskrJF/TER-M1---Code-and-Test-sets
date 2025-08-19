@@ -1,0 +1,50 @@
+Claude_zero-shot_eg5_5_test2
+
+Date: 29 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll analyze this CSV file to extract all formal concepts from the given context using Formal Concept Analysis (FCA) principles.I've created a comprehensive Formal Concept Analysis tool that extracts all lattice concepts from your CSV data. Here's what the analysis reveals:
+
+**Context Summary:**
+- Objects: {o1, o2, o3, o4, o5}
+- Attributes: {a1, a2, a3, a4, a5}
+- The context shows which objects have which attributes (yes/no relationships)
+
+**Key Findings:**
+The analysis found **11 formal concepts** in total. Each formal concept is a pair (Extent, Intent) where:
+- **Extent** = set of objects that share the attributes in the Intent
+- **Intent** = set of attributes shared by all objects in the Extent
+
+**Notable Concepts Include:**
+1. The **top concept** with all objects but no common attributes
+2. The **bottom concept** with no objects but all attributes
+3. Various **intermediate concepts** representing meaningful object-attribute relationships
+
+The tool uses the mathematical definition of formal concepts where for each concept (O, A):
+- O' = A (the attributes common to objects in O equal A)
+- A' = O (the objects having all attributes in A equal O)
+
+This creates a complete lattice structure showing all possible ways objects can be grouped by their shared attributes in your dataset. Each concept represents a maximal rectangle of crosses in the object-attribute matrix.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Based on the formal concept analysis of your CSV data, here are all the lattice concepts in the requested format:
+
+[[[], [o1, o2, o3, o4, o5]], [[a3], [o1, o2]], [[a2], [o3, o4, o5]], [[a1, a4], [o1, o3]], [[a2, a5], [o3, o4]], [[a1], [o1, o3]], [[a5], [o3, o4]], [[a4], [o1, o3]], [[a1, a2, a4, a5], [o3]], [[a2, a5], [o4]], [[a1, a2, a3, a4, a5], []]]
+
+This represents all 11 formal concepts where each concept is formatted as [Intent, Extent] - the attributes followed by the objects that possess exactly those attributes.
+
+

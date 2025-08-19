@@ -1,0 +1,19 @@
+📊 Metrics:
+Precision: 42,86%
+Recall: 75,00%
+Accuracy: 37,50%
+F-Measure: 54,55%
+
+✨ True Positives (3):
+Intent: [a1, a4, a6, a9], Extent: [o2]
+Intent: [a1, a2, a3, a4, a7, a9], Extent: [o1]
+Intent: [a1, a4, a9], Extent: [o1, o2]
+
+❌ False Negatives (1):
+Intent: [a1, a2, a3, a4, a5, a6, a7, a8, a9], Extent: []
+
+❌ False Positives (4):
+Intent: [a1, a2, a3, a4, a6, a7, a9], Extent: []
+Intent: [], Extent: [o1, o2]
+Intent: [a4, a9], Extent: [o1, o2]
+Intent: [a9], Extent: [o1, o2]
