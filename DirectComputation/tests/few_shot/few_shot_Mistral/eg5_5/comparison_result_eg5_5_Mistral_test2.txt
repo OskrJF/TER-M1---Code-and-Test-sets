@@ -1,0 +1,32 @@
+✨ True Positives (4):
+Intent: [], Extent: [o1, o2, o3, o4, o5]
+Intent: [a3], Extent: [o1, o2]
+Intent: [a1, a3, a4], Extent: [o1]
+Intent: [a2], Extent: [o3, o4, o5]
+
+ False Negatives (4):
+Intent: [a1, a2, a3, a4, a5], Extent: []
+Intent: [a2, a5], Extent: [o3, o4]
+Intent: [a1, a4], Extent: [o1, o3]
+Intent: [a1, a2, a4, a5], Extent: [o3]
+
+ False Positives (13):
+Intent: [a1, a4], Extent: [o1]
+Intent: [a1, a3], Extent: [o1]
+Intent: [a3, a4, a5], Extent: []
+Intent: [a1, a4, a5], Extent: []
+Intent: [a1, a3, a5], Extent: []
+Intent: [a4], Extent: [o1, o3]
+Intent: [a1], Extent: [o1, o3]
+Intent: [a5], Extent: [o3, o4]
+Intent: [a4, a5], Extent: []
+Intent: [a3, a5], Extent: []
+Intent: [a3, a4], Extent: [o1]
+Intent: [a1, a3, a4, a5], Extent: []
+Intent: [a1, a5], Extent: []
+
+📊 Metrics:
+Precision: 23,53%
+Recall: 50,00%
+Accuracy: 19,05%
+F-Measure: 32,00%

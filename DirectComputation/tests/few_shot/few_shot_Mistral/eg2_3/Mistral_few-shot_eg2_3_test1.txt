@@ -1,0 +1,88 @@
+Mistral_few-shot_eg2_3_test1
+
+Date: 27 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+To extract and enumerate all lattice concepts from the given context in formal concept analysis (FCA), we need to follow these steps:
+
+1. **Identify the Objects and Attributes:**
+   - Objects: \( o1, o2 \)
+   - Attributes: \( a1, a2, a3 \)
+
+2. **Create the Formal Context:**
+   - The formal context is a table where rows represent objects and columns represent attributes. A "yes" indicates that the object has the attribute, and a "no" indicates that it does not.
+
+   |   | a1 | a2 | a3 |
+   |---|----|----|----|
+   |o1 | yes| yes| no |
+   |o2 | no | yes| yes|
+
+3. **Find All Possible Concepts:**
+   - A concept is a pair \((A, B)\), where \(A\) is a set of attributes and \(B\) is a set of objects. The set \(A\) is the maximal set of attributes shared by all objects in \(B\), and \(B\) is the maximal set of objects sharing all attributes in \(A\).
+
+4. **Enumerate the Concepts:**
+   - Start with the most specific concepts and move to the most general ones.
+
+Let's enumerate the concepts step-by-step:
+
+- Concept 1: \((\{a1, a2\}, \{o1\})\)
+  - Attributes: \(a1, a2\)
+  - Objects: \(o1\)
+
+- Concept 2: \((\{a2, a3\}, \{o2\})\)
+  - Attributes: \(a2, a3\)
+  - Objects: \(o2\)
+
+- Concept 3: \((\{a2\}, \{o1, o2\})\)
+  - Attributes: \(a2\)
+  - Objects: \(o1, o2\)
+
+- Concept 4: \((\{a1, a2, a3\}, \{\})\)
+  - Attributes: \(a1, a2, a3\)
+  - Objects: \(\{\}\)
+
+- Concept 5: \((\{\}, \{o1, o2\})\)
+  - Attributes: \(\{\}\)
+  - Objects: \(o1, o2\)
+
+So, the list of lattice concepts is:
+
+\[
+\begin{align*}
+&[[a1, a2], [o1]], \\
+&[[a2, a3], [o2]], \\
+&[[a2], [o1, o2]], \\
+&[[a1, a2, a3], []], \\
+&[[], [o1, o2]]
+\end{align*}
+\]
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]], [[a1, a2, a3], []], [[], [o1, o2]]]
