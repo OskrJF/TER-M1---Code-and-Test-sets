@@ -1,0 +1,62 @@
+Claude_contextual-prompting_eg8_8_test2
+
+Date: 29 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+I'll help you extract and enumerate all lattice concepts from this formal context. Let me first read and analyze the CSV data, then apply formal concept analysis principles to find all concepts.I've created a comprehensive analysis tool that extracts and enumerates all formal concepts from your context. Here's what the analysis reveals:
+
+## Key Findings:
+
+**Context Summary:**
+- 8 objects (O1 through O8)
+- 8 attributes (a1 through a8)
+- Binary relation where "Yes" indicates the object has the attribute
+
+**Formal Concepts Found:**
+The analysis discovers all formal concepts by applying the fundamental FCA principle: a formal concept is a pair (A, B) where:
+- A is a set of objects (extent)
+- B is a set of attributes (intent)  
+- A is the set of all objects sharing all attributes in B
+- B is the set of all attributes shared by all objects in A
+
+The interactive tool shows:
+
+1. **The original context table** with clear visualization of Yes/No relationships
+2. **All formal concepts** listed with their extents and intents
+3. **Statistical summary** showing the total number of concepts and their properties
+4. **Multiple viewing options**:
+   - View all concepts at once
+   - Group concepts by size (extent/intent cardinality)
+   - Show lattice structure with concept relationships
+
+**Analysis Features:**
+- Computes concept closure using derivation operators
+- Identifies the complete concept lattice
+- Shows hierarchical relationships between concepts
+- Provides multiple perspectives on the concept structure
+
+The tool uses the standard FCA algorithm for small contexts, systematically checking all possible object combinations and their corresponding attribute closures to identify valid formal concepts. Each concept represents a maximal rectangle of "Yes" entries in the context when objects and attributes are appropriately ordered.
+
+You can interact with the tool to explore the concepts from different angles and understand the complete lattice structure of your formal context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Based on the formal concept analysis of your context, here is the complete list of all lattice concepts in the requested format:
+
+[[[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a2, a3], [O1, O2, O3, O4, O6, O7, O8]], [[a2, a4], [O3, O4, O5, O7, O8]], [[a2, a5], [O4, O5, O6, O7, O8]], [[a2, a7], [O5, O6, O7, O8]], [[a1, a2, a3], [O1, O2, O3, O6]], [[a2, a3, a4], [O3, O4, O7, O8]], [[a2, a4, a5], [O4, O5, O7, O8]], [[a2, a5, a7], [O5, O6, O7, O8]], [[a1, a2, a3, a5], [O6]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a4, a5, a7], [O5, O7, O8]], [[a4, a5, a6, a8], [O5]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a1, a2, a3, a6, a8], [O2]], [[a1, a2, a4, a6], [O3]], [[a2, a3, a4, a8], [O4]], [[a4, a5, a6, a7, a8], [O5]], [[], [O1, O2, O3, O4, O5, O6, O7, O8]]]
+
+This represents all 20 formal concepts found in your context, where each concept is formatted as [[intent], [extent]] - the intent contains the attributes and the extent contains the objects.

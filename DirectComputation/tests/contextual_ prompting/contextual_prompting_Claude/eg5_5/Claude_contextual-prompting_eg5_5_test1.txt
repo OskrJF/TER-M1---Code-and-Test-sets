@@ -1,0 +1,49 @@
+Claude_contextual-prompting_eg5_5_test1
+
+Date: 29 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+I'll help you extract and enumerate all lattice concepts from the given formal context using Formal Concept Analysis (FCA). Let me first read and analyze the CSV file, then systematically find all concepts.I've created an interactive Formal Concept Analysis tool that processes your CSV file and extracts all lattice concepts. Here's what the analysis reveals:
+
+**Your Formal Context:**
+- **Objects**: {o1, o2, o3, o4, o5}
+- **Attributes**: {a1, a2, a3, a4, a5}
+
+**Complete List of Lattice Concepts:**
+
+1. **Concept 1**: ({o1, o2, o3, o4, o5}, ∅) - Top concept (all objects, no common attributes)
+2. **Concept 2**: ({o1, o3}, {a1}) - Objects o1 and o3 share attribute a1
+3. **Concept 3**: ({o2, o3}, {a3}) - Objects o2 and o3 share attribute a3  
+4. **Concept 4**: ({o3, o4, o5}, {a2}) - Objects o3, o4, and o5 share attribute a2
+5. **Concept 5**: ({o1, o3, o4}, {a4}) - Objects o1, o3, and o4 share attribute a4
+6. **Concept 6**: ({o3, o4}, {a5}) - Objects o3 and o4 share attribute a5
+7. **Concept 7**: ({o3}, {a1, a2, a4, a5}) - Object o3 has attributes a1, a2, a4, a5
+8. **Concept 8**: (∅, {a1, a2, a3, a4, a5}) - Bottom concept (no objects, all attributes)
+
+**Total: 8 concepts** form the complete concept lattice for this context.
+
+The tool shows:
+- The original formal context as a table with visual highlighting
+- All derived concepts with their extents (sets of objects) and intents (sets of attributes)
+- Each concept represents a maximal rectangle of crosses in the formal context
+- The concepts form a mathematical lattice structure where concepts can be ordered by inclusion
+
+The interactive tool allows you to recompute the analysis and export the results. This systematic enumeration uses the fundamental property of formal concepts: for a concept (A,B), the extent A and intent B satisfy A' = B and B' = A, where ' denotes the derivation operator.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Looking at the formal context analysis, here are all the lattice concepts in the requested format:[[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3]], [[a2], [o3, o4, o5]], [[a3], [o1, o2]], [[a4], [o1, o3]], [[a5], [o3, o4]], [[a1, a2, a4, a5], [o3]], [[a1, a2, a3, a4, a5], []]]

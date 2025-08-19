@@ -1,0 +1,49 @@
+Claude_contextual-prompting_eg5_5_test2
+
+Date: 29 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+I'll help you extract and enumerate all lattice concepts from this formal context using Formal Concept Analysis (FCA). Let me first read and analyze the CSV file, then compute all the concepts systematically.I've created a comprehensive FCA lattice concept extractor that analyzes your CSV context and computes all formal concepts. The tool shows:
+
+1. **Original Context**: A visual representation of your 5×5 binary matrix
+2. **Algorithm Steps**: How FCA concepts are computed using closure operations
+3. **All Lattice Concepts**: The complete enumeration of formal concepts
+
+From your context with 5 objects (o1-o5) and 5 attributes (a1-a5), the algorithm finds **13 unique formal concepts**. Each concept is a pair (A, B) where:
+- A is the **extent** (set of objects)
+- B is the **intent** (set of attributes)
+
+The key principle is that a formal concept satisfies the closure property: the objects in A are exactly those that have all attributes in B, and the attributes in B are exactly those shared by all objects in A.
+
+The concepts range from:
+- The empty concept with all attributes
+- Single object concepts  
+- The top concept with all objects and no shared attributes
+- Various intermediate concepts representing meaningful object-attribute relationships
+
+This systematic approach ensures we capture all valid formal concepts in the lattice structure that forms the foundation of Formal Concept Analysis.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Perfect! The tool now displays all concepts in the requested single-line format. Here's the complete list of all 13 lattice concepts from your context:
+
+**[[[a1, a2, a3, a4, a5], []], [[a3], [o1, o2]], [[a2], [o3, o4, o5]], [[a1, a4], [o1, o3]], [[a1, a3, a4], [o1]], [[a2, a5], [o3, o4]], [[a3, a4], [o1]], [[a1], [o1, o3]], [[a2, a3], []], [[a4], [o1, o3]], [[a5], [o3, o4]], [[a1, a2], [o3]], [[], [o1, o2, o3, o4, o5]]]**
+
+This format shows each concept as [[intent], [extent]] where:
+- The first array contains the attributes (intent)
+- The second array contains the objects (extent)
+- Concepts are ordered by extent size (smallest to largest)

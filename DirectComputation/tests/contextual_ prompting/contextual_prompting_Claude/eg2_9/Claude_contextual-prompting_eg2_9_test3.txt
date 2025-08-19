@@ -1,0 +1,75 @@
+Claude_contextual-prompting_eg2_9_test3
+
+Date: 19 may 2025
+Model: Claude 3.7 Sonnet 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+I'll help you find all lattice concepts from the given context. In Formal Concept Analysis (FCA), a concept is a pair (A,B) where A is a set of objects and B is a set of attributes such that:
+- A is the set of all objects that have all attributes in B
+- B is the set of all attributes that are shared by all objects in A
+
+Let me extract the data from your CSV and find all concepts.
+
+First, I'll parse the context from the CSV file:
+
+I need to adjust the code to handle the CSV format correctly and fix some issues with the FCA algorithm:
+
+Let me update the FCA concept finding algorithm in the artifact to correctly handle the context:
+
+I need to fix the concept generation logic:
+
+Based on the formal context analysis from the CSV file, I've extracted all the lattice concepts. In Formal Concept Analysis (FCA), a concept is a pair (A,B) where A is a set of objects and B is a set of attributes, where A consists of all objects that share all attributes in B, and B consists of all attributes shared by all objects in A.
+
+The formal context in your CSV consists of:
+- 2 objects: o1 and o2
+- 9 attributes: a1, a2, a3, a4, a5, a6, a7, a8, a9
+
+Here are all the lattice concepts found:
+
+### Concept 1:
+- Extent: {o1, o2}
+- Intent: {a1, a4, a9}
+
+This represents the objects o1 and o2, with their common attributes a1, a4, and a9.
+
+### Concept 2:
+- Extent: {o1}
+- Intent: {a1, a2, a3, a4, a7, a9}
+
+This represents object o1 with all its attributes.
+
+### Concept 3:
+- Extent: {o2}
+- Intent: {a1, a4, a6, a9}
+
+This represents object o2 with all its attributes.
+
+### Concept 4:
+- Extent: {} (empty set)
+- Intent: {a1, a2, a3, a4, a5, a6, a7, a8, a9}
+
+This is the bottom concept with no objects and all attributes.
+
+These four concepts form the complete concept lattice for your given formal context. The concepts are organized from the most general (largest extent) to the most specific (smallest extent).
+
+Would you like me to explain how the lattice structure connects these concepts, or do you need any additional information about the formal concepts?
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here are all the formal concepts from your context in the requested format:
+
+[[[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]]
+

@@ -1,0 +1,79 @@
+Claude_contextual-prompting_eg2_3_test3
+
+Date: 18 may 2025
+Model: Claude 3.7 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+I'll extract and enumerate all lattice concepts from the context provided in the CSV file. Let me work through this step by step using formal concept analysis (FCA) principles.
+
+First, let me clarify what we're working with:
+
+The context consists of:
+- Objects: o1, o2
+- Attributes: a1, a2, a3
+- A binary relation indicating which objects have which attributes
+
+## Understanding the Context
+
+From the CSV:
+- Object o1 has attributes a1 and a2, but not a3
+- Object o2 has attributes a2 and a3, but not a1
+
+## Finding the Lattice Concepts
+
+In FCA, a concept is a pair (A, B) where:
+- A is a set of objects (extent)
+- B is a set of attributes (intent)
+- A consists of all objects that share all attributes in B
+- B consists of all attributes shared by all objects in A
+
+Let me find all concepts:
+
+1. **Concept 1: The Top Concept**
+   - Extent: All objects = {o1, o2}
+   - Intent: Attributes common to all objects = {a2}
+   - So we have ({o1, o2}, {a2})
+
+2. **Concept 2: For object o1**
+   - Extent: {o1}
+   - Intent: All attributes of o1 = {a1, a2}
+   - So we have ({o1}, {a1, a2})
+
+3. **Concept 3: For object o2**
+   - Extent: {o2}
+   - Intent: All attributes of o2 = {a2, a3}
+   - So we have ({o2}, {a2, a3})
+
+4. **Concept 4: The Bottom Concept**
+   - Extent: Objects sharing all attributes = ∅ (empty set)
+   - Intent: All attributes = {a1, a2, a3}
+   - So we have (∅, {a1, a2, a3})
+
+## Enumerating All Lattice Concepts
+
+The complete list of lattice concepts for this context is:
+1. ({o1, o2}, {a2})
+2. ({o1}, {a1, a2})
+3. ({o2}, {a2, a3})
+4. (∅, {a1, a2, a3})
+
+These concepts form a lattice structure where concepts are ordered by set inclusion of their extents (or dually, by reverse inclusion of their intents).
+
+Would you like me to visualize the lattice structure or explain the relationships between these concepts in more detail?
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a2], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a2, a3], []]]

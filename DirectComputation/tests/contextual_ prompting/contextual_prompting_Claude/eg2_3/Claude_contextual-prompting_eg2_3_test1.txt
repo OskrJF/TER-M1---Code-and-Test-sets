@@ -1,0 +1,96 @@
+Claude_contextual-prompting_eg2_3_test1
+
+Date: 18 may 2025
+Model: Claude 3.7 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+I'll analyze the formal context provided in the CSV file and extract all lattice concepts using principles from Formal Concept Analysis (FCA).
+
+First, let me clarify what we're working with:
+- We have a formal context with 2 objects (o1, o2) and 3 attributes (a1, a2, a3)
+- A lattice concept in FCA is a pair (A,B) where A is a set of objects and B is a set of attributes such that:
+  - A is exactly the set of objects that share all attributes in B
+  - B is exactly the set of attributes that are shared by all objects in A
+
+Let me extract the formal context from the CSV file:
+
+| Object | a1  | a2  | a3  |
+|--------|-----|-----|-----|
+| o1     | yes | yes | no  |
+| o2     | no  | yes | yes |
+
+Now, I'll find all lattice concepts by systematically examining all possible object sets:
+
+1. For the empty set of objects ∅:
+   - All attributes are shared (a1, a2, a3)
+   - But when we look at which objects share these three attributes, we get an empty set
+   - This doesn't form a valid concept
+
+2. For the set {o1}:
+   - Attributes shared by o1: {a1, a2}
+   - Objects sharing attributes {a1, a2}: {o1}
+   - This forms a concept: ({o1}, {a1, a2})
+
+3. For the set {o2}:
+   - Attributes shared by o2: {a2, a3}
+   - Objects sharing attributes {a2, a3}: {o2}
+   - This forms a concept: ({o2}, {a2, a3})
+
+4. For the set {o1, o2}:
+   - Attributes shared by o1 and o2: {a2}
+   - Objects sharing attribute {a2}: {o1, o2}
+   - This forms a concept: ({o1, o2}, {a2})
+
+5. Consider the empty set for completeness:
+   - The empty set of objects corresponds to the intent of all attributes
+   - The extent of all attributes is empty in this case
+   - This forms the concept: (∅, {a1, a2, a3})
+
+6. Consider the full set of attributes:
+   - No object has all three attributes
+   - This doesn't form a valid concept
+
+7. For the attribute set {a1}:
+   - Objects having a1: {o1}
+   - Attributes shared by o1: {a1, a2}
+   - This doesn't form a valid concept (already covered in concept 2)
+
+8. For the attribute set {a3}:
+   - Objects having a3: {o2}
+   - Attributes shared by o2: {a2, a3}
+   - This doesn't form a valid concept (already covered in concept 3)
+
+Enumerating all valid lattice concepts:
+1. ({o1}, {a1, a2})
+2. ({o2}, {a2, a3})
+3. ({o1, o2}, {a2})
+4. (∅, {a1, a2, a3})
+
+Let me also verify if we need to add the bottom concept:
+- The full set of objects {o1, o2} has intent {a2}
+- This is already covered in concept 3
+
+Therefore, the complete list of all lattice concepts for this formal context is:
+1. (∅, {a1, a2, a3}) - Top concept
+2. ({o1}, {a1, a2})
+3. ({o2}, {a2, a3})
+4. ({o1, o2}, {a2}) - Bottom concept
+
+These four concepts form the complete concept lattice for the given formal context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[(∅), (a1, a2, a3)], [(o1), (a1, a2)], [(o2), (a2, a3)], [(o1, o2), (a2)]]

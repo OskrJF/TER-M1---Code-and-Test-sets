@@ -1,0 +1,91 @@
+Claude_contextual-prompting_eg2_3_test2
+
+Date: 18 may 2025
+Model: Claude 3.7 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+I'll analyze the formal concept provided in the CSV file and extract all the lattice concepts. In Formal Concept Analysis (FCA), a concept is a pair consisting of a set of objects and a set of attributes such that the set of objects contains exactly those objects that share all the attributes, and vice versa.
+
+First, let me extract the information from the CSV file:
+
+- The objects are: o1, o2
+- The attributes are: a1, a2, a3
+- The relation is:
+  - o1 has attributes a1, a2
+  - o2 has attributes a2, a3
+
+Now I'll find all the formal concepts by identifying all possible sets of objects and their corresponding attribute sets:
+
+### Step 1: Find all possible object sets and their common attributes
+
+1. Object set {o1, o2}:
+   - Common attributes: {a2} (only a2 is shared by both o1 and o2)
+
+2. Object set {o1}:
+   - Attributes of o1: {a1, a2}
+
+3. Object set {o2}:
+   - Attributes of o2: {a2, a3}
+
+4. Object set {} (empty set):
+   - All attributes: {a1, a2, a3} (by convention, the empty set of objects has all attributes)
+
+### Step 2: Verify these are all concepts by checking the closures
+
+For each concept (O, A) where O is an object set and A is an attribute set, we need to verify that:
+- A contains all attributes shared by objects in O
+- O contains all objects that have all attributes in A
+
+Let's enumerate the concepts:
+
+1. **Concept 1**: ({o1, o2}, {a2})
+   - Objects o1 and o2 share only attribute a2
+   - All objects having attribute a2 are o1 and o2
+   
+2. **Concept 2**: ({o1}, {a1, a2})
+   - Object o1 has attributes a1 and a2
+   - All objects having both a1 and a2 are only o1
+   
+3. **Concept 3**: ({o2}, {a2, a3})
+   - Object o2 has attributes a2 and a3
+   - All objects having both a2 and a3 are only o2
+   
+4. **Concept 4**: ({}, {a1, a2, a3})
+   - No object has all three attributes
+   - All objects that have all attributes are none (empty set)
+
+5. **Concept 5**: ({o1, o2}, {}) (top concept)
+   - All objects (o1 and o2) share no common attribute
+   - Note: This is not valid because they share a2, so this isn't a formal concept
+
+Let me check if I missed any concepts. A valid concept would be a pair (O, A) where O is a set of objects that all share the attributes in A, and A consists of all attributes shared by the objects in O.
+
+Looking at the formal context again, I see that:
+- The top concept should be ({o1, o2}, {a2}) as this represents all objects and the attributes they share
+- The bottom concept should be ({}, {a1, a2, a3}) as this represents no objects and all attributes
+
+Therefore, the complete list of formal concepts for this context is:
+
+1. **C1**: ({o1, o2}, {a2}) - top concept
+2. **C2**: ({o1}, {a1, a2})
+3. **C3**: ({o2}, {a2, a3})
+4. **C4**: ({}, {a1, a2, a3}) - bottom concept
+
+These four concepts form the complete concept lattice for the given formal context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]

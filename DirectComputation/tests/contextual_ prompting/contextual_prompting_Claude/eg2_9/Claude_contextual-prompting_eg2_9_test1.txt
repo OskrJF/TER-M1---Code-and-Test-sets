@@ -1,0 +1,85 @@
+Claude_contextual-prompting_eg2_9_test1
+
+Date: 19 may 2025
+Model: Claude 3.7 Sonnet 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+I'll help you extract and enumerate all lattice concepts from the provided context. In Formal Concept Analysis (FCA), a concept is a pair (A,B) where A is a set of objects and B is a set of attributes such that A is exactly the set of objects sharing all attributes in B, and B is exactly the set of attributes shared by all objects in A.
+
+Let me analyze the context from your CSV file and find all concepts.
+
+First, let's understand what we have:
+- 2 objects: o1, o2
+- 9 attributes: a1 through a9
+- Each cell contains "yes" or "no" indicating whether the object has that attribute
+
+Let me extract all the concepts step by step:
+
+Looking at the CSV file, I have a formal context with:
+- 2 objects: o1 and o2
+- 9 attributes: a1 through a9
+- Values showing whether each object has each attribute (yes/no)
+
+Let me analyze this context and extract all lattice concepts systematically.
+
+First, I'll confirm the attribute values for each object:
+
+**o1**: has attributes a1, a2, a3, a4, a7, a9
+**o2**: has attributes a1, a4, a6, a9
+
+To find all lattice concepts, I need to identify all pairs (A,B) where:
+- A is a set of objects
+- B is a set of attributes
+- A is exactly the set of objects that share all attributes in B
+- B is exactly the set of attributes shared by all objects in A
+
+Here are all the concepts from this context:
+
+1. **Concept 1**: (∅, {a1, a2, a3, a4, a5, a6, a7, a8, a9})
+   - Empty set of objects with all attributes
+   - Note: This is actually not a valid concept since no object has all attributes
+
+2. **Concept 2**: ({o1}, {a1, a2, a3, a4, a7, a9})
+   - Object o1 with all its attributes
+
+3. **Concept 3**: ({o2}, {a1, a4, a6, a9})
+   - Object o2 with all its attributes
+
+4. **Concept 4**: ({o1, o2}, {a1, a4, a9})
+   - Both objects with their shared attributes
+
+5. **Concept 5**: (∅, ∅)
+   - Empty set of objects with no attributes
+   - Note: This represents the bottom concept in the lattice
+
+The lattice concepts form a hierarchy where:
+- Concept 5 is at the bottom
+- Concepts 2 and 3 are in the middle level
+- Concept 4 is at the top (most general concept with actual objects)
+- Concept 1 would be at the very top, but it doesn't apply in this context since no object has all attributes
+
+This gives us a total of 4 valid concepts in the lattice:
+1. (∅, ∅)
+2. ({o1}, {a1, a2, a3, a4, a7, a9})
+3. ({o2}, {a1, a4, a6, a9})
+4. ({o1, o2}, {a1, a4, a9})
+
+Each concept represents a maximal grouping of objects that share a specific set of attributes, which is a fundamental building block in Formal Concept Analysis.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a4, a9], []], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[], [o1, o2]]]
+

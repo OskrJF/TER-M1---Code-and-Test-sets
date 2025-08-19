@@ -1,0 +1,54 @@
+Claude_contextual-prompting_eg8_8_test1
+
+Date: 29 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+I'll help you extract and enumerate all lattice concepts from the given formal context using Formal Concept Analysis (FCA). Let me first read and analyze the CSV file, then systematically find all concepts.I've created an interactive tool to extract and analyze all lattice concepts from your FCA context. The tool:
+
+1. **Parses your CSV data** showing the formal context with 8 objects (O1-O8) and 8 attributes (a1-a8)
+
+2. **Extracts all concepts** using the fundamental FCA principle: A concept is a pair (A, B) where:
+   - A is a set of objects (extent)
+   - B is a set of attributes (intent)
+   - A is the set of all objects that have all attributes in B
+   - B is the set of all attributes shared by all objects in A
+
+3. **Displays the complete lattice** with all formal concepts ordered by extent size
+
+Click the "Extract All Concepts" button to see all concepts systematically generated. The algorithm works by:
+
+- Generating all possible subsets of objects
+- For each subset, finding the common attributes (intent)
+- For each intent, finding all objects that have those attributes (extent)
+- Keeping only valid concept pairs that satisfy the closure property
+
+This approach works well for small contexts like yours (8×8) and will enumerate all concepts in the concept lattice, showing both the hierarchical structure and the formal mathematical relationships between extents and intents.
+
+The tool also provides statistics and a lattice structure view to help you understand the conceptual hierarchy in your data.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Perfect! I've updated the tool to include the single line format you requested. Now when you click "Extract All Concepts", it will show all the individual concepts AND provide the complete list in your specified format at the bottom.
+
+The format follows your specification: `[[intent], [extent]]` for each concept, where:
+- The first array contains the attributes (intent)
+- The second array contains the objects (extent)
+- All concepts are listed in a single line without quotation marks
+
+Click the "Extract All Concepts" button and you'll see the complete enumeration of all lattice concepts from your formal context, displayed both individually and in the consolidated single-line format you requested.
+
+[[[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a2, a3], [O1, O2, O4, O6, O7, O8]], [[a2, a4], [O3, O4, O5, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a2, a7], [O5, O6, O7, O8]], [[a2, a3, a5], [O4, O6, O7, O8]], [[a2, a6], [O2, O3, O5]], [[a2, a8], [O2, O4, O5]], [[a1, a2, a3], [O1, O2, O6]], [[a2, a4, a7], [O5, O7, O8]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a3, a5, a7], [O6, O7, O8]], [[a1, a2, a6], [O2, O3]], [[a2, a3, a8], [O2, O4]], [[a2, a6, a8], [O2, O5]], [[a2, a4, a6], [O3, O5]], [[a2, a4, a8], [O4, O5]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a1, a2, a4, a6], [O3]], [[a1, a2, a3, a6, a8], [O2]], [[a2, a3, a4, a5, a8], [O4]], [[a2, a4, a6, a7, a8], [O5]], [[a1, a2, a3, a5, a7], [O6]], [[a1, a2, a3, a4, a5, a6, a7, a8], []]]
