@@ -1,0 +1,61 @@
+ChatGPT_zero_shot_eg2_3_test1
+
+Date: 13 may 2025
+Model: ChatGPT-4o
+Context file: eg2_3
+Type of solution: Applied code
+Number of test: 1
+
+PROMPT:
+Within the context of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+We’re working with a formal context from the CSV content:
+
+```
+Objet;a1;a2;a3  
+o1;yes;yes;no  
+o2;no;yes;yes
+```
+
+Let's convert this into a binary context:
+
+|    | a1 | a2 | a3 |
+| -- | -- | -- | -- |
+| o1 | 1  | 1  | 0  |
+| o2 | 0  | 1  | 1  |
+
+Now we will extract all **formal concepts** (pairs of attribute sets and object sets that form closures). Here's a step-by-step breakdown:
+
+### Step 1: List all possible subsets of attributes (intents)
+
+We compute the **extent** (set of objects sharing all attributes in the subset) for each subset, then compute the **intent** (common attributes) of that extent, and keep the pairs that form a closure (i.e., intent matches the starting subset).
+
+### Step 2: Compute concepts
+
+We enumerate and find closed pairs:
+
+1. `[]` → all objects: \[o1, o2] → common attributes: \[a2] → Not a closure
+2. `[a1]` → o1 → common attributes of o1: \[a1, a2] → Not a closure
+3. `[a2]` → o1, o2 → common attributes: \[a2] → Closure → Concept: `[[a2], [o1, o2]]`
+4. `[a3]` → o2 → attributes of o2: \[a2, a3] → Not closure
+5. `[a1, a2]` → o1 → attributes of o1: \[a1, a2] → Closure → `[[a1, a2], [o1]]`
+6. `[a1, a3]` → no object → full attribute set → Closure: `[[a1, a3], []]`
+7. `[a2, a3]` → o2 → attributes: \[a2, a3] → Closure → `[[a2, a3], [o2]]`
+8. `[a1, a2, a3]` → no object → Closure: `[[a1, a2, a3], []]`
+9. `[]` again: all objects \[o1, o2] → attributes in common: \[a2] → `[[a2], [o1, o2]]` → already included
+
+### Final Set of Formal Concepts:
+
+```
+[[[], [o1, o2]], [[a2], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a3], []], [[a1, a2, a3], []]]
+```
+
+(We include `[[[], [o1, o2]]]` explicitly for the top element of the lattice.)
+
+### Final Answer:
+
+```
+[[[], [o1, o2]], [[a2], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a3], []], [[a1, a2, a3], []]]
+```

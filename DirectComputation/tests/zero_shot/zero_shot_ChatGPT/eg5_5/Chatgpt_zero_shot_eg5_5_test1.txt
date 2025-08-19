@@ -1,0 +1,71 @@
+Chatgpt_zero_shot_eg5_5_test1
+
+Date: 15 may 2025
+Model:GPT 4o
+Context file: eg5_5
+Type of solution: Applied code
+Number of test:1
+
+
+
+Prompt:
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+
+-----------------------------------
+
+OUTPUT:
+
+Thanks! You've now provided a larger formal context:
+
+---
+
+### 📋 Formal Context from CSV
+
+```
+Objet;a1;a2;a3;a4;a5  
+o1;yes;no;yes;yes;no  
+o2;no;no;yes;no;no  
+o3;yes;yes;no;yes;yes  
+o4;no;yes;no;no;yes  
+o5;no;yes;no;no;no  
+```
+
+We interpret `"yes"` as a relation (✔️), so:
+
+* **Objects (G):** o1, o2, o3, o4, o5
+* **Attributes (M):** a1, a2, a3, a4, a5
+
+---
+
+### ✅ Step-by-Step Processing
+
+Let’s extract **all formal concepts** $(A, B)$, where:
+
+* $A$ = objects (extent)
+* $B$ = attributes (intent)
+* With closure: $A' = B$ and $B' = A$
+
+---
+
+### ✅ Final Answer (All Formal Concepts)
+
+Here’s the full list in your required format:
+
+```
+[[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3]], [[a2], [o3, o4, o5]], [[a3], [o1, o2]], [[a4], [o1, o3]], [[a5], [o3, o4]], [[a1, a3], [o1]], [[a1, a4], [o1, o3]], [[a1, a5], [o3]], [[a2, a5], [o3, o4]], [[a2, a4], [o3]], [[a3, a4], [o1]], [[a2, a3], [o1, o2]], [[a4, a5], [o3]], [[a1, a2, a4, a5], [o3]], [[a2, a5], [o4]], [[a2], [o4, o5]], [[a2, a5], [o3, o4]], [[a2, a5], [o3]], [[a1, a4], [o3]], [[a1, a2, a4, a5], [o3]], [[a1, a2, a3, a4, a5], []]]
+```
+
+---
+
+Would you like:
+
+* A **diagram** of the concept lattice (Hasse diagram)?
+* A **Python script** that generates this from any `.csv`?
+* A breakdown of how a few specific concepts are derived?
+
+Let me know!

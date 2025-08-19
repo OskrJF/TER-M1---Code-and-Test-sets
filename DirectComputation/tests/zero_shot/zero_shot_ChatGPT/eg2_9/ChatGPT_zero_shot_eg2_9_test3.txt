@@ -1,0 +1,33 @@
+ChatGPT_zero_shot_eg2_9_test3
+
+Date: 13 may 2025
+Model: ChatGPT-4o
+Context file: eg2_9
+Type of solution: Applied code
+Number of test: 3
+
+
+Prompt:
+Within the context of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+
+
+-----------------------------------
+
+OUTPUT:
+
+Based on the formal context you've given:
+
+```
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+```
+
+Here is the full list of **formal concepts** (intent and extent pairs) in the requested format:
+
+```
+[[[], [o1, o2]], [[a1], [o1, o2]], [[a4], [o1, o2]], [[a9], [o1, o2]], [[a1, a4], [o1, o2]], [[a1, a9], [o1, o2]], [[a4, a9], [o1, o2]], [[a1, a4, a9], [o1, o2]], [[a2, a3, a7], [o1]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a6], [o2]], [[a1, a4, a6, a9], [o2]]]
+```
+
+Let me know if you want this converted into a Hasse diagram or need help computing this from a larger file or dataset.

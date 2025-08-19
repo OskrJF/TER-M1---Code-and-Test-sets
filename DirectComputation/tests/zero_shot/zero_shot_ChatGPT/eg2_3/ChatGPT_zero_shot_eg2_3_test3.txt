@@ -1,0 +1,14 @@
+ChatGPT_zero_shot_eg2_3_test1
+
+Date: 13 may 2025
+Model: ChatGPT-4o
+Context file: eg2_3
+Type of solution: Applied code
+Number of test: 1
+
+PROMPT:
+Within the context of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+
