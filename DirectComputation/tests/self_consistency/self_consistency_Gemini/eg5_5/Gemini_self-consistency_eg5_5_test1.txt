@@ -1,0 +1,292 @@
+Gemini_self-consistency_eg5_5_test1
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+```python?code_reference&code_event_index=2
+import pandas as pd
+
+# Load the CSV file
+file_path = "uploaded/eg5_5.csv"
+try:
+    # Attempt to read with common delimiters and encodings
+    df = pd.read_csv(file_path, sep=';', header=0, index_col=0)
+except Exception as e:
+    print(f"Error reading CSV: {e}")
+    df = None
+
+if df is not None:
+    print("Successfully loaded the data. Here's a preview:")
+    print(df.head())
+    print("\nDataframe Information:")
+    df.info()
+
+    # Convert the DataFrame to a boolean matrix, assuming 'x' means True and empty/NaN means False.
+    # First, ensure all values are strings to handle potential mixed types causing errors with .str methods
+    df_str = df.astype(str)
+    context_matrix = df_str.applymap(lambda x: x.strip().lower() == 'x')
+
+    print("\nBoolean Context Matrix:")
+    print(context_matrix)
+
+    objects = list(context_matrix.index)
+    attributes = list(context_matrix.columns)
+
+    print(f"\nObjects (G): {objects}")
+    print(f"Attributes (M): {attributes}")
+
+else:
+    print("Could not load the dataframe.")
+```
+```text?code_stdout&code_event_index=2
+Error reading CSV: [Errno 2] No such file or directory: 'uploaded/eg5_5.csv'
+Could not load the dataframe.
+
+```
+```python?code_reference&code_event_index=6
+import pandas as pd
+import itertools
+
+def load_and_prepare_context(file_path):
+    """Loads the CSV, prepares the boolean context matrix, objects, and attributes."""
+    try:
+        df = pd.read_csv(file_path, sep=';', header=0, index_col=0)
+    except FileNotFoundError:
+        print(f"Error: The file '{file_path}' was not found.")
+        return None, None, None
+    except Exception as e:
+        print(f"Error reading CSV file '{file_path}': {e}")
+        return None, None, None
+
+    # Ensure object and attribute names are strings and clean them
+    df.index = df.index.map(str).str.strip()
+    df.columns = df.columns.map(str).str.strip()
+
+    # Convert to boolean matrix: 'x' (case-insensitive, ignoring spaces) means True
+    context_matrix = df.astype(str).applymap(lambda x: x.strip().lower() == 'x')
+
+    objects = sorted(list(context_matrix.index))
+    attributes = sorted(list(context_matrix.columns))
+    
+    print("Successfully loaded and processed the data.")
+    print("Objects (G):", objects)
+    print("Attributes (M):", attributes)
+    print("\nContext Matrix (first 5x5 if large):")
+    print(context_matrix.head())
+    print("\n")
+    
+    return context_matrix, objects, attributes
+
+def get_intent(object_subset, context_matrix, all_attributes_list):
+    """Computes the intent of an object subset A (A')."""
+    # object_subset is a frozenset of object names
+    # all_attributes_list is a sorted list of all attribute names
+    if not object_subset: # If A is empty, A' is M (all attributes)
+        return frozenset(all_attributes_list)
+    
+    # Start with all attributes as potential candidates for the intent
+    # For the first object in the subset, its attributes form the initial intent
+    # Then intersect with attributes of subsequent objects
+    
+    # Initialize common_attributes with the attributes of the first object in the subset
+    # This avoids starting with all_attributes if the subset is non-empty but specific
+    
+    # Convert frozenset to list to iterate, assuming object_subset is not empty here
+    # (handled by the 'if not object_subset' above)
+    
+    # Alternative: start with all attributes and intersect. This is safer.
+    common_attributes = set(all_attributes_list)
+    
+    for obj_name in object_subset:
+        obj_attributes = set()
+        for attr_name in all_attributes_list:
+            if obj_name in context_matrix.index and attr_name in context_matrix.columns: # Defensive check
+                 if context_matrix.loc[obj_name, attr_name]:
+                    obj_attributes.add(attr_name)
+            else:
+                # This case should not happen if inputs are consistent
+                # print(f"Warning: Object '{obj_name}' or Attribute '{attr_name}' not in matrix during get_intent.")
+                pass # Or handle error
+        common_attributes.intersection_update(obj_attributes)
+        
+    return frozenset(common_attributes)
+
+def get_extent(attribute_subset, context_matrix, all_objects_list):
+    """Computes the extent of an attribute subset B (B')."""
+    # attribute_subset is a frozenset of attribute names
+    # all_objects_list is a sorted list of all object names
+    if not attribute_subset: # If B is empty, B' is G (all objects)
+        return frozenset(all_objects_list)
+        
+    objects_with_all_attributes = set()
+    for obj_name in all_objects_list:
+        has_all = True
+        for attr_name in attribute_subset:
+            if obj_name in context_matrix.index and attr_name in context_matrix.columns: # Defensive check
+                if not context_matrix.loc[obj_name, attr_name]:
+                    has_all = False
+                    break
+            else:
+                # This case should not happen if inputs are consistent
+                # print(f"Warning: Object '{obj_name}' or Attribute '{attr_name}' not in matrix during get_extent.")
+                has_all = False # Treat as if attribute not present for safety
+                break
+        if has_all:
+            objects_with_all_attributes.add(obj_name)
+            
+    return frozenset(objects_with_all_attributes)
+
+def find_formal_concepts(context_matrix, objects, attributes):
+    """Finds all formal concepts in the given context."""
+    if context_matrix is None or objects is None or attributes is None:
+        return []
+        
+    formal_concepts = set()
+
+    # Iterate over all possible subsets of objects (the power set of G)
+    # For each subset A (current_object_subset), calculate its intent B = A'
+    # Then calculate the extent of this intent, A_prime_prime = B'
+    # The pair (A_prime_prime, B) is a formal concept.
+    num_objects = len(objects)
+    for i in range(1 << num_objects): # Iterate 2^num_objects times
+        current_object_subset_list = []
+        for j in range(num_objects):
+            if (i >> j) & 1: # Check if j-th bit is set
+                current_object_subset_list.append(objects[j])
+        
+        current_object_subset = frozenset(current_object_subset_list)
+        
+        intent_B = get_intent(current_object_subset, context_matrix, attributes)
+        extent_A_prime_prime = get_extent(intent_B, context_matrix, objects)
+        
+        # Store concepts with sorted extents and intents for consistent representation
+        concept = (
+            frozenset(sorted(list(extent_A_prime_prime))),
+            frozenset(sorted(list(intent_B)))
+        )
+        formal_concepts.add(concept)
+
+    # Also add the concept derived from the empty set of attributes
+    # B = empty_set, B' = G (all_objects)
+    # A = G, A' = attributes common to all objects in G
+    # Concept: (G, G')
+    empty_attribute_set = frozenset()
+    extent_for_empty_intent = get_extent(empty_attribute_set, context_matrix, objects) # Should be all objects
+    intent_for_that_extent = get_intent(extent_for_empty_intent, context_matrix, attributes)
+    concept = (
+        frozenset(sorted(list(extent_for_empty_intent))),
+        frozenset(sorted(list(intent_for_that_extent)))
+    )
+    formal_concepts.add(concept)
+
+    # The algorithm already covers the concept derived from the empty set of objects (A=emptyset)
+    # A = emptyset, A' = M (all_attributes)
+    # B = M, B' = objects that have all attributes in M
+    # Concept: (M', M)
+    # This is generated when current_object_subset is empty initially.
+    # get_intent(frozenset(), ...) -> frozenset(all_attributes)
+    # get_extent(frozenset(all_attributes), ...) -> objects that have all attributes. This is M'.
+    # So (M', M) is found.
+
+    return sorted(list(formal_concepts), key=lambda x: (len(x[0]), sorted(list(x[0]))))
+
+
+# Main execution
+file_name = "eg5_5.csv" # Using the fileName directly as path
+
+context_matrix, objects, attributes = load_and_prepare_context(file_name)
+
+if context_matrix is not None:
+    print("Finding formal concepts...")
+    concepts = find_formal_concepts(context_matrix, objects, attributes)
+    print(f"\nFound {len(concepts)} formal concepts:")
+    for i, (extent, intent) in enumerate(concepts):
+        # Convert frozensets to sorted lists for printing
+        extent_list = sorted(list(extent))
+        intent_list = sorted(list(intent))
+        print(f"Concept {i+1}:")
+        print(f"  Extent (Objects): {extent_list if extent_list else '{}'}")
+        print(f"  Intent (Attributes): {intent_list if intent_list else '{}'}")
+        print("-" * 20)
+else:
+    print("Could not proceed with concept extraction due to data loading issues.")
+```
+```text?code_stdout&code_event_index=6
+Successfully loaded and processed the data.
+Objects (G): ['o1', 'o2', 'o3', 'o4', 'o5']
+Attributes (M): ['a1', 'a2', 'a3', 'a4', 'a5']
+
+Context Matrix (first 5x5 if large):
+          a1     a2     a3     a4     a5
+Objet                                   
+o1     False  False  False  False  False
+o2     False  False  False  False  False
+o3     False  False  False  False  False
+o4     False  False  False  False  False
+o5     False  False  False  False  False
+
+
+Finding formal concepts...
+
+Found 2 formal concepts:
+Concept 1:
+  Extent (Objects): {}
+  Intent (Attributes): ['a1', 'a2', 'a3', 'a4', 'a5']
+--------------------
+Concept 2:
+  Extent (Objects): ['o1', 'o2', 'o3', 'o4', 'o5']
+  Intent (Attributes): {}
+--------------------
+
+```
+Based on the provided CSV file `eg5_5.csv`, the formal concepts have been extracted. The context was interpreted with objects as rows, attributes as columns, and an 'x' marking indicating that an object possesses an attribute.
+
+The analysis of your file `eg5_5.csv` revealed the following:
+* **Objects (G):** `o1, o2, o3, o4, o5`
+* **Attributes (M):** `a1, a2, a3, a4, a5`
+
+The context matrix derived from the file showed no 'x' markings, indicating that no object possesses any of the listed attributes.
+
+Given this empty relation, two formal concepts were found:
+
+---
+### Extracted Formal Concepts
+
+1.  **Concept 1:**
+    * **Extent (Objects):** `{}` (empty set)
+    * **Intent (Attributes):** `{a1, a2, a3, a4, a5}` (all attributes)
+    * *This concept represents the set of all attributes, which are shared by no objects.*
+
+2.  **Concept 2:**
+    * **Extent (Objects):** `{o1, o2, o3, o4, o5}` (all objects)
+    * **Intent (Attributes):** `{}` (empty set)
+    * *This concept represents the set of all objects, which share no common attributes.*
+
+---
+
+These are the only two concepts for a formal context where the relation between objects and attributes is empty. If you expected a different set of concepts, please ensure the input `.csv` file correctly uses 'x' (case-insensitive, ignoring leading/trailing spaces) to mark the relationships in the cells, with objects as row headers (first column) and attributes as column headers (first row), separated by semicolons.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Okay, I will provide the list of all concepts derived from your `eg5_5.csv` file in the specified single-line format. Based on the previous analysis, the context matrix was empty (no 'x' markings), leading to two formal concepts.
+
+The concepts were:
+1.  Extent: `{}` (empty set), Intent: `{a1, a2, a3, a4, a5}`
+2.  Extent: `{o1, o2, o3, o4, o5}`, Intent: `{}` (empty set)
+
+Formatted as `[[Intent, Extent], [Intent, Extent], ...]` without quotation marks for the elements, and maintaining the order from the previous analysis (sorted by extent size, then extent content):
+
+`[[[a1, a2, a3, a4, a5], []], [[], [o1, o2, o3, o4, o5]]]`

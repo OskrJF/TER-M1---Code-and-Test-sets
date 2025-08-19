@@ -1,0 +1,635 @@
+Gemini_self-consistency_eg15_15_test1
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: Yes
+Test number: 1
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+```python?code_reference&code_event_index=2
+import pandas as pd
+
+# Load the CSV file
+file_path = "uploaded:eg15_15.csv"
+df = pd.read_csv(file_path, delimiter=';')
+
+# Print the head and info of the DataFrame
+print("DataFrame Head:")
+print(df.head())
+print("\nDataFrame Info:")
+df.info()
+```
+```text?code_stderr&code_event_index=2
+Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+  File "_decorators.py", line 211, in wrapper
+    return func(*args, **kwargs)
+  File "_decorators.py", line 331, in wrapper
+    return func(*args, **kwargs)
+  File "readers.py", line 950, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "readers.py", line 605, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "readers.py", line 1442, in __init__
+    self._engine = self._make_engine(f, self.engine)
+  File "readers.py", line 1735, in _make_engine
+    self.handles = get_handle(
+  File "common.py", line 856, in get_handle
+    handle = open(
+FileNotFoundError: [Errno 2] No such file or directory: 'uploaded:eg15_15.csv'
+
+```
+```python?code_reference&code_event_index=6
+import pandas as pd
+
+# Load the CSV file using its name
+file_name = "eg15_15.csv"
+df = pd.read_csv(file_name, delimiter=';')
+
+# Print the head and info of the DataFrame
+print("DataFrame Head:")
+print(df.head())
+print("\nDataFrame Info:")
+df.info()
+```
+```text?code_stdout&code_event_index=6
+DataFrame Head:
+  Objet Attr1 Attr2 Attr3 Attr4 Attr5 Attr6 Attr7 Attr8 Attr9 Attr10 Attr11 Attr12 Attr13 Attr14 Attr15
+0    O1    No    No    No   Yes   Yes   Yes    No    No   Yes     No     No     No    Yes     No    Yes
+1    O2    No   Yes    No   Yes    No    No    No    No    No    Yes    Yes    Yes    Yes     No    Yes
+2    O3   Yes    No   Yes    No    No    No    No   Yes   Yes     No    Yes     No    Yes     No    Yes
+3    O4    No   Yes    No    No   Yes   Yes    No    No    No     No     No    Yes    Yes    Yes     No
+4    O5    No   Yes   Yes   Yes   Yes   Yes    No   Yes    No     No    Yes     No    Yes    Yes     No
+
+DataFrame Info:
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 15 entries, 0 to 14
+Data columns (total 16 columns):
+ #   Column  Non-Null Count  Dtype 
+---  ------  --------------  ----- 
+ 0   Objet   15 non-null     object
+ 1   Attr1   15 non-null     object
+ 2   Attr2   15 non-null     object
+ 3   Attr3   15 non-null     object
+ 4   Attr4   15 non-null     object
+ 5   Attr5   15 non-null     object
+ 6   Attr6   15 non-null     object
+ 7   Attr7   15 non-null     object
+ 8   Attr8   15 non-null     object
+ 9   Attr9   15 non-null     object
+ 10  Attr10  15 non-null     object
+ 11  Attr11  15 non-null     object
+ 12  Attr12  15 non-null     object
+ 13  Attr13  15 non-null     object
+ 14  Attr14  15 non-null     object
+ 15  Attr15  15 non-null     object
+dtypes: object(16)
+memory usage: 2.0+ KB
+
+```
+```python?code_reference&code_event_index=10
+import pandas as pd
+from itertools import combinations
+
+# Load the CSV file
+file_name = "eg15_15.csv"
+df = pd.read_csv(file_name, delimiter=';')
+
+# Set the 'Objet' column as index
+df = df.set_index('Objet')
+
+# Convert 'Yes'/'No' to 1/0
+context_matrix = df.applymap(lambda x: 1 if x == 'Yes' else 0)
+
+print("Binary Context Matrix Head:")
+print(context_matrix.head())
+print("\nBinary Context Matrix Info:")
+context_matrix.info()
+
+# Get objects and attributes
+objects = list(context_matrix.index)
+attributes = list(context_matrix.columns)
+num_objects = len(objects)
+num_attributes = len(attributes)
+
+# Function to get the intent (common attributes) of a set of objects
+def get_intent(object_indices, current_context_matrix):
+    if not object_indices:
+        return list(current_context_matrix.columns) # All attributes if no objects are given (for bottom concept)
+    selected_objects_df = current_context_matrix.iloc[list(object_indices)]
+    # Attributes are common if all selected objects have them (sum of 1s equals number of selected objects)
+    common_attrs_series = selected_objects_df.sum(axis=0) == len(object_indices)
+    return list(common_attrs_series[common_attrs_series].index)
+
+# Function to get the extent (common objects) of a set of attributes
+def get_extent(attribute_names, current_context_matrix):
+    if not attribute_names:
+        return list(current_context_matrix.index) # All objects if no attributes are given (for top concept)
+    selected_attrs_df = current_context_matrix[list(attribute_names)]
+    # Objects have all selected attributes if the sum of 1s on that row (for selected_attrs_df) equals number of selected_attributes
+    common_objects_series = selected_attrs_df.sum(axis=1) == len(attribute_names)
+    return list(common_objects_series[common_objects_series].index)
+
+# Find all formal concepts
+formal_concepts = set()
+
+# Iterate through all possible non-empty subsets of objects (represented by their indices)
+# Using indices is easier for iloc
+object_indices_map = {name: i for i, name in enumerate(objects)}
+all_object_indices = list(range(num_objects))
+
+
+# Algorithm: Basic Closure based approach
+# Start with the bottom concept (all objects, their common attributes)
+# and the top concept (all attributes, their common objects)
+
+# Concept (all objects, intent(all objects))
+all_objects_set = set(objects)
+intent_of_all_objects = tuple(sorted(get_intent([object_indices_map[obj] for obj in all_objects_set], context_matrix)))
+formal_concepts.add((tuple(sorted(list(all_objects_set))), intent_of_all_objects))
+
+
+# Concept (extent(all attributes), all attributes)
+all_attributes_set = set(attributes)
+extent_of_all_attributes = tuple(sorted(get_extent(list(all_attributes_set), context_matrix)))
+formal_concepts.add((extent_of_all_attributes, tuple(sorted(list(all_attributes_set)))))
+
+
+# Iterate over all subsets of objects
+# For a more robust approach, we should iterate using a canonical basis or NextClosure.
+# For simplicity and given the size (15 objects), trying a direct approach:
+# For each A (subset of objects), calculate A'. Then calculate A''. (A'', A') is a concept.
+# This ensures we find all concepts, and using a set of tuples will handle duplicates.
+
+# Iterate through all subsets of objects (powerset)
+for i in range(1, 1 << num_objects): # Iterate from 1 to 2^num_objects - 1
+    current_object_subset_indices = []
+    for j in range(num_objects):
+        if (i >> j) & 1:
+            current_object_subset_indices.append(all_object_indices[j])
+
+    current_object_subset_names = [objects[idx] for idx in current_object_subset_indices]
+
+    if not current_object_subset_names:
+        continue
+
+    # A' = intent(current_object_subset_names)
+    # Need to pass indices to get_intent for iloc
+    intent_A_prime = get_intent(current_object_subset_indices, context_matrix)
+
+    # A'' = extent(intent_A_prime)
+    extent_A_double_prime = get_extent(intent_A_prime, context_matrix)
+
+    # The concept is (tuple(sorted(A'')), tuple(sorted(A')))
+    concept_extent = tuple(sorted(extent_A_double_prime))
+    concept_intent = tuple(sorted(intent_A_prime))
+    formal_concepts.add((concept_extent, concept_intent))
+
+# Also consider the concept with empty extent (if intent is all attributes)
+# and empty intent (if extent is all objects)
+# The current get_intent/get_extent handles empty attribute list by returning all objects
+# and empty object list by returning all attributes.
+
+# The concept (all objects, intent(all objects)) should be captured.
+# The concept (extent(all attributes), all attributes) should be captured.
+
+# Let's refine the main loop to be based on Ganter & Wille's "Formal Concept Analysis: Mathematical Foundations"
+# A common way to enumerate concepts is to iterate, for example, through all intents.
+# However, iterating through all 2^m subsets of attributes can also be large.
+
+# The implemented method (A -> A' -> A'') starting from all subsets of G
+# should generate all concepts. The use of a `set` for `formal_concepts`
+# will store unique (Extent, Intent) pairs.
+
+print(f"\nFound {len(formal_concepts)} formal concepts.")
+# Print the concepts (optional, could be very long)
+# for i, (extent, intent) in enumerate(sorted(list(formal_concepts), key=lambda x: (len(x[0]), x[0]))):
+# print(f"Concept {i+1}:")
+# print(f"  Extent: {list(extent)}")
+# print(f"  Intent: {list(intent)}")
+
+# To make the output more readable for the user, let's format it.
+# I'll convert the set of concepts to a list and sort them, for example, by the size of the extent.
+sorted_concepts = sorted(list(formal_concepts), key=lambda x: (len(x[0]), x[0], len(x[1]), x[1]))
+
+# Store concepts in a more structured way for output
+output_concepts = []
+for i, (extent, intent) in enumerate(sorted_concepts):
+    output_concepts.append({
+        "concept_id": i + 1,
+        "extent": list(extent),
+        "intent": list(intent)
+    })
+
+# For now, just print the number of concepts and perhaps a few examples due to potential length
+# If the number of concepts is too large, printing all of them might be overwhelming.
+# For 15 objects, the number of concepts could be large but manageable for enumeration.
+
+# Let's save the concepts to a text file for the user if it's a large number.
+# And display a summary.
+
+output_string = f"Found {len(output_concepts)} formal concepts.\n\n"
+for concept_data in output_concepts:
+    output_string += f"Concept {concept_data['concept_id']}:\n"
+    output_string += f"  Extent ({len(concept_data['extent'])} objects): {concept_data['extent']}\n"
+    output_string += f"  Intent ({len(concept_data['intent'])} attributes): {concept_data['intent']}\n\n"
+
+# Due to potential output length, save to a file.
+output_file_name = "formal_concepts.txt"
+with open(output_file_name, "w") as f:
+    f.write(output_string)
+
+print(f"List of formal concepts saved to '{output_file_name}'")
+if len(output_concepts) > 20:
+    print("First 5 concepts:")
+    for i in range(min(5, len(output_concepts))):
+        print(f"Concept {output_concepts[i]['concept_id']}:")
+        print(f"  Extent: {output_concepts[i]['extent']}")
+        print(f"  Intent: {output_concepts[i]['intent']}")
+    print(f"\nLast 5 concepts (of {len(output_concepts)}):")
+    for i in range(max(0, len(output_concepts)-5), len(output_concepts)):
+        print(f"Concept {output_concepts[i]['concept_id']}:")
+        print(f"  Extent: {output_concepts[i]['extent']}")
+        print(f"  Intent: {output_concepts[i]['intent']}")
+
+else:
+    print(output_string)
+
+# Additionally, let's make the binary context matrix available if the user wants to see it.
+binary_context_matrix_file_name = "binary_context_matrix.csv"
+context_matrix.to_csv(binary_context_matrix_file_name)
+print(f"\nBinary context matrix saved to '{binary_context_matrix_file_name}'")
+```
+```text?code_stdout&code_event_index=10
+Binary Context Matrix Head:
+       Attr1  Attr2  Attr3  Attr4  Attr5  Attr6  Attr7  Attr8  Attr9  Attr10  Attr11  Attr12  Attr13  Attr14  Attr15
+Objet                                                                                                               
+O1         0      0      0      1      1      1      0      0      1       0       0       0       1       0       1
+O2         0      1      0      1      0      0      0      0      0       1       1       1       1       0       1
+O3         1      0      1      0      0      0      0      1      1       0       1       0       1       0       1
+O4         0      1      0      0      1      1      0      0      0       0       0       1       1       1       0
+O5         0      1      1      1      1      1      0      1      0       0       1       0       1       1       0
+
+Binary Context Matrix Info:
+<class 'pandas.core.frame.DataFrame'>
+Index: 15 entries, O1 to O15
+Data columns (total 15 columns):
+ #   Column  Non-Null Count  Dtype
+---  ------  --------------  -----
+ 0   Attr1   15 non-null     int64
+ 1   Attr2   15 non-null     int64
+ 2   Attr3   15 non-null     int64
+ 3   Attr4   15 non-null     int64
+ 4   Attr5   15 non-null     int64
+ 5   Attr6   15 non-null     int64
+ 6   Attr7   15 non-null     int64
+ 7   Attr8   15 non-null     int64
+ 8   Attr9   15 non-null     int64
+ 9   Attr10  15 non-null     int64
+ 10  Attr11  15 non-null     int64
+ 11  Attr12  15 non-null     int64
+ 12  Attr13  15 non-null     int64
+ 13  Attr14  15 non-null     int64
+ 14  Attr15  15 non-null     int64
+dtypes: int64(15)
+memory usage: 1.9+ KB
+
+Found 156 formal concepts.
+List of formal concepts saved to 'formal_concepts.txt'
+First 5 concepts:
+Concept 1:
+  Extent: []
+  Intent: ['Attr1', 'Attr10', 'Attr11', 'Attr12', 'Attr13', 'Attr14', 'Attr15', 'Attr2', 'Attr3', 'Attr4', 'Attr5', 'Attr6', 'Attr7', 'Attr8', 'Attr9']
+Concept 2:
+  Extent: ['O1']
+  Intent: ['Attr13', 'Attr15', 'Attr4', 'Attr5', 'Attr6', 'Attr9']
+Concept 3:
+  Extent: ['O11']
+  Intent: ['Attr10', 'Attr11', 'Attr12', 'Attr15', 'Attr2', 'Attr4', 'Attr6', 'Attr7']
+Concept 4:
+  Extent: ['O13']
+  Intent: ['Attr10', 'Attr14', 'Attr15', 'Attr2', 'Attr3', 'Attr6', 'Attr8', 'Attr9']
+Concept 5:
+  Extent: ['O14']
+  Intent: ['Attr12', 'Attr13', 'Attr14', 'Attr15', 'Attr2', 'Attr6']
+
+Last 5 concepts (of 156):
+Concept 152:
+  Extent: ['O10', 'O11', 'O15', 'O2', 'O3', 'O5', 'O7', 'O8']
+  Intent: ['Attr11']
+Concept 153:
+  Extent: ['O10', 'O11', 'O13', 'O14', 'O2', 'O4', 'O5', 'O7', 'O9']
+  Intent: ['Attr2']
+Concept 154:
+  Extent: ['O1', 'O10', 'O14', 'O15', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7']
+  Intent: ['Attr13']
+Concept 155:
+  Extent: ['O1', 'O10', 'O11', 'O12', 'O13', 'O14', 'O4', 'O5', 'O7', 'O8', 'O9']
+  Intent: ['Attr6']
+Concept 156:
+  Extent: ['O1', 'O10', 'O11', 'O12', 'O13', 'O14', 'O15', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7', 'O8', 'O9']
+  Intent: []
+
+Binary context matrix saved to 'binary_context_matrix.csv'
+
+```
+
+[file-tag: code-generated-file-0-1748267991716236393]
+[file-tag: code-generated-file-1-1748267991716241906]
+
+I've successfully extracted and enumerated all formal concepts from your CSV file.
+
+Here's a summary of the process and results:
+1.  The provided CSV file, `eg15_15.csv`, was loaded.
+2.  The data was transformed into a binary formal context, where 'Yes' values were converted to 1 and 'No' values to 0. The objects are represented by rows and attributes by columns. This binary context matrix has been saved to the file `binary_context_matrix.csv`.
+3.  An algorithm was applied to this context to derive all formal concepts. Each concept consists of an **extent** (a set of objects) and an **intent** (a set of attributes).
+
+A total of **156 formal concepts** were found. ✨
+
+Due to the number of concepts, the complete list has been saved to a text file named `formal_concepts.txt`. This file enumerates each concept with its corresponding extent and intent.
+
+Here's a glimpse of the results:
+* **Concept 1:**
+    * Extent (0 objects): \[]
+    * Intent (15 attributes): \['Attr1', 'Attr10', 'Attr11', 'Attr12', 'Attr13', 'Attr14', 'Attr15', 'Attr2', 'Attr3', 'Attr4', 'Attr5', 'Attr6', 'Attr7', 'Attr8', 'Attr9']
+* **Concept 2:**
+    * Extent (1 object): \['O1']
+    * Intent (6 attributes): \['Attr13', 'Attr15', 'Attr4', 'Attr5', 'Attr6', 'Attr9']
+* ... (and 151 more concepts) ...
+* **Concept 156:**
+    * Extent (15 objects): \['O1', 'O10', 'O11', 'O12', 'O13', 'O14', 'O15', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7', 'O8', 'O9'] (Note: These are all the objects in the context)
+    * Intent (0 attributes): \[]
+
+You can download the generated files:
+* `formal_concepts.txt` (contains the full list of all 156 concepts)
+* `binary_context_matrix.csv` (the input context in binary form)
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+```python?code_reference&code_event_index=2
+import pandas as pd
+from itertools import combinations
+
+# It's good practice to ensure the data is loaded and concepts are calculated
+# in case this cell is run independently or the previous state was lost.
+# However, for this specific request, if output_concepts is available, we use it.
+# If not, we'd have to re-run the logic.
+# Assuming output_concepts is available from the previous execution.
+# If this script were run fresh, output_concepts would not be defined.
+# For robustness in a notebook-like environment, one might check and re-calculate.
+# For now, let's assume it exists or re-calculate it.
+
+try:
+    # Check if output_concepts exists and is not empty
+    if 'output_concepts' in globals() and output_concepts:
+        print("Using previously computed concepts.")
+    else:
+        raise NameError("output_concepts not defined")
+except NameError:
+    print("Recalculating concepts as 'output_concepts' was not found in the current state.")
+    # Load the CSV file
+    file_name = "eg15_15.csv" # This should be the actual file name available
+    df = pd.read_csv(file_name, delimiter=';')
+    df = df.set_index('Objet')
+    context_matrix = df.applymap(lambda x: 1 if x == 'Yes' else 0)
+
+    objects = list(context_matrix.index)
+    attributes = list(context_matrix.columns)
+    num_objects = len(objects)
+
+    object_indices_map = {name: i for i, name in enumerate(objects)}
+    all_object_indices = list(range(num_objects))
+
+    def get_intent(object_indices, current_context_matrix):
+        if not object_indices:
+            return list(current_context_matrix.columns)
+        selected_objects_df = current_context_matrix.iloc[list(object_indices)]
+        common_attrs_series = selected_objects_df.sum(axis=0) == len(object_indices)
+        return list(common_attrs_series[common_attrs_series].index)
+
+    def get_extent(attribute_names, current_context_matrix):
+        if not attribute_names:
+            return list(current_context_matrix.index)
+        selected_attrs_df = current_context_matrix[list(attribute_names)]
+        common_objects_series = selected_attrs_df.sum(axis=1) == len(attribute_names)
+        return list(common_objects_series[common_objects_series].index)
+
+    formal_concepts_set = set()
+    for i in range(1 << num_objects): # Iterate 0 to 2^num_objects - 1 (to include empty set for one of the concepts)
+        current_object_subset_indices = []
+        for j in range(num_objects):
+            if (i >> j) & 1:
+                current_object_subset_indices.append(all_object_indices[j])
+        
+        # Handle the case for the concept derived from empty set of objects (all attributes, its extent)
+        if not current_object_subset_indices:
+             intent_A_prime = attributes # all attributes
+             extent_A_double_prime = get_extent(intent_A_prime, context_matrix)
+        else:
+            intent_A_prime = get_intent(current_object_subset_indices, context_matrix)
+            extent_A_double_prime = get_extent(intent_A_prime, context_matrix)
+
+        concept_extent = tuple(sorted(extent_A_double_prime))
+        concept_intent = tuple(sorted(intent_A_prime))
+        formal_concepts_set.add((concept_extent, concept_intent))
+
+    # Also add the concept from empty intent (all objects, its intent)
+    # This should be covered if intent_A_prime can be empty.
+    # If intent_A_prime is empty, extent_A_double_prime will be all objects.
+    # The intent of all objects is indeed empty for the top concept.
+
+    # Let's ensure the top and bottom concepts are correctly generated
+    # Bottom concept: (Extent(all_attributes), all_attributes)
+    # Intent = all attributes
+    bottom_intent = tuple(sorted(attributes))
+    bottom_extent = tuple(sorted(get_extent(attributes, context_matrix)))
+    formal_concepts_set.add((bottom_extent, bottom_intent))
+
+    # Top concept: (all_objects, Intent(all_objects))
+    # Extent = all objects
+    top_extent = tuple(sorted(objects))
+    top_intent = tuple(sorted(get_intent([object_indices_map[obj] for obj in objects], context_matrix)))
+    formal_concepts_set.add((top_extent, top_intent))
+
+
+    sorted_concepts_list = sorted(list(formal_concepts_set), key=lambda x: (len(x[0]), x[0], len(x[1]), x[1]))
+    
+    output_concepts = [] # This is the variable we need
+    for i, (extent, intent) in enumerate(sorted_concepts_list):
+        output_concepts.append({
+            "concept_id": i + 1,
+            "extent": list(extent),
+            "intent": list(intent)
+        })
+    print(f"Recalculated {len(output_concepts)} concepts.")
+
+
+# Function to format a list of strings into the desired string format (e.g., [item1, item2])
+def format_list_items(item_list):
+    if not item_list:
+        return "[]"
+    # Join items with ", " and enclose in brackets
+    return "[" + ", ".join(item_list) + "]"
+
+# Format all concepts into the single line string
+formatted_concept_pairs = []
+for concept in output_concepts:
+    # The user request is [[intent, extent], ...]
+    # My previous output_concepts stores extent first, then intent in the dictionary.
+    # The example was [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], ...]
+    # This means the inner list is [intent, extent]
+    
+    intent_str = format_list_items(concept['intent'])
+    extent_str = format_list_items(concept['extent'])
+    
+    # Each pair is [[intent_str], [extent_str]] as per example,
+    # but the user wrote [[intent, extent]], so it should be [intent_str, extent_str]
+    # Example breakdown:
+    # First concept: intent=[], extent=[o1, o2, o3, o4, o5] -> [[], [o1, o2, o3, o4, o5]]
+    # Second concept: intent=[a1], extent=[o1, o3, o4] -> [[a1], [o1, o3, o4]]
+    # So, a single concept is represented as [intent_list_string, extent_list_string]
+    
+    formatted_concept_pairs.append(f"[{intent_str}, {extent_str}]")
+
+# Join all formatted concept pairs with ", " and enclose in a main list
+final_single_line_string = "[" + ", ".join(formatted_concept_pairs) + "]"
+
+print("\nSingle line representation of concepts:")
+print(final_single_line_string)
+
+# Save to a file as it might be very long
+output_single_line_file = "concepts_single_line.txt"
+with open(output_single_line_file, "w") as f:
+    f.write(final_single_line_string)
+
+print(f"\nThe single line representation has been saved to '{output_single_line_file}'")
+```
+```text?code_stderr&code_event_index=2
+Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+  File "_decorators.py", line 211, in wrapper
+    return func(*args, **kwargs)
+  File "_decorators.py", line 331, in wrapper
+    return func(*args, **kwargs)
+  File "readers.py", line 950, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "readers.py", line 605, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "readers.py", line 1442, in __init__
+    self._engine = self._make_engine(f, self.engine)
+  File "readers.py", line 1735, in _make_engine
+    self.handles = get_handle(
+  File "common.py", line 856, in get_handle
+    handle = open(
+FileNotFoundError: [Errno 2] No such file or directory: 'uploaded:eg15_15.csv'
+
+```
+```python?code_reference&code_event_index=6
+import pandas as pd
+from itertools import combinations
+
+# Step 1: Re-calculate the formal concepts to ensure 'output_concepts' is populated.
+# This is the same logic as the first successful run.
+
+# Load the CSV file
+file_name = "eg15_15.csv" # Using the fileName directly
+df = pd.read_csv(file_name, delimiter=';')
+
+# Set the 'Objet' column as index
+df = df.set_index('Objet')
+
+# Convert 'Yes'/'No' to 1/0
+context_matrix = df.applymap(lambda x: 1 if x == 'Yes' else 0)
+
+# Get objects and attributes
+objects = list(context_matrix.index)
+attributes = list(context_matrix.columns)
+num_objects = len(objects)
+
+# Function to get the intent (common attributes) of a set of objects
+def get_intent(object_indices, current_context_matrix):
+    if not object_indices:
+        return list(current_context_matrix.columns)
+    selected_objects_df = current_context_matrix.iloc[list(object_indices)]
+    common_attrs_series = selected_objects_df.sum(axis=0) == len(object_indices)
+    return list(common_attrs_series[common_attrs_series].index)
+
+# Function to get the extent (common objects) of a set of attributes
+def get_extent(attribute_names, current_context_matrix):
+    if not attribute_names:
+        return list(current_context_matrix.index)
+    selected_attrs_df = current_context_matrix[list(attribute_names)]
+    common_objects_series = selected_attrs_df.sum(axis=1) == len(attribute_names)
+    return list(common_objects_series[common_objects_series].index)
+
+formal_concepts_set = set()
+object_indices_map = {name: i for i, name in enumerate(objects)}
+all_object_indices = list(range(num_objects))
+
+for i in range(1 << num_objects): # Iterate from 0 to 2^num_objects - 1 (includes empty set for top concept)
+    current_object_subset_indices = []
+    for j in range(num_objects):
+        if (i >> j) & 1:
+            current_object_subset_indices.append(all_object_indices[j])
+    
+    # For the empty set of objects, its intent is all attributes.
+    # Then the extent of all attributes gives one of the concepts (the "top" concept if it exists like that).
+    # current_object_subset_names = [objects[idx] for idx in current_object_subset_indices]
+
+    intent_A_prime = get_intent(current_object_subset_indices, context_matrix)
+    extent_A_double_prime = get_extent(intent_A_prime, context_matrix)
+
+    concept_extent = tuple(sorted(extent_A_double_prime))
+    concept_intent = tuple(sorted(intent_A_prime))
+    formal_concepts_set.add((concept_extent, concept_intent))
+
+# Sort concepts for consistent output before creating the list of dicts
+sorted_concepts_tuples = sorted(list(formal_concepts_set), key=lambda x: (len(x[0]), x[0], len(x[1]), x[1]))
+
+output_concepts = []
+for i, (extent, intent) in enumerate(sorted_concepts_tuples):
+    output_concepts.append({
+        "concept_id": i + 1, # Not used in final string, but good for structure
+        "extent": list(extent),
+        "intent": list(intent)
+    })
+
+# Step 2: Format the concepts into the desired single-line string.
+
+def list_to_string_without_quotes(lst):
+    if not lst:
+        return "[]"
+    return "[" + ", ".join(lst) + "]"
+
+formatted_concept_pairs = []
+for concept in output_concepts:
+    # User wants [[intent, extent], [intent, extent], ...]
+    # My 'output_concepts' stores them as {'extent': E, 'intent': I}
+    intent_str = list_to_string_without_quotes(concept['intent'])
+    extent_str = list_to_string_without_quotes(concept['extent'])
+    formatted_concept_pairs.append(f"[{intent_str}, {extent_str}]")
+
+final_single_line_string = "[" + ", ".join(formatted_concept_pairs) + "]"
+
+print(final_single_line_string)
+```
+```text?code_stdout&code_event_index=6
+[[[Attr1, Attr10, Attr11, Attr12, Attr13, Attr14, Attr15, Attr2, Attr3, Attr4, Attr5, Attr6, Attr7, Attr8, Attr9], []], [[Attr13, Attr15, Attr4, Attr5, Attr6, Attr9], [O1]], [[Attr10, Attr11, Attr12, Attr15, Attr2, Attr4, Attr6, Attr7], [O11]], [[Attr10, Attr14, Attr15, Attr2, Attr3, Attr6, Attr8, Attr9], [O13]], [[Attr12, Attr13, Attr14, Attr15, Attr2, Attr6], [O14]], [[Attr11, Attr13, Attr14, Attr4, Attr9], [O15]], [[Attr10, Attr11, Attr12, Attr13, Attr15, Attr2, Attr4], [O2]], [[Attr1, Attr11, Attr13, Attr15, Attr3, Attr8, Attr9], [O3]], [[Attr12, Attr13, Attr14, Attr2, Attr5, Attr6], [O4]], [[Attr11, Attr13, Attr14, Attr2, Attr3, Attr4, Attr5, Attr6, Attr8], [O5]], [[Attr1, Attr10, Attr12, Attr13, Attr15, Attr5, Attr7, Attr8], [O6]], [[Attr1, Attr10, Attr11, Attr13, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9], [O7]], [[Attr1, Attr11, Attr5, Attr6, Attr7], [O8]], [[Attr10, Attr12, Attr14, Attr2, Attr5, Attr6, Attr7, Attr9], [O9]], [[Attr15, Attr4, Attr6], [O1, O11]], [[Attr15, Attr6, Attr9], [O1, O13]], [[Attr13, Attr15, Attr6], [O1, O14]], [[Attr13, Attr15, Attr4], [O1, O2]], [[Attr13, Attr15, Attr9], [O1, O3]], [[Attr13, Attr15, Attr5], [O1, O6]], [[Attr13, Attr4, Attr6, Attr9], [O1, O7]], [[Attr11, Attr13, Attr2, Attr4, Attr5, Attr6, Attr8], [O10, O5]], [[Attr10, Attr15, Attr2, Attr6], [O11, O13]], [[Attr12, Attr15, Attr2, Attr6], [O11, O14]], [[Attr10, Attr11, Attr12, Attr15, Attr2, Attr4], [O11, O2]], [[Attr10, Attr12, Attr15, Attr7], [O11, O6]], [[Attr10, Attr11, Attr2, Attr4, Attr6, Attr7], [O11, O7]], [[Attr10, Attr12, Attr2, Attr6, Attr7], [O11, O9]], [[Attr10, Attr12, Attr14, Attr5, Attr6, Attr9], [O12, O9]], [[Attr14, Attr15, Attr2, Attr6], [O13, O14]], [[Attr15, Attr3, Attr8, Attr9], [O13, O3]], [[Attr14, Attr2, Attr3, Attr6, Attr8], [O13, O5]], [[Attr10, Attr15, Attr8], [O13, O6]], [[Attr10, Attr2, Attr3, Attr6, Attr8, Attr9], [O13, O7]], [[Attr10, Attr14, Attr2, Attr6, Attr9], [O13, O9]], [[Attr12, Attr13, Attr15, Attr2], [O14, O2]], [[Attr12, Attr13, Attr14, Attr2, Attr6], [O14, O4]], [[Attr11, Attr13, Attr14, Attr4], [O15, O5]], [[Attr11, Attr13, Attr4, Attr9], [O15, O7]], [[Attr11, Attr13, Attr15], [O2, O3]], [[Attr10, Attr12, Attr13, Attr15], [O2, O6]], [[Attr10, Attr11, Attr13, Attr2, Attr4], [O2, O7]], [[Attr1, Attr13, Attr15, Attr8], [O3, O6]], [[Attr1, Attr11, Attr13, Attr3, Attr8, Attr9], [O3, O7]], [[Attr13, Attr14, Attr2, Attr5, Attr6], [O4, O5]], [[Attr12, Attr13, Attr5], [O4, O6]], [[Attr12, Attr14, Attr2, Attr5, Attr6], [O4, O9]], [[Attr11, Attr13, Attr2, Attr3, Attr4, Attr6, Attr8], [O5, O7]], [[Attr1, Attr10, Attr13, Attr7, Attr8], [O6, O7]], [[Attr1, Attr5, Attr7], [O6, O8]], [[Attr10, Attr12, Attr5, Attr7], [O6, O9]], [[Attr1, Attr11, Attr6, Attr7], [O7, O8]], [[Attr10, Attr2, Attr6, Attr7, Attr9], [O7, O9]], [[Attr5, Attr6, Attr7], [O8, O9]], [[Attr13, Attr4, Attr5, Attr6], [O1, O10, O5]], [[Attr15, Attr4], [O1, O11, O2]], [[Attr5, Attr6, Attr9], [O1, O12, O9]], [[Attr15, Attr9], [O1, O13, O3]], [[Attr13, Attr4, Attr9], [O1, O15, O7]], [[Attr13, Attr2, Attr5, Attr6], [O10, O4, O5]], [[Attr13, Attr5, Attr8], [O10, O5, O6]], [[Attr11, Attr13, Attr2, Attr4, Attr6, Attr8], [O10, O5, O7]], [[Attr11, Attr5, Attr6], [O10, O5, O8]], [[Attr10, Attr12, Attr6], [O11, O12, O9]], [[Attr15, Attr2, Attr6], [O11, O13, O14]], [[Attr10, Attr15, Attr2], [O11, O13, O2]], [[Attr12, Attr15, Attr2], [O11, O14, O2]], [[Attr11, Attr15], [O11, O2, O3]], [[Attr10, Attr12, Attr15], [O11, O2, O6]], [[Attr10, Attr11, Attr2, Attr4], [O11, O2, O7]], [[Attr10, Attr12, Attr2], [O11, O2, O9]], [[Attr10, Attr12, Attr7], [O11, O6, O9]], [[Attr11, Attr6, Attr7], [O11, O7, O8]], [[Attr10, Attr2, Attr6, Attr7], [O11, O7, O9]], [[Attr10, Attr14, Attr6, Attr9], [O12, O13, O9]], [[Attr12, Attr14, Attr5, Attr6], [O12, O4, O9]], [[Attr10, Attr12, Attr5], [O12, O6, O9]], [[Attr15, Attr8], [O13, O3, O6]], [[Attr3, Attr8, Attr9], [O13, O3, O7]], [[Attr2, Attr3, Attr6, Attr8], [O13, O5, O7]], [[Attr10, Attr8], [O13, O6, O7]], [[Attr10, Attr2, Attr6, Attr9], [O13, O7, O9]], [[Attr12, Attr13, Attr2], [O14, O2, O4]], [[Attr12, Attr13, Attr15], [O14, O2, O6]], [[Attr13, Attr14, Attr2, Attr6], [O14, O4, O5]], [[Attr12, Attr14, Attr2, Attr6], [O14, O4, O9]], [[Attr11, Attr13, Attr9], [O15, O3, O7]], [[Attr10, Attr13], [O2, O6, O7]], [[Attr11, Attr13, Attr3, Attr8], [O3, O5, O7]], [[Attr1, Attr13, Attr8], [O3, O6, O7]], [[Attr1, Attr11], [O3, O7, O8]], [[Attr14, Attr2, Attr5, Attr6], [O4, O5, O9]], [[Attr1, Attr7], [O6, O7, O8]], [[Attr5, Attr7], [O6, O8, O9]], [[Attr13, Attr5, Attr6], [O1, O10, O4, O5]], [[Attr13, Attr4, Attr6], [O1, O10, O5, O7]], [[Attr15, Attr6], [O1, O11, O13, O14]], [[Attr13, Attr9], [O1, O15, O3, O7]], [[Attr11, Attr2, Attr4, Attr6], [O10, O11, O5, O7]], [[Attr2, Attr6, Attr8], [O10, O13, O5, O7]], [[Attr11, Attr13, Attr2, Attr4], [O10, O2, O5, O7]], [[Attr11, Attr13, Attr8], [O10, O3, O5, O7]], [[Attr2, Attr5, Attr6], [O10, O4, O5, O9]], [[Attr15, Attr2], [O11, O13, O14, O2]], [[Attr10, Attr15], [O11, O13, O2, O6]], [[Attr10, Attr2, Attr6], [O11, O13, O7, O9]], [[Attr12, Attr15], [O11, O14, O2, O6]], [[Attr12, Attr2, Attr6], [O11, O14, O4, O9]], [[Attr10, Attr7], [O11, O6, O7, O9]], [[Attr6, Attr7], [O11, O7, O8, O9]], [[Attr14, Attr9], [O12, O13, O15, O9]], [[Attr10, Attr6, Attr9], [O12, O13, O7, O9]], [[Attr12, Attr14, Attr6], [O12, O14, O4, O9]], [[Attr14, Attr5, Attr6], [O12, O4, O5, O9]], [[Attr12, Attr5], [O12, O4, O6, O9]], [[Attr3, Attr8], [O13, O3, O5, O7]], [[Attr13, Attr14], [O14, O15, O4, O5]], [[Attr12, Attr13], [O14, O2, O4, O6]], [[Attr1], [O3, O6, O7, O8]], [[Attr4, Attr6], [O1, O10, O11, O5, O7]], [[Attr13, Attr5], [O1, O10, O4, O5, O6]], [[Attr6, Attr9], [O1, O12, O13, O7, O9]], [[Attr13, Attr15], [O1, O14, O2, O3, O6]], [[Attr11, Attr2, Attr4], [O10, O11, O2, O5, O7]], [[Attr11, Attr6], [O10, O11, O5, O7, O8]], [[Attr13, Attr2, Attr6], [O10, O14, O4, O5, O7]], [[Attr11, Attr13, Attr4], [O10, O15, O2, O5, O7]], [[Attr13, Attr8], [O10, O3, O5, O6, O7]], [[Attr10, Attr6], [O11, O12, O13, O7, O9]], [[Attr12, Attr6], [O11, O12, O14, O4, O9]], [[Attr10, Attr12], [O11, O12, O2, O6, O9]], [[Attr10, Attr2], [O11, O13, O2, O7, O9]], [[Attr12, Attr2], [O11, O14, O2, O4, O9]], [[Attr7], [O11, O6, O7, O8, O9]], [[Attr14, Attr2, Attr6], [O13, O14, O4, O5, O9]], [[Attr13, Attr6], [O1, O10, O14, O4, O5, O7]], [[Attr13, Attr4], [O1, O10, O15, O2, O5, O7]], [[Attr11, Attr4], [O10, O11, O15, O2, O5, O7]], [[Attr8], [O10, O13, O3, O5, O6, O7]], [[Attr13, Attr2], [O10, O14, O2, O4, O5, O7]], [[Attr11, Attr13], [O10, O15, O2, O3, O5, O7]], [[Attr14, Attr6], [O12, O13, O14, O4, O5, O9]], [[Attr4], [O1, O10, O11, O15, O2, O5, O7]], [[Attr5, Attr6], [O1, O10, O12, O4, O5, O8, O9]], [[Attr15], [O1, O11, O13, O14, O2, O3, O6]], [[Attr9], [O1, O12, O13, O15, O3, O7, O9]], [[Attr10], [O11, O12, O13, O2, O6, O7, O9]], [[Attr12], [O11, O12, O14, O2, O4, O6, O9]], [[Attr14], [O12, O13, O14, O15, O4, O5, O9]], [[Attr5], [O1, O10, O12, O4, O5, O6, O8, O9]], [[Attr2, Attr6], [O10, O11, O13, O14, O4, O5, O7, O9]], [[Attr11], [O10, O11, O15, O2, O3, O5, O7, O8]], [[Attr2], [O10, O11, O13, O14, O2, O4, O5, O7, O9]], [[Attr13], [O1, O10, O14, O15, O2, O3, O4, O5, O6, O7]], [[Attr6], [O1, O10, O11, O12, O13, O14, O4, O5, O7, O8, O9]], [[], [O1, O10, O11, O12, O13, O14, O15, O2, O3, O4, O5, O6, O7, O8, O9]]]
+
+```
+Okay, I've formatted the list of all 156 formal concepts into the single-line format you requested: `[[intent, extent], [intent, extent], ...]`.
+
+Here is the list:
+```
+[[[Attr1, Attr10, Attr11, Attr12, Attr13, Attr14, Attr15, Attr2, Attr3, Attr4, Attr5, Attr6, Attr7, Attr8, Attr9], []], [[Attr13, Attr15, Attr4, Attr5, Attr6, Attr9], [O1]], [[Attr10, Attr11, Attr12, Attr15, Attr2, Attr4, Attr6, Attr7], [O11]], [[Attr10, Attr14, Attr15, Attr2, Attr3, Attr6, Attr8, Attr9], [O13]], [[Attr12, Attr13, Attr14, Attr15, Attr2, Attr6], [O14]], [[Attr11, Attr13, Attr14, Attr4, Attr9], [O15]], [[Attr10, Attr11, Attr12, Attr13, Attr15, Attr2, Attr4], [O2]], [[Attr1, Attr11, Attr13, Attr15, Attr3, Attr8, Attr9], [O3]], [[Attr12, Attr13, Attr14, Attr2, Attr5, Attr6], [O4]], [[Attr11, Attr13, Attr14, Attr2, Attr3, Attr4, Attr5, Attr6, Attr8], [O5]], [[Attr1, Attr10, Attr12, Attr13, Attr15, Attr5, Attr7, Attr8], [O6]], [[Attr1, Attr10, Attr11, Attr13, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9], [O7]], [[Attr1, Attr11, Attr5, Attr6, Attr7], [O8]], [[Attr10, Attr12, Attr14, Attr2, Attr5, Attr6, Attr7, Attr9], [O9]], [[Attr15, Attr4, Attr6], [O1, O11]], [[Attr15, Attr6, Attr9], [O1, O13]], [[Attr13, Attr15, Attr6], [O1, O14]], [[Attr13, Attr15, Attr4], [O1, O2]], [[Attr13, Attr15, Attr9], [O1, O3]], [[Attr13, Attr15, Attr5], [O1, O6]], [[Attr13, Attr4, Attr6, Attr9], [O1, O7]], [[Attr11, Attr13, Attr2, Attr4, Attr5, Attr6, Attr8], [O10, O5]], [[Attr10, Attr15, Attr2, Attr6], [O11, O13]], [[Attr12, Attr15, Attr2, Attr6], [O11, O14]], [[Attr10, Attr11, Attr12, Attr15, Attr2, Attr4], [O11, O2]], [[Attr10, Attr12, Attr15, Attr7], [O11, O6]], [[Attr10, Attr11, Attr2, Attr4, Attr6, Attr7], [O11, O7]], [[Attr10, Attr12, Attr2, Attr6, Attr7], [O11, O9]], [[Attr10, Attr12, Attr14, Attr5, Attr6, Attr9], [O12, O9]], [[Attr14, Attr15, Attr2, Attr6], [O13, O14]], [[Attr15, Attr3, Attr8, Attr9], [O13, O3]], [[Attr14, Attr2, Attr3, Attr6, Attr8], [O13, O5]], [[Attr10, Attr15, Attr8], [O13, O6]], [[Attr10, Attr2, Attr3, Attr6, Attr8, Attr9], [O13, O7]], [[Attr10, Attr14, Attr2, Attr6, Attr9], [O13, O9]], [[Attr12, Attr13, Attr15, Attr2], [O14, O2]], [[Attr12, Attr13, Attr14, Attr2, Attr6], [O14, O4]], [[Attr11, Attr13, Attr14, Attr4], [O15, O5]], [[Attr11, Attr13, Attr4, Attr9], [O15, O7]], [[Attr11, Attr13, Attr15], [O2, O3]], [[Attr10, Attr12, Attr13, Attr15], [O2, O6]], [[Attr10, Attr11, Attr13, Attr2, Attr4], [O2, O7]], [[Attr1, Attr13, Attr15, Attr8], [O3, O6]], [[Attr1, Attr11, Attr13, Attr3, Attr8, Attr9], [O3, O7]], [[Attr13, Attr14, Attr2, Attr5, Attr6], [O4, O5]], [[Attr12, Attr13, Attr5], [O4, O6]], [[Attr12, Attr14, Attr2, Attr5, Attr6], [O4, O9]], [[Attr11, Attr13, Attr2, Attr3, Attr4, Attr6, Attr8], [O5, O7]], [[Attr1, Attr10, Attr13, Attr7, Attr8], [O6, O7]], [[Attr1, Attr5, Attr7], [O6, O8]], [[Attr10, Attr12, Attr5, Attr7], [O6, O9]], [[Attr1, Attr11, Attr6, Attr7], [O7, O8]], [[Attr10, Attr2, Attr6, Attr7, Attr9], [O7, O9]], [[Attr5, Attr6, Attr7], [O8, O9]], [[Attr13, Attr4, Attr5, Attr6], [O1, O10, O5]], [[Attr15, Attr4], [O1, O11, O2]], [[Attr5, Attr6, Attr9], [O1, O12, O9]], [[Attr15, Attr9], [O1, O13, O3]], [[Attr13, Attr4, Attr9], [O1, O15, O7]], [[Attr13, Attr2, Attr5, Attr6], [O10, O4, O5]], [[Attr13, Attr5, Attr8], [O10, O5, O6]], [[Attr11, Attr13, Attr2, Attr4, Attr6, Attr8], [O10, O5, O7]], [[Attr11, Attr5, Attr6], [O10, O5, O8]], [[Attr10, Attr12, Attr6], [O11, O12, O9]], [[Attr15, Attr2, Attr6], [O11, O13, O14]], [[Attr10, Attr15, Attr2], [O11, O13, O2]], [[Attr12, Attr15, Attr2], [O11, O14, O2]], [[Attr11, Attr15], [O11, O2, O3]], [[Attr10, Attr12, Attr15], [O11, O2, O6]], [[Attr10, Attr11, Attr2, Attr4], [O11, O2, O7]], [[Attr10, Attr12, Attr2], [O11, O2, O9]], [[Attr10, Attr12, Attr7], [O11, O6, O9]], [[Attr11, Attr6, Attr7], [O11, O7, O8]], [[Attr10, Attr2, Attr6, Attr7], [O11, O7, O9]], [[Attr10, Attr14, Attr6, Attr9], [O12, O13, O9]], [[Attr12, Attr14, Attr5, Attr6], [O12, O4, O9]], [[Attr10, Attr12, Attr5], [O12, O6, O9]], [[Attr15, Attr8], [O13, O3, O6]], [[Attr3, Attr8, Attr9], [O13, O3, O7]], [[Attr2, Attr3, Attr6, Attr8], [O13, O5, O7]], [[Attr10, Attr8], [O13, O6, O7]], [[Attr10, Attr2, Attr6, Attr9], [O13, O7, O9]], [[Attr12, Attr13, Attr2], [O14, O2, O4]], [[Attr12, Attr13, Attr15], [O14, O2, O6]], [[Attr13, Attr14, Attr2, Attr6], [O14, O4, O5]], [[Attr12, Attr14, Attr2, Attr6], [O14, O4, O9]], [[Attr11, Attr13, Attr9], [O15, O3, O7]], [[Attr10, Attr13], [O2, O6, O7]], [[Attr11, Attr13, Attr3, Attr8], [O3, O5, O7]], [[Attr1, Attr13, Attr8], [O3, O6, O7]], [[Attr1, Attr11], [O3, O7, O8]], [[Attr14, Attr2, Attr5, Attr6], [O4, O5, O9]], [[Attr1, Attr7], [O6, O7, O8]], [[Attr5, Attr7], [O6, O8, O9]], [[Attr13, Attr5, Attr6], [O1, O10, O4, O5]], [[Attr13, Attr4, Attr6], [O1, O10, O5, O7]], [[Attr15, Attr6], [O1, O11, O13, O14]], [[Attr13, Attr9], [O1, O15, O3, O7]], [[Attr11, Attr2, Attr4, Attr6], [O10, O11, O5, O7]], [[Attr2, Attr6, Attr8], [O10, O13, O5, O7]], [[Attr11, Attr13, Attr2, Attr4], [O10, O2, O5, O7]], [[Attr11, Attr13, Attr8], [O10, O3, O5, O7]], [[Attr2, Attr5, Attr6], [O10, O4, O5, O9]], [[Attr15, Attr2], [O11, O13, O14, O2]], [[Attr10, Attr15], [O11, O13, O2, O6]], [[Attr10, Attr2, Attr6], [O11, O13, O7, O9]], [[Attr12, Attr15], [O11, O14, O2, O6]], [[Attr12, Attr2, Attr6], [O11, O14, O4, O9]], [[Attr10, Attr7], [O11, O6, O7, O9]], [[Attr6, Attr7], [O11, O7, O8, O9]], [[Attr14, Attr9], [O12, O13, O15, O9]], [[Attr10, Attr6, Attr9], [O12, O13, O7, O9]], [[Attr12, Attr14, Attr6], [O12, O14, O4, O9]], [[Attr14, Attr5, Attr6], [O12, O4, O5, O9]], [[Attr12, Attr5], [O12, O4, O6, O9]], [[Attr3, Attr8], [O13, O3, O5, O7]], [[Attr13, Attr14], [O14, O15, O4, O5]], [[Attr12, Attr13], [O14, O2, O4, O6]], [[Attr1], [O3, O6, O7, O8]], [[Attr4, Attr6], [O1, O10, O11, O5, O7]], [[Attr13, Attr5], [O1, O10, O4, O5, O6]], [[Attr6, Attr9], [O1, O12, O13, O7, O9]], [[Attr13, Attr15], [O1, O14, O2, O3, O6]], [[Attr11, Attr2, Attr4], [O10, O11, O2, O5, O7]], [[Attr11, Attr6], [O10, O11, O5, O7, O8]], [[Attr13, Attr2, Attr6], [O10, O14, O4, O5, O7]], [[Attr11, Attr13, Attr4], [O10, O15, O2, O5, O7]], [[Attr13, Attr8], [O10, O3, O5, O6, O7]], [[Attr10, Attr6], [O11, O12, O13, O7, O9]], [[Attr12, Attr6], [O11, O12, O14, O4, O9]], [[Attr10, Attr12], [O11, O12, O2, O6, O9]], [[Attr10, Attr2], [O11, O13, O2, O7, O9]], [[Attr12, Attr2], [O11, O14, O2, O4, O9]], [[Attr7], [O11, O6, O7, O8, O9]], [[Attr14, Attr2, Attr6], [O13, O14, O4, O5, O9]], [[Attr13, Attr6], [O1, O10, O14, O4, O5, O7]], [[Attr13, Attr4], [O1, O10, O15, O2, O5, O7]], [[Attr11, Attr4], [O10, O11, O15, O2, O5, O7]], [[Attr8], [O10, O13, O3, O5, O6, O7]], [[Attr13, Attr2], [O10, O14, O2, O4, O5, O7]], [[Attr11, Attr13], [O10, O15, O2, O3, O5, O7]], [[Attr14, Attr6], [O12, O13, O14, O4, O5, O9]], [[Attr4], [O1, O10, O11, O15, O2, O5, O7]], [[Attr5, Attr6], [O1, O10, O12, O4, O5, O8, O9]], [[Attr15], [O1, O11, O13, O14, O2, O3, O6]], [[Attr9], [O1, O12, O13, O15, O3, O7, O9]], [[Attr10], [O11, O12, O13, O2, O6, O7, O9]], [[Attr12], [O11, O12, O14, O2, O4, O6, O9]], [[Attr14], [O12, O13, O14, O15, O4, O5, O9]], [[Attr5], [O1, O10, O12, O4, O5, O6, O8, O9]], [[Attr2, Attr6], [O10, O11, O13, O14, O4, O5, O7, O9]], [[Attr11], [O10, O11, O15, O2, O3, O5, O7, O8]], [[Attr2], [O10, O11, O13, O14, O2, O4, O5, O7, O9]], [[Attr13], [O1, O10, O14, O15, O2, O3, O4, O5, O6, O7]], [[Attr6], [O1, O10, O11, O12, O13, O14, O4, O5, O7, O8, O9]], [[], [O1, O10, O11, O12, O13, O14, O15, O2, O3, O4, O5, O6, O7, O8, O9]]]
+```

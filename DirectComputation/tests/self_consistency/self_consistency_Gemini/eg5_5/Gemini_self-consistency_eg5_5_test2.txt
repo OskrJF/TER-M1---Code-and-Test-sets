@@ -1,0 +1,81 @@
+Gemini_self-consistency_eg5_5_test2
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+Based on the provided CSV file[cite: 1], which defines a formal context, the following formal concepts have been extracted. Each concept is a pair (A, B), where A is a set of **objects** (extent) and B is a set of **attributes** (intent). The intent B consists of all attributes shared by all objects in A, and the extent A consists of all objects that possess all attributes in B.
+
+The formal context is derived as follows:
+Objects: O = {o1, o2, o3, o4, o5}
+Attributes: M = {a1, a2, a3, a4, a5}
+
+The relationships (object possesses attribute) are[cite: 1]:
+* **o1**: {a1, a3, a4}
+* **o2**: {a3}
+* **o3**: {a1, a2, a4, a5}
+* **o4**: {a2, a5}
+* **o5**: {a2}
+
+---
+## Enumerated Lattice Concepts
+
+Here are the 8 formal concepts extracted from the given context:
+
+1.  **Concept 1 (Bottom Concept)**
+    * Extent (Objects): {o1, o2, o3, o4, o5}
+    * Intent (Attributes): ∅
+    * *Interpretation*: All objects share no common attributes.
+
+2.  **Concept 2**
+    * Extent (Objects): {o1, o2}
+    * Intent (Attributes): {a3}
+    * *Interpretation*: Objects o1 and o2 (and only these) share the attribute a3 (and potentially others, but {a3} is the maximal set of attributes common to precisely {o1,o2} after closure).
+
+3.  **Concept 3**
+    * Extent (Objects): {o1, o3}
+    * Intent (Attributes): {a1, a4}
+    * *Interpretation*: Objects o1 and o3 share attributes a1 and a4.
+
+4.  **Concept 4**
+    * Extent (Objects): {o1}
+    * Intent (Attributes): {a1, a3, a4}
+    * *Interpretation*: Object o1 possesses attributes a1, a3, and a4.
+
+5.  **Concept 5**
+    * Extent (Objects): {o3, o4, o5}
+    * Intent (Attributes): {a2}
+    * *Interpretation*: Objects o3, o4, and o5 share attribute a2.
+
+6.  **Concept 6**
+    * Extent (Objects): {o3, o4}
+    * Intent (Attributes): {a2, a5}
+    * *Interpretation*: Objects o3 and o4 share attributes a2 and a5.
+
+7.  **Concept 7**
+    * Extent (Objects): {o3}
+    * Intent (Attributes): {a1, a2, a4, a5}
+    * *Interpretation*: Object o3 possesses attributes a1, a2, a4, and a5.
+
+8.  **Concept 8 (Top Concept)**
+    * Extent (Objects): ∅
+    * Intent (Attributes): {a1, a2, a3, a4, a5}
+    * *Interpretation*: No object possesses all attributes. (Or, the set of attributes common to an empty set of objects is the set of all attributes).
+
+---
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2, o3, o4, o5]], [[a3], [o1, o2]], [[a1, a4], [o1, o3]], [[a1, a3, a4], [o1]], [[a2], [o3, o4, o5]], [[a2, a5], [o3, o4]], [[a1, a2, a4, a5], [o3]], [[a1, a2, a3, a4, a5], []]]

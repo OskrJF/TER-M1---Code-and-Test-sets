@@ -1,0 +1,68 @@
+Gemini_self-consistency_eg2_3_test1
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+Okay, I can help you extract and enumerate all formal concepts from the provided CSV file.
+
+First, let's parse the formal context from your CSV file[cite: 1].
+
+**Objects:**
+* o1
+* o2
+
+**Attributes:**
+* a1, a2, a3, a4, a5, a6, a7, a8, a9
+
+**Context Table (Incidence Relation):**
+Based on the file[cite: 1]:
+* **o1** has attributes: {a1, a2, a3, a4, a7, a9}
+* **o2** has attributes: {a1, a4, a6, a9}
+
+A **formal concept** is a pair (A, B), where A is a set of objects (the **extent**) and B is a set of attributes (the **intent**), such that:
+1.  B is the set of all attributes shared by all objects in A.
+2.  A is the set of all objects that possess all attributes in B.
+
+Here are the enumerated formal concepts for the given context:
+
+---
+## Formal Concepts
+
+1.  **Concept 1 (Top Concept)**
+    * **Extent (Objects):** {o1, o2}
+    * **Intent (Attributes):** {a1, a4, a9}
+        * *Derivation:* Attributes common to o1 and o2 are ({a1, a2, a3, a4, a7, a9} ∩ {a1, a4, a6, a9}) = {a1, a4, a9}[cite: 1]. Objects o1 and o2 both possess a1, a4, and a9[cite: 1].
+
+2.  **Concept 2**
+    * **Extent (Objects):** {o1}
+    * **Intent (Attributes):** {a1, a2, a3, a4, a7, a9}
+        * *Derivation:* Attributes of o1 are {a1, a2, a3, a4, a7, a9}[cite: 1]. Object o2 does not possess all these attributes (e.g., o2 does not have a2)[cite: 1].
+
+3.  **Concept 3**
+    * **Extent (Objects):** {o2}
+    * **Intent (Attributes):** {a1, a4, a6, a9}
+        * *Derivation:* Attributes of o2 are {a1, a4, a6, a9}[cite: 1]. Object o1 does not possess all these attributes (e.g., o1 does not have a6)[cite: 1].
+
+4.  **Concept 4 (Bottom Concept)**
+    * **Extent (Objects):** {} (empty set)
+    * **Intent (Attributes):** {a1, a2, a3, a4, a5, a6, a7, a8, a9}
+        * *Derivation:* The intent of an empty set of objects is conventionally the set of all attributes. No object in the context possesses all attributes {a1, ..., a9} (e.g., o1 lacks a5, a6, a8; o2 lacks a2, a3, a5, a7, a8)[cite: 1].
+
+---
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]]
