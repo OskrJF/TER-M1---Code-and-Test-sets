@@ -1,0 +1,12 @@
+treeOfThoughts
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+
+PROMPT 1B:
+Pick one of the next three ways to extract all the lattice concepts from the context in this .csv file and apply it to give me the concepts
+
+(insert three of the ways suggested with prompt 1A)
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
