@@ -1,0 +1,21 @@
+digraph G { 
+	rankdir=BT;
+0 [shape=record,style=filled,fillcolor=lightblue,label="{0 (I: 0, E: 5)||o1\no2\no3\no4\no5\n}"];
+1 [shape=record,style=filled,fillcolor=lightblue,label="{1 (I: 2, E: 2)|a1\na4\n|o1\no3\n}"];
+2 [shape=record,style=filled,label="{2 (I: 4, E: 1)|a1\na2\na4\na5\n|o3\n}"];
+3 [shape=record,style=filled,label="{3 (I: 1, E: 3)|a2\n|o3\no4\no5\n}"];
+4 [shape=record,style=filled,fillcolor=lightblue,label="{4 (I: 5, E: 0)|a1\na2\na3\na4\na5\n|}"];
+5 [shape=record,style=filled,label="{5 (I: 3, E: 1)|a1\na3\na4\n|o1\n}"];
+6 [shape=record,style=filled,label="{6 (I: 1, E: 2)|a3\n|o1\no2\n}"];
+7 [shape=record,style=filled,label="{7 (I: 2, E: 2)|a2\na5\n|o3\no4\n}"];
+	1 -> 0
+	2 -> 1
+	2 -> 7
+	3 -> 0
+	4 -> 2
+	4 -> 5
+	5 -> 1
+	5 -> 6
+	6 -> 0
+	7 -> 3
+}
