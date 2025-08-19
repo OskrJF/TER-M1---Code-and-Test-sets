@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg5_5_test1_A2
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal context with less than 20 objects and less than 20 attributes:
+
+One straightforward approach is to **manually enumerate all possible object subsets** (or attribute subsets). For each subset of objects, determine their common attributes. This pair of an object subset and its common attributes forms a formal concept if the object subset is precisely the set of all objects sharing those common attributes. Similarly, one could start with subsets of attributes, find their common objects, and then verify the maximality condition. Given the small size of the context (less than $2^{20}$ possible subsets, which is large but manageable for very small numbers like 5 or 6, and becomes rapidly tedious but still theoretically "by hand" for numbers approaching 20), this exhaustive check, while potentially laborious, is feasible and guarantees finding all concepts. 🧐
+
+Another method is the **NextClosure algorithm** (or similar iterative algorithms like Ganter's algorithm). This algorithm starts with an initial concept (often the concept derived from the empty set of attributes or a single object) and then systematically generates the next concept in a specific lexicographical order. It iteratively expands the current concept's intent (set of attributes) or extent (set of objects) and then closes it by finding all objects sharing the new attribute set or all attributes shared by the new object set. For small contexts, this iterative process is quite efficient as it avoids redundant computations by only generating valid concepts and systematically exploring the search space. ⚙️
+
+A third way involves **visual inspection and construction if the context is represented as a cross-table** (also known as a binary incidence matrix). You can identify potential concepts by looking for maximal rectangles of 'X's (or 1s) in the table after suitable row and column permutations. Each such maximal rectangle corresponds to a formal concept, where the objects are the row labels of the rectangle and the attributes are the column labels. For very small contexts, particularly those under 10x10, this visual method, though less formal, can be surprisingly effective for quickly identifying many, if not all, concepts, especially when combined with a basic understanding of how to derive the full extent from a set of attributes and vice-versa. 💡

@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg15_15_test1_A3
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal concept analysis context with less than 20 objects and attributes:
+
+One straightforward method is **manual derivation by systematically exploring attribute combinations**. Start with individual attributes and identify all objects possessing each attribute. Then, consider pairs of attributes, finding objects common to both, and so on, progressively increasing the size of attribute combinations. For each such attribute set (intent), determine the maximal set of objects (extent) that share all these attributes. Each such pair of (extent, intent) is a formal concept. Given the small size of the context, this exhaustive check, while potentially tedious, is feasible and helps build a foundational understanding of the concept lattice structure. 🧐
+
+Another approach is to use the **Next Closure algorithm** (or a similar iterative algorithm like Ganter's algorithm). This method typically starts with an empty set of attributes (or the set of all objects) and iteratively computes the next concept. It involves applying closure operators (deriving all attributes shared by a set of objects, and then all objects sharing those attributes) in a systematic way to generate all concepts without redundancy. For small contexts, this algorithm is efficient enough and provides a more structured way to find all concepts compared to purely manual exploration. 🤖
+
+A third way involves **visual construction using a Hasse diagram representation of the context's incidence matrix**. First, represent the context as a binary table where rows are objects, columns are attributes, and a '1' or 'X' indicates an object has an attribute. Then, begin drawing the lattice by identifying the bottom concept (all objects, attributes common to all) and the top concept (attributes, objects common to all attributes if any, or the empty set of objects and all attributes). Intermediate concepts can then be identified by looking for subsets of objects and their shared maximal attribute sets, gradually building up the Hasse diagram where lines connect concepts in a subconcept-superconcept relationship. The visual nature can be intuitive for small contexts, allowing for direct identification of the concepts and their partial order. 🎨

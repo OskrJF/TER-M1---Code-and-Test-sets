@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_3_test1_A1
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the concepts in a formal context with fewer than 20 objects and 20 attributes:
+
+One straightforward approach for such small contexts is **direct manual inspection and enumeration**. You can systematically examine the formal context, which is typically represented as a cross-table with objects as rows and attributes as columns. For each possible subset of objects, you would determine their common attributes (the intent). Then, for that set of attributes, you would find all objects possessing all of them (the extent). If this newly found set of objects is identical to the initial subset you started with, then you have identified a formal concept. Similarly, you can start with subsets of attributes, find their common objects, and then verify if the common attributes of those objects match the initial attribute set. Given the small size, you can list out potential concepts and verify them by checking for this closure property (A'' = A for extents, B'' = B for intents).
+
+Another method is to use an **incremental algorithm like Ganter's NextConcept algorithm (or a simplified version of it)**. These algorithms typically start from a known concept (e.g., the concept formed by all objects and their common attributes, or the bottom concept with an empty intent and all objects that have no attributes if such exists). Then, they systematically generate the "next" concept in a specific order (often lexicographical or size-based) by making minimal changes (e.g., adding an attribute to an intent and then closing it to find the new extent, or adding an object to an extent and closing it). For small contexts, tracing this algorithm manually or with simple computational support is quite feasible and ensures all concepts are found without redundancy if followed correctly.
+
+A third way, particularly useful if you also want to understand the implicational structure, is to first **compute the Duquenne-Guigues basis of implications (also known as the stem base)** for the context, and from this, derive the concepts. For small contexts, algorithms like Godin's algorithm or its variations can be used to find this minimal set of implications. Once you have the stem base, the intents of the formal concepts correspond precisely to the attribute sets that are closed under this set of implications. You can generate these closed sets starting from individual attributes and iteratively adding attributes and applying the implications until no more attributes can be added. Each such closed attribute set is an intent of a concept, from which the extent can be easily derived.

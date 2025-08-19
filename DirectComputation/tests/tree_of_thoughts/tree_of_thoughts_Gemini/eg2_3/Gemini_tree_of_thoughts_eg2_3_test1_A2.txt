@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_3_test1_A2
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Methods for Finding Formal Concepts in Small Contexts
+
+    Manual Iteration (Ganter & Wille's Method): This is a foundational approach often used for teaching and understanding. You start by picking an arbitrary object and list all its attributes; this forms an initial intent. Then, you find all objects that share exactly this set of attributes; this forms the corresponding extent. Next, for this extent, you identify all attributes common to all these objects. If this new set of attributes is the same as your previous intent, you've found a formal concept. If it's larger, you repeat the process: find all objects possessing this new, larger set of attributes, and so on. You continue this process, potentially starting with attributes as well (finding all objects with an attribute, then all attributes common to those objects), until all pairs of (extent, intent) that are maximal and stable are found. For a small context, this can be done systematically by hand, perhaps by starting with each object or each attribute, or by looking for common patterns of attributes.
+
+    NextConcept Algorithm (or similar incremental algorithms): Algorithms like NextConcept, NextClosure, or CloseByOne are designed to systematically generate all formal concepts without redundancy. For a small context, these are very efficient. The general idea is to establish an order (often lexicographical) among the concepts. Given one concept, the algorithm computes the "next" concept in that order. You start with the bottom concept (usually (all objects, attributes of all objects)'', or if no such common attributes, (all objects, empty set)'') or the top concept ( (objects with all attributes, all attributes)'' or (empty set, all attributes)'' if no such objects). The algorithm then iteratively generates the next concept based on the current one by systematically adding attributes (or objects) and closing the resulting set until no new concepts can be generated. The specific rules for finding the "next" concept vary between algorithms but ensure completeness.
+
+    Using an Implication Basis (e.g., Duquenne-Guigues Basis): Another approach involves first computing a minimal set of implications (attribute implications) that hold in the context, known as an implication basis (like the Duquenne-Guigues basis or a stem base). Each pseudo-intent (the premise of an implication in a canonical basis) corresponds to the intent of a formal concept. Once you have these pseudo-intents, you can compute their corresponding extents (all objects that have all attributes in the pseudo-intent). This method leverages the structural properties of the context captured by its implications. For a small context, computing the implication basis is feasible, and from there, deriving all concept intents (and subsequently their extents) is straightforward.

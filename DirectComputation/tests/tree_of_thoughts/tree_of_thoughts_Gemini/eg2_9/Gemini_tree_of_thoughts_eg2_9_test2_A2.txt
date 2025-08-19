@@ -1,0 +1,23 @@
+Gemini_tree_of_thoughts_eg2_9_test2_A2
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Methods for Finding Formal Concepts in Formal Concept Analysis (FCA)
+
+Formal Concept Analysis (FCA) provides a way to identify conceptual structures within data. For a small formal context, typically defined by a set of objects G, a set of attributes M, and an incidence relation I showing which objects have which attributes, finding all formal concepts (pairs (A,B) where A ⊆ G, B ⊆ M, A' = B, and B' = A) can be done in several ways. Here are three approaches suitable for contexts with fewer than 20 objects and 20 attributes:
+
+    Systematic Enumeration and Closure: This foundational method involves systematically considering all possible subsets of objects (potential extents) or all possible subsets of attributes (potential intents). For each chosen subset of objects A, you determine all common attributes A' (the intent). Then, you find all objects B' that possess all attributes in A'. If this set B' is identical to the original set of objects A, then (A, A') is a formal concept. Alternatively, you can start with a subset of attributes B, find all objects B' (the extent) that have these attributes, and then find all common attributes A' for the objects in B'. If A' is identical to B, then (B', B) is a formal concept. For small contexts, this exhaustive check, while potentially tedious, is straightforward and directly applies the definition of a formal concept.
+
+    Ganter's NextConcept Algorithm (Conceptual Scaling): This is an incremental algorithm that generates all formal concepts in a specific order, typically lexicographical order of the intents. It starts from a known concept (often (G'', G'), where G' is the set of attributes common to all objects in G, and G'' is the set of objects having all attributes in G') or the concept derived from the empty set of attributes ( (G, ∅') if ∅' is defined, or more practically, starting with the bottom concept (∅'', ∅') if ∅''=G). The algorithm then iteratively finds the "next" concept by making minimal changes to the current concept's intent (or extent) while ensuring the properties of a formal concept are maintained. For each object g not in the current extent A, and for each attribute m not in the current intent B, it explores adding attributes or objects to find the next valid concept. This method is more systematic than brute-force enumeration and avoids redundant calculations.
+
+    Using an Incidence Matrix and Row/Column Operations (Simplified): For a small context, you can represent the incidence relation I as a binary matrix where rows are objects and columns are attributes. A formal concept corresponds to a maximal subrectangle of 1s in this matrix (after permuting rows and columns, though permutation isn't strictly necessary for finding them). You can visually inspect or use a simplified procedure: pick a set of rows (objects). Identify the columns (attributes) that have 1s in all these selected rows; this is the intent. Now, identify all rows that have 1s in all these selected columns; this is the extent. If this new set of rows is the same as your initially picked set, you've found a concept. This can be done more systematically by starting with single objects and their intents, then single attributes and their extents, and iteratively combining or refining these to find all concepts.

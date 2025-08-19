@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg5_5_test1_A1
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Here are three common methods for finding formal concepts in a given formal context, particularly suitable for smaller contexts:
+
+    Iterative Closure of Attribute Subsets (Bottom-Up Approach): This method involves systematically considering all possible subsets of attributes. For each subset of attributes, you determine the set of all objects that possess all attributes in that subset (this is the extent). Then, for this set of objects, you find all common attributes (this is the intent). If this newly derived intent is identical to the initial subset of attributes you started with, then the pair (extent, intent) forms a formal concept. You start with the empty set of attributes (whose extent is all objects, and its closure gives the intent of the bottom concept) and progressively add attributes, closing each time to find new concepts. For small contexts, you can often manually list attribute subsets, find their common objects, and then find the common attributes of those objects to check if a concept is formed.
+
+    Intersection of Object Intents: First, for every object in your context, list its intent, which is the set of all attributes associated with that specific object. Once you have the intent for each object, you can find formal concepts by taking all possible intersections of these object intents. Each unique set of attributes resulting from these intersections forms the intent of a formal concept. The extent of such a concept is then found by identifying all objects whose intents contain this particular intersection of attributes. This method can be quite intuitive for small contexts as it directly works with the information tied to each object.
+
+    Ganter & Wille's NextConcept Algorithm (Simplified Variation): While the full NextConcept algorithm is designed for efficiency with larger contexts, a simplified, step-by-step approach inspired by it can be used for small ones. You start with a known concept (e.g., the bottom concept, (O, O'')). To find the "next" concept in a lexicographical order of intents, you try to add an attribute (not yet in the current concept's intent) to the current intent, compute the closure of this new attribute set to get a potential new intent, and then derive its extent. The core idea is to systematically explore additions of attributes to known concept intents, ensuring that each new concept found is minimal among those not yet found and greater than the current one in some defined order. For very small contexts, this can be a more guided way of exploring potential concepts than just random subset generation.

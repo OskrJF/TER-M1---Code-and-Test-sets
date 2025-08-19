@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_9_test1_A1
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal concept analysis (FCA) context with less than 20 objects and less than 20 attributes:
+
+One straightforward approach is to **manually identify all possible attribute combinations and their corresponding object sets**. Start by considering individual attributes and find all objects possessing each attribute. Then, examine pairs of attributes, then triplets, and so on, determining the set of objects common to each combination. For each such object set (called an extent), find all attributes shared by exactly those objects (called an intent). Each (extent, intent) pair that is maximal (i.e., you can't add another object to the extent without losing an attribute from the intent, and you can't add another attribute to the intent without losing an object from the extent) is a formal concept. Given the small size of the context, this exhaustive check, while potentially tedious, is manageable and helps in understanding the fundamental definition of a concept.
+
+Another method involves **iteratively building concepts starting from individual objects**. For each object in the context, determine its initial intent (the set of all attributes possessed by that object). Then, find all objects that share exactly this set of attributes; this forms the extent of a potential concept. Next, refine the intent by identifying all attributes common to all objects in this newly formed extent. If this refined intent is identical to the initial intent derived from the single object (or a previously found intent), then the (extent, refined intent) pair is a formal concept. Repeat this for every object, keeping track of unique concepts found, as different objects might lead to the same concept.
+
+A third technique is to use a **simplified version of an algorithm like NextClosure or Ganter's Algorithm by hand or with visual aids**. For instance, with NextClosure, you can start with the concept formed by all objects and their common attributes. Then, systematically try to add attributes (or objects) and compute the closure (the maximal set of shared attributes/objects) to find the next concept in a lexicographical order. Given the small scale (under 20x20), one can represent the context as a small matrix (objects as rows, attributes as columns, with 'X' marking a relation). You can then visually or systematically generate intents, find their common objects (extents), and then find the common attributes of those extents, ensuring maximality to identify concepts. This provides a more structured way than pure manual enumeration.

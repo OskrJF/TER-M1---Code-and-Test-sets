@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_3_test3_A2
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal concept analysis (FCA) context with less than 20 objects and less than 20 attributes:
+
+One straightforward approach is **manual derivation by systematically checking all possible subsets of objects**. For each subset of objects, determine their common attributes (this forms the intent). Then, find all objects that share this exact set of attributes (this forms the extent). If the newly found set of objects is identical to the original subset you started with, then you have identified a formal concept. Given the small size of the context (less than $2^{20}$ or approximately one million possible object subsets, though in practice many fewer will be checked due to attribute sharing), this exhaustive check, while potentially tedious by hand, is computationally feasible and guarantees finding all concepts. You can similarly start by checking all possible subsets of attributes.
+
+Another method involves **iteratively building concepts using a closure operator**. Start with an empty set of attributes. Find all objects that have these (all objects in the context). This pair (all objects, no attributes) is your first concept. Then, for each attribute not yet in the intent of a discovered concept, add it to the intent of an existing concept. Re-calculate the extent (all objects sharing these attributes) and then re-calculate the intent (all attributes shared by these new objects). This process, often formalized in algorithms like NextClosure or Ganter's Algorithm, systematically explores potential concepts by extending known ones, ensuring that each new pair (extent, intent) is a valid formal concept. For small contexts, this step-by-step generation is manageable and less prone to missing concepts than unsystematic manual checking.
+
+A third way is to **visually construct the incidence matrix and identify rectangular regions of 'X's (or 1s)**. Represent the context as a table where rows are objects, columns are attributes, and an 'X' marks if an object has an attribute. A formal concept corresponds to a maximal rectangle of 'X's (after permuting rows and columns, though permutation isn't strictly necessary for identification, just for neat visualization later). You would look for subsets of objects and attributes where all listed objects have all listed attributes, and no other object has all those attributes, and those objects have no other common attributes outside that set. For a small matrix (e.g., less than 20x20), one can often spot these maximal bicliques (complete bipartite subgraphs, which these rectangles represent) by careful inspection, perhaps aided by systematically trying to expand smaller identified X-regions.

@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg15_15_test1_A1
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal concept analysis (FCA) context with less than 20 objects and less than 20 attributes:
+
+One straightforward method is **manual derivation by systematically checking all possible attribute sets**. Since the number of attributes is small (less than 20), you can iterate through every possible combination of attributes, from single attributes to all attributes. For each combination, determine the set of objects that share all these attributes (this is the extent). Then, find all attributes common to this set of objects (this is the intent). If the derived intent matches the starting attribute combination, you've found a formal concept. This exhaustive approach is feasible for small contexts because the total number of attribute subsets (2\<sup\>m\</sup\>, where m is the number of attributes) is manageable.
+
+Another approach is to **iteratively build concepts starting from individual objects**. For each object, its initial intent is the set of all its attributes. Then, find all objects that share this exact set of attributes; this forms the extent of a potential concept. Next, derive the common attributes for this extent. If this new set of attributes (the intent) is the same as the initial object's attributes, you have found a concept. If the intent grows (i.e., fewer attributes are common to all objects in the extent), then this new, smaller set of attributes forms the intent of the concept, and the extent is the set of objects sharing these. This process can be refined by considering pairs of objects, then triplets, and so on, computing their common attributes and the objects sharing them, though for very small contexts, starting with individual objects and then refining is often sufficient.
+
+A third method involves **using a basic algorithm like NextClosure or a simplified version of it**. These algorithms systematically generate formal concepts. You can start with the concept formed by all objects and their common attributes. Then, iteratively find new concepts by "closing" attribute sets. For example, take an existing concept's intent and add one more attribute that is not already in it but is possessed by at least one object in the current concept's extent. Then, compute the common objects for this new attribute set (the new extent) and subsequently the common attributes for this new extent (the new intent). This process helps to systematically discover all concepts without the redundancy of checking every single subset of attributes or objects if done carefully, often by maintaining a list of already found concepts and ensuring new ones are distinct.

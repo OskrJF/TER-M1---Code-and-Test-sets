@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_3_test2_A2
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Methods for Finding Formal Concepts
+
+    Manual Iteration and Closure: For a small context, you can start by systematically examining individual objects or attributes. For each object, identify all attributes it possesses to form an initial intent. Then, find all other objects that share this exact set of attributes; this group of objects forms the extent. The pair (extent, intent) is a formal concept. Similarly, you can start with an attribute, find all objects possessing it (initial extent), and then identify all attributes common to these objects (intent). This process involves iteratively applying the derivation operators (prime operators) until no new objects or attributes can be added to the extent or intent, respectively, ensuring you've found a stable concept. This method is feasible due to the limited number of potential combinations in a small matrix.
+
+    Ganter's NextClosure Algorithm (Simplified Application): Ganter's NextClosure algorithm provides a systematic way to generate all formal concepts without redundancy. For a small context, you can apply a simplified version. Start with the concept derived from the empty set of objects (all attributes shared by no objects, if any, or the concept (all objects, attributes common to all objects)). Then, iteratively generate the "next" concept by adding an attribute (or object) to the intent (or extent) of the current concept and computing the closure. The key is to follow a lexicographical order or a similar systematic approach to ensure all concepts are found. While the full algorithm has specific rules for choosing the "next" element to ensure completeness and efficiency, the core idea of iterative closure from a known concept can be manually applied in a small setting.
+
+    Using Basic FCA Software or Online Calculators: Several free FCA software tools (like ConExp, FcaBedrock, or online calculators) can compute the concepts and the concept lattice from a given formal context almost instantaneously, especially for small inputs. You would typically input the context as a binary matrix (objects as rows, attributes as columns, with 1s indicating an object has an attribute and 0s otherwise). The software then automatically applies efficient algorithms (often variations of NextClosure or similar) to derive all formal concepts and can usually visualize the resulting concept lattice. This is the most error-proof and quickest method, even for small contexts, and helps in verifying any manual calculations.

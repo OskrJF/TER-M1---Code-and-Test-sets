@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg8_8_test1_A3
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the formal concepts in a small context (less than 20 objects and less than 20 attributes) in Formal Concept Analysis:
+
+For very small contexts, one can often find concepts through **manual inspection and systematic enumeration**. This involves starting with individual objects and identifying their common attributes to form initial intents. Then, for each intent, you find all objects possessing these attributes (the extent). Subsequently, for each extent, you identify all attributes shared by these objects. If this newly derived intent matches the one you started with, you've found a formal concept. You can also start with attribute sets and perform the dual process. This method relies on careful bookkeeping, perhaps by drawing lines or highlighting cells in the context table, to ensure all maximal rectangles of 'X's (representing concept extents and intents) are identified.
+
+Another approach is to use an **iterative algorithm like NextClosure (also known as Ganter's Algorithm)**. This algorithm systematically generates all formal concepts without redundancy. It typically starts with the concept derived from the empty set of attributes (whose extent is all objects, and its intent is the set of attributes common to all objects). Then, it iteratively finds the "next" concept by lexicographically modifying the current concept's intent in a specific way, computing the corresponding extent, and then deriving the full intent of that extent. This process is repeated until no new concepts can be generated, ensuring all concepts are found. For small contexts, this can be performed by hand with careful attention to the algorithmic steps.
+
+Finally, one can utilize **specialized FCA software tools**. Even for contexts that are small enough for manual computation, software can provide a quick, accurate, and less error-prone way to find all concepts and visualize the concept lattice. Tools like ConExp (Concept Explorer), FcaBedrock, or Galicia allow you to input the formal context (often as a binary table or a CSV file) and will automatically compute all formal concepts (extent-intent pairs) and can also generate a diagram of the concept lattice. This is often the most efficient and reliable method, even for smaller datasets, as it automates the combinatorial search.

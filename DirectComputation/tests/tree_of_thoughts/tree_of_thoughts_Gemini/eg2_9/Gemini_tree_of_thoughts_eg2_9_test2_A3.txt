@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_9_test2_A3
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal concept analysis (FCA) context with less than 20 objects and less than 20 attributes:
+
+One straightforward method is **manual derivation by systematically exploring all possible object subsets**. For each subset of objects, determine their common attributes (the intent). Then, find all objects that share exactly this set of attributes (the extent). If this newly found set of objects is identical to the initial subset, then the pair (object subset, common attribute set) forms a formal concept. Given the small size of the context, iterating through all $2^{<20}$ potential object subsets is computationally intensive but still manageable, especially with careful bookkeeping to avoid redundant calculations.
+
+Another approach is to **iteratively build concepts attribute by attribute**. Start with the concept formed by all objects and the attributes common to all of them. Then, for each attribute not yet in the current concept's intent, consider adding it. This will typically reduce the extent (the set of objects). For the new, smaller extent, find all common attributes. If this process leads to a new valid pair (extent, intent) not yet found, it's a new concept. This method can be more guided than exploring all object subsets, focusing on how attributes differentiate object groups.
+
+A third technique involves **using a simplified version of an algorithm like NextClosure or Ganter's Algorithm**. These algorithms are designed for larger contexts but can be manually applied or implemented simply for small cases. For instance, one could start with an empty set of objects and an empty set of attributes. Iteratively add an object to the current extent, update the intent, and then update the extent based on the new intent. If the extent-intent pair is new, it's a concept. This process is repeated, systematically exploring potential concepts based on a lexicographical order or similar systematic approach to ensure all concepts are found without exhaustive brute-force enumeration of all subsets.

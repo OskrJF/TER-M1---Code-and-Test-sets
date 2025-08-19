@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg5_5_test1_A3
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal context with less than 20 objects and attributes:
+
+One straightforward approach is by **manual derivation using the Galois connection**. For each possible subset of objects, you can determine their common attributes. Then, for this set of common attributes, you find all objects that possess all of them. If this new set of objects is identical to the original subset you started with, you have found a formal concept. You repeat this process, or dually by starting with subsets of attributes, systematically exploring all potential object or attribute sets. Given the small size of the context (less than $2^20$ or roughly a million potential subsets, but in practice far fewer actual concepts), this exhaustive check, while potentially tedious, is feasible and helps in understanding the fundamental definition of a concept as a pair (extent, intent) where the extent is the set of objects sharing the attributes in the intent, and the intent is the set of attributes common to the objects in the extent.
+
+Another method is to use **Next Closure algorithms**, such as Ganter's algorithm or variations thereof. These algorithms iteratively generate formal concepts without having to check every possible subset of objects or attributes. Starting from an initial concept (often the concept derived from the empty set of attributes or the set of all objects), the algorithm systematically computes the "next" concept in a lexicographical or other defined order. For small contexts, these algorithms are very efficient because they avoid redundant computations and directly construct the concepts. The process typically involves computing closures of attribute sets (or object sets) and then extending them in a controlled manner to find all unique concepts.
+
+A third way involves **visual construction, possibly aided by a tool or by hand using a reduced context table**. After identifying some initial, easily discernible concepts (like the top concept with all objects and their common attributes, or bottom concepts derived from single objects or attributes), you can start building the Hasse diagram of the concept lattice incrementally. By examining the relationships (subconcept/superconcept) between already identified concepts, you can infer missing concepts. For a small context, one can sometimes "see" the structure emerging by progressively adding objects or attributes and observing how the shared attribute sets or object sets group together. This method is more intuitive and relies on pattern recognition, which is manageable when the number of elements is small.

@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg8_8_test1_A1
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Methods for Finding Formal Concepts in Small Contexts
+
+    Manual Iteration and Closure: For a context with fewer than 20 objects and 20 attributes, one straightforward method is to manually iterate through potential concepts. You can start by picking a subset of objects and finding all attributes common to them. Then, for this set of attributes, find all objects that possess every one of these attributes. If this new set of objects is identical to your starting set, you have found a formal concept (specifically, its extent and intent). Similarly, you can start with a subset of attributes, find all objects sharing them, then find all attributes common to these objects. This process of iteratively computing closures (all common attributes for a set of objects, or all common objects for a set of attributes) will reveal all formal concepts.
+
+    Ganter's NextConcept Algorithm (Simplified Application): Ganter's NextConcept algorithm provides a systematic way to generate all formal concepts without repetition. For a small context, you can apply its principles manually or with a very simple computational aid. Starting with a known concept (e.g., the concept formed by all objects and their common attributes, or the concept formed by considering no objects and thus all attributes), the algorithm defines a way to find the "next" concept in a lexicographical order. This involves iteratively adding an attribute (or object) to the current intent (or extent), computing the closure, and checking if it's a new valid concept that respects the ordering. This avoids redundant computations and ensures all concepts are found.
+
+    Matrix Reordering and Maximal Rectangle Identification: You can represent the formal context as a binary matrix where rows are objects, columns are attributes, and a '1' (or 'X') indicates an object has an attribute. For small matrices, you can manually try to reorder rows and columns to group the '1's together. Each maximal filled rectangle of '1's in the reordered matrix corresponds to a formal concept. The objects forming the rows of such a rectangle constitute the extent, and the attributes forming its columns constitute the intent. While finding all such maximal rectangles purely by manual reordering can be tricky and might miss some, it's a very visual way to identify many concepts and understand the structure of the context.

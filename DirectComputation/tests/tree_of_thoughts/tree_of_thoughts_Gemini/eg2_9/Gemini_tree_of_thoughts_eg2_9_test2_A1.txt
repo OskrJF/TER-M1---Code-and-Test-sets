@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_9_test2_A1
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal context with less than 20 objects and less than 20 attributes:
+
+One straightforward method is **manual derivation by systematically checking all possible subsets of objects**. For each subset of objects, you determine their common attributes. Then, for this set of common attributes, you find all objects that possess all of them. If this new set of objects is identical to the original subset you started with, then you have found a formal concept. Given the small size of the context (less than 20x20), this exhaustive check, while potentially tedious, is manageable and ensures all concepts are found. You would list all pairs (object-subset, common-attributes-set) that satisfy this closure property.
+
+Another approach is to **iteratively build concepts starting from individual objects or attributes**. 💡 For each object, find all attributes it possesses. Then, for these attributes, find all objects that share them. This forms an "object-intent" concept. Similarly, for each attribute, find all objects possessing it. Then, for these objects, find all their common attributes, forming an "attribute-extent" concept. You would then refine these initial concepts by considering intersections of extents and intents to ensure you identify all formal concepts. This method can be more guided than a purely exhaustive search.
+
+A third method involves using a **simplified version of an algorithm like NextClosure or a similar incremental algorithm**. These algorithms typically start with an initial concept (e.g., the concept formed by all objects and their common attributes, or the empty set of objects and all attributes). They then systematically generate new concepts by adding attributes (or objects) one by one and computing the corresponding closure. For a small context, you can perform the steps of such an algorithm manually, perhaps with the aid of a small table or matrix representing the context, to keep track of the generated concepts and ensure no duplicates are listed. This provides a more structured way to explore the search space than pure manual checking.

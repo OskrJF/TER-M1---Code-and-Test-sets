@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg8_8_test1_A2
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the concepts in a formal context with fewer than 20 objects and 20 attributes:
+
+1.  **Manual Exploration using Closure Operators:** You can start by picking a set of objects and finding all their common attributes. This set of attributes forms the intent of a potential concept. Then, find all objects that possess every attribute in this intent. This new set of objects is the extent of the concept. If this extent is identical to your starting set of objects, and the intent is maximal (no other attribute is shared by all objects in the extent), you've found a formal concept. You can iterate this process, perhaps starting with individual objects, then pairs, and so on, or by starting with sets of attributes and finding their common objects, then the common attributes of those objects. This method relies on systematically applying the closure operators (derivation operators) until all maximal object-attribute pairs are identified.
+
+2.  **Using the NextConcept (or NextClosure) Algorithm by Hand:** For small contexts, algorithms like Ganter & Wille's NextConcept (often implemented as NextClosure) can be performed manually. This algorithm generates concepts in a lexicographical order. You would typically start with the concept formed by all objects and their common attributes (if any). Then, you systematically try to add attributes (or objects) and compute the closure to find the next concept in the order, ensuring that each concept is generated only once and all are found. This involves a defined procedure for iterating through attribute sets and computing their corresponding object sets (and vice-versa) to ensure maximality and completeness.
+
+3.  **Constructing a Concept Lattice Diagram Incrementally:** You can visually build the concept lattice. Start with the bottom concept (all objects, their common attributes) and the top concept (all attributes, their common objects). Then, for each object, determine its individual concept (the object itself and all its attributes, then close this to find all objects sharing these exact attributes). Similarly, for each attribute, find its individual concept. You then try to find concepts "in between" by looking for intersections of attribute sets (and the union of corresponding object sets after closure) or unions of object sets (and the intersection of corresponding attribute sets after closure), gradually filling in the lattice structure. This method is more intuitive and visual but requires careful checking to ensure all concepts are found and correctly placed in the lattice order.

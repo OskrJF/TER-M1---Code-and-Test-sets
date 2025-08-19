@@ -1,0 +1,23 @@
+Gemini_tree_of_thoughts_eg15_15_test1_A2
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal concept analysis (FCA) context with less than 20 objects and attributes:
+
+### 💡 Three Methods for Finding FCA Concepts in Small Contexts
+
+One straightforward approach is **manual derivation by systematically checking all possible attribute subsets**. For each potential attribute set, identify all objects that share these attributes. Then, for this group of objects, list all attributes they collectively possess. If this newly derived attribute set matches the initial attribute set you started with, then you've found a formal concept (the pair of object set and attribute set). Given the small size of the context (under 20x20), this exhaustive checking, while potentially tedious, is computationally feasible and helps in understanding the basic definition of a concept.
+
+Another method involves **iteratively building concepts from individual objects**. Start with a single object and find all its attributes. This pair (the object and its attributes) forms an initial potential concept. Then, try to generalize this by finding other objects that share all these attributes. If such objects exist, add them to the object set and update the attribute set to only those attributes common to all objects in the current set. Repeat this process, potentially adding attributes and then finding corresponding objects, ensuring at each step that the derived extents and intents are maximal with respect to each other. This bottom-up approach can be more guided than checking all attribute subsets.
+
+A third technique is to use a **simplified version of an algorithm like Next Closure or Ganter's Algorithm**, focusing on its core logic. You can represent the context as a binary matrix. Start with an empty set of attributes (whose extent is all objects). Then, for each attribute not yet in the current intent, tentatively add it and compute the new extent (objects sharing all attributes in this augmented intent). From this new extent, compute the new intent. If this process leads back to the same intent you started the iteration with plus the newly added attribute, you've identified a new concept. This iterative closure operation, even without implementing the full algorithm's optimizations, can systematically uncover all concepts in a small context.

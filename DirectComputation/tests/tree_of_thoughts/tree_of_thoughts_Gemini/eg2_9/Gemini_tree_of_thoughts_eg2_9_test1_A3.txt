@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_9_test1_A3
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find lattice concepts in a formal concept analysis context with less than 20 objects and less than 20 attributes:
+
+One straightforward approach is **manual derivation by systematically checking all possible subsets of objects and attributes**. Since the number of objects and attributes is small, you can begin by considering each object individually and finding all attributes common to it, forming an initial intent. Then, find all objects sharing this intent to form the extent, thus identifying a formal concept. Similarly, you can start with individual attributes, find all objects possessing that attribute, and then determine all attributes common to those objects. This process can be extended to pairs, triplets, and larger subsets of objects or attributes, ensuring you identify all pairs (A, B) where A is the set of all objects sharing all attributes in B, and B is the set of all attributes possessed by all objects in A. This exhaustive check, while potentially tedious for larger contexts, is feasible for small ones and guarantees finding all concepts.
+
+Another method is to use a **bottom-up (or top-down) construction algorithm based on attribute (or object) closure**. For a bottom-up approach, start with the concept formed by the set of all objects and their common attributes (if any). Then, iteratively add attributes one by one. For each new attribute, find the objects possessing it and intersect this set with the extent of the current concept. The closure of this new set of attributes (i.e., all attributes shared by the objects in the new extent) forms the intent of a new concept. This process is repeated, exploring combinations of attributes and refining extents and intents until no new concepts can be generated. A similar top-down approach can be initiated starting from the concept defined by the empty set of attributes (all objects) or the empty set of objects (all attributes).
+
+A third effective technique, especially amenable to small contexts and often used as a basis for more complex algorithms, is to employ a **NextClosure-like algorithm or a Ganter-Wille style algorithm by hand**. This involves starting with an initial concept (e.g., ({all objects}, common attributes of all objects}) or ({objects sharing attribute m}, {m}'' for some attribute m). Then, you systematically generate the next concept in a lexicographical or other defined order. This often involves finding a "minimal generator" or an "attribute that violates the current closure" and using it to form a new, larger intent (and corresponding smaller extent). You iteratively apply rules to find the "next" concept until all concepts have been discovered. For small contexts, this can be done systematically on paper by listing objects and attributes and carefully applying the closure operator (finding all common attributes for a set of objects, and then all objects possessing those attributes).

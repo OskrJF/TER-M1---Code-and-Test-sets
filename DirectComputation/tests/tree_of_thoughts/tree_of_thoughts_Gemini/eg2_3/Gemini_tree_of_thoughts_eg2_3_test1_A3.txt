@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_3_test1_A3
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal context with less than 20 objects and less than 20 attributes:
+
+One straightforward approach is **manual derivation by systematically exploring all possible subsets of objects**. For each subset of objects, you determine their common attributes. Then, for this set of common attributes, you find all objects that possess all of them. If this new set of objects is identical to the initial subset, you have found a formal concept. Given the small size of the context (less than $2^{20}$ possible object subsets, but many will not form concepts), this exhaustive check, while potentially tedious, is feasible and helps build a fundamental understanding of concept formation. You can list all object subsets, find their shared attributes, and then verify the extent.
+
+Another method is to **iteratively build concepts starting from individual objects or attributes**. You can begin by taking a single object and finding all attributes it possesses. Then, identify all other objects that share these exact attributes. This forms an object-concept. Alternatively, start with a single attribute, find all objects possessing it, and then identify all other attributes common to these objects, forming an attribute-concept. By systematically applying these closure operations (finding all shared attributes for a set of objects, and then all objects sharing those attributes, or vice-versa), and keeping track of unique pairs (extent, intent), you can uncover all formal concepts. This is often more efficient than blind subset checking for small contexts.
+
+A third way involves using a **basic algorithmic approach like NextClosure or a similar incremental algorithm**. These algorithms systematically generate formal concepts without redundant computations. For instance, NextClosure often works by finding an initial concept and then systematically "closing" sets of attributes (or objects) in a specific order (e.g., lexicographical) to discover new concepts. For a context with fewer than 20 objects and attributes, even a simple implementation of such an algorithm, perhaps worked through by hand or with a basic script, can efficiently enumerate all concepts. These algorithms are designed to be complete and non-redundant, ensuring all concepts are found exactly once.

@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_3_test2_A1
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal context with less than 20 objects and less than 20 attributes:
+
+One straightforward approach is **manual derivation by systematically checking all possible subsets of objects**. For each subset of objects, you determine their common attributes (the intent). Then, for this set of attributes, you find all objects that possess all of them (the extent). If this newly derived extent is identical to the original subset of objects you started with, then you have found a formal concept. Given the small size of the context (less than $2^{20}$ or approximately one million possible object subsets, though practically far fewer will lead to distinct intents), this exhaustive check is computationally feasible, especially if aided by visual inspection of the context table. 🧐
+
+Another method is to **iteratively build concepts starting from individual objects or attributes**. You can begin by taking a single object and finding its attributes. This forms an initial intent. Then, find all objects that share these attributes. This (object set, attribute set) pair is a concept. You can then try to expand this concept by adding another object and seeing if a new, valid concept is formed by finding the new common attributes and then the objects sharing those new attributes. Similarly, you could start with an attribute, find all objects possessing it, and then find all common attributes of those objects. This process can be systematically managed, for example, by using an algorithm like NextClosure, which efficiently generates concepts one by one without redundancy, and is well-suited for small contexts. 💡
+
+A third technique involves **constructing the concept lattice incrementally by considering objects one by one**. Start with an empty context or a context with a single object (which forms a trivial concept). Then, add objects one at a time. Each time an object is added, the existing concepts are updated, and new concepts may be formed. The new object's attributes are compared with the intents of existing concepts. If the new object's attributes are a superset of an existing concept's intent, the object is added to that concept's extent. If not, new concepts might be generated. Algorithms like Godin's algorithm or its variations systematically handle this insertion and are efficient enough for small contexts, allowing for a structured way to identify all concepts. 📊

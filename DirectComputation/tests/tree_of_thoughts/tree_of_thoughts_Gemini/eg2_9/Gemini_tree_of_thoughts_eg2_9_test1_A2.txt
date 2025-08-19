@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_9_test1_A2
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal context with less than 20 objects and less than 20 attributes:
+
+One straightforward approach is **manual derivation** by systematically exploring all possible attribute sets. Since the number of attributes is small (less than 20), you can iterate through all potential attribute combinations, from single attributes to combinations of all attributes. For each combination, determine the set of objects that share all these attributes (this is the extent). Then, for that set of objects, find all attributes common to them (this is the intent). If the derived intent matches the initial attribute combination, then you have found a formal concept. This method is feasible for small contexts because the power set of attributes, while growing exponentially, remains manageable (e.g., $2^{19}$ is large but many combinations won't lead to concepts).
+
+Another method is to use a **basic bottom-up algorithm**, often referred to as a variant of **NextClosure** or a similar incremental algorithm. You start by finding the concepts associated with individual objects. For each object $g$, its intent $g'$ is the set of all attributes it possesses. Then, the extent $(g')'$ is the set of all objects sharing exactly those attributes in $g'$. This pair $((g')', g')$ forms a concept. You can then iteratively build upon these initial concepts by considering intersections of extents (or unions of intents) and computing their respective closures. For small contexts, systematically checking pairs of existing concepts and deriving new ones from their common attributes or objects until no new concepts can be found is computationally manageable.
+
+A third way involves constructing the **concept lattice incrementally by adding attributes (or objects) one by one**. Start with an empty set of attributes, whose extent is all objects, forming the top concept. Then, introduce attributes one at a time. When adding an attribute, you update the existing concepts and potentially create new ones by intersecting the new attribute's extent with the extents of existing concepts. The small size of the context ensures that the number of existing concepts to check and update at each step remains small, making this a practical method. Algorithms like **Godin's algorithm** or simplified versions thereof can be applied effectively here.

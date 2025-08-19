@@ -1,0 +1,25 @@
+Gemini_tree_of_thoughts_eg2_3_test3_A3
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Okay, here are three ways to find the lattice concepts in a formal concept analysis (FCA) context with less than 20 objects and less than 20 attributes:
+
+One straightforward approach is **manual derivation by systematically checking all possible subsets of objects**. For each subset of objects, determine their common attributes (the intent). Then, find all objects that share this exact set of attributes (the extent). If this newly found set of objects is identical to the original subset you started with, then you have identified a formal concept. Given the small size of the context (less than $2^{20}$ potential object subsets, which is manageable, though still potentially large, but many will not form concepts), this exhaustive check, while tedious, is feasible and helps in understanding the fundamental definition of a concept. You would list all object subsets, find their common attributes, and then find all objects sharing those attributes, comparing the start and end object sets.
+
+---
+
+Another method is to **systematically explore attribute subsets**. Similar to the object-subset approach, you can iterate through all possible subsets of attributes. For each attribute subset, identify all objects that possess every attribute in that subset (this forms a potential extent). Then, for this set of objects, determine all the common attributes they share (this forms the corresponding intent). If this newly derived intent is identical to the attribute subset you initially selected, then the pair (extent, intent) constitutes a formal concept. This approach is also computationally intensive for larger datasets but manageable for contexts under 20x20, and it provides a complementary way to ensure all concepts are found.
+
+---
+
+A more structured and often more efficient algorithm for small contexts is **NextClosure** or a similar incremental concept generation algorithm. These algorithms typically start with an initial concept (e.g., the concept formed by all objects and their common attributes, or the concept with an empty intent and all objects sharing no common attributes if such exists). They then iteratively generate new concepts by systematically modifying the intent (or extent) of already found concepts, ensuring that each new concept is "closed" (i.e., its extent is maximal for its intent, and its intent is maximal for its extent). For small contexts, you can often perform these steps manually or with simple computational aids, effectively building the lattice concept by concept without exhaustively checking all $2^n$ or $2^m$ subsets.

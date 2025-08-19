@@ -1,0 +1,21 @@
+Gemini_tree_of_thoughts_eg2_3_test3_A1
+
+Date: 26 may 2025
+Model: Gemini 2.5 Pro 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+Formal Concept Analysis (FCA) provides a way to identify conceptual structures within data. A formal context is a triple (G, M, I), where G is a set of objects, M is a set of attributes, and I is a binary relation between G and M (I ⊆ G × M), indicating which object possesses which attribute. A formal concept is a pair (A, B) where A ⊆ G (the extent) and B ⊆ M (the intent), such that A' = B and B' = A, where A' = {m ∈ M | ∀g ∈ A: (g,m) ∈ I} and B' = {g ∈ G | ∀m ∈ B: (g,m) ∈ I}. For contexts with fewer than 20 objects and 20 attributes, several methods can be employed to find these concepts:
+
+One straightforward approach for very small contexts is direct inspection and manual enumeration. This involves systematically examining subsets of objects and determining their common attributes (to find the intent), and conversely, examining subsets of attributes and determining the objects that share them all (to find the extent). Starting with individual objects, one can list their attributes, then look for other objects sharing those exact attributes. Similarly, one can start with individual attributes, list the objects possessing them, and then see if those objects share any other common attributes. For each potential concept (A, B) found, one must verify the maximality condition: A must be the set of all objects sharing all attributes in B, and B must be the set of all attributes shared by all objects in A. This method relies on careful bookkeeping and becomes cumbersome as the context size increases, but is feasible for tiny contexts.
+
+Another method is to use an incremental algorithm, such as a simplified version of NextClosure or AddIntent. These algorithms build the set of concepts iteratively. For example, one could start with the concept (G'', G) where G'' is the set of all objects that have all attributes in G (which might be an empty set of attributes, leading to (G, M'') if M is empty or no attributes are common to all objects). Then, one systematically considers adding attributes (or objects) and computing the closure. For instance, starting with an empty intent, its extent is G. Then, for each attribute m not yet processed, one can form a new intent B ∪ {m} from a previously found concept (A, B), compute (B ∪ {m})', and then ((B ∪ {m})')'. If this new pair is a concept not yet found, it's added to the list. This process is repeated until no new concepts can be generated. For small contexts, this can be managed manually or with a simple program.
+
+A third approach involves systematically generating intents and then computing their corresponding extents, often based on principles from Ganter & Wille's algorithm for constructing concept lattices. One common strategy is to generate all possible intents in a specific order (e.g., lexicographical order of attribute sets). For each potential intent B, compute its extent B'. Then, compute (B')' to get the canonical intent B''. If B = B'', then (B', B) is a formal concept. To avoid redundant computations and ensure all concepts are found, algorithms often employ techniques like computing "closed" sets. For a small context, one could list all subsets of M, compute their extents, then their intents, and collect the unique (Extent, Intent) pairs that satisfy the closure conditions. While listing all 2|M| subsets can be excessive, optimizations for small |M| (e.g., |M| < 20) make it manageable, especially if one prunes branches that won't lead to new concepts.
