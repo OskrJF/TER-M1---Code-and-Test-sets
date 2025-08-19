@@ -1,0 +1,204 @@
+Deepseek_contextual-prompting_eg2_3_test3
+
+Date: 18 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+### Understanding the Context
+
+First, let's understand the given context from the CSV file:
+
+```
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+```
+
+This represents a formal context with:
+- **Objects (G):** o1, o2
+- **Attributes (M):** a1, a2, a3
+- The entries indicate whether an object has an attribute ("yes") or not ("no").
+
+### Formal Concept Analysis (FCA) Basics
+
+A **formal concept** in FCA is a pair (A, B), where:
+- **A** is a set of objects (extent).
+- **B** is a set of attributes (intent).
+- Every object in A has all attributes in B, and every attribute in B is possessed by all objects in A.
+
+To find all formal concepts, we can use the **Galois connection**:
+- For a set of objects A, the intent is the set of attributes common to all objects in A.
+- For a set of attributes B, the extent is the set of objects that have all attributes in B.
+
+### Step 1: List All Possible Subsets of Objects
+
+First, consider all possible subsets of the objects {o1, o2}:
+1. {} (empty set)
+2. {o1}
+3. {o2}
+4. {o1, o2}
+
+### Step 2: Find Intents for Each Object Subset
+
+Now, find the common attributes (intent) for each subset:
+
+1. **{} (empty set):**
+   - By definition, the intent of the empty set is all attributes {a1, a2, a3}, because there are no objects to violate any attribute.
+
+2. **{o1}:**
+   - o1 has attributes a1, a2 (since a3 is "no").
+   - Intent: {a1, a2}
+
+3. **{o2}:**
+   - o2 has attributes a2, a3.
+   - Intent: {a2, a3}
+
+4. **{o1, o2}:**
+   - Common attributes:
+     - a1: o1 has it, o2 does not → not common.
+     - a2: both have it → common.
+     - a3: o1 does not have it, o2 does → not common.
+   - Intent: {a2}
+
+### Step 3: List All Possible Subsets of Attributes
+
+Now, consider all possible subsets of the attributes {a1, a2, a3}:
+1. {} (empty set)
+2. {a1}
+3. {a2}
+4. {a3}
+5. {a1, a2}
+6. {a1, a3}
+7. {a2, a3}
+8. {a1, a2, a3}
+
+### Step 4: Find Extents for Each Attribute Subset
+
+Find the set of objects (extent) that have all attributes in each subset:
+
+1. **{} (empty set):**
+   - All objects have all attributes in the empty set.
+   - Extent: {o1, o2}
+
+2. **{a1}:**
+   - Objects with a1: o1 (o2 does not have a1).
+   - Extent: {o1}
+
+3. **{a2}:**
+   - Objects with a2: o1, o2.
+   - Extent: {o1, o2}
+
+4. **{a3}:**
+   - Objects with a3: o2.
+   - Extent: {o2}
+
+5. **{a1, a2}:**
+   - Objects with both a1 and a2: o1.
+   - Extent: {o1}
+
+6. **{a1, a3}:**
+   - Objects with both a1 and a3: none (o1 has a1 but not a3; o2 has a3 but not a1).
+   - Extent: {}
+
+7. **{a2, a3}:**
+   - Objects with both a2 and a3: o2.
+   - Extent: {o2}
+
+8. **{a1, a2, a3}:**
+   - Objects with all three attributes: none (o1 lacks a3; o2 lacks a1).
+   - Extent: {}
+
+### Step 5: Identify Formal Concepts
+
+A formal concept (A, B) must satisfy:
+- A is the extent of B.
+- B is the intent of A.
+
+From the previous steps, we can pair extents and intents to find concepts:
+
+1. **({o1, o2}, {a2}):**
+   - Extent of {a2}: {o1, o2}
+   - Intent of {o1, o2}: {a2}
+   - This is a valid concept.
+
+2. **({o1}, {a1, a2}):**
+   - Extent of {a1, a2}: {o1}
+   - Intent of {o1}: {a1, a2}
+   - Valid concept.
+
+3. **({o2}, {a2, a3}):**
+   - Extent of {a2, a3}: {o2}
+   - Intent of {o2}: {a2, a3}
+   - Valid concept.
+
+4. **({}, {a1, a2, a3}):**
+   - Extent of {a1, a2, a3}: {}
+   - Intent of {}: {a1, a2, a3}
+   - Valid concept (the "top" concept in the lattice).
+
+Now, let's check if there are any other combinations where the extent and intent perfectly match:
+
+- For ({o1, o2}, {a2}): Already covered.
+- For ({o1}, {a1, a2}): Covered.
+- For ({o2}, {a2, a3}): Covered.
+- For ({}, {a1, a2, a3}): Covered.
+
+Other combinations like:
+- ({o1}, {a1}): Intent of {o1} is {a1, a2}, not {a1} → Not a concept.
+- ({o2}, {a3}): Intent of {o2} is {a2, a3}, not {a3} → Not a concept.
+- ({o1, o2}, {}): This would imply all objects have no attributes, which isn't the case here.
+
+### Step 6: Verify All Concepts
+
+Let's list the valid concepts we've found:
+
+1. **({o1, o2}, {a2})**
+   - All objects share attribute a2.
+2. **({o1}, {a1, a2})**
+   - Only o1 has both a1 and a2.
+3. **({o2}, {a2, a3})**
+   - Only o2 has both a2 and a3.
+4. **({}, {a1, a2, a3})**
+   - No object has all three attributes.
+
+These are all possible combinations where the extent and intent perfectly correspond to each other under the Galois connection.
+
+### Step 7: Drawing the Concept Lattice (Optional Visualization)
+
+While the question asks for enumeration, visualizing the lattice can help understand the hierarchy:
+
+- Top: ({o1, o2}, {a2})
+  - Child: ({o1}, {a1, a2})
+  - Child: ({o2}, {a2, a3})
+    - Bottom: ({}, {a1, a2, a3})
+
+This forms a diamond-shaped lattice where the top concept is the most general (all objects sharing the most common attribute), and the bottom is the most specific (no objects satisfy all attributes).
+
+### Final Answer: Enumerated Lattice Concepts
+
+The complete list of all formal concepts (extent, intent) in the given context is:
+
+1. **({o1, o2}, {a2})**
+2. **({o1}, {a1, a2})**
+3. **({o2}, {a2, a3})**
+4. **({}, {a1, a2, a3})**
+
+These four pairs represent all possible formal concepts derivable from the given context. Each concept captures a unique combination of objects and their shared attributes, forming the concept lattice in Formal Concept Analysis.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]
+

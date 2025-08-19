@@ -1,0 +1,225 @@
+Deepseek_contextual-prompting_eg5_5_test2
+
+Date: 29 may 2025
+Model: DeepSeek-V3 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+### Understanding the Problem
+
+First, let's clarify what we're dealing with:
+
+1. **Formal Context**: This is a table that shows the relationship between objects (rows) and attributes (columns). In our case, the objects are `o1, o2, o3, o4, o5`, and the attributes are `a1, a2, a3, a4, a5`. The entries in the table are "yes" or "no", indicating whether an object has a particular attribute.
+
+2. **Formal Concept**: In Formal Concept Analysis (FCA), a formal concept is a pair `(A, B)` where:
+   - `A` is a set of objects (called the extent).
+   - `B` is a set of attributes (called the intent).
+   - Every object in `A` has all attributes in `B`, and every attribute in `B` is possessed by all objects in `A`. Moreover, `A` and `B` are maximal with respect to this property.
+
+3. **Concept Lattice**: This is the set of all formal concepts ordered by a subconcept-superconcept relation, forming a lattice structure.
+
+### Step 1: Represent the Formal Context
+
+Let's represent the context more clearly. "yes" means the object has the attribute, "no" means it doesn't.
+
+| Objet | a1  | a2  | a3  | a4  | a5  |
+|-------|-----|-----|-----|-----|-----|
+| o1    | yes | no  | yes | yes | no  |
+| o2    | no  | no  | yes | no  | no  |
+| o3    | yes | yes | no  | yes | yes |
+| o4    | no  | yes | no  | no  | yes |
+| o5    | no  | yes | no  | no  | no  |
+
+### Step 2: Find All Possible Concepts
+
+To find all formal concepts, we can:
+
+1. Start with any subset of objects and find their common attributes (intent).
+2. Then, take those attributes and find all objects that have them (extent).
+3. Ensure that this pair is maximal (no larger extent or intent satisfies the condition).
+
+Alternatively, we can start with attributes and do the same.
+
+Given the small size, we'll systematically explore all possible combinations.
+
+#### Finding Concepts:
+
+We'll start by considering all possible subsets of objects and compute their intents, then verify if the corresponding extents match.
+
+However, with 5 objects, there are 2^5 = 32 possible subsets, which is manageable.
+
+But a smarter approach is to start with the set of all objects and go downwards, or start with single attributes and build up.
+
+Let's try the attribute approach:
+
+**For each attribute, find all objects that have it (extent), then find all attributes common to those objects (intent).**
+
+1. **Attribute a1**:
+   - Extent: objects with a1=yes → {o1, o3}
+   - Intent: attributes common to o1 and o3:
+     - o1: a1, a3, a4
+     - o3: a1, a2, a4, a5
+     - Common: a1, a4
+   - Concept: ({o1, o3}, {a1, a4})
+
+2. **Attribute a2**:
+   - Extent: objects with a2=yes → {o3, o4, o5}
+   - Intent: common attributes:
+     - o3: a1, a2, a4, a5
+     - o4: a2, a5
+     - o5: a2
+     - Common: a2
+   - Now, check if the extent of a2 is all objects that have a2: yes, it's {o3, o4, o5}.
+   - Concept: ({o3, o4, o5}, {a2})
+
+3. **Attribute a3**:
+   - Extent: objects with a3=yes → {o1, o2}
+   - Intent: common attributes:
+     - o1: a1, a3, a4
+     - o2: a3
+     - Common: a3
+   - Check extent of {a3}: all objects with a3 → {o1, o2}
+   - Concept: ({o1, o2}, {a3})
+
+4. **Attribute a4**:
+   - Extent: objects with a4=yes → {o1, o3}
+   - Intent: common attributes:
+     - o1: a1, a3, a4
+     - o3: a1, a2, a4, a5
+     - Common: a1, a4
+   - This is the same as the concept found for a1: ({o1, o3}, {a1, a4})
+
+5. **Attribute a5**:
+   - Extent: objects with a5=yes → {o3, o4}
+   - Intent: common attributes:
+     - o3: a1, a2, a4, a5
+     - o4: a2, a5
+     - Common: a2, a5
+   - Check extent of {a2, a5}: objects with both a2 and a5 → {o3, o4}
+   - Concept: ({o3, o4}, {a2, a5})
+
+Now, we also need to consider combinations of attributes and the empty set.
+
+6. **Empty intent (all attributes)**:
+   - Extent: objects that have all attributes (none, since no object has all a1-a5)
+   - So, the bottom concept is: ({}, {a1, a2, a3, a4, a5})
+
+7. **All objects (empty extent)**:
+   - Intent: attributes common to all objects:
+     - o1: a1, a3, a4
+     - o2: a3
+     - o3: a1, a2, a4, a5
+     - o4: a2, a5
+     - o5: a2
+     - No attribute is common to all.
+   - So, the top concept is: ({o1, o2, o3, o4, o5}, {})
+
+Now, let's check if we've missed any concepts by considering intersections.
+
+- Intersection of {o1, o3} and {o3, o4, o5} is {o3}:
+  - Extent: {o3}
+  - Intent: attributes of o3: a1, a2, a4, a5
+  - Check extent of {a1, a2, a4, a5}: only o3 has all these.
+  - Concept: ({o3}, {a1, a2, a4, a5})
+
+- Intersection of {o1, o2} and {o1, o3} is {o1}:
+  - Extent: {o1}
+  - Intent: attributes of o1: a1, a3, a4
+  - Check extent of {a1, a3, a4}: only o1 has all these.
+  - Concept: ({o1}, {a1, a3, a4})
+
+- Intersection of {o3, o4} and {o3, o4, o5} is {o3, o4} (already have this).
+
+- Intersection of {o1, o3} and {o3, o4} is {o3} (already have this).
+
+- Intersection of {o1, o2} and {o3, o4, o5} is {} (bottom concept).
+
+- Intersection of {o1} and {o3} is {} (bottom).
+
+- Also, consider {o4}:
+  - Extent: {o4}
+  - Intent: attributes of o4: a2, a5
+  - Extent of {a2, a5}: {o3, o4}
+  - Not equal to {o4}, so not a concept by itself.
+
+Similarly, {o2}, {o5} don't form concepts with their own intents because their intents don't single them out uniquely.
+
+### Step 3: List All Formal Concepts
+
+From the above, the formal concepts are:
+
+1. ({}, {a1, a2, a3, a4, a5}) - Bottom concept (no objects, all attributes)
+2. ({o1, o2}, {a3})
+3. ({o1, o3}, {a1, a4})
+4. ({o3, o4, o5}, {a2})
+5. ({o3, o4}, {a2, a5})
+6. ({o1}, {a1, a3, a4})
+7. ({o3}, {a1, a2, a4, a5})
+8. ({o1, o2, o3, o4, o5}, {}) - Top concept (all objects, no common attributes)
+
+### Step 4: Verify No Concepts Are Missed
+
+Let's ensure we haven't missed any:
+
+- Any other subset of objects:
+  - {o2}: intent is {a3}, but extent of {a3} is {o1, o2}, not {o2}.
+  - {o4}: intent is {a2, a5}, extent is {o3, o4}, not {o4}.
+  - {o5}: intent is {a2}, extent is {o3, o4, o5}, not {o5}.
+  - {o1, o4}: intent is {} (no common attributes), but this would be covered by the top concept.
+  - Similarly, other combinations either lead to existing concepts or are not maximal.
+
+Thus, we've covered all possible formal concepts.
+
+### Final Answer: All Formal Concepts
+
+Here is the complete list of formal concepts extracted from the given context:
+
+1. **Bottom Concept**:  
+   - Extent: {} (no objects)  
+   - Intent: {a1, a2, a3, a4, a5} (all attributes)
+
+2. **Concept 2**:  
+   - Extent: {o1, o2}  
+   - Intent: {a3}
+
+3. **Concept 3**:  
+   - Extent: {o1, o3}  
+   - Intent: {a1, a4}
+
+4. **Concept 4**:  
+   - Extent: {o3, o4, o5}  
+   - Intent: {a2}
+
+5. **Concept 5**:  
+   - Extent: {o3, o4}  
+   - Intent: {a2, a5}
+
+6. **Concept 6**:  
+   - Extent: {o1}  
+   - Intent: {a1, a3, a4}
+
+7. **Concept 7**:  
+   - Extent: {o3}  
+   - Intent: {a1, a2, a4, a5}
+
+8. **Top Concept**:  
+   - Extent: {o1, o2, o3, o4, o5} (all objects)  
+   - Intent: {} (no common attributes)
+
+These eight pairs represent all the formal concepts in the given context. Each concept is a maximal pair where the extent consists of all objects sharing the intent's attributes, and the intent consists of all attributes shared by the extent's objects.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3, a4, a5], []], [[a3], [o1, o2]], [[a1, a4], [o1, o3]], [[a2], [o3, o4, o5]], [[a2, a5], [o3, o4]], [[a1, a3, a4], [o1]], [[a1, a2, a4, a5], [o3]], [[], [o1, o2, o3, o4, o5]]]

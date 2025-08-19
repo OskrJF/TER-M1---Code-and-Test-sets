@@ -1,0 +1,195 @@
+Deepseek_contextual-prompting_eg2_9_test3
+
+Date: 19 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+### Understanding the Context
+
+First, let's understand the given context from the CSV file. The context is a cross-table showing objects (o1, o2) and their attributes (a1 to a9). Here's the context represented in a more readable format:
+
+| Objet | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+|-------|----|----|----|----|----|----|----|----|----|
+| o1    | yes| yes| yes| yes| no | no | yes| no | yes|
+| o2    | yes| no | no | yes| no | yes| no | no | yes|
+
+### Formal Concept Analysis Basics
+
+In Formal Concept Analysis (FCA), a **formal concept** is a pair (A, B), where:
+- A is a set of objects (extent),
+- B is a set of attributes (intent),
+- and every object in A has every attribute in B, and there are no other objects outside A that have all attributes in B, and no other attributes outside B that are shared by all objects in A.
+
+To find all formal concepts, we can use the **Galois connection**:
+- For a set of objects X, the set of common attributes is X' = {a ∈ M | ∀o ∈ X: (o, a) ∈ I}.
+- For a set of attributes Y, the set of common objects is Y' = {o ∈ G | ∀a ∈ Y: (o, a) ∈ I}.
+
+A concept (A, B) satisfies A' = B and B' = A.
+
+### Step-by-Step Concept Extraction
+
+Given the small size of the context, we can enumerate all possible combinations of objects and attributes to find the concepts.
+
+#### 1. Start with the empty set:
+- Extent: {} (no objects)
+  - Intent: All attributes {a1, a2, a3, a4, a5, a6, a7, a8, a9} (since no objects means all attributes are shared by none, but conventionally, the intent is all attributes).
+  - However, in FCA, the intent of the empty extent is all attributes, and the extent of all attributes is the empty set. So, this gives us the top concept:
+    - Concept: ({}, {a1, a2, a3, a4, a5, a6, a7, a8, a9})
+
+#### 2. Consider single objects:
+- Extent: {o1}
+  - Common attributes: a1, a2, a3, a4, a7, a9 (since o1 has 'yes' for these)
+  - Check if {o1} is the extent of {a1, a2, a3, a4, a7, a9}:
+    - Which objects have all these attributes? Only o1.
+    - So, concept: ({o1}, {a1, a2, a3, a4, a7, a9})
+
+- Extent: {o2}
+  - Common attributes: a1, a4, a6, a9
+  - Check extent of {a1, a4, a6, a9}: only o2.
+    - So, concept: ({o2}, {a1, a4, a6, a9})
+
+#### 3. Consider both objects:
+- Extent: {o1, o2}
+  - Common attributes: a1, a4, a9
+  - Check extent of {a1, a4, a9}: both o1 and o2.
+    - So, concept: ({o1, o2}, {a1, a4, a9})
+
+#### 4. Now, consider attribute combinations not yet covered:
+We have concepts for:
+- All attributes (top),
+- {o1} and its intent,
+- {o2} and its intent,
+- {o1, o2} and its intent.
+
+Now, let's see if any subsets of attributes lead to new concepts.
+
+- Take intent {a1, a4, a9} (from {o1, o2}):
+  - Already covered.
+
+- Take intent {a1, a2, a3, a4, a7, a9} (from {o1}):
+  - Any subset of this intent that is not already covered?
+    - For example, {a1, a4, a9} is already covered.
+    - {a1, a2, a4, a9}: extent would be objects with a1, a2, a4, a9: only o1.
+      - But this is the same as {o1}, so no new concept.
+    - Similarly, other subsets will either give {o1} or {o1, o2}.
+
+- Take intent {a1, a4, a6, a9} (from {o2}):
+  - Subsets like {a1, a4, a9} are already covered.
+  - {a1, a4, a6}: extent is o2 (since o1 doesn't have a6).
+    - But this is the same as {o2}, so no new concept.
+
+#### 5. Check if any other attribute combinations lead to new extents:
+- For example, take {a1}:
+  - Extent: objects with a1: o1, o2.
+  - But this is the same as {o1, o2}, so intent is {a1, a4, a9}, already covered.
+
+- Take {a4}:
+  - Extent: o1, o2.
+  - Same as above.
+
+- Take {a9}:
+  - Extent: o1, o2.
+  - Same.
+
+- Take {a2}:
+  - Extent: o1.
+  - Same as {o1}.
+
+- Take {a6}:
+  - Extent: o2.
+  - Same as {o2}.
+
+- Take {a1, a4}:
+  - Extent: o1, o2.
+  - Same as above.
+
+No new concepts emerge from these combinations.
+
+#### 6. Bottom concept:
+- Extent: {o1, o2} (all objects)
+  - Intent: {a1, a4, a9}
+  - This is already covered.
+
+But wait, the bottom concept is usually the set of all objects with their common attributes, which is ({o1, o2}, {a1, a4, a9}).
+
+The top concept is ({}, {a1, ..., a9}).
+
+### Final List of Formal Concepts
+
+After checking all possible combinations, the complete list of formal concepts is:
+
+1. ( {}, {a1, a2, a3, a4, a5, a6, a7, a8, a9} ) - Top concept (no objects, all attributes)
+2. ( {o1}, {a1, a2, a3, a4, a7, a9} )
+3. ( {o2}, {a1, a4, a6, a9} )
+4. ( {o1, o2}, {a1, a4, a9} ) - Bottom concept (all objects, their common attributes)
+
+### Verification
+
+Let's verify that these are indeed formal concepts:
+1. For ({o1}, {a1, a2, a3, a4, a7, a9}):
+   - All attributes in intent are shared by o1.
+   - No other object (only o2) shares all these (o2 lacks a2, a3, a7).
+   - So, this is correct.
+
+2. For ({o2}, {a1, a4, a6, a9}):
+   - All attributes in intent are shared by o2.
+   - o1 lacks a6, so no other object shares all these.
+   - Correct.
+
+3. For ({o1, o2}, {a1, a4, a9}):
+   - Both o1 and o2 share a1, a4, a9.
+   - No other attributes are shared by both.
+   - Correct.
+
+4. For ({}, all attributes):
+   - No objects, so all attributes are shared (by none).
+   - Correct top concept.
+
+No other combinations yield new concepts where the extent and intent are mutually maximal.
+
+### Concept Lattice
+
+The concept lattice can be visualized as follows:
+
+- Top: ({}, {a1..a9})
+  - ({o1}, {a1,a2,a3,a4,a7,a9})
+    - ({o1,o2}, {a1,a4,a9})
+  - ({o2}, {a1,a4,a6,a9})
+    - ({o1,o2}, {a1,a4,a9})
+
+Where:
+- The top concept is above all.
+- {o1} and {o2} are below top and above {o1,o2}.
+- {o1,o2} is the bottom concept.
+
+### Conclusion
+
+The complete enumeration of all formal concepts in the given context is:
+
+1. ( {}, {a1, a2, a3, a4, a5, a6, a7, a8, a9} )
+2. ( {o1}, {a1, a2, a3, a4, a7, a9} )
+3. ( {o2}, {a1, a4, a6, a9} )
+4. ( {o1, o2}, {a1, a4, a9} )
+
+These are all the formal concepts that can be derived from the provided context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+
+[[[a1, a2, a3, a4, a5, a6, a7, a8, a9], []], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a4, a9], [o1, o2]]]
+
+
+

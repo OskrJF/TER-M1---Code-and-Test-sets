@@ -1,0 +1,85 @@
+Deepseek_contextual-prompting_eg2_9_test2
+
+Date: 19 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), a formal concept is a pair \((A, B)\) where:
+- \(A\) is a set of objects (extent),
+- \(B\) is a set of attributes (intent),
+- and every object in \(A\) has every attribute in \(B\), and no other object outside \(A\) has all attributes in \(B\).
+
+Given the context from the `.csv` file:
+
+| Objet | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+|-------|----|----|----|----|----|----|----|----|----|
+| o1    | yes| yes| yes| yes| no | no | yes| no | yes|
+| o2    | yes| no | no | yes| no | yes| no | no | yes|
+
+### Step 1: List all objects and attributes
+- Objects: \( \{o1, o2\} \)
+- Attributes: \( \{a1, a2, a3, a4, a5, a6, a7, a8, a9\} \)
+
+### Step 2: Compute all formal concepts
+We can find all formal concepts by considering all combinations of objects and their shared attributes, or attributes and their shared objects.
+
+#### Method:
+1. For each subset of objects, compute the common attributes (intent).
+2. For each subset of attributes, compute the common objects (extent).
+3. Ensure the pair \((A, B)\) is maximal (no larger \(A\) or \(B\) satisfies the condition).
+
+#### Formal Concepts:
+1. **Top Concept**: All objects, no additional attributes.
+   - Extent: \( \{o1, o2\} \)
+   - Intent: Common attributes of \(o1\) and \(o2\): \( \{a1, a4, a9\} \)
+   - Concept: \( (\{o1, o2\}, \{a1, a4, a9\}) \)
+
+2. **Bottom Concept**: All attributes, no additional objects.
+   - Extent: No object has all attributes. Thus, the empty set.
+   - Intent: \( \{a1, a2, a3, a4, a5, a6, a7, a8, a9\} \)
+   - Concept: \( (\emptyset, \{a1, a2, a3, a4, a5, a6, a7, a8, a9\}) \)
+
+3. **Other Concepts**:
+   - For \(o1\):
+     - Extent: \( \{o1\} \)
+     - Intent: Attributes of \(o1\): \( \{a1, a2, a3, a4, a7, a9\} \)
+     - Concept: \( (\{o1\}, \{a1, a2, a3, a4, a7, a9\}) \)
+   - For \(o2\):
+     - Extent: \( \{o2\} \)
+     - Intent: Attributes of \(o2\): \( \{a1, a4, a6, a9\} \)
+     - Concept: \( (\{o2\}, \{a1, a4, a6, a9\}) \)
+   - For attributes not shared by both objects:
+     - \( \{a1, a4, a7, a9\} \): Only \(o1\) has these, but this is already covered by \( (\{o1\}, \{a1, a2, a3, a4, a7, a9\}) \).
+     - \( \{a1, a4, a6, a9\} \): Only \(o2\) has these, which is already covered by \( (\{o2\}, \{a1, a4, a6, a9\}) \).
+     - No other subsets of attributes yield new extents.
+
+### Step 3: Verify all concepts
+- \( (\{o1, o2\}, \{a1, a4, a9\}) \): Valid (all objects share \(a1, a4, a9\)).
+- \( (\{o1\}, \{a1, a2, a3, a4, a7, a9\}) \): Valid (only \(o1\) has these attributes).
+- \( (\{o2\}, \{a1, a4, a6, a9\}) \): Valid (only \(o2\) has these attributes).
+- \( (\emptyset, \{a1, a2, a3, a4, a5, a6, a7, a8, a9\}) \): Valid (no object has all attributes).
+
+### Final List of Formal Concepts:
+1. \( (\{o1, o2\}, \{a1, a4, a9\}) \)
+2. \( (\{o1\}, \{a1, a2, a3, a4, a7, a9\}) \)
+3. \( (\{o2\}, \{a1, a4, a6, a9\}) \)
+4. \( (\emptyset, \{a1, a2, a3, a4, a5, a6, a7, a8, a9\}) \)
+
+These are all the formal concepts for the given context. The lattice can be visualized with the top concept at the top, the bottom concept at the bottom, and the other concepts in between.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3, a4, a5, a6, a7, a8, a9], []], [[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]]]

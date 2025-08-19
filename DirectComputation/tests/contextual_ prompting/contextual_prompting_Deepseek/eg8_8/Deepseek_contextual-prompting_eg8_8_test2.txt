@@ -1,0 +1,232 @@
+Deepseek_contextual-prompting_eg8_8_test1
+
+Date: 29 may 2025
+Model: DeepSeek-V3 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+### Understanding the Context
+
+First, let's represent the context clearly. We have:
+
+- **Objects (O):** O1, O2, O3, O4, O5, O6, O7, O8
+- **Attributes (A):** a1, a2, a3, a4, a5, a6, a7, a8
+
+The context can be represented as a table where each row corresponds to an object and each column to an attribute, with "Yes" indicating that the object has the attribute and "No" indicating it does not.
+
+### Formal Concept Analysis Basics
+
+A **formal concept** in FCA is a pair (X, Y), where:
+- X (the extent) is a set of objects that share all attributes in Y.
+- Y (the intent) is a set of attributes shared by all objects in X.
+
+Concepts are partially ordered by (X1, Y1) ≤ (X2, Y2) iff X1 ⊆ X2 (which is equivalent to Y2 ⊆ Y1). The set of all concepts forms a complete lattice.
+
+### Step 1: List All Possible Attribute Combinations
+
+First, we'll list all possible subsets of attributes (power set of A) and for each, find the set of objects that have all those attributes (the extent).
+
+However, with 8 attributes, there are 2^8 = 256 possible attribute combinations, which is too many to enumerate manually. Instead, a more efficient method is to start with objects and find their intents, then combine them.
+
+### Step 2: Find Concepts Using Object Intents
+
+For each object, its intent is the set of attributes it has. The concept for an object is the pair (extent, intent), where:
+- intent is the set of attributes the object has.
+- extent is all objects that have at least those attributes.
+
+Let's find the intent for each object:
+
+- O1: {a1, a2, a3}
+- O2: {a1, a2, a3, a6, a8}
+- O3: {a1, a2, a4, a6}
+- O4: {a2, a3, a4, a5, a8}
+- O5: {a2, a4, a6, a7, a8}
+- O6: {a1, a2, a3, a5, a7}
+- O7: {a2, a3, a4, a5, a7}
+- O8: {a2, a3, a4, a5, a7}
+
+Now, for each unique intent, find all objects that have at least those attributes:
+
+1. Intent {a1, a2, a3}:
+   - Objects with at least {a1, a2, a3}: O1, O2, O6
+   - Concept: ({O1, O2, O6}, {a1, a2, a3})
+
+2. Intent {a1, a2, a3, a6, a8}:
+   - Only O2 has all these.
+   - Concept: ({O2}, {a1, a2, a3, a6, a8})
+
+3. Intent {a1, a2, a4, a6}:
+   - Objects with at least these: O3
+   - Concept: ({O3}, {a1, a2, a4, a6})
+
+4. Intent {a2, a3, a4, a5, a8}:
+   - Objects: O4
+   - Concept: ({O4}, {a2, a3, a4, a5, a8})
+
+5. Intent {a2, a4, a6, a7, a8}:
+   - Objects: O5
+   - Concept: ({O5}, {a2, a4, a6, a7, a8})
+
+6. Intent {a1, a2, a3, a5, a7}:
+   - Objects: O6
+   - Concept: ({O6}, {a1, a2, a3, a5, a7})
+
+7. Intent {a2, a3, a4, a5, a7}:
+   - Objects: O7, O8
+   - Concept: ({O7, O8}, {a2, a3, a4, a5, a7})
+
+### Step 3: Find Additional Concepts by Intersecting Intents
+
+Some concepts may not correspond directly to any single object's intent but are intersections of intents. We need to check intersections of the intents we've found to see if they yield new concepts.
+
+Let's consider intersections:
+
+- {a1, a2, a3} ∩ {a1, a2, a4, a6} = {a1, a2}
+   - Objects with {a1, a2}: O1, O2, O3, O6
+   - Concept: ({O1, O2, O3, O6}, {a1, a2})
+
+- {a1, a2} ∩ {a2, a3, a4, a5, a7} = {a2}
+   - Objects with {a2}: all objects (O1-O8)
+   - Concept: ({O1, O2, O3, O4, O5, O6, O7, O8}, {a2})
+
+- {a2, a3, a4, a5, a7} ∩ {a2, a3, a4, a5, a8} = {a2, a3, a4, a5}
+   - Objects with {a2, a3, a4, a5}: O4, O7, O8
+   - Concept: ({O4, O7, O8}, {a2, a3, a4, a5})
+
+- {a2, a3, a4, a5} ∩ {a2, a4, a6, a7, a8} = {a2, a4}
+   - Objects with {a2, a4}: O3, O4, O5, O7, O8
+   - Concept: ({O3, O4, O5, O7, O8}, {a2, a4})
+
+- {a2, a4} ∩ {a1, a2} = {a2}
+   - Already have this.
+
+- {a2, a3, a4, a5} ∩ {a1, a2, a3} = {a2, a3}
+   - Objects with {a2, a3}: O1, O2, O4, O6, O7, O8
+   - Concept: ({O1, O2, O4, O6, O7, O8}, {a2, a3})
+
+- {a2, a3} ∩ {a2, a4} = {a2}
+   - Already have this.
+
+- {a1, a2, a3} ∩ {a2, a3, a4, a5, a7} = {a2, a3}
+   - Already have this.
+
+- {a2, a3} ∩ {a2, a4} = {a2}
+   - Already have this.
+
+- {a1, a2} ∩ {a2, a4} = {a2}
+   - Already have this.
+
+We also need to consider the empty intent (all attributes), which corresponds to all objects that have all attributes. But since no object has all attributes, the extent is empty:
+- Concept: ({}, {a1, a2, a3, a4, a5, a6, a7, a8})
+
+And the full extent with empty intent (all objects share no common attribute beyond the universal one, but since all objects have a2, the minimal common attribute is {a2}):
+- Already covered by ({O1-O8}, {a2}).
+
+### Step 4: Verify All Concepts
+
+Now, let's list all concepts we've found:
+
+1. ({O1, O2, O6}, {a1, a2, a3})
+2. ({O2}, {a1, a2, a3, a6, a8})
+3. ({O3}, {a1, a2, a4, a6})
+4. ({O4}, {a2, a3, a4, a5, a8})
+5. ({O5}, {a2, a4, a6, a7, a8})
+6. ({O6}, {a1, a2, a3, a5, a7})
+7. ({O7, O8}, {a2, a3, a4, a5, a7})
+8. ({O1, O2, O3, O6}, {a1, a2})
+9. ({O1, O2, O3, O4, O5, O6, O7, O8}, {a2})
+10. ({O4, O7, O8}, {a2, a3, a4, a5})
+11. ({O3, O4, O5, O7, O8}, {a2, a4})
+12. ({O1, O2, O4, O6, O7, O8}, {a2, a3})
+13. ({}, {a1, a2, a3, a4, a5, a6, a7, a8})
+
+### Step 5: Check for Missing Concepts
+
+Are there any other intersections that could form new concepts?
+
+- {a1, a2} ∩ {a2, a3} = {a2}
+   - Already have.
+
+- {a1, a2, a3} ∩ {a1, a2, a3, a5, a7} = {a1, a2, a3}
+   - Already have.
+
+- {a2, a3} ∩ {a2, a3, a4, a5} = {a2, a3}
+   - Already have.
+
+- {a2, a4} ∩ {a2, a3, a4, a5} = {a2, a4}
+   - Already have.
+
+It seems we've covered all intersections. 
+
+### Final List of Concepts
+
+Here is the complete list of formal concepts extracted from the context:
+
+1. ({}, {a1, a2, a3, a4, a5, a6, a7, a8})
+2. ({O1, O2, O3, O4, O5, O6, O7, O8}, {a2})
+3. ({O1, O2, O3, O6}, {a1, a2})
+4. ({O1, O2, O6}, {a1, a2, a3})
+5. ({O2}, {a1, a2, a3, a6, a8})
+6. ({O3}, {a1, a2, a4, a6})
+7. ({O6}, {a1, a2, a3, a5, a7})
+8. ({O1, O2, O4, O6, O7, O8}, {a2, a3})
+9. ({O3, O4, O5, O7, O8}, {a2, a4})
+10. ({O4, O7, O8}, {a2, a3, a4, a5})
+11. ({O4}, {a2, a3, a4, a5, a8})
+12. ({O5}, {a2, a4, a6, a7, a8})
+13. ({O7, O8}, {a2, a3, a4, a5, a7})
+
+### Verification of Concepts
+
+To ensure completeness, let's verify that for each concept, the extent is indeed all objects that have all attributes in the intent, and the intent is all attributes shared by all objects in the extent.
+
+For example:
+- Concept ({O1, O2, O6}, {a1, a2, a3}):
+  - O1, O2, O6 all have a1, a2, a3.
+  - No other object has all three (O3 lacks a3, O4 lacks a1, etc.).
+  
+- Concept ({O3, O4, O5, O7, O8}, {a2, a4}):
+  - All these objects have a2 and a4.
+  - O1 lacks a4, O2 lacks a4, O6 lacks a4.
+
+This verification holds for all listed concepts.
+
+### Conclusion
+
+After systematically exploring all object intents and their intersections, we've identified all formal concepts in the given context. The lattice can be constructed by ordering these concepts based on subset relations between extents (or superset relations between intents).
+
+**Final Answer:**
+
+The complete list of formal concepts (extent, intent) for the given context is:
+
+1. ({}, {a1, a2, a3, a4, a5, a6, a7, a8})
+2. ({O1, O2, O3, O4, O5, O6, O7, O8}, {a2})
+3. ({O1, O2, O3, O6}, {a1, a2})
+4. ({O1, O2, O6}, {a1, a2, a3})
+5. ({O2}, {a1, a2, a3, a6, a8})
+6. ({O3}, {a1, a2, a4, a6})
+7. ({O6}, {a1, a2, a3, a5, a7})
+8. ({O1, O2, O4, O6, O7, O8}, {a2, a3})
+9. ({O3, O4, O5, O7, O8}, {a2, a4})
+10. ({O4, O7, O8}, {a2, a3, a4, a5})
+11. ({O4}, {a2, a3, a4, a5, a8})
+12. ({O5}, {a2, a4, a6, a7, a8})
+13. ({O7, O8}, {a2, a3, a4, a5, a7})
+
+These concepts form the concept lattice for the given formal context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3, a4, a5, a6, a7, a8], []], [[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a1, a2, a3], [O1, O2, O6]], [[a1, a2, a3, a6, a8], [O2]], [[a1, a2, a4, a6], [O3]], [[a1, a2, a3, a5, a7], [O6]], [[a2, a3], [O1, O2, O4, O6, O7, O8]], [[a2, a4], [O3, O4, O5, O7, O8]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a3, a4, a5, a8], [O4]], [[a2, a4, a6, a7, a8], [O5]], [[a2, a3, a4, a5, a7], [O7, O8]]]

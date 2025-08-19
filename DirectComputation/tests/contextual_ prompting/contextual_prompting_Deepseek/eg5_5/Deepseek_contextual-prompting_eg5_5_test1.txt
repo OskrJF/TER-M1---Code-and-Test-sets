@@ -1,0 +1,278 @@
+Deepseek_contextual-prompting_eg5_5_test1
+
+Date: 29 may 2025
+Model: DeepSeek-V3 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+### Understanding the Problem
+
+First, let's understand what Formal Concept Analysis (FCA) is and what a "lattice concept" means in this context.
+
+**Formal Concept Analysis (FCA)** is a mathematical framework for data analysis where we study how objects relate to attributes. The main components are:
+
+1. **Context**: A table showing which objects have which attributes. Here, objects are `o1` to `o5`, and attributes are `a1` to `a5`.
+2. **Formal Concept**: A pair `(A, B)` where:
+   - `A` is a set of objects (the extent),
+   - `B` is a set of attributes (the intent),
+   - Every object in `A` has every attribute in `B`, and
+   - There are no other objects outside `A` that have all attributes in `B`, and no other attributes outside `B` that all objects in `A` have.
+3. **Concept Lattice**: The collection of all formal concepts ordered hierarchically based on inclusion.
+
+Our goal is to find all such formal concepts from the given context.
+
+### Given Context
+
+Let's represent the context more clearly. "yes" means the object has the attribute, "no" means it doesn't.
+
+| Objet | a1  | a2  | a3  | a4  | a5  |
+|-------|-----|-----|-----|-----|-----|
+| o1    | yes | no  | yes | yes | no  |
+| o2    | no  | no  | yes | no  | no  |
+| o3    | yes | yes | no  | yes | yes |
+| o4    | no  | yes | no  | no  | yes |
+| o5    | no  | yes | no  | no  | no  |
+
+### Finding All Formal Concepts
+
+To find all formal concepts, we can follow these steps:
+
+1. **List all possible subsets of objects** (powerset of objects).
+2. For each subset, find all attributes common to all objects in the subset (intent).
+3. Then, for that intent, find all objects that have all those attributes (extent).
+4. If the extent matches the original subset, then `(extent, intent)` is a formal concept.
+
+However, generating all subsets is computationally heavy for large sets, but here we have only 5 objects, so 32 subsets, which is manageable.
+
+Alternatively, we can start from attributes:
+
+1. **List all possible subsets of attributes** (powerset of attributes).
+2. For each subset, find all objects that have all those attributes (extent).
+3. Then, for that extent, find all attributes common to all objects in the extent (intent).
+4. If the intent matches the original subset, then `(extent, intent)` is a formal concept.
+
+This is more efficient because we can generate concepts by combining attributes.
+
+Let's proceed with the attribute-based approach.
+
+#### Step 1: List all attribute combinations
+
+Attributes: a1, a2, a3, a4, a5
+
+Number of subsets: 2^5 = 32 (including empty set).
+
+#### Step 2: For each subset, find extent and then intent, check if they match.
+
+We'll go through each possible combination, but in practice, we can be smarter by starting from single attributes and building up.
+
+But for thoroughness, let's list all concepts by checking each subset.
+
+However, listing all 32 is time-consuming, so let's find a smarter way by starting from the bottom (full set of objects) or top (empty set), but usually, we start from single attributes and build.
+
+#### Alternative Approach: Using NextClosure Algorithm (simplified)
+
+A more systematic way is to generate concepts by closure operations. The intent of a concept is a closed set of attributes, meaning that taking all objects that have these attributes, and then taking all attributes these objects share, brings us back to the same set.
+
+So, we can:
+
+1. Start with the empty set.
+2. For each attribute, generate the closure by adding it and seeing what the full intent is.
+3. Continue until no new intents are found.
+
+Let's do this.
+
+**1. Empty set: {}**
+
+- Extent: all objects (since no attributes to satisfy, all objects have all of no attributes).
+  - Extent: {o1, o2, o3, o4, o5}
+- Now, find common attributes of {o1, o2, o3, o4, o5}:
+  - a1: o1 yes, o2 no, o3 yes, o4 no, o5 no → not all
+  - a2: no, no, yes, yes, yes → not all
+  - a3: yes, yes, no, no, no → not all
+  - a4: yes, no, yes, no, no → not all
+  - a5: no, no, yes, yes, no → not all
+  - So, intent: {}
+- This is the bottom concept: ({o1, o2, o3, o4, o5}, {})
+
+**2. Single attributes:**
+
+**a1:**
+
+- Objects with a1: o1, o3
+- Common attributes of {o1, o3}:
+  - a1: yes, yes → yes
+  - a2: no, yes → no
+  - a3: yes, no → no
+  - a4: yes, yes → yes
+  - a5: no, yes → no
+  - So, intent: {a1, a4}
+- Now, extent of {a1, a4}:
+  - Objects with a1 and a4: o1 (a1 yes, a4 yes), o3 (yes, yes), others: o2 (no, no), o4 (no, no), o5 (no, no)
+  - So, extent: {o1, o3}
+- Concept: ({o1, o3}, {a1, a4})
+
+**a2:**
+
+- Objects with a2: o3, o4, o5
+- Common attributes of {o3, o4, o5}:
+  - a1: yes, no, no → no
+  - a2: yes, yes, yes → yes
+  - a3: no, no, no → yes
+  - a4: yes, no, no → no
+  - a5: yes, yes, no → no
+  - So, intent: {a2, a3}
+- Extent of {a2, a3}:
+  - Objects with a2 and a3: o3 (a2 yes, a3 no → no), o4 (yes, no → no), o5 (yes, no → no), o2 (no, yes → no), o1 (no, yes → no)
+  - Wait, none have both a2 and a3. This suggests an error.
+  
+  Hmm, o3 has a2 yes, a3 no; o4 a2 yes, a3 no; o5 a2 yes, a3 no. So none have both a2 and a3. So extent is empty.
+  
+  But earlier, intent was {a2, a3}, but extent is empty. This is not a valid concept because extent should be all objects with these attributes, but here none have both, so this is not a concept. So {a2} does not lead to a new concept beyond the bottom.
+
+Wait, maybe the concept is ({}, {a1,a2,a3,a4,a5}), but that's the top concept, which we'll get later.
+
+This suggests that {a2} alone doesn't form a concept with non-empty extent. Maybe the only concepts come from closures that add more.
+
+Let me proceed differently: list all possible attribute sets and check closure.
+
+**Systematically listing concepts:**
+
+We can find concepts by looking at all possible attribute sets where the intent is closed (i.e., adding all shared attributes of objects that have these doesn't add more).
+
+From the data, let's find all closed attribute sets.
+
+1. {}: as above, extent all, intent {}.
+2. {a1}: extent {o1,o3}, intent {a1,a4} → new concept ({o1,o3}, {a1,a4})
+3. {a2}: extent empty (since no object has a2 and a3), so not a concept.
+4. {a3}: extent {o1,o2}, find common attributes:
+   - o1: a1 no, a2 no, a3 yes, a4 yes, a5 no
+   - o2: a1 no, a2 no, a3 yes, a4 no, a5 no
+   - common: a3 yes, others no (a1 no, a2 no, a4 no, a5 no)
+   - so intent {a3}
+   - extent of {a3}: {o1,o2}
+   - so concept: ({o1,o2}, {a3})
+5. {a4}: extent objects with a4: o1, o3
+   - intent: {a1,a4} (same as {a1})
+   - already have ({o1,o3}, {a1,a4})
+6. {a5}: extent objects with a5: o3, o4
+   - common attributes:
+     - o3: a1 yes, a2 yes, a3 no, a4 yes, a5 yes
+     - o4: a1 no, a2 yes, a3 no, a4 no, a5 yes
+     - common: a2 yes, a5 yes, others no
+     - so intent {a2, a5}
+   - extent of {a2,a5}: objects with a2 and a5: o3, o4
+     - o3: yes, yes
+     - o4: yes, yes
+     - o5: a2 yes, a5 no
+     - others no
+     - so {o3,o4}
+   - concept: ({o3,o4}, {a2,a5})
+7. Now, combinations:
+   - {a1,a2}: extent objects with a1 and a2: o3
+     - common attributes of {o3}: all its attributes: a1,a2,a4,a5
+     - so intent {a1,a2,a4,a5}
+     - extent of {a1,a2,a4,a5}: only o3
+     - concept: ({o3}, {a1,a2,a4,a5})
+   - {a1,a3}: extent objects with a1 and a3: o1
+     - common attributes of {o1}: a1,a3,a4
+     - intent {a1,a3,a4}
+     - extent of {a1,a3,a4}: o1
+     - concept: ({o1}, {a1,a3,a4})
+   - {a1,a4}: already have ({o1,o3}, {a1,a4})
+   - {a1,a5}: extent o3
+     - intent {a1,a2,a4,a5} (same as {a1,a2})
+     - already have ({o3}, {a1,a2,a4,a5})
+   - {a2,a3}: extent empty, as before
+   - {a2,a4}: extent o3
+     - intent {a1,a2,a4,a5}
+     - same as above
+   - {a2,a5}: already have ({o3,o4}, {a2,a5})
+   - {a3,a4}: extent o1
+     - intent {a1,a3,a4}
+     - same as {a1,a3}
+   - {a3,a5}: extent empty
+   - {a4,a5}: extent o3
+     - intent {a1,a2,a4,a5}
+   - Larger combinations will have extent subsets of above, leading to same or smaller extents.
+8. Top concept: intent all attributes, extent objects with all attributes: none have all, so extent empty. But top concept is usually (extent empty, intent all), but here it's not meaningful since no object has all. But formally, it's ({}, {a1,a2,a3,a4,a5}).
+
+But usually, the top concept is the set of all attributes with empty extent if no object has all.
+
+### List of All Formal Concepts
+
+After checking, the formal concepts are:
+
+1. ({o1, o2, o3, o4, o5}, {}) - Bottom concept
+2. ({o1, o3}, {a1, a4})
+3. ({o1, o2}, {a3})
+4. ({o3, o4}, {a2, a5})
+5. ({o3}, {a1, a2, a4, a5})
+6. ({o1}, {a1, a3, a4})
+7. ({}, {a1, a2, a3, a4, a5}) - Top concept
+
+### Verification
+
+Let's verify one: ({o3, o4}, {a2, a5}):
+
+- Objects o3 and o4 both have a2 and a5.
+- No other object has both a2 and a5 (o5 has a2 but not a5).
+- So extent is {o3, o4}.
+- Common attributes of o3 and o4: a2 and a5.
+- So intent is {a2, a5}.
+- Correct.
+
+Another: ({o1}, {a1, a3, a4}):
+
+- Only o1 has a1, a3, and a4.
+- Common attributes of {o1}: a1, a3, a4 (from its row).
+- Correct.
+
+### Final List of All Formal Concepts
+
+Here is the complete list of all formal concepts extracted from the given context:
+
+1. **Bottom Concept**: 
+   - Extent: {o1, o2, o3, o4, o5}
+   - Intent: {}
+
+2. 
+   - Extent: {o1, o3}
+   - Intent: {a1, a4}
+
+3. 
+   - Extent: {o1, o2}
+   - Intent: {a3}
+
+4. 
+   - Extent: {o3, o4}
+   - Intent: {a2, a5}
+
+5. 
+   - Extent: {o3}
+   - Intent: {a1, a2, a4, a5}
+
+6. 
+   - Extent: {o1}
+   - Intent: {a1, a3, a4}
+
+7. **Top Concept**:
+   - Extent: {}
+   - Intent: {a1, a2, a3, a4, a5}
+
+These are all the formal concepts that can be derived from the given context. They form the concept lattice when ordered by inclusion of extents or reverse inclusion of intents.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2, o3, o4, o5]], [[a3], [o1, o2]], [[a1, a4], [o1, o3]], [[a2, a5], [o3, o4]], [[a1, a2, a4, a5], [o3]], [[a1, a3, a4], [o1]], [[a1, a2, a3, a4, a5], []]

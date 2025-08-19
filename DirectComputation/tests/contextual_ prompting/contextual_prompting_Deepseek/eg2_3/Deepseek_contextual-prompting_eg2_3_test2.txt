@@ -1,0 +1,101 @@
+Deepseek_contextual-prompting_eg2_3_test2
+
+Date: 18 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), a formal concept is a pair \((A, B)\) where:
+- \(A\) is a set of objects (the extent),
+- \(B\) is a set of attributes (the intent),
+- Every object in \(A\) has all attributes in \(B\), and
+- Every attribute in \(B\) is shared by all objects in \(A\).
+
+Given the context from the file `eg2_3.csv`:
+
+| Objet | a1 | a2 | a3 |
+|-------|----|----|----|
+| o1    | yes| yes| no |
+| o2    | no | yes| yes|
+
+### Step 1: List all objects and attributes
+- Objects: \( G = \{o1, o2\} \)
+- Attributes: \( M = \{a1, a2, a3\} \)
+
+### Step 2: Compute all possible concepts
+We can find all concepts by computing the closure for every subset of objects or attributes. Here, we'll use the "next closure" method for enumeration.
+
+#### 1. Bottom Concept (Minimal Extent, Maximal Intent)
+- Extent: \( \emptyset \) (no objects)
+- Intent: All attributes that are shared by all objects in \( \emptyset \), which is \( M = \{a1, a2, a3\} \).
+  - But since no objects are selected, the intent is technically all attributes (but this is trivial and often excluded in practice). However, in FCA, this is the bottom concept.
+- Concept: \( (\emptyset, \{a1, a2, a3\}) \)
+
+#### 2. Concepts from single objects:
+- For \( o1 \):
+  - Extent: \( \{o1\} \)
+  - Intent: Attributes shared by \( o1 \): \( \{a1, a2\} \) (since \( o1 \) has \( a1 \) and \( a2 \), but not \( a3 \))
+  - Concept: \( (\{o1\}, \{a1, a2\}) \)
+
+- For \( o2 \):
+  - Extent: \( \{o2\} \)
+  - Intent: Attributes shared by \( o2 \): \( \{a2, a3\} \) (since \( o2 \) has \( a2 \) and \( a3 \), but not \( a1 \))
+  - Concept: \( (\{o2\}, \{a2, a3\}) \)
+
+#### 3. Concept from the union of objects:
+- Extent: \( \{o1, o2\} \)
+- Intent: Attributes shared by both \( o1 \) and \( o2 \): \( \{a2\} \) (only \( a2 \) is shared)
+- Concept: \( (\{o1, o2\}, \{a2\}) \)
+
+#### 4. Concepts from attribute intersections:
+- For \( \{a1\} \):
+  - Objects with \( a1 \): \( \{o1\} \)
+  - Intent of \( \{o1\} \): \( \{a1, a2\} \), which is already covered.
+
+- For \( \{a3\} \):
+  - Objects with \( a3 \): \( \{o2\} \)
+  - Intent of \( \{o2\} \): \( \{a2, a3\} \), which is already covered.
+
+- For \( \{a1, a2\} \):
+  - Objects: \( \{o1\} \), already covered.
+
+- For \( \{a2, a3\} \):
+  - Objects: \( \{o2\} \), already covered.
+
+- For \( \{a1, a3\} \):
+  - Objects: \( \emptyset \) (no object has both \( a1 \) and \( a3 \))
+  - Intent: \( \{a1, a2, a3\} \), which is the bottom concept.
+
+### Step 3: Final List of Non-Trivial Concepts
+Excluding the bottom concept (which is trivial), the non-trivial formal concepts are:
+1. \( (\{o1\}, \{a1, a2\}) \)
+2. \( (\{o2\}, \{a2, a3\}) \)
+3. \( (\{o1, o2\}, \{a2\}) \)
+
+### Step 4: Concept Lattice
+The concept lattice can be visualized as follows:
+- Top: \( (\{o1, o2\}, \{a2\}) \)
+- Middle: \( (\{o1\}, \{a1, a2\}) \) and \( (\{o2\}, \{a2, a3\}) \)
+- Bottom: \( (\emptyset, \{a1, a2, a3\}) \) (trivial, often omitted)
+
+### Final Answer:
+The non-trivial formal concepts for the given context are:
+1. \( (\{o1\}, \{a1, a2\}) \)
+2. \( (\{o2\}, \{a2, a3\}) \)
+3. \( (\{o1, o2\}, \{a2\}) \)
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [a1, a2, a3]], [[o1], [a1, a2]], [[o2], [a2, a3]], [[o1, o2], [a2]]]

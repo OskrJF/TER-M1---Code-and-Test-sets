@@ -1,0 +1,175 @@
+Deepseek_contextual-prompting_eg2_3_test1
+
+Date: 18 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+### Understanding the Context
+
+First, let's understand the given context from the CSV file:
+
+```
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+```
+
+This represents a formal context with:
+- **Objects (G):** o1, o2
+- **Attributes (M):** a1, a2, a3
+- **Incidence relation (I):** 
+  - o1 has attributes a1 and a2 (not a3)
+  - o2 has attributes a2 and a3 (not a1)
+
+### Formal Concept Analysis Basics
+
+A **formal concept** in FCA is a pair (A, B) where:
+- **A** is a set of objects (extent).
+- **B** is a set of attributes (intent).
+- Every object in A has all attributes in B, and every attribute in B is possessed by all objects in A.
+
+The set of all formal concepts forms a complete lattice called the **concept lattice**.
+
+### Step 1: List All Possible Subsets of Objects and Attributes
+
+For a small context, we can enumerate all possible combinations of objects and attributes and check which pairs satisfy the formal concept definition.
+
+**Objects subsets (power set of G):** ∅, {o1}, {o2}, {o1, o2}
+
+**Attributes subsets (power set of M):** ∅, {a1}, {a2}, {a3}, {a1, a2}, {a1, a3}, {a2, a3}, {a1, a2, a3}
+
+### Step 2: Compute Concepts Using the Derivation Operators
+
+For any set of objects A, the set of common attributes is A' = {m ∈ M | ∀g ∈ A, (g, m) ∈ I}.
+
+For any set of attributes B, the set of common objects is B' = {g ∈ G | ∀m ∈ B, (g, m) ∈ I}.
+
+A formal concept (A, B) satisfies A' = B and B' = A.
+
+#### Finding All Concepts:
+
+1. **Start with the empty set of objects:**
+   - A = ∅
+   - A' = {a1, a2, a3} (all attributes, since no object restricts the attributes)
+   - (A')' = ∅' = {} (no object has all attributes)
+   - Since (A')' = A, (∅, {a1, a2, a3}) is a concept.
+
+2. **Single object {o1}:**
+   - A = {o1}
+   - A' = {a1, a2} (o1 has a1 and a2)
+   - (A')' = {a1, a2}' = {o1} (only o1 has both a1 and a2)
+   - Since (A')' = A, ({o1}, {a1, a2}) is a concept.
+
+3. **Single object {o2}:**
+   - A = {o2}
+   - A' = {a2, a3} (o2 has a2 and a3)
+   - (A')' = {a2, a3}' = {o2} (only o2 has both a2 and a3)
+   - Since (A')' = A, ({o2}, {a2, a3}) is a concept.
+
+4. **All objects {o1, o2}:**
+   - A = {o1, o2}
+   - A' = {a2} (only a2 is common to both o1 and o2)
+   - (A')' = {a2}' = {o1, o2} (both o1 and o2 have a2)
+   - Since (A')' = A, ({o1, o2}, {a2}) is a concept.
+
+5. **Other combinations:**
+   - For example, take A = {o1, o2} and B = {a1}:
+     - B' = {o1} (only o1 has a1)
+     - (B')' = {o1}' = {a1, a2} ≠ B
+     - So ({o1}, {a1}) is not a concept because the intent would be {a1, a2}, not just {a1}.
+   - Similarly, other subsets like {a1, a3}:
+     - {a1, a3}' = ∅ (no object has both a1 and a3)
+     - ∅' = {a1, a2, a3} ≠ {a1, a3}
+     - So (∅, {a1, a3}) is not a concept (already have (∅, {a1, a2, a3})).
+
+### Step 3: Verify All Possible Pairs
+
+Let's ensure we haven't missed any concepts by checking all attribute subsets:
+
+- **B = ∅:**
+  - B' = {o1, o2} (all objects have the empty set of attributes)
+  - (B')' = {o1, o2}' = {a2} ≠ ∅
+  - So ({o1, o2}, ∅) is not a concept.
+
+- **B = {a1}:**
+  - B' = {o1}
+  - (B')' = {a1, a2} ≠ {a1}
+  - Not a concept.
+
+- **B = {a2}:**
+  - B' = {o1, o2}
+  - (B')' = {a2} = B
+  - This is the concept ({o1, o2}, {a2}).
+
+- **B = {a3}:**
+  - B' = {o2}
+  - (B')' = {a2, a3} ≠ {a3}
+  - Not a concept.
+
+- **B = {a1, a2}:**
+  - B' = {o1}
+  - (B')' = {a1, a2} = B
+  - This is the concept ({o1}, {a1, a2}).
+
+- **B = {a1, a3}:**
+  - B' = ∅
+  - (B')' = {a1, a2, a3} ≠ {a1, a3}
+  - Not a concept.
+
+- **B = {a2, a3}:**
+  - B' = {o2}
+  - (B')' = {a2, a3} = B
+  - This is the concept ({o2}, {a2, a3}).
+
+- **B = {a1, a2, a3}:**
+  - B' = ∅
+  - (B')' = {a1, a2, a3} = B
+  - This is the concept (∅, {a1, a2, a3}).
+
+### Step 4: List All Formal Concepts
+
+From the above, the complete list of formal concepts is:
+
+1. (∅, {a1, a2, a3})
+2. ({o1}, {a1, a2})
+3. ({o2}, {a2, a3})
+4. ({o1, o2}, {a2})
+
+### Step 5: Concept Lattice
+
+The concept lattice can be ordered by the subset relation on extents (or superset relation on intents). The Hasse diagram is as follows:
+
+```
+        ({o1, o2}, {a2})
+         /            \
+({o1}, {a1, a2})    ({o2}, {a2, a3})
+         \            /
+        (∅, {a1, a2, a3})
+```
+
+### Final Answer
+
+The complete list of all lattice concepts for the given context is:
+
+1. (∅, {a1, a2, a3})
+2. ({o1}, {a1, a2})
+3. ({o2}, {a2, a3})
+4. ({o1, o2}, {a2})
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [a1, a2, a3]], [[o1], [a1, a2]], [[o2], [a2, a3]], [[o1, o2], [a2]]]
+

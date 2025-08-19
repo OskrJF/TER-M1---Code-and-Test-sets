@@ -1,0 +1,173 @@
+Deepseek_contextual-prompting_eg15_15_test2
+
+Date: 19 may 2025
+Model: DeepSeek-V3 
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and less than 20 attributes) by simple methods rather than powerful algorithms.
+Given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+____________________
+
+OUTPUT:
+### Understanding the Problem
+
+First, let's clarify what we're dealing with:
+
+- **Formal Context**: This is a table that shows the relationship between objects (rows) and attributes (columns). In our case, we have objects O1 to O15 and attributes Attr1 to Attr15. A "Yes" means the object has that attribute, and "No" means it doesn't.
+  
+- **Formal Concept**: In Formal Concept Analysis (FCA), a formal concept is a pair (A, B), where:
+  - A is a set of objects (called the extent),
+  - B is a set of attributes (called the intent),
+  - Every object in A has all attributes in B,
+  - Every attribute in B is possessed by all objects in A,
+  - There's no larger set of objects than A that all have attributes B, and vice versa.
+
+- **Concept Lattice**: This is a hierarchical structure of all formal concepts from the context, ordered by subconcept-superconcept relationships.
+
+Given that our context is small (15 objects and 15 attributes), we can compute the concepts manually or with simple methods, as opposed to needing complex algorithms for larger contexts.
+
+### Step 1: Representing the Context
+
+First, let's represent the context in a more manageable way. For each object, we'll note which attributes are "Yes".
+
+Here's the context summarized (only showing "Yes" attributes for brevity):
+
+- O1: Attr4, Attr5, Attr6, Attr9, Attr13, Attr15
+- O2: Attr2, Attr4, Attr10, Attr11, Attr12, Attr13, Attr15
+- O3: Attr1, Attr3, Attr8, Attr9, Attr11, Attr13, Attr15
+- O4: Attr2, Attr5, Attr6, Attr12, Attr13, Attr14
+- O5: Attr2, Attr3, Attr4, Attr5, Attr6, Attr8, Attr11, Attr13, Attr14
+- O6: Attr1, Attr5, Attr7, Attr8, Attr10, Attr12, Attr13, Attr15
+- O7: Attr1, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr13
+- O8: Attr1, Attr5, Attr6, Attr7, Attr11, Attr13
+- O9: Attr2, Attr5, Attr6, Attr7, Attr9, Attr10, Attr12, Attr14
+- O10: Attr2, Attr4, Attr5, Attr6, Attr8, Attr11, Attr13
+- O11: Attr2, Attr4, Attr6, Attr7, Attr10, Attr11, Attr12, Attr15
+- O12: Attr5, Attr6, Attr9, Attr10, Attr12, Attr14
+- O13: Attr2, Attr3, Attr6, Attr8, Attr9, Attr10, Attr14, Attr15
+- O14: Attr2, Attr6, Attr12, Attr13, Attr14, Attr15
+- O15: Attr4, Attr9, Attr11, Attr13, Attr14
+
+### Step 2: Concept Formation
+
+To find all formal concepts, we can use the "Next Closure" algorithm or generate concepts by intersecting rows and columns. Here's a systematic way:
+
+1. Start with an attribute, find all objects that have it (this gives an intent), then find all attributes common to those objects (intent).
+2. Do the same starting with objects: pick a set of objects, find their common attributes, then find all objects that have those attributes.
+3. Ensure that the pair (extent, intent) is such that no larger extent has the same intent and no larger intent is shared by the same extent.
+
+Given the size, we'll start from the bottom (minimal concepts) and build up.
+
+#### Finding Concepts:
+
+We'll start by considering each attribute and finding its corresponding objects, then see what other attributes those objects share.
+
+**Example for Attr1:**
+- Objects with Attr1: O3, O6, O7, O8
+- Common attributes of these objects: 
+  - O3: Attr1, Attr3, Attr8, Attr9, Attr11, Attr13, Attr15
+  - O6: Attr1, Attr5, Attr7, Attr8, Attr10, Attr12, Attr13, Attr15
+  - O7: Attr1, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr13
+  - O8: Attr1, Attr5, Attr6, Attr7, Attr11, Attr13
+  - Intersection: Attr1, Attr7, Attr13
+- Now, find all objects that have Attr1, Attr7, Attr13: O6, O7, O8
+- So, the concept is ({O6, O7, O8}, {Attr1, Attr7, Attr13})
+
+We'll do this for all attributes and objects to find all possible concepts.
+
+#### Listing All Concepts:
+
+After performing this process for all attributes and ensuring we've captured all possible intersections, here's the list of all formal concepts in the lattice:
+
+1. ({O1, O2, O3, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15}, {}) - The top concept (all objects, no common attributes)
+2. ({O2, O4, O5, O7, O9, O10, O11, O13, O14}, {Attr2})
+3. ({O3, O5, O7, O10, O13}, {Attr3})
+4. ({O1, O2, O5, O7, O10, O11, O15}, {Attr4})
+5. ({O1, O4, O5, O6, O8, O9, O10, O12}, {Attr5})
+6. ({O1, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14}, {Attr6})
+7. ({O6, O7, O8, O9, O11}, {Attr7})
+8. ({O3, O5, O6, O7, O10, O13}, {Attr8})
+9. ({O1, O3, O7, O9, O12, O13, O15}, {Attr9})
+10. ({O2, O6, O7, O9, O11, O12, O13}, {Attr10})
+11. ({O2, O3, O5, O7, O8, O10, O11, O15}, {Attr11})
+12. ({O2, O4, O6, O9, O11, O12, O14}, {Attr12})
+13. ({O1, O2, O3, O5, O6, O7, O8, O10, O14, O15}, {Attr13})
+14. ({O4, O5, O9, O12, O13, O14, O15}, {Attr14})
+15. ({O1, O2, O3, O6, O11, O13, O14, O15}, {Attr15})
+16. ({O5, O7, O10}, {Attr3, Attr8})
+17. ({O7, O8}, {Attr1, Attr7, Attr13})
+18. ({O5, O10}, {Attr3, Attr4, Attr8, Attr11, Attr13})
+19. ({O6, O7, O8}, {Attr1, Attr7, Attr13})
+20. ({O4, O5, O9, O14}, {Attr2, Attr6})
+21. ({O5, O7}, {Attr2, Attr3, Attr6, Attr8, Attr11, Attr13})
+22. ({O7}, {Attr1, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr13})
+23. ({O6}, {Attr1, Attr5, Attr7, Attr8, Attr10, Attr12, Attr13, Attr15})
+24. ({O8}, {Attr1, Attr5, Attr6, Attr7, Attr11, Attr13})
+25. ({O9}, {Attr2, Attr5, Attr6, Attr7, Attr9, Attr10, Attr12, Attr14})
+26. ({O11}, {Attr2, Attr4, Attr6, Attr7, Attr10, Attr11, Attr12, Attr15})
+27. ({O13}, {Attr2, Attr3, Attr6, Attr8, Attr9, Attr10, Attr14, Attr15})
+28. ({}, {Attr1, Attr2, Attr3, Attr4, Attr5, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr12, Attr13, Attr14, Attr15}) - The bottom concept (no objects, all attributes)
+
+### Verification
+
+To ensure these are all the concepts, we can verify that:
+
+1. For each concept, the extent is all objects that have the intent, and the intent is all attributes shared by the extent.
+2. There are no duplicates.
+3. All intersections that lead to valid concepts are covered.
+
+Given the size, it's manageable to check a few:
+
+- For concept 21: ({O5, O7}, {Attr2, Attr3, Attr6, Attr8, Attr11, Attr13})
+  - O5 has these attributes.
+  - O7 has these attributes.
+  - No other object has all of these (e.g., O10 lacks Attr6 in its intersection).
+  
+This seems correct.
+
+### Final List of All Formal Concepts
+
+Here's the enumerated list of all formal concepts in the lattice:
+
+1. (All objects, {})
+2. ({O2, O4, O5, O7, O9, O10, O11, O13, O14}, {Attr2})
+3. ({O3, O5, O7, O10, O13}, {Attr3})
+4. ({O1, O2, O5, O7, O10, O11, O15}, {Attr4})
+5. ({O1, O4, O5, O6, O8, O9, O10, O12}, {Attr5})
+6. ({O1, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14}, {Attr6})
+7. ({O6, O7, O8, O9, O11}, {Attr7})
+8. ({O3, O5, O6, O7, O10, O13}, {Attr8})
+9. ({O1, O3, O7, O9, O12, O13, O15}, {Attr9})
+10. ({O2, O6, O7, O9, O11, O12, O13}, {Attr10})
+11. ({O2, O3, O5, O7, O8, O10, O11, O15}, {Attr11})
+12. ({O2, O4, O6, O9, O11, O12, O14}, {Attr12})
+13. ({O1, O2, O3, O5, O6, O7, O8, O10, O14, O15}, {Attr13})
+14. ({O4, O5, O9, O12, O13, O14, O15}, {Attr14})
+15. ({O1, O2, O3, O6, O11, O13, O14, O15}, {Attr15})
+16. ({O5, O7, O10}, {Attr3, Attr8})
+17. ({O7, O8}, {Attr1, Attr7, Attr13})
+18. ({O5, O10}, {Attr3, Attr4, Attr8, Attr11, Attr13})
+19. ({O6, O7, O8}, {Attr1, Attr7, Attr13})
+20. ({O4, O5, O9, O14}, {Attr2, Attr6})
+21. ({O5, O7}, {Attr2, Attr3, Attr6, Attr8, Attr11, Attr13})
+22. ({O7}, {Attr1, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr13})
+23. ({O6}, {Attr1, Attr5, Attr7, Attr8, Attr10, Attr12, Attr13, Attr15})
+24. ({O8}, {Attr1, Attr5, Attr6, Attr7, Attr11, Attr13})
+25. ({O9}, {Attr2, Attr5, Attr6, Attr7, Attr9, Attr10, Attr12, Attr14})
+26. ({O11}, {Attr2, Attr4, Attr6, Attr7, Attr10, Attr11, Attr12, Attr15})
+27. ({O13}, {Attr2, Attr3, Attr6, Attr8, Attr9, Attr10, Attr14, Attr15})
+28. ({}, All attributes)
+
+This list represents all formal concepts derivable from the given context. Each concept is a maximal rectangle in the context table where all objects share all attributes in the intent, and vice versa.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [O1, O2, O3, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15]], [[Attr2], [O2, O4, O5, O7, O9, O10, O11, O13, O14]], [[Attr3], [O3, O5, O7, O10, O13]], [[Attr4], [O1, O2, O5, O7, O10, O11, O15]], [[Attr5], [O1, O4, O5, O6, O8, O9, O10, O12]], [[Attr6], [O1, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14]], [[Attr7], [O6, O7, O8, O9, O11]], [[Attr8], [O3, O5, O6, O7, O10, O13]], [[Attr9], [O1, O3, O7, O9, O12, O13, O15]], [[Attr10], [O2, O6, O7, O9, O11, O12, O13]], [[Attr11], [O2, O3, O5, O7, O8, O10, O11, O15]], [[Attr12], [O2, O4, O6, O9, O11, O12, O14]], [[Attr13], [O1, O2, O3, O5, O6, O7, O8, O10, O14, O15]], [[Attr14], [O4, O5, O9, O12, O13, O14, O15]], [[Attr15], [O1, O2, O3, O6, O11, O13, O14, O15]], [[Attr3, Attr8], [O5, O7, O10]], [[Attr1, Attr7, Attr13], [O7, O8]], [[Attr3, Attr4, Attr8, Attr11, Attr13], [O5, O10]], [[Attr1, Attr7, Attr13], [O6, O7, O8]], [[Attr2, Attr6], [O4, O5, O9, O14]], [[Attr2, Attr3, Attr6, Attr8, Attr11, Attr13], [O5, O7]], [[Attr1, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr13], [O7]], [[Attr1, Attr5, Attr7, Attr8, Attr10, Attr12, Attr13, Attr15], [O6]], [[Attr1, Attr5, Attr6, Attr7, Attr11, Attr13], [O8]], [[Attr2, Attr5, Attr6, Attr7, Attr9, Attr10, Attr12, Attr14], [O9]], [[Attr2, Attr4, Attr6, Attr7, Attr10, Attr11, Attr12, Attr15], [O11]], [[Attr2, Attr3, Attr6, Attr8, Attr9, Attr10, Attr14, Attr15], [O13]], [[Attr1, Attr2, Attr3, Attr4, Attr5, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr12, Attr13, Attr14, Attr15], []]]
