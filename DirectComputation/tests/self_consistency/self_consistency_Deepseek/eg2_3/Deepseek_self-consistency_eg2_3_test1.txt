@@ -1,0 +1,72 @@
+Deepseek_self-consistency_eg2_3_test1
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), a formal concept is a pair \((A, B)\) where \(A\) is a set of objects (extent) and \(B\) is a set of attributes (intent) such that every object in \(A\) has all attributes in \(B\), and every attribute in \(B\) is shared by all objects in \(A\). 
+
+Given the context from the file `eg2_3.csv`, let's extract and enumerate all formal concepts.
+
+### Context:
+| Objet | a1  | a2  | a3  |
+|-------|-----|-----|-----|
+| o1    | yes | yes | no  |
+| o2    | no  | yes | yes |
+
+### Step 1: List all objects and attributes
+- **Objects**: \( \{o1, o2\} \)
+- **Attributes**: \( \{a1, a2, a3\} \)
+
+### Step 2: Compute all formal concepts
+We can find all concepts by considering all possible combinations of objects and their common attributes, or attributes and their shared objects.
+
+1. **Concept 1**: \((\{\}, \{a1, a2, a3\})\)  
+   - **Extent**: No objects, so all attributes are included by default.  
+   - **Intent**: \(\{a1, a2, a3\}\)
+
+2. **Concept 2**: \((\{o1\}, \{a1, a2\})\)  
+   - **Extent**: \(o1\) has attributes \(a1\) and \(a2\).  
+   - **Intent**: \(\{a1, a2\}\)
+
+3. **Concept 3**: \((\{o2\}, \{a2, a3\})\)  
+   - **Extent**: \(o2\) has attributes \(a2\) and \(a3\).  
+   - **Intent**: \(\{a2, a3\}\)
+
+4. **Concept 4**: \((\{o1, o2\}, \{a2\})\)  
+   - **Extent**: Both \(o1\) and \(o2\) share attribute \(a2\).  
+   - **Intent**: \(\{a2\}\)
+
+### Step 3: Verify no other concepts exist
+- No other combinations of objects share additional common attributes beyond the ones listed above. For example:
+  - \((\{o1, o2\}, \{a2\})\) is already covered.
+  - No single attribute is shared by all objects except \(a2\).
+
+### Final List of Formal Concepts:
+1. \((\{\}, \{a1, a2, a3\})\)  
+2. \((\{o1\}, \{a1, a2\})\)  
+3. \((\{o2\}, \{a2, a3\})\)  
+4. \((\{o1, o2\}, \{a2\})\)  
+
+These are all the formal concepts for the given context. The corresponding concept lattice can be visualized as a hierarchy where:
+- The top concept is \((\{\}, \{a1, a2, a3\})\).
+- The bottom concept is \((\{o1, o2\}, \{a2\})\).
+- The intermediate concepts are \((\{o1\}, \{a1, a2\})\) and \((\{o2\}, \{a2, a3\})\). 
+
+The lattice structure would show that \((\{o1\}, \{a1, a2\})\) and \((\{o2\}, \{a2, a3\})\) are both sub-concepts of \((\{\}, \{a1, a2, a3\})\) and super-concepts of \((\{o1, o2\}, \{a2\})\).
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]

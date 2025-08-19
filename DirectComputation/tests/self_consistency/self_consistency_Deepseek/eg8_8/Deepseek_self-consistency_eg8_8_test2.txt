@@ -1,0 +1,210 @@
+Deepseek_self-consistency_eg8_8_test2
+
+Date: 26 may 2025
+Model: DeepSeek-V3 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+### Understanding the Problem
+
+First, let's clarify what Formal Concept Analysis (FCA) is and what a "lattice concept" means in this context.
+
+**Formal Concept Analysis (FCA)** is a mathematical framework for data analysis where we study how objects (rows in the table) relate to attributes (columns in the table). A **formal concept** in FCA is a pair \((A, B)\), where:
+- \(A\) is a set of objects (extent),
+- \(B\) is a set of attributes (intent),
+- Every object in \(A\) has every attribute in \(B\), and
+- There are no other objects outside \(A\) that have all attributes in \(B\), and no other attributes outside \(B\) that are shared by all objects in \(A\).
+
+The set of all formal concepts forms a **concept lattice** when ordered by the subconcept-superconcept relation.
+
+Given the context (the table provided), our goal is to enumerate all formal concepts.
+
+### Step 1: Representing the Context
+
+The given context is:
+
+| Objet | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 |
+|-------|----|----|----|----|----|----|----|----|
+| O1    | Yes| Yes| Yes| No | No | No | No | No |
+| O2    | Yes| Yes| Yes| No | No | Yes| No | Yes|
+| O3    | Yes| Yes| No | Yes| No | Yes| No | No |
+| O4    | No | Yes| Yes| Yes| Yes| No | No | Yes|
+| O5    | No | Yes| No | Yes| No | Yes| Yes| Yes|
+| O6    | Yes| Yes| Yes| No | Yes| No | Yes| No |
+| O7    | No | Yes| Yes| Yes| Yes| No | Yes| No |
+| O8    | No | Yes| Yes| Yes| Yes| No | Yes| No |
+
+### Step 2: Finding All Formal Concepts
+
+To find all formal concepts, we can use the following approach:
+1. For each possible subset of objects, find their common attributes (intent).
+2. For each possible subset of attributes, find the objects that have all those attributes (extent).
+3. A formal concept is a pair where the extent is all objects sharing the intent's attributes, and the intent is all attributes shared by the extent's objects.
+
+However, doing this manually for all subsets is time-consuming. Instead, we can use a more systematic method, such as the **NextClosure algorithm** or by building the lattice step by step starting from the top or bottom concept.
+
+Given the small size of the context, we can proceed by:
+- Starting with the set of all objects and finding their common attributes (bottom concept).
+- Then, for each attribute, find the objects that have it, and then find the common attributes of those objects, and so on.
+
+### Step 3: Enumerating Concepts
+
+Let's start finding concepts:
+
+1. **Bottom Concept**: 
+   - Extent: All objects {O1, O2, O3, O4, O5, O6, O7, O8}
+   - Intent: Common attributes. Looking at each attribute:
+     - a1: Not all have it (O4, O5, O7, O8 don't)
+     - a2: All have it
+     - a3: Not all (O3, O5 don't)
+     - ... 
+   - Only a2 is shared by all.
+   - Concept: ({O1, O2, O3, O4, O5, O6, O7, O8}, {a2})
+
+2. **Next, consider adding attributes to {a2}**:
+   - For each attribute not in {a2}, see what objects have a2 and that attribute, then find their common attributes.
+
+   - **Adding a1**:
+     - Objects with a1 and a2: O1, O2, O3, O6
+     - Common attributes: a1, a2 (check others: a3 not in O3, a6 not in O1, etc.)
+     - So intent is {a1, a2}
+     - Concept: ({O1, O2, O3, O6}, {a1, a2})
+
+   - **Adding a3**:
+     - Objects with a2 and a3: O1, O2, O4, O6, O7, O8
+     - Common attributes: a2, a3
+     - Concept: ({O1, O2, O4, O6, O7, O8}, {a2, a3})
+
+   - **Adding a4**:
+     - Objects with a2 and a4: O3, O4, O5, O7, O8
+     - Common attributes: a2, a4
+     - Concept: ({O3, O4, O5, O7, O8}, {a2, a4})
+
+   - **Adding a5**:
+     - Objects with a2 and a5: O4, O6, O7, O8
+     - Common attributes: a2, a5
+     - Concept: ({O4, O6, O7, O8}, {a2, a5})
+
+   - **Adding a6**:
+     - Objects with a2 and a6: O2, O3, O5
+     - Common attributes: a2, a6
+     - Concept: ({O2, O3, O5}, {a2, a6})
+
+   - **Adding a7**:
+     - Objects with a2 and a7: O5, O6, O7, O8
+     - Common attributes: a2, a7
+     - Concept: ({O5, O6, O7, O8}, {a2, a7})
+
+   - **Adding a8**:
+     - Objects with a2 and a8: O1, O2, O4, O5
+     - Common attributes: a2, a8 (but O1 doesn't have a8, O2 does, O4 does, O5 does)
+     - Wait, O1 has a8? No, O1: a8 is No. So objects with a2 and a8: O2, O4, O5
+     - Common attributes: a2, a8 (check others: a1 not in O4, O5; a3 not in O5; etc.)
+     - Concept: ({O2, O4, O5}, {a2, a8})
+
+3. **Now, consider intersections and combinations**:
+   - For example, objects with a2, a3, and a5: {O4, O6, O7, O8} ∩ {O1, O2, O4, O6, O7, O8} = {O4, O6, O7, O8}
+     - But {a2, a5} already gives this extent, so no new concept here.
+   - Objects with a2, a3, a7: {O6, O7, O8}
+     - Common attributes: a2, a3, a5, a7 (since O6, O7, O8 have a5)
+     - Wait, O6: a5 is Yes, O7, O8: a5 is Yes
+     - So intent is {a2, a3, a5, a7}
+     - Concept: ({O6, O7, O8}, {a2, a3, a5, a7})
+
+   - Similarly, objects with a2, a4, a5: {O4, O7, O8}
+     - Common attributes: a2, a4, a5, a7
+     - Concept: ({O4, O7, O8}, {a2, a4, a5, a7})
+
+   - Objects with a2, a6, a8: {O2, O5}
+     - Common attributes: a2, a6, a8
+     - Concept: ({O2, O5}, {a2, a6, a8})
+
+   - Objects with a2, a3, a8: {O2, O4}
+     - Common attributes: a2, a3, a8
+     - Concept: ({O2, O4}, {a2, a3, a8})
+
+   - Objects with a2, a4, a7: {O5, O7, O8}
+     - Common attributes: a2, a4, a7
+     - Concept: ({O5, O7, O8}, {a2, a4, a7})
+
+4. **Continue until no new concepts can be formed**:
+   - For example, objects with a2, a3, a5, a7: {O6, O7, O8} (already covered)
+   - Objects with a2, a4, a5, a7: {O7, O8}
+     - Common attributes: a2, a3, a4, a5, a7
+     - Concept: ({O7, O8}, {a2, a3, a4, a5, a7})
+
+   - Objects with a2, a3, a4, a5, a7: {O7, O8} (same as above)
+
+5. **Top Concept**:
+   - Extent: No object has all attributes, but the closest is empty extent.
+   - Intent: All attributes. But no object has all, so:
+   - Concept: (∅, {a1, a2, a3, a4, a5, a6, a7, a8})
+
+However, usually, the top concept is the one with no attributes in intent, but here it seems the bottom is with all objects, and top with no objects (but all attributes). Maybe I have them reversed. Actually, in FCA, the top concept is the one with the maximal intent (which is the set of attributes shared by the most objects, possibly empty extent), and the bottom is with maximal extent (all objects) and minimal intent.
+
+But let's list all found concepts so far:
+
+1. ({O1,O2,O3,O4,O5,O6,O7,O8}, {a2})
+2. ({O1,O2,O3,O6}, {a1,a2})
+3. ({O1,O2,O4,O6,O7,O8}, {a2,a3})
+4. ({O3,O4,O5,O7,O8}, {a2,a4})
+5. ({O4,O6,O7,O8}, {a2,a5})
+6. ({O2,O3,O5}, {a2,a6})
+7. ({O5,O6,O7,O8}, {a2,a7})
+8. ({O2,O4,O5}, {a2,a8})
+9. ({O6,O7,O8}, {a2,a3,a5,a7})
+10. ({O4,O7,O8}, {a2,a4,a5,a7})
+11. ({O2,O5}, {a2,a6,a8})
+12. ({O2,O4}, {a2,a3,a8})
+13. ({O5,O7,O8}, {a2,a4,a7})
+14. ({O7,O8}, {a2,a3,a4,a5,a7})
+15. (∅, {a1,a2,a3,a4,a5,a6,a7,a8})
+
+Now, check if any object subsets are missing:
+- For example, {O1}: attributes are a1,a2,a3. Then find all objects with a1,a2,a3: O1,O2,O6. So intent is larger than {a1,a2,a3}, because O2,O6 also have more. So {O1} is not an extent.
+Similarly, other single objects may not form concepts unless they are unique in some attribute combination.
+
+After checking, the above seems to cover all possible combinations where the extent and intent are maximal.
+
+### Final List of All Formal Concepts
+
+Here is the enumeration of all formal concepts extracted from the given context:
+
+1. \((\{O1, O2, O3, O4, O5, O6, O7, O8\}, \{a2\})\)
+2. \((\{O1, O2, O3, O6\}, \{a1, a2\})\)
+3. \((\{O1, O2, O4, O6, O7, O8\}, \{a2, a3\})\)
+4. \((\{O3, O4, O5, O7, O8\}, \{a2, a4\})\)
+5. \((\{O4, O6, O7, O8\}, \{a2, a5\})\)
+6. \((\{O2, O3, O5\}, \{a2, a6\})\)
+7. \((\{O5, O6, O7, O8\}, \{a2, a7\})\)
+8. \((\{O2, O4, O5\}, \{a2, a8\})\)
+9. \((\{O6, O7, O8\}, \{a2, a3, a5, a7\})\)
+10. \((\{O4, O7, O8\}, \{a2, a4, a5, a7\})\)
+11. \((\{O2, O5\}, \{a2, a6, a8\})\)
+12. \((\{O2, O4\}, \{a2, a3, a8\})\)
+13. \((\{O5, O7, O8\}, \{a2, a4, a7\})\)
+14. \((\{O7, O8\}, \{a2, a3, a4, a5, a7\})\)
+15. \((\emptyset, \{a1, a2, a3, a4, a5, a6, a7, a8\})\)
+
+### Verification
+
+To ensure no concept is missed, we can verify that for every combination of attributes, the corresponding object set and its closure are covered. Similarly, for every combination of objects, their common attributes and closure are covered. The above list seems comprehensive based on the systematic approach taken.
+
+### Conclusion
+
+The concept lattice for the given context consists of the 15 formal concepts enumerated above. Each concept is a maximal pair of objects and attributes that satisfy the conditions of FCA. The lattice can be ordered by the subconcept-superconcept relation based on the inclusion of extents or intents.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a2, a3], [O1, O2, O4, O6, O7, O8]], [[a2, a4], [O3, O4, O5, O7, O8]], [[a2, a5], [O4, O6, O7, O8]], [[a2, a6], [O2, O3, O5]], [[a2, a7], [O5, O6, O7, O8]], [[a2, a8], [O2, O4, O5]], [[a2, a3, a5, a7], [O6, O7, O8]], [[a2, a4, a5, a7], [O4, O7, O8]], [[a2, a6, a8], [O2, O5]], [[a2, a3, a8], [O2, O4]], [[a2, a4, a7], [O5, O7, O8]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a1, a2, a3, a4, a5, a6, a7, a8], []]]
