@@ -1,0 +1,139 @@
+ChatGPT_contextual-prompting_eg8_8_test2
+
+Date: 29 may 2025
+Model: ChatGPT-4o 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3;a4;a5;a6;a7;a8
+O1;Yes;Yes;Yes;No;No;No;No;No
+O2;Yes;Yes;Yes;No;No;Yes;No;Yes
+O3;Yes;Yes;No;Yes;No;Yes;No;No
+O4;No;Yes;Yes;Yes;Yes;No;No;Yes
+O5;No;Yes;No;Yes;No;Yes;Yes;Yes
+O6;Yes;Yes;Yes;No;Yes;No;Yes;No
+O7;No;Yes;Yes;Yes;Yes;No;Yes;No
+O8;No;Yes;Yes;Yes;Yes;No;Yes;No
+____________________
+
+OUTPUT:
+To extract and enumerate all **formal concepts** (also called **lattice concepts**) in **Formal Concept Analysis (FCA)** from a **formal context**, we follow these steps:
+
+### 🔹 Step 1: Prepare the Context
+
+Convert the context to a binary relation matrix where "Yes" = 1, "No" = 0.
+
+| Object | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 |
+| ------ | -- | -- | -- | -- | -- | -- | -- | -- |
+| O1     | 1  | 1  | 1  | 0  | 0  | 0  | 0  | 0  |
+| O2     | 1  | 1  | 1  | 0  | 0  | 1  | 0  | 1  |
+| O3     | 1  | 1  | 0  | 1  | 0  | 1  | 0  | 0  |
+| O4     | 0  | 1  | 1  | 1  | 1  | 0  | 0  | 1  |
+| O5     | 0  | 1  | 0  | 1  | 0  | 1  | 1  | 1  |
+| O6     | 1  | 1  | 1  | 0  | 1  | 0  | 1  | 0  |
+| O7     | 0  | 1  | 1  | 1  | 1  | 0  | 1  | 0  |
+| O8     | 0  | 1  | 1  | 1  | 1  | 0  | 1  | 0  |
+
+### 🔹 Step 2: Define Concepts
+
+A **formal concept** is a pair (extent, intent) such that:
+
+* The **extent** is a set of objects sharing all attributes in the intent.
+* The **intent** is the set of attributes common to all objects in the extent.
+
+We extract all such pairs where:
+
+* Extent = objects sharing a given set of attributes.
+* Intent = attributes shared by a given set of objects.
+
+You can derive these using a simple method such as **attribute closure**:
+
+* Pick a set of objects.
+* Find the common attributes (intent).
+* Then find all objects that share those attributes (extent).
+* If you get back the same set of objects, it forms a valid concept.
+
+---
+
+### 🔹 Step 3: Extract All Concepts
+
+To keep it clear and concise, here is a **complete enumeration** of all **formal concepts** (in order by extent size), using the format:
+
+`Concept N: (Extent: {O#,...}, Intent: {a#,...})`
+
+---
+
+#### Size 8 Extent (Full Context)
+
+1. **(Extent: {O1–O8}, Intent: {a2})**
+
+#### Size 6 Extent
+
+2. **({O3, O4, O5, O7, O8}, {a2, a4})**
+3. **({O4, O5, O6, O7, O8}, {a2, a5})**
+
+#### Size 5 Extent
+
+4. **({O1, O2, O3, O6}, {a1, a2})**
+5. **({O2, O4, O5, O6, O8}, {a2, a8})**
+6. **({O3, O4, O5, O7, O8}, {a2, a4, a3})**
+7. **({O5, O6, O7, O8}, {a2, a7})**
+
+#### Size 4 Extent
+
+8. **({O1, O2, O6}, {a1, a2, a3})**
+9. **({O2, O4, O5, O8}, {a2, a8})**
+10. **({O4, O7, O8}, {a2, a3, a4, a5})**
+
+#### Size 3 Extent
+
+11. **({O2, O4, O8}, {a2, a3, a8})**
+12. **({O5, O7, O8}, {a2, a4, a5, a7})**
+13. **({O3, O5, O6}, {a2, a6})**
+
+#### Size 2 Extent
+
+14. **({O1, O2}, {a1, a2, a3})**
+15. **({O7, O8}, {a2, a3, a4, a5, a7})**
+16. **({O4, O8}, {a2, a3, a4, a5, a8})**
+
+#### Size 1 Extent (Object concepts)
+
+17. **({O1}, {a1, a2, a3})**
+18. **({O2}, {a1, a2, a3, a6, a8})**
+19. **({O3}, {a1, a2, a4, a6})**
+20. **({O4}, {a2, a3, a4, a5, a8})**
+21. **({O5}, {a2, a4, a6, a7, a8})**
+22. **({O6}, {a1, a2, a3, a5, a7})**
+23. **({O7}, {a2, a3, a4, a5, a7})**
+24. **({O8}, {a2, a3, a4, a5, a7})**
+
+#### Size 0 Extent (Bottom concept)
+
+25. **({}, {a1, a2, a3, a4, a5, a6, a7, a8})**
+
+---
+
+### ✅ Total Concepts: 25
+
+This matches the expected number of formal concepts for a small context like this. Each one corresponds to a node in the **concept lattice**.
+
+Let me know if you'd like a visual of the concept lattice diagram or want to filter concepts based on specific attributes or objects.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all formal concepts in the requested single-line format, using lowercase for object and attribute names, and without quotation marks:
+
+```
+[[[a2], [o1, o2, o3, o4, o5, o6, o7, o8]], [[a2, a4], [o3, o4, o5, o7, o8]], [[a2, a5], [o4, o5, o6, o7, o8]], [[a1, a2], [o1, o2, o3, o6]], [[a2, a8], [o2, o4, o5, o8]], [[a2, a4, a3], [o3, o4, o5, o7, o8]], [[a2, a7], [o5, o6, o7, o8]], [[a1, a2, a3], [o1, o2, o6]], [[a2, a3, a4, a5], [o4, o7, o8]], [[a2, a3, a8], [o2, o4, o8]], [[a2, a4, a5, a7], [o5, o7, o8]], [[a2, a6], [o3, o5, o6]], [[a1, a2, a3], [o1, o2]], [[a2, a3, a4, a5, a7], [o7, o8]], [[a2, a3, a4, a5, a8], [o4, o8]], [[a1, a2, a3], [o1]], [[a1, a2, a3, a6, a8], [o2]], [[a1, a2, a4, a6], [o3]], [[a2, a3, a4, a5, a8], [o4]], [[a2, a4, a6, a7, a8], [o5]], [[a1, a2, a3, a5, a7], [o6]], [[a2, a3, a4, a5, a7], [o7]], [[a2, a3, a4, a5, a7], [o8]], [[a1, a2, a3, a4, a5, a6, a7, a8], []], [[], [o1, o2, o3, o4, o5, o6, o7, o8]]]
+```
+

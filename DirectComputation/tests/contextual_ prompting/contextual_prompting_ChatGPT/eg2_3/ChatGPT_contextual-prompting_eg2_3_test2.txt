@@ -1,0 +1,113 @@
+ChatGPT_contextual-prompting_eg2_3_test2
+
+Date: 18 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+To extract and enumerate all **formal concepts** (also called **lattice concepts**) from the given **formal context** in **Formal Concept Analysis (FCA)**, we'll follow these steps:
+
+---
+
+### 🔶 Step 1: Define the Formal Context
+
+We are given a context in the form of a cross-table:
+
+| Object | a1  | a2  | a3  |
+| ------ | --- | --- | --- |
+| o1     | yes | yes | no  |
+| o2     | no  | yes | yes |
+
+We can define:
+
+* **G** = {o1, o2} — the set of objects
+* **M** = {a1, a2, a3} — the set of attributes
+* **I** — the incidence relation (object has attribute)
+
+So:
+
+* o1 → {a1, a2}
+* o2 → {a2, a3}
+
+---
+
+### 🔶 Step 2: Formal Concept Definition
+
+A **formal concept** is a pair $(A, B)$, where:
+
+* $A \subseteq G$: **extent** (set of objects)
+* $B \subseteq M$: **intent** (set of attributes)
+* $A' = B$ and $B' = A$
+
+Where:
+
+* $A'$ = common attributes of all objects in A
+* $B'$ = all objects having all attributes in B
+
+---
+
+### 🔶 Step 3: Compute All Concepts
+
+We’ll check all subsets of G (powerset of objects), compute their common attributes, then find the corresponding formal concepts.
+
+#### Subsets of G:
+
+1. **∅**
+
+   * A = ∅
+   * A′ = all attributes (by definition) = {a1, a2, a3}
+   * B = {a1, a2, a3}
+   * B′ = ∅ (no object has all 3 attributes)
+   * ✔ Formal concept: (∅, {a1, a2, a3})
+
+2. **{o1}**
+
+   * A′ = attributes of o1 = {a1, a2}
+   * B = {a1, a2}
+   * B′ = which objects have both a1 and a2? Only o1 → {o1}
+   * ✔ Formal concept: ({o1}, {a1, a2})
+
+3. **{o2}**
+
+   * A′ = {a2, a3}
+   * B′ = which objects have both a2 and a3? Only o2 → {o2}
+   * ✔ Formal concept: ({o2}, {a2, a3})
+
+4. **{o1, o2}**
+
+   * A′ = common attributes = {a2}
+   * B = {a2}
+   * B′ = both o1 and o2 have a2 → {o1, o2}
+   * ✔ Formal concept: ({o1, o2}, {a2})
+
+---
+
+### ✅ Final List of Formal Concepts:
+
+1. (**∅**, {a1, a2, a3})
+2. ({o1}, {a1, a2})
+3. ({o2}, {a2, a3})
+4. ({o1, o2}, {a2})
+
+---
+
+Would you like the **Hasse diagram** or the **concept lattice drawn** for this context as well?
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]

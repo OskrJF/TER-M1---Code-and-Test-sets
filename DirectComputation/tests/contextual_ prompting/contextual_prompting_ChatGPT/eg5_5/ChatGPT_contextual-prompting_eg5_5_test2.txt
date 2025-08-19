@@ -1,0 +1,200 @@
+ChatGPT_contextual-prompting_eg5_5_test12
+
+Date: 29 may 2025
+Model: ChatGPT-4o 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+To extract all **formal concepts** (also called **lattice concepts**) from a **formal context** in **Formal Concept Analysis (FCA)**, we follow these basic steps:
+
+---
+
+### **1. Definitions**
+
+A **formal context** is a triple \\( (G, M, I) \\), where:
+
+* $$( G \\): set of **objects**
+  $$
+* $$( M \\): set of **attributes**
+  $$
+* $$( I \subseteq G \times M \\): the **incidence relation** (object \\( g \\) has attribute \\( m \\))
+  $$
+
+A **formal concept** is a pair \\( (A, B) \\), where:
+
+* $$( A \subseteq G \\) is the **extent** (objects),
+  $$
+* $$( B \subseteq M \\) is the **intent** (attributes),
+  $$
+* such that:
+
+  * $$( A' = B \\) and  
+    $$
+  * $$( B' = A \\)
+    $$
+
+Here, the **derivation operators**:
+
+* $$( A' = { m \in M \mid \forall g \in A: (g, m) \in I } \\)
+  $$
+* $$( B' = { g \in G \mid \forall m \in B: (g, m) \in I } \\)
+  $$
+
+---
+
+### **2. Given Context (Tabular Form)**
+
+| Object | a1 | a2 | a3 | a4 | a5 |
+| ------ | -- | -- | -- | -- | -- |
+| o1     | ✔️ | ❌  | ✔️ | ✔️ | ❌  |
+| o2     | ❌  | ❌  | ✔️ | ❌  | ❌  |
+| o3     | ✔️ | ✔️ | ❌  | ✔️ | ✔️ |
+| o4     | ❌  | ✔️ | ❌  | ❌  | ✔️ |
+| o5     | ❌  | ✔️ | ❌  | ❌  | ❌  |
+
+Objects (G): {o1, o2, o3, o4, o5}
+Attributes (M): {a1, a2, a3, a4, a5}
+
+---
+
+### **3. Step-by-step Construction of Concepts**
+
+We enumerate all **intents** and derive their extents. For small contexts, it's feasible to compute all **closures** manually.
+
+Let’s iterate through all subsets of attributes and apply the Galois connection (using derivation and closure).
+
+#### Concept 1: Intent = ∅
+
+* Extent = all objects = {o1, o2, o3, o4, o5}
+* Common attributes = ∅
+  → **Concept 1: ({o1, o2, o3, o4, o5}, ∅)**
+
+#### Concept 2: Intent = {a1}
+
+* Objects having a1: o1, o3
+* Common attributes of {o1, o3} = {a1}
+  → **Concept 2: ({o1, o3}, {a1})**
+
+#### Concept 3: Intent = {a2}
+
+* Objects with a2: o3, o4, o5
+* Common attributes: {a2}
+  → **Concept 3: ({o3, o4, o5}, {a2})**
+
+#### Concept 4: Intent = {a3}
+
+* Objects: o1, o2
+* Common attributes: {a3}
+  → **Concept 4: ({o1, o2}, {a3})**
+
+#### Concept 5: Intent = {a4}
+
+* Objects: o1, o3
+* Common attributes: {a1, a4}
+  → Closure is {a1, a4}
+  → **Concept 5: ({o1, o3}, {a1, a4})**
+
+#### Concept 6: Intent = {a5}
+
+* Objects: o3, o4
+* Common attributes: {a5}
+  → **Concept 6: ({o3, o4}, {a5})**
+
+#### Concept 7: Intent = {a2, a5}
+
+* Objects: o3, o4
+* Common attributes: {a2, a5}
+  → **Concept 7: ({o3, o4}, {a2, a5})**
+
+#### Concept 8: Intent = {a1, a4}
+
+* Objects: o1, o3
+* Common attributes: {a1, a4}
+  → Already seen
+  → **(Same as Concept 5)**
+
+#### Concept 9: Intent = {a1, a3}
+
+* Only o1
+* Attributes of o1: {a1, a3, a4}
+  → Closure: {a1, a3, a4}
+  → **Concept 8: ({o1}, {a1, a3, a4})**
+
+#### Concept 10: Intent = {a2, a5, a1}
+
+* Objects with all 3: only o3
+* Attributes of o3: {a1, a2, a4, a5}
+  → Closure: {a1, a2, a4, a5}
+  → **Concept 9: ({o3}, {a1, a2, a4, a5})**
+
+#### Concept 11: Intent = {a2, a5, a4}
+
+* o3 only again
+  → **(Same as above)**
+
+#### Concept 12: Intent = {a2, a5, a1, a4}
+
+* o3 only
+  → Same closure
+  → Already listed
+
+#### Concept 13: Intent = {a2, a5, a4, a3}
+
+* No object satisfies all
+  → Not a concept
+
+#### Concept 14: Intent = {a2, a5, a4, a3, a1}
+
+* Same — no objects
+  → Not a concept
+
+#### Concept 15: Intent = {a2, a5, a4, a3, a1} = All
+
+* No object satisfies all attributes
+  → **Bottom concept** is ∅
+  → **Concept 10: (∅, {a1, a2, a3, a4, a5})**
+
+---
+
+### ✅ **Final List of Concepts (Extent, Intent)**
+
+1. ({o1, o2, o3, o4, o5}, ∅)
+2. ({o1, o3}, {a1})
+3. ({o3, o4, o5}, {a2})
+4. ({o1, o2}, {a3})
+5. ({o1, o3}, {a1, a4})
+6. ({o3, o4}, {a5})
+7. ({o3, o4}, {a2, a5})
+8. ({o1}, {a1, a3, a4})
+9. ({o3}, {a1, a2, a4, a5})
+10. (∅, {a1, a2, a3, a4, a5})
+
+---
+
+Would you like me to **draw the concept lattice (Hasse diagram)** for this set?
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Sure! Here's the list of all formal concepts in the requested format:
+
+```
+[[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3]], [[a2], [o3, o4, o5]], [[a3], [o1, o2]], [[a1, a4], [o1, o3]], [[a5], [o3, o4]], [[a2, a5], [o3, o4]], [[a1, a3, a4], [o1]], [[a1, a2, a4, a5], [o3]], [[a1, a2, a3, a4, a5], []]]
+```

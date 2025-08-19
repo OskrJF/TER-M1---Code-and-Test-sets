@@ -1,0 +1,104 @@
+ChatGPT_contextual-prompting_eg5_5_test1
+
+Date: 29 may 2025
+Model: ChatGPT-4o 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+To extract all **formal concepts** (lattice concepts) from the context using Formal Concept Analysis (FCA), we proceed step-by-step using **Galois connections** between **objects** and **attributes**. Each formal concept is a pair (extent, intent), where:
+
+* **Extent** is the set of objects sharing a common set of attributes.
+* **Intent** is the set of attributes common to those objects.
+
+---
+
+### 🔢 **Context Table**
+
+| Object | a1  | a2  | a3  | a4  | a5  |
+| ------ | --- | --- | --- | --- | --- |
+| o1     | yes | no  | yes | yes | no  |
+| o2     | no  | no  | yes | no  | no  |
+| o3     | yes | yes | no  | yes | yes |
+| o4     | no  | yes | no  | no  | yes |
+| o5     | no  | yes | no  | no  | no  |
+
+---
+
+### 🧠 Step-by-Step Strategy (for small contexts)
+
+We will:
+
+1. Generate **all possible subsets of objects**.
+2. For each subset:
+
+   * Compute the **common attributes (intent)**.
+   * Compute the set of **objects having those attributes (extent)**.
+3. Keep only those where this (extent, intent) pair is **closed**, meaning the process converges (i.e., starting from a set of objects, going to attributes, and back gives the same set of objects).
+
+There are $2^5 = 32$ possible subsets of objects — manageable.
+
+---
+
+### ✅ Concepts Extracted
+
+Here are the **formal concepts** (numbered and grouped as (Extent, Intent)):
+
+1. **({}, {a1, a2, a3, a4, a5})** – the smallest concept (bottom).
+2. **({o2}, {a3})**
+3. **({o5}, {a2})**
+4. **({o4}, {a2, a5})**
+5. **({o3}, {a1, a2, a4, a5})**
+6. **({o1}, {a1, a3, a4})**
+7. **({o4, o5}, {a2})**
+8. **({o2, o5}, {})**
+9. **({o1, o2}, {a3})**
+10. **({o2, o4}, {})**
+11. **({o2, o3}, {})**
+12. **({o2, o4, o5}, {})**
+13. **({o1, o3}, {a1, a4})**
+14. **({o1, o3, o4}, {a4})**
+15. **({o3, o4}, {a2, a5})**
+16. **({o1, o2, o3}, {})**
+17. **({o1, o2, o4}, {})**
+18. **({o1, o2, o5}, {})**
+19. **({o1, o2, o3, o4}, {})**
+20. **({o1, o2, o3, o5}, {})**
+21. **({o1, o2, o4, o5}, {})**
+22. **({o2, o3, o4, o5}, {})**
+23. **({o1, o2, o3, o4, o5}, {})** – the largest concept (top).
+
+---
+
+### 🧩 Summary
+
+There are **23 formal concepts** in total. You can use these to draw the **concept lattice**, ordering them by extent inclusion or intent reverse inclusion. For such small contexts, this process is tractable by hand or a simple script.
+
+Would you like the concept lattice diagram as well?
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Sure! Here's the list of all formal concepts in the requested format (with attributes and objects as plain identifiers, no quotation marks):
+
+```
+[[[], [o1, o2, o3, o4, o5]], [[a1, a3, a4], [o1]], [[a3], [o1, o2]], [[a1, a2, a4, a5], [o3]], [[a2, a5], [o3, o4]], [[a2], [o3, o4, o5]], [[a1, a4], [o1, o3]], [[a2, a5], [o4]], [[a2], [o5]], [[a1], [o1, o3]], [[a4], [o1, o3, o4]], [[a1, a2, a3, a4, a5], []], [[], [o2, o4]], [[], [o2, o5]], [[], [o2, o3]], [[], [o1, o2, o3]], [[], [o1, o2, o4]], [[], [o1, o2, o5]], [[], [o2, o4, o5]], [[], [o1, o2, o3, o4]], [[], [o1, o2, o3, o5]], [[], [o1, o2, o4, o5]], [[], [o2, o3, o4, o5]]]
+```
+
+Let me know if you want them sorted or visualized as a lattice.

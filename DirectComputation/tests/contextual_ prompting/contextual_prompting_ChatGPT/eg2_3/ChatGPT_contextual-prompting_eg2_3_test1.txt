@@ -1,0 +1,112 @@
+ChatGPT_contextual-prompting_eg2_3_test1
+
+Date: 18 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+To extract **formal concepts** (also called **lattice concepts**) from a formal context in **Formal Concept Analysis (FCA)**, we follow these steps:
+
+---
+
+### **Step 1: Represent the Formal Context**
+
+| Object | a1  | a2  | a3  |
+| ------ | --- | --- | --- |
+| o1     | yes | yes | no  |
+| o2     | no  | yes | yes |
+
+We represent the formal context as a binary relation:
+
+* **G** = {o1, o2} (objects)
+* **M** = {a1, a2, a3} (attributes)
+* **I** = incidence relation:
+
+  * o1 has a1, a2
+  * o2 has a2, a3
+
+So:
+
+* o1 ↔ {a1, a2}
+* o2 ↔ {a2, a3}
+
+---
+
+### **Step 2: Compute All Concepts**
+
+A **formal concept** is a pair (A, B) where:
+
+* **A** ⊆ G is the extent (set of objects)
+* **B** ⊆ M is the intent (set of attributes)
+* A' = B and B' = A
+
+We compute all object subsets and their attribute closures:
+
+#### For each A ⊆ G:
+
+1. Compute A' = common attributes of all objects in A.
+2. Compute A'' = all objects that have all attributes in A'.
+3. If A'' = A → (A, A') is a formal concept.
+
+---
+
+### **All subsets of G = {o1, o2}**
+
+1. **A = ∅**
+
+   * A' = all attributes = {a1, a2, a3}
+   * A'' = objects that have all of {a1, a2, a3} = ∅
+     ✅ (∅, {a1, a2, a3}) is a concept
+
+2. **A = {o1}**
+
+   * A' = {a1, a2}
+   * A'' = objects that have a1 and a2 = {o1}
+     ✅ ({o1}, {a1, a2}) is a concept
+
+3. **A = {o2}**
+
+   * A' = {a2, a3}
+   * A'' = objects that have a2 and a3 = {o2}
+     ✅ ({o2}, {a2, a3}) is a concept
+
+4. **A = {o1, o2}**
+
+   * A' = common attributes = {a2}
+   * A'' = objects that have a2 = {o1, o2}
+     ✅ ({o1, o2}, {a2}) is a concept
+
+---
+
+### ✅ Final List of Concepts
+
+| # | Extent   | Intent       |
+| - | -------- | ------------ |
+| 1 | ∅        | {a1, a2, a3} |
+| 2 | {o1}     | {a1, a2}     |
+| 3 | {o2}     | {a2, a3}     |
+| 4 | {o1, o2} | {a2}         |
+
+---
+
+Let me know if you want the **Hasse diagram** of this lattice!
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]
+

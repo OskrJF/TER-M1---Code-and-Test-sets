@@ -1,0 +1,125 @@
+ChatGPT_contextual-prompting_eg2_9_test3
+
+Date: 19 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+____________________
+
+OUTPUT:
+To extract all **formal concepts** from a **formal context** in **Formal Concept Analysis (FCA)**, we need to identify all pairs $(A, B)$, where:
+
+* $A \subseteq G$ (extent, set of objects)
+* $B \subseteq M$ (intent, set of attributes)
+* such that $A' = B$ and $B' = A$
+
+Where:
+
+* $A'$ is the set of attributes common to all objects in $A$
+* $B'$ is the set of objects sharing all attributes in $B$
+
+---
+
+### 🔢 Given Formal Context:
+
+| Object | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+| ------ | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| o1     | Y  | Y  | Y  | Y  | N  | N  | Y  | N  | Y  |
+| o2     | Y  | N  | N  | Y  | N  | Y  | N  | N  | Y  |
+
+Let’s denote:
+
+* $G = \{o1, o2\}$
+* $M = \{a1, a2, a3, a4, a5, a6, a7, a8, a9\}$
+
+---
+
+### Step-by-step Extraction of All Concepts
+
+We will compute the **derivation operators** to find all formal concepts.
+
+---
+
+#### 1. $A = \emptyset$
+
+Then $A' = M$, since no constraints → all attributes
+Then $(A')' =$ objects that have **all** of M = none → $\emptyset$
+
+📌 Concept 1:
+**Extent**: ∅
+**Intent**: {a1, a2, a3, a4, a5, a6, a7, a8, a9}
+
+---
+
+#### 2. $A = \{o1\}$
+
+o1’s attributes: a1, a2, a3, a4, a7, a9
+$A' = \{a1, a2, a3, a4, a7, a9\}$
+Then $(A')' =$ objects that have all these attributes: only o1 → OK
+
+📌 Concept 2:
+**Extent**: {o1}
+**Intent**: {a1, a2, a3, a4, a7, a9}
+
+---
+
+#### 3. $A = \{o2\}$
+
+o2’s attributes: a1, a4, a6, a9
+$A' = \{a1, a4, a6, a9\}$
+Then $(A')' = \{o2\}$ → OK
+
+📌 Concept 3:
+**Extent**: {o2}
+**Intent**: {a1, a4, a6, a9}
+
+---
+
+#### 4. $A = \{o1, o2\}$
+
+Common attributes: intersection of their attributes
+→ o1: a1, a2, a3, a4, a7, a9
+→ o2: a1, a4, a6, a9
+Intersection = {a1, a4, a9}
+→ $A' = \{a1, a4, a9\}$, and $(A')' = \{o1, o2\}$ → OK
+
+📌 Concept 4:
+**Extent**: {o1, o2}
+**Intent**: {a1, a4, a9}
+
+---
+
+### ✅ Final Answer — All Formal Concepts:
+
+|  # | Extent   | Intent                               |
+| -: | -------- | ------------------------------------ |
+|  1 | ∅        | {a1, a2, a3, a4, a5, a6, a7, a8, a9} |
+|  2 | {o1}     | {a1, a2, a3, a4, a7, a9}             |
+|  3 | {o2}     | {a1, a4, a6, a9}                     |
+|  4 | {o1, o2} | {a1, a4, a9}                         |
+
+These four are all the formal concepts (nodes of the concept lattice) for this context.
+
+Would you like the concept lattice visualized as a Hasse diagram?
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Sure! Here's the list of all concepts from your context in the requested format:
+
+```
+[[[], [o1, o2]], [[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]]
+```
+

@@ -1,0 +1,136 @@
+ChatGPT_contextual-prompting_eg2_9_test1
+
+Date: 19 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+____________________
+
+OUTPUT:
+To extract and enumerate all **formal concepts** (or **lattice concepts**) from a formal context in **Formal Concept Analysis (FCA)**, we follow these steps:
+
+---
+
+### 🔶 Step 1: Understand the context
+
+The context is a table with **objects** and **attributes**.
+
+|    | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| o1 | ✔  | ✔  | ✔  | ✔  | ✘  | ✘  | ✔  | ✘  | ✔  |
+| o2 | ✔  | ✘  | ✘  | ✔  | ✘  | ✔  | ✘  | ✘  | ✔  |
+
+We'll convert the context into a **binary incidence relation**:
+
+* `1` if "yes"
+* `0` if "no"
+
+So:
+
+| Object | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+| ------ | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| o1     | 1  | 1  | 1  | 1  | 0  | 0  | 1  | 0  | 1  |
+| o2     | 1  | 0  | 0  | 1  | 0  | 1  | 0  | 0  | 1  |
+
+---
+
+### 🔶 Step 2: Define derivation operators
+
+Let:
+
+* $G = \{o1, o2\}$ be the set of objects
+* $M = \{a1, ..., a9\}$ be the set of attributes
+* For any $A \subseteq G$, define:
+
+  * $A' = \{ m \in M \mid \forall g \in A, g \text{ has } m \}$
+* For any $B \subseteq M$, define:
+
+  * $B' = \{ g \in G \mid \forall m \in B, g \text{ has } m \}$
+
+A **formal concept** is a pair $(A, B)$ such that $A' = B$ and $B' = A$.
+
+---
+
+### 🔶 Step 3: List all possible extents and compute their intents
+
+We list all subsets of the object set $G = \{o1, o2\}$:
+
+* Ø
+* {o1}
+* {o2}
+* {o1, o2}
+
+Then compute their primes:
+
+1. **A = Ø** → $A' = \{a1, a2, a3, a4, a5, a6, a7, a8, a9\}$ (trivially, all attributes)
+
+   * Then $A'' = \{ \text{objects that have all attributes} \} = \emptyset$
+   * Concept: **(∅, {a1, ..., a9})**
+
+2. **A = {o1}**:
+
+   * $A' = \{a1, a2, a3, a4, a7, a9\}$
+   * Then $A'' = \{ \text{objects having all of these attributes} \} = \{o1\}$
+   * Concept: **({o1}, {a1, a2, a3, a4, a7, a9})**
+
+3. **A = {o2}**:
+
+   * $A' = \{a1, a4, a6, a9\}$
+   * $A'' = \{o2\}$
+   * Concept: **({o2}, {a1, a4, a6, a9})**
+
+4. **A = {o1, o2}**:
+
+   * Common attributes of o1 and o2 → intersection:
+
+     * a1, a4, a9 → so $A' = \{a1, a4, a9\}$
+   * Then $A'' = \{ \text{objects having a1, a4, a9} \} = \{o1, o2\}$
+   * Concept: **({o1, o2}, {a1, a4, a9})**
+
+---
+
+### 🔶 Step 4: Enumerate all concepts
+
+We found the following **four formal concepts**:
+
+|  # | Extent (Objects) | Intent (Attributes)                  |
+| -: | ---------------- | ------------------------------------ |
+|  1 | ∅                | {a1, a2, a3, a4, a5, a6, a7, a8, a9} |
+|  2 | {o1}             | {a1, a2, a3, a4, a7, a9}             |
+|  3 | {o2}             | {a1, a4, a6, a9}                     |
+|  4 | {o1, o2}         | {a1, a4, a9}                         |
+
+---
+
+### 🔶 Optional: Concept lattice
+
+These concepts form a lattice with the following partial ordering (by set inclusion on extents or reverse inclusion on intents):
+
+```
+        ({o1, o2}, {a1, a4, a9})
+       /                         \
+({o1}, {a1, a2, a3, a4, a7, a9})  ({o2}, {a1, a4, a6, a9})
+       \                         /
+          (∅, {a1..a9})
+```
+
+Let me know if you’d like the **Hasse diagram** for this lattice.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all formal concepts in the requested format:
+
+[[[a1, a2, a3, a4, a5, a6, a7, a8, a9], []], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a4, a9], [o1, o2]]]

@@ -1,0 +1,150 @@
+ChatGPT_contextual-prompting_eg2_3_test3
+
+Date: 18 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), we can find the lattice concepts from small contexts (less than 20 objects and les than 20 attributes) by simple methods rather than powerful algorithms.
+Given the next context, I want you to extract and enumerate all lattice concepts:
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+To extract **lattice concepts** (formal concepts) from a formal context in **Formal Concept Analysis (FCA)**, we follow the principle that a formal concept is a pair:
+
+**(Extent, Intent)**
+
+* **Extent**: a set of objects
+* **Intent**: a set of attributes
+  such that:
+* all objects in the extent share all attributes in the intent
+* and all attributes in the intent are shared by all objects in the extent.
+
+---
+
+### Step 1: Represent the Formal Context
+
+Given context:
+
+| Object | a1  | a2  | a3  |
+| ------ | --- | --- | --- |
+| o1     | yes | yes | no  |
+| o2     | no  | yes | yes |
+
+This corresponds to the following incidence relation (X: present):
+
+|    | a1 | a2 | a3 |
+| -- | -- | -- | -- |
+| o1 | X  | X  |    |
+| o2 |    | X  | X  |
+
+---
+
+### Step 2: List All Subsets of Objects
+
+We consider all possible subsets of objects:
+
+* ∅
+* {o1}
+* {o2}
+* {o1, o2}
+
+Then we compute their **intents**: the common attributes of all objects in the subset.
+
+---
+
+#### a) Extent = ∅
+
+* Common attributes = all attributes = {a1, a2, a3}
+* So, Concept 1: (**∅**, {a1, a2, a3})
+
+---
+
+#### b) Extent = {o1}
+
+* o1 has attributes: {a1, a2}
+* So, Concept 2: ({o1}, **{a1, a2}**)
+
+---
+
+#### c) Extent = {o2}
+
+* o2 has attributes: {a2, a3}
+* So, Concept 3: ({o2}, **{a2, a3}**)
+
+---
+
+#### d) Extent = {o1, o2}
+
+* o1: {a1, a2}, o2: {a2, a3} ⇒ common = {a2}
+* So, Concept 4: ({o1, o2}, **{a2}**)
+
+---
+
+Now consider subsets of **attributes**, and compute their extents: objects having all those attributes.
+
+---
+
+### Step 3: List All Subsets of Attributes
+
+We double-check using the dual way (start from attributes → derive extent → intent):
+
+* ∅ ⇒ All objects ⇒ intent = ∅
+  → Concept 5: ({o1, o2}, ∅) — already included as Concept 4 above
+  (This is actually the bottom concept; numbering adjusted below.)
+
+* {a1} ⇒ o1 ⇒ o1 has a1 and a2 ⇒ intent = {a1, a2}
+  → Concept 2 again
+
+* {a2} ⇒ both o1 and o2 ⇒ both share only a2 ⇒ intent = {a2}
+  → Concept 4 again
+
+* {a3} ⇒ o2 ⇒ o2 has a2, a3 ⇒ intent = {a2, a3}
+  → Concept 3 again
+
+* {a1, a2} ⇒ o1 ⇒ o1 has a1, a2 ⇒ intent = {a1, a2}
+  → Concept 2 again
+
+* {a2, a3} ⇒ o2 ⇒ o2 has a2, a3 ⇒ intent = {a2, a3}
+  → Concept 3 again
+
+* {a1, a3} ⇒ no object ⇒ extent = ∅ ⇒ intent = {a1, a3}
+  → Concept 6: (∅, {a1, a3})
+
+* {a1, a2, a3} ⇒ no object ⇒ extent = ∅ ⇒ intent = {a1, a2, a3}
+  → Concept 1 again
+
+---
+
+### ✅ Final List of All Concepts
+
+Let's enumerate the **distinct** concepts:
+
+1. (∅, {a1, a2, a3})
+2. (∅, {a1, a3})
+3. ({o1}, {a1, a2})
+4. ({o2}, {a2, a3})
+5. ({o1, o2}, {a2})
+6. ({o1, o2}, ∅)
+
+---
+
+### ✅ Total: 6 Formal Concepts
+
+These form a **concept lattice**, which can be drawn as a Hasse diagram (optional).
+
+Let me know if you'd like the diagram or further explanation.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a2, a3], []], [[a1, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]
