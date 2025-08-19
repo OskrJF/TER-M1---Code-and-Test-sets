@@ -1,0 +1,110 @@
+ChatGPT_self-consistency_eg2_3_test1
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given the next context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+____________________
+
+OUTPUT:
+To extract and enumerate all **formal concepts** (i.e., nodes of the concept lattice) in **Formal Concept Analysis (FCA)**, we work from the **formal context**. A *formal concept* is a pair $(A, B)$, where:
+
+* $A$ is the **extent**: a set of objects sharing all attributes in $B$,
+* $B$ is the **intent**: a set of attributes shared by all objects in $A$.
+
+---
+
+### 🔹 Step 1: Input Formal Context
+
+| Object | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+| ------ | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| o1     | ✓  | ✓  | ✓  | ✓  | ✗  | ✗  | ✓  | ✗  | ✓  |
+| o2     | ✓  | ✗  | ✗  | ✓  | ✗  | ✓  | ✗  | ✗  | ✓  |
+
+---
+
+### 🔹 Step 2: Derive Object Intents
+
+We list the **attributes** (intent) for each object:
+
+* o1: {a1, a2, a3, a4, a7, a9}
+* o2: {a1, a4, a6, a9}
+
+---
+
+### 🔹 Step 3: Generate All Extents (Object Subsets)
+
+We examine all possible subsets of objects and derive their **common attributes** (intent). We check if that intent gives back the same extent (objects sharing those attributes). These are our **formal concepts**.
+
+Let's go through subsets of objects:
+
+---
+
+#### 1. Extent: ∅ (empty set)
+
+* Intent = all attributes = {a1, a2, a3, a4, a5, a6, a7, a8, a9}
+* Extent (objects having all these) = ∅
+  ✅ Formal Concept:
+  **(∅, {a1, a2, a3, a4, a5, a6, a7, a8, a9})**
+
+---
+
+#### 2. Extent: {o1}
+
+* Intent = {a1, a2, a3, a4, a7, a9}
+* Extent (objects with all these) = {o1}
+  ✅ Formal Concept:
+  **({o1}, {a1, a2, a3, a4, a7, a9})**
+
+---
+
+#### 3. Extent: {o2}
+
+* Intent = {a1, a4, a6, a9}
+* Extent = {o2}
+  ✅ Formal Concept:
+  **({o2}, {a1, a4, a6, a9})**
+
+---
+
+#### 4. Extent: {o1, o2}
+
+* Common attributes = {a1, a4, a9}
+* Extent of {a1, a4, a9} = {o1, o2}
+  ✅ Formal Concept:
+  **({o1, o2}, {a1, a4, a9})**
+
+---
+
+### 🔹 Step 4: Enumerate Concepts
+
+**Complete list of formal concepts:**
+
+1. **(∅, {a1, a2, a3, a4, a5, a6, a7, a8, a9})**
+2. **({o1}, {a1, a2, a3, a4, a7, a9})**
+3. **({o2}, {a1, a4, a6, a9})**
+4. **({o1, o2}, {a1, a4, a9})**
+
+---
+
+Let me know if you want a **Hasse diagram** of the lattice, or want to process a larger context!
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all formal concepts in the requested format:
+
+```
+[[[a1, a2, a3, a4, a5, a6, a7, a8, a9], []], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a4, a9], [o1, o2]]]
+```

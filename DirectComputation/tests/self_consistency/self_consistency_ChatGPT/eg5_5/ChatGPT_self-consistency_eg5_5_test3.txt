@@ -1,0 +1,106 @@
+ChatGPT_self-consistency_eg5_5_test3
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given the next context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+To extract all **formal concepts** (also called lattice concepts) in **Formal Concept Analysis (FCA)**, we need to:
+
+1. **Define the formal context** $(G, M, I)$, where:
+
+   * $G$: Set of objects = {o1, o2, o3, o4, o5}
+   * $M$: Set of attributes = {a1, a2, a3, a4, a5}
+   * $I \subseteq G \times M$: the incidence relation ("yes" entries)
+
+2. **Compute all formal concepts**: Pairs $(A, B)$ where:
+
+   * $A \subseteq G$, $B \subseteq M$
+   * $A' = B$, and $B' = A$
+   * $A'$: attributes common to all objects in $A$
+   * $B'$: objects sharing all attributes in $B$
+
+---
+
+### 🔍 Step 1: Context Table (Binary Matrix)
+
+|    | a1 | a2 | a3 | a4 | a5 |
+| -- | -- | -- | -- | -- | -- |
+| o1 | ✔️ | ❌  | ✔️ | ✔️ | ❌  |
+| o2 | ❌  | ❌  | ✔️ | ❌  | ❌  |
+| o3 | ✔️ | ✔️ | ❌  | ✔️ | ✔️ |
+| o4 | ❌  | ✔️ | ❌  | ❌  | ✔️ |
+| o5 | ❌  | ✔️ | ❌  | ❌  | ❌  |
+
+---
+
+### 🧠 Step 2: Compute All Concepts
+
+We compute all **(extent, intent)** pairs such that:
+
+* **Extent** = set of objects sharing the same attributes (intent)
+* **Intent** = set of attributes shared by the extent
+
+We use **Next Closure** or brute-force here due to small size.
+
+Here are all the **formal concepts**:
+
+| #  | Extent               | Intent               |
+| -- | -------------------- | -------------------- |
+| 1  | {o1, o2, o3, o4, o5} | ∅                    |
+| 2  | {o1, o2}             | {a3}                 |
+| 3  | {o3, o4}             | {a2, a5}             |
+| 4  | {o4, o5}             | {a2}                 |
+| 5  | {o3}                 | {a1, a2, a4, a5}     |
+| 6  | {o1}                 | {a1, a3, a4}         |
+| 7  | {o2}                 | {a3}                 |
+| 8  | {o5}                 | {a2}                 |
+| 9  | {o4}                 | {a2, a5}             |
+| 10 | {o1, o3}             | {a1, a4}             |
+| 11 | {o3, o4, o5}         | {a2}                 |
+| 12 | ∅                    | {a1, a2, a3, a4, a5} |
+
+---
+
+### ✅ Final List of Formal Concepts (Lattice Nodes)
+
+1. ({o1, o2, o3, o4, o5}, ∅)
+2. ({o1, o2}, {a3})
+3. ({o3, o4}, {a2, a5})
+4. ({o4, o5}, {a2})
+5. ({o3}, {a1, a2, a4, a5})
+6. ({o1}, {a1, a3, a4})
+7. ({o2}, {a3})
+8. ({o5}, {a2})
+9. ({o4}, {a2, a5})
+10. ({o1, o3}, {a1, a4})
+11. ({o3, o4, o5}, {a2})
+12. (∅, {a1, a2, a3, a4, a5})
+
+Let me know if you want this visualized as a **Hasse diagram**!
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Sure! Here's the list of all formal concepts in the format you requested:
+
+```
+[[[], [o1, o2, o3, o4, o5]], [[a3], [o1, o2]], [[a2, a5], [o3, o4]], [[a2], [o4, o5]], [[a1, a2, a4, a5], [o3]], [[a1, a3, a4], [o1]], [[a3], [o2]], [[a2], [o5]], [[a2, a5], [o4]], [[a1, a4], [o1, o3]], [[a2], [o3, o4, o5]], [[a1, a2, a3, a4, a5], []]]
+```
+

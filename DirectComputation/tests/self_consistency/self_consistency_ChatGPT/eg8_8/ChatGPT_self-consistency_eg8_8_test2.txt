@@ -1,0 +1,67 @@
+ChatGPT_self-consistency_eg8_8_test2
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given the next context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5;a6;a7;a8
+O1;Yes;Yes;Yes;No;No;No;No;No
+O2;Yes;Yes;Yes;No;No;Yes;No;Yes
+O3;Yes;Yes;No;Yes;No;Yes;No;No
+O4;No;Yes;Yes;Yes;Yes;No;No;Yes
+O5;No;Yes;No;Yes;No;Yes;Yes;Yes
+O6;Yes;Yes;Yes;No;Yes;No;Yes;No
+O7;No;Yes;Yes;Yes;Yes;No;Yes;No
+O8;No;Yes;Yes;Yes;Yes;No;Yes;No
+____________________
+
+OUTPUT:
+Here are all the **formal concepts** (also known as **lattice concepts**) extracted from the given context in Formal Concept Analysis (FCA). Each concept is a pair: **(extent, intent)** where:
+
+* **Extent** is the set of objects sharing common attributes (the intent).
+* **Intent** is the set of attributes common to those objects (the extent).
+
+### Extracted Concepts (Extent → Intent):
+
+1. `['O3']` → `['a1', 'a2', 'a4', 'a6']`
+2. `['O4']` → `['a2', 'a3', 'a4', 'a5', 'a8']`
+3. `['O6']` → `['a1', 'a2', 'a3', 'a5', 'a7']`
+4. `['O2']` → `['a1', 'a2', 'a3', 'a6', 'a8']`
+5. `['O5']` → `['a2', 'a4', 'a6', 'a7', 'a8']`
+6. `['O5', 'O4']` → `['a2', 'a4', 'a8']`
+7. `['O5', 'O3']` → `['a2', 'a4', 'a6']`
+8. `['O2', 'O3']` → `['a1', 'a2', 'a6']`
+9. `['O5', 'O2']` → `['a2', 'a6', 'a8']`
+10. `['O2', 'O4']` → `['a2', 'a3', 'a8']`
+11. `['O7', 'O8']` → `['a2', 'a3', 'a4', 'a5', 'a7']`
+12. `['O5', 'O2', 'O3']` → `['a2', 'a6']`
+13. `['O5', 'O2', 'O4']` → `['a2', 'a8']`
+14. `['O7', 'O8', 'O5']` → `['a2', 'a4', 'a7']`
+15. `['O1', 'O2', 'O6']` → `['a1', 'a2', 'a3']`
+16. `['O4', 'O7', 'O8']` → `['a2', 'a3', 'a4', 'a5']`
+17. `['O6', 'O7', 'O8']` → `['a2', 'a3', 'a5', 'a7']`
+18. `['O1', 'O2', 'O3', 'O6']` → `['a1', 'a2']`
+19. `['O5', 'O6', 'O7', 'O8']` → `['a2', 'a7']`
+20. `['O4', 'O6', 'O7', 'O8']` → `['a2', 'a3', 'a5']`
+21. `['O3', 'O4', 'O5', 'O7', 'O8']` → `['a2', 'a4']`
+22. `['O1', 'O2', 'O4', 'O6', 'O7', 'O8']` → `['a2', 'a3']`
+23. `['O1', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7', 'O8']` → `['a2']`
+
+Let me know if you'd like to visualize the concept lattice or generate its Hasse diagram!
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all formal concepts in the requested format:
+
+```
+[[[a1, a2, a4, a6], [O3]], [[a2, a3, a4, a5, a8], [O4]], [[a1, a2, a3, a5, a7], [O6]], [[a1, a2, a3, a6, a8], [O2]], [[a2, a4, a6, a7, a8], [O5]], [[a2, a4, a8], [O5, O4]], [[a2, a4, a6], [O5, O3]], [[a1, a2, a6], [O2, O3]], [[a2, a6, a8], [O5, O2]], [[a2, a3, a8], [O2, O4]], [[a2, a3, a4, a5, a7], [O7, O8]], [[a2, a6], [O5, O2, O3]], [[a2, a8], [O5, O2, O4]], [[a2, a4, a7], [O7, O8, O5]], [[a1, a2, a3], [O1, O6, O2]], [[a2, a3, a4, a5], [O7, O8, O4]], [[a2, a3, a5, a7], [O7, O8, O6]], [[a1, a2], [O1, O6, O2, O3]], [[a2, a7], [O7, O8, O5, O6]], [[a2, a3, a5], [O7, O8, O6, O4]], [[a2, a4], [O8, O5, O4, O3, O7]], [[a2, a3], [O8, O4, O1, O6, O7, O2]], [[a2], [O8, O5, O4, O1, O6, O3, O7, O2]]]
+```

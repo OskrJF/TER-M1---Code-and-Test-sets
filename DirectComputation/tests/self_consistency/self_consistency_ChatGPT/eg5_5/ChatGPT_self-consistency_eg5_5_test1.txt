@@ -1,0 +1,155 @@
+ChatGPT_self-consistency_eg5_5_test1
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given the next context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+To extract and enumerate all **formal concepts** (also called **lattice concepts**) in **Formal Concept Analysis (FCA)**, we must analyze a **formal context**, which is a cross-table of objects and attributes.
+
+---
+
+### 🔢 Step 1: Convert the table into a binary relation
+
+From your context:
+
+| Object | a1 | a2 | a3 | a4 | a5 |
+| ------ | -- | -- | -- | -- | -- |
+| o1     | ✔️ | ❌  | ✔️ | ✔️ | ❌  |
+| o2     | ❌  | ❌  | ✔️ | ❌  | ❌  |
+| o3     | ✔️ | ✔️ | ❌  | ✔️ | ✔️ |
+| o4     | ❌  | ✔️ | ❌  | ❌  | ✔️ |
+| o5     | ❌  | ✔️ | ❌  | ❌  | ❌  |
+
+We convert "yes" to ✔️ and "no" to ❌.
+
+---
+
+### 🧠 Step 2: Define the **derivation operators**
+
+* For a **set of objects** $O$, $O'$ is the set of **common attributes** shared by all objects in $O$.
+* For a **set of attributes** $A$, $A'$ is the set of **objects** that have all attributes in $A$.
+
+A **formal concept** is a pair $(O, A)$ such that:
+
+* $A = O'$ and $O = A'$
+
+---
+
+### 🧮 Step 3: Enumerate all formal concepts
+
+We will compute all pairs $(extent, intent)$ where the extent is a subset of objects and intent is the set of shared attributes.
+
+Let’s list them exhaustively:
+
+---
+
+#### Concept 1: Top concept (All objects)
+
+* **Extent**: {o1, o2, o3, o4, o5}
+* **Intent**: ∅ (no attribute is common to all objects)
+
+---
+
+#### Concept 2:
+
+* **Extent**: {o2}
+* **Intent**: {a3}
+
+#### Concept 3:
+
+* **Extent**: {o1, o2}
+* **Intent**: {a3}
+
+#### Concept 4:
+
+* **Extent**: {o1}
+* **Intent**: {a1, a3, a4}
+
+#### Concept 5:
+
+* **Extent**: {o3}
+* **Intent**: {a1, a2, a4, a5}
+
+#### Concept 6:
+
+* **Extent**: {o3, o4}
+* **Intent**: {a2, a5}
+
+#### Concept 7:
+
+* **Extent**: {o3, o4, o5}
+* **Intent**: {a2}
+
+#### Concept 8:
+
+* **Extent**: {o4}
+* **Intent**: {a2, a5}
+
+#### Concept 9:
+
+* **Extent**: {o4, o5}
+* **Intent**: {a2}
+
+#### Concept 10:
+
+* **Extent**: {o5}
+* **Intent**: {a2}
+
+#### Concept 11:
+
+* **Extent**: {o1, o3}
+* **Intent**: {a1, a4}
+
+#### Concept 12:
+
+* **Extent**: {}
+* **Intent**: {a1, a2, a3, a4, a5} (bottom concept)
+
+---
+
+### ✅ Final List of Formal Concepts
+
+| #  | Extent (Objects)     | Intent (Attributes)  |
+| -- | -------------------- | -------------------- |
+| 1  | {o1, o2, o3, o4, o5} | ∅                    |
+| 2  | {o2}                 | {a3}                 |
+| 3  | {o1, o2}             | {a3}                 |
+| 4  | {o1}                 | {a1, a3, a4}         |
+| 5  | {o3}                 | {a1, a2, a4, a5}     |
+| 6  | {o3, o4}             | {a2, a5}             |
+| 7  | {o3, o4, o5}         | {a2}                 |
+| 8  | {o4}                 | {a2, a5}             |
+| 9  | {o4, o5}             | {a2}                 |
+| 10 | {o5}                 | {a2}                 |
+| 11 | {o1, o3}             | {a1, a4}             |
+| 12 | ∅                    | {a1, a2, a3, a4, a5} |
+
+---
+
+Would you like a **concept lattice diagram** of this?
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all formal concepts in the requested format:
+
+```
+[[[], [o1, o2, o3, o4, o5]], [[a3], [o1, o2]], [[a1, a3, a4], [o1]], [[a1, a4], [o1, o3]], [[a1, a2, a4, a5], [o3]], [[a2, a5], [o3, o4]], [[a2], [o3, o4, o5]], [[a2, a5], [o4]], [[a2], [o4, o5]], [[a2], [o5]], [[a3], [o2]], [[a1, a2, a3, a4, a5], []]]
+```

@@ -1,0 +1,121 @@
+ChatGPT_self-consistency_eg2_3_test1
+
+Date: 26 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given thenext context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+To extract all **formal concepts** (also known as lattice concepts) from a **formal context** in **Formal Concept Analysis (FCA)**, we follow these steps:
+
+---
+
+### **1. Given Formal Context:**
+
+| Object | a1  | a2  | a3  |
+| ------ | --- | --- | --- |
+| o1     | yes | yes | no  |
+| o2     | no  | yes | yes |
+
+We'll interpret this as a formal context:
+
+* **G** (Objects) = {o1, o2}
+* **M** (Attributes) = {a1, a2, a3}
+* **I** (Incidence relation):
+
+  * o1 has attributes: a1, a2
+  * o2 has attributes: a2, a3
+
+---
+
+### **2. Definitions:**
+
+A **formal concept** is a pair (A, B) where:
+
+* A ⊆ G is the **extent** (set of objects)
+* B ⊆ M is the **intent** (set of attributes)
+* A' = B and B' = A, where:
+
+  * A' = {attributes common to all objects in A}
+  * B' = {objects that have all attributes in B}
+
+---
+
+### **3. List All Extents and Compute Intents:**
+
+We'll examine all subsets of G:
+
+#### **Extent: ∅ (empty set)**
+
+* A' = all attributes = {a1, a2, a3} (by definition)
+* B' = objects with all 3 attributes = ∅
+* ⇒ Concept: **(∅, {a1, a2, a3})**
+
+---
+
+#### **Extent: {o1}**
+
+* A' = attributes of o1 = {a1, a2}
+* B' = objects with both a1 and a2 = {o1}
+* ⇒ Concept: **({o1}, {a1, a2})**
+
+---
+
+#### **Extent: {o2}**
+
+* A' = attributes of o2 = {a2, a3}
+* B' = objects with both a2 and a3 = {o2}
+* ⇒ Concept: **({o2}, {a2, a3})**
+
+---
+
+#### **Extent: {o1, o2}**
+
+* A' = attributes common to o1 and o2 = {a2}
+* B' = objects with a2 = {o1, o2}
+* ⇒ Concept: **({o1, o2}, {a2})**
+
+---
+
+### **4. List All Concepts**
+
+Here are all formal concepts:
+
+1. **(∅, {a1, a2, a3})** — bottom concept
+2. **({o1}, {a1, a2})**
+3. **({o2}, {a2, a3})**
+4. **({o1, o2}, {a2})** — top concept
+
+---
+
+### ✅ Summary
+
+The **formal concepts** in this context are:
+
+1. (∅, {a1, a2, a3})
+2. ({o1}, {a1, a2})
+3. ({o2}, {a2, a3})
+4. ({o1, o2}, {a2})
+
+Would you like me to draw the **concept lattice diagram** based on this?
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Sure! Here's the list of all formal concepts in the requested format:
+
+```
+[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]
+```
