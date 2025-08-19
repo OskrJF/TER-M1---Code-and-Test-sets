@@ -1,0 +1,201 @@
+Deepseek_step-back_prompting_eg2_3_test1
+
+Date: 24 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1: In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), a concept lattice (or Galois lattice) is built from a formal context (typically a binary relation between objects and attributes). For contexts with fewer than 20 objects and fewer than 20 attributes (a relatively small scale), here are three practical ways to find the lattice concepts:
+
+### 1. **Naive Enumeration with Closure Computation (Next-Closure Algorithm)**  
+   - **How it works**:  
+     - Start with the empty set of attributes and iteratively compute closures (using the Galois connection) to generate all formal concepts.  
+     - The Next-Closure algorithm (Ganter, 1984) generates concepts in lexicographic order, avoiding redundancy.  
+   - **Steps**:  
+     1. Begin with the smallest concept (usually \((\emptyset'', \emptyset')\)).  
+     2. For each concept \((A, B)\), compute the next closure by adding the lexicographically smallest attribute not in \(B\) and applying the derivation operator \(''\).  
+     3. Repeat until all concepts are generated.  
+   - **Advantage**: Simple to implement for small contexts.  
+   - **Disadvantage**: Not the most efficient for larger contexts (but fine for <20 objects/attributes).  
+
+### 2. **Breadth-First Search (via Object-Intersection or Attribute-Intersection)**  
+   - **How it works**:  
+     - Generate concepts by intersecting rows (objects) or columns (attributes) and checking for closures.  
+     - For example, for each subset of objects, compute their common attributes (\(A'\)), then compute \(A''\) to get the extent.  
+   - **Steps**:  
+     1. Start with all single-object extents and compute their closures.  
+     2. For each new concept, intersect its extent with others to generate candidate extents and check for closures.  
+     3. Use a queue to manage unexplored concepts (breadth-first).  
+   - **Advantage**: Intuitive and systematic.  
+   - **Disadvantage**: May generate redundant candidates.  
+
+### 3. **Using the Luxenburger Basis (Simplified Version for Small Contexts)**  
+   - **How it works**:  
+     - Identify "generator" attribute sets and compute their closures to find concepts.  
+     - For small contexts, you can manually or programmatically check all possible attribute combinations (since \(2^{20} \approx 1M\) is manageable computationally).  
+   - **Steps**:  
+     1. List all possible subsets of attributes (from size 1 up to max).  
+     2. For each subset \(B\), compute \(B''\) (the closure) to get the intent of a concept.  
+     3. Remove duplicates and order concepts by inclusion to form the lattice.  
+   - **Advantage**: Exhaustive and guaranteed to find all concepts.  
+   - **Disadvantage**: Computationally heavier than Next-Closure for larger cases (but fine for <20 attributes).  
+
+### Bonus: **Using FCA Software (For Verification)**  
+   - Tools like **ConExp**, **ToscanaJ**, or **Python libraries (e.g., `concepts` in Python)** can quickly compute the lattice for small contexts. Example in Python:  
+     ```python
+     from concepts import Context
+
+     # Example context (objects x attributes)
+     context = Context([[1, 0, 1], [0, 1, 1]], ['Obj1', 'Obj2'], ['Attr1', 'Attr2', 'Attr3'])
+
+     # Print all concepts
+     for concept in context.lattice:
+         print(concept.extent, concept.intent)
+     ```
+
+### Summary:  
+For manual/small-scale computation:  
+1. **Next-Closure** is theoretically clean.  
+2. **Breadth-First Search** is intuitive.  
+3. **Luxenburger Basis/Exhaustive Closure** is brute-force but reliable.  
+
+For automation, use existing FCA tools. Since your context is small (<20), all methods are feasible.
+____________________
+
+PROMPT 2: Pick one of the three ways that you mentioned to extract all the lattice concepts from the context in this .csv file
+____________________
+
+OUTPUT:
+I'll use the **Next-Closure algorithm** (the first method) to extract all lattice concepts from the given context. This method is systematic and efficient for small contexts like the one in `eg2_3.csv`.
+
+---
+
+### **Step 1: Represent the Formal Context**
+From the file `eg2_3.csv`, the context is:
+
+| Object | a1  | a2  | a3  |
+|--------|-----|-----|-----|
+| o1     | yes | yes | no  |
+| o2     | no  | yes | yes |
+
+We can represent this as a cross table:
+- **Objects**: \( O = \{o1, o2\} \)
+- **Attributes**: \( M = \{a1, a2, a3\} \)
+- **Incidence relation**: \( I = \{(o1,a1), (o1,a2), (o2,a2), (o2,a3)\} \)
+
+---
+
+### **Step 2: Define Derivation Operators**
+For any subset of objects \( A \subseteq O \) and attributes \( B \subseteq M \):
+- \( A' = \{m \in M \mid \forall o \in A : (o,m) \in I\} \) (attributes common to all objects in \( A \))
+- \( B' = \{o \in O \mid \forall m \in B : (o,m) \in I\} \) (objects sharing all attributes in \( B \))
+
+A **formal concept** is a pair \((A, B)\) where \( A' = B \) and \( B' = A \).
+
+---
+
+### **Step 3: Apply Next-Closure Algorithm**
+We generate concepts by iterating through attribute subsets in lexicographic order and computing their closures.
+
+#### **Lexicographic Order of Attributes**:
+Let \( a1 < a2 < a3 \). The order is:
+\[ \emptyset, \{a1\}, \{a2\}, \{a3\}, \{a1,a2\}, \{a1,a3\}, \{a2,a3\}, \{a1,a2,a3\} \]
+
+#### **Compute Concepts**:
+1. **Start with \( \emptyset \)**:
+   - \( \emptyset' = \{o1, o2\} \) (all objects)
+   - \( \{o1, o2\}' = \{a2\} \) (only `a2` is shared by both objects)
+   - **Concept**: \((\{o1, o2\}, \{a2\})\)
+
+2. **Next: \(\{a1\}\)**:
+   - \( \{a1\}' = \{o1\} \)
+   - \( \{o1\}' = \{a1, a2\} \)
+   - **Concept**: \((\{o1\}, \{a1, a2\})\)
+
+3. **Next: \(\{a2\}\)**:
+   - Already generated as \((\{o1, o2\}, \{a2\})\).
+
+4. **Next: \(\{a3\}\)**:
+   - \( \{a3\}' = \{o2\} \)
+   - \( \{o2\}' = \{a2, a3\} \)
+   - **Concept**: \((\{o2\}, \{a2, a3\})\)
+
+5. **Next: \(\{a1, a2\}\)**:
+   - Already generated as \((\{o1\}, \{a1, a2\})\).
+
+6. **Next: \(\{a1, a3\}\)**:
+   - \( \{a1, a3\}' = \emptyset \)
+   - \( \emptyset' = \{a2\} \), but \(\{a1, a3\} \neq \{a2\}\). Not a concept.
+
+7. **Next: \(\{a2, a3\}\)**:
+   - Already generated as \((\{o2\}, \{a2, a3\})\).
+
+8. **Next: \(\{a1, a2, a3\}\)**:
+   - \( \{a1, a2, a3\}' = \emptyset \)
+   - \( \emptyset' = \{a2\} \), but \(\{a1, a2, a3\} \neq \{a2\}\). Not a concept.
+
+---
+
+### **Step 4: List All Formal Concepts**
+From the above steps, the concepts are:
+1. **Top Concept**: \((\{o1, o2\}, \{a2\})\)
+2. \((\{o1\}, \{a1, a2\})\)
+3. **Bottom Concept**: \((\{\}, \{a1, a2, a3\})\) (trivial, derived from \( \emptyset'' \))
+4. \((\{o2\}, \{a2, a3\})\)
+
+Wait! We missed the **bottom concept** earlier. Let's verify:
+- For \( \emptyset \):
+  - \( \emptyset' = \{o1, o2\} \)
+  - \( \{o1, o2\}' = \{a2\} \)
+  - But the **full attribute set** \(\{a1, a2, a3\}\) corresponds to:
+    - \( \{a1, a2, a3\}' = \emptyset \)
+    - \( \emptyset' = \{a2\} \), which does not match. So \((\{\}, \{a1, a2, a3\})\) is **not a concept**.
+  
+Instead, the **bottom concept** is \((\emptyset, M)\) where \( M \) is the set of all attributes, but here:
+- \( M' = \emptyset \)
+- \( \emptyset' = \{a2\} \neq M \), so \((\emptyset, M)\) is **not a concept**.
+
+Thus, the complete list of **non-trivial concepts** is:
+1. \((\{o1, o2\}, \{a2\})\)  
+2. \((\{o1\}, \{a1, a2\})\)  
+3. \((\{o2\}, \{a2, a3\})\)  
+
+The **bottom concept** \((\emptyset, \{a1, a2, a3\})\) is not valid here because no object has all attributes.
+
+---
+
+### **Step 5: Draw the Concept Lattice (Hasse Diagram)**
+The lattice structure is:
+- Top: \((\{o1, o2\}, \{a2\})\)
+  - Child 1: \((\{o1\}, \{a1, a2\})\)
+  - Child 2: \((\{o2\}, \{a2, a3\})\)
+- Bottom: Not included (since \((\emptyset, M)\) is not a concept).
+
+---
+
+### **Final Answer: All Lattice Concepts**
+For the given context, the formal concepts are:
+1. **\((\{o1, o2\}, \{a2\})\)**  
+2. **\((\{o1\}, \{a1, a2\})\)**  
+3. **\((\{o2\}, \{a2, a3\})\)**  
+
+This matches the intuition:
+- \(a2\) is shared by both objects.
+- \(o1\) has \(a1\) and \(a2\).
+- \(o2\) has \(a2\) and \(a3\).
+
+No other non-trivial concepts exist in this small context.
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]

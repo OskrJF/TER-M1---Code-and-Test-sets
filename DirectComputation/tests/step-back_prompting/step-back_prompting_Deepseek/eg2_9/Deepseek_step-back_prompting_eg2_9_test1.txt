@@ -1,0 +1,160 @@
+Deepseek_step-back_prompting_eg2_9_test1
+
+Date: 25 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1: 
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), a **formal concept** is a pair \((A, B)\) where \(A\) is a set of objects (the extent) and \(B\) is a set of attributes (the intent) such that \(A\) consists of all objects that share all attributes in \(B\), and \(B\) consists of all attributes shared by all objects in \(A\). The set of all formal concepts forms a complete lattice called the **concept lattice**.
+
+For a context with fewer than 20 objects and fewer than 20 attributes (a relatively small context), here are three practical ways to find all formal concepts and construct the concept lattice:
+
+### 1. **The Naive (Brute-Force) Approach**
+   - **Method**: Enumerate all possible subsets of objects (or attributes) and compute their closures to check if they form a formal concept.
+   - **Steps**:
+     1. For each subset of objects \(A \subseteq G\), compute its **intent** \(A' = \{m \in M \mid gIm \text{ for all } g \in A\}\).
+     2. Then compute the **extent** \(A''\) (the closure of \(A\)).
+     3. If \(A = A''\), then \((A, A')\) is a formal concept.
+   - **Pros**: Simple to implement.
+   - **Cons**: Computationally expensive for larger contexts (but feasible for <20 objects/attributes).
+
+### 2. **NextClosure Algorithm (Ganter's Algorithm)**
+   - **Method**: A systematic way to generate all formal concepts in **lexicographic order** using the **closure operator**.
+   - **Steps**:
+     1. Start with the smallest concept (usually \((\emptyset'', \emptyset')\)).
+     2. For each concept \((A, B)\), generate the "next" concept by finding the lexicographically smallest set not yet considered and computing its closure.
+   - **Pros**: More efficient than brute-force, outputs concepts in a predictable order.
+   - **Cons**: Requires understanding of lexicographic order and closure properties.
+
+### 3. **Using the Bordat Algorithm (Direct Construction)**
+   - **Method**: Constructs the concept lattice by computing all concepts and their covering relations simultaneously.
+   - **Steps**:
+     1. Start with the minimal concept (bottom of the lattice, usually \((\emptyset'', \emptyset')\)).
+     2. For each concept, compute its upper neighbors by adding one attribute at a time and computing the closure.
+   - **Pros**: Computes both concepts and lattice structure (covering relations) in one pass.
+   - **Cons**: More complex to implement than NextClosure.
+
+### Additional Notes:
+- For very small contexts (e.g., <10 objects/attributes), **manual computation** is feasible by listing all possible combinations.
+- Tools like **ConExp** (Concept Explorer) or **FCAStone** can automate this process for small contexts.
+
+Would you like a step-by-step example for one of these methods?
+____________________
+
+PROMPT 2: 
+Pick one of the three ways that you mentioned to extract all the lattice concepts from the context in this .csv file
+____________________
+
+OUTPUT:
+I’ll use the **Naive (Brute-Force) Approach** to extract all formal concepts from the given context because it’s straightforward and feasible for this small example (only 2 objects and 9 attributes). Here’s how it works step-by-step:
+
+---
+
+### **Given Context:**
+| Object | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+|--------|----|----|----|----|----|----|----|----|----|
+| o1     | yes| yes| yes| yes| no | no | yes| no | yes|
+| o2     | yes| no | no | yes| no | yes| no | no | yes|
+
+---
+
+### **Step 1: List All Possible Subsets of Objects**
+For \( G = \{o1, o2\} \), the subsets are:
+1. \( \emptyset \) (empty set)
+2. \( \{o1\} \)
+3. \( \{o2\} \)
+4. \( \{o1, o2\} \)
+
+---
+
+### **Step 2: Compute Formal Concepts for Each Subset**
+For each subset \( A \), compute:
+- **Intent \( A' \)**: Attributes shared by **all** objects in \( A \).
+- **Extent \( A'' \)**: Objects that have **all** attributes in \( A' \).
+
+#### **1. Subset \( A = \emptyset \)**
+- **Intent \( \emptyset' \)**: All attributes (since no objects restrict the attributes).  
+  \( \emptyset' = \{a1, a2, a3, a4, a5, a6, a7, a8, a9\} \).
+- **Extent \( \emptyset'' \)**: Objects with all attributes in \( \emptyset' \).  
+  No object has all attributes, so \( \emptyset'' = \emptyset \).  
+  **Concept**: \( (\emptyset, \{a1, a2, a3, a4, a5, a6, a7, a8, a9\}) \).
+
+#### **2. Subset \( A = \{o1\} \)**
+- **Intent \( \{o1\}' \)**: Attributes shared by \( o1 \).  
+  \( \{o1\}' = \{a1, a2, a3, a4, a7, a9\} \) (all "yes" for \( o1 \)).
+- **Extent \( \{o1\}'' \)**: Objects with all attributes in \( \{a1, a2, a3, a4, a7, a9\} \).  
+  Only \( o1 \) satisfies this, so \( \{o1\}'' = \{o1\} \).  
+  **Concept**: \( (\{o1\}, \{a1, a2, a3, a4, a7, a9\}) \).
+
+#### **3. Subset \( A = \{o2\} \)**
+- **Intent \( \{o2\}' \)**: Attributes shared by \( o2 \).  
+  \( \{o2\}' = \{a1, a4, a6, a9\} \) (all "yes" for \( o2 \)).
+- **Extent \( \{o2\}'' \)**: Objects with all attributes in \( \{a1, a4, a6, a9\} \).  
+  Only \( o2 \) satisfies this, so \( \{o2\}'' = \{o2\} \).  
+  **Concept**: \( (\{o2\}, \{a1, a4, a6, a9\}) \).
+
+#### **4. Subset \( A = \{o1, o2\} \)**
+- **Intent \( \{o1, o2\}' \)**: Attributes shared by **both** \( o1 \) and \( o2 \).  
+  \( \{o1, o2\}' = \{a1, a4, a9\} \) (common "yes" attributes).
+- **Extent \( \{o1, o2\}'' \)**: Objects with all attributes in \( \{a1, a4, a9\} \).  
+  Both \( o1 \) and \( o2 \) satisfy this, so \( \{o1, o2\}'' = \{o1, o2\} \).  
+  **Concept**: \( (\{o1, o2\}, \{a1, a4, a9\}) \).
+
+---
+
+### **Step 3: Verify No Additional Concepts Exist**
+For larger contexts, we’d check if other subsets produce new concepts, but here we’ve covered all subsets of objects. No additional concepts exist.
+
+---
+
+### **Final List of Formal Concepts:**
+1. \( (\emptyset, \{a1, a2, a3, a4, a5, a6, a7, a8, a9\}) \)  
+2. \( (\{o1\}, \{a1, a2, a3, a4, a7, a9\}) \)  
+3. \( (\{o2\}, \{a1, a4, a6, a9\}) \)  
+4. \( (\{o1, o2\}, \{a1, a4, a9\}) \)
+
+---
+
+### **Concept Lattice (Hasse Diagram):**
+```
+Top: ({o1, o2}, {a1, a4, a9})
+       /       \
+({o1}, {...})  ({o2}, {...})
+       \       /
+Bottom: (∅, {a1, ..., a9})
+```
+- **Top concept**: All objects, minimal intent (\( \{a1, a4, a9\} \)).
+- **Bottom concept**: Empty extent, all attributes.
+
+---
+
+### **Key Observations:**
+- The lattice is small due to only 2 objects.
+- The concepts are hierarchically ordered by subset inclusion of extents/intents.
+- The **intents** (attribute sets) shrink as the **extents** (object sets) grow, and vice versa.
+
+Would you like to visualize this lattice or explore another method?
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3, a4, a5, a6, a7, a8, a9], []], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a4, a9], [o1, o2]]] 
+
+### Explanation:
+- Each concept is represented as `[extent, intent]`.  
+- The list contains all 4 concepts from the lattice, formatted in a single line without quotes.  
+- Example:  
+  - `[[o1], [a1, a2, a3, a4, a7, a9]]` means the concept with extent `{o1}` and intent `{a1, a2, a3, a4, a7, a9}`.  
+  - The empty set `[]` is used for the bottom concept’s extent and the top concept’s intent.  
+
+Let me know if you'd like adjustments!

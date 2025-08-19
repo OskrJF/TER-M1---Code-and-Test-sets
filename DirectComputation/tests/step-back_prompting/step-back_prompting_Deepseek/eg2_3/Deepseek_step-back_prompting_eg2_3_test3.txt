@@ -1,0 +1,180 @@
+Deepseek_step-back_prompting_eg2_3_test3
+
+Date: 24 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1: In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), a **formal concept** is a pair \((A, B)\), where \(A\) is a set of objects (the **extent**) and \(B\) is a set of attributes (the **intent**), such that \(A\) consists of all objects that share all attributes in \(B\), and \(B\) consists of all attributes shared by all objects in \(A\). The set of all formal concepts, ordered by subconcept-superconcept relations, forms a **concept lattice**.
+
+For a context with fewer than 20 objects and fewer than 20 attributes, the following are three practical ways to compute the concept lattice:
+
+### 1. **The Naive (Brute-Force) Algorithm**  
+   - **Approach**:  
+     - Enumerate all possible subsets of objects (or attributes).  
+     - For each subset of objects \(A\), compute the corresponding intent \(B = A'\) (where \('\) is the derivation operator).  
+     - Then, compute the extent \(A''\) of \(B\) to ensure closure (since \((A'', B)\) must be a formal concept).  
+     - Repeat similarly for attribute subsets.  
+   - **Pros**: Simple to implement for small contexts.  
+   - **Cons**: Computationally expensive for larger contexts (exponential in the number of objects/attributes).  
+
+   **Pseudocode** (for object-based generation):  
+   ```python
+   concepts = []
+   for subset in all_possible_subsets(objects):
+       intent = compute_derived_attributes(subset)
+       extent = compute_derived_objects(intent)
+       if (extent, intent) not in concepts:
+           concepts.append((extent, intent))
+   ```
+
+### 2. **Next-Closure Algorithm (Ganter's Algorithm)**  
+   - **Approach**:  
+     - A systematic method to generate concepts in **lexicographic order**.  
+     - Starts with the smallest concept (usually \((\emptyset, \text{all attributes})\)) and computes the **next closure** of an intent until all concepts are found.  
+     - Uses the **lectic order** to avoid redundancy.  
+   - **Pros**: More efficient than brute-force, with polynomial delay between concepts.  
+   - **Cons**: Requires careful implementation of the closure operation.  
+
+   **Pseudocode**:  
+   ```python
+   concepts = []
+   current_intent = closure(empty_set)
+   while current_intent is not None:
+       extent = compute_derived_objects(current_intent)
+       concepts.append((extent, current_intent))
+       current_intent = next_closure(current_intent, attributes)
+   ```
+
+### 3. **Lindig's Algorithm (Using Upper Neighbors)**  
+   - **Approach**:  
+     - Constructs the concept lattice **bottom-up** by finding **upper neighbors** of each concept.  
+     - Starts with the minimal concept \((\emptyset, \text{all attributes})\) and recursively finds concepts covering it in the lattice.  
+   - **Pros**: Directly constructs the lattice structure.  
+   - **Cons**: Requires computing all meet-irreducible elements.  
+
+   **Pseudocode**:  
+   ```python
+   def generate_concepts(current_concept):
+       neighbors = find_upper_neighbors(current_concept)
+       for neighbor in neighbors:
+           generate_concepts(neighbor)
+   ```
+
+### **Bonus: Using FCA Software**  
+For small contexts, tools like:  
+- **ConExp** (http://conexp.sourceforge.net/)  
+- **Concept Explorer** (https://sourceforge.net/projects/conexp/)  
+- **Python libraries (e.g., `concepts` in `fca`)**  
+can compute the lattice automatically.
+
+### **Which One to Choose?**  
+- For manual computation or very small contexts, **brute-force** works.  
+- For systematic generation, **Next-Closure** is efficient.  
+- For lattice structure, **Lindig's algorithm** is useful.  
+
+Would you like a worked example for a specific context?
+____________________
+
+PROMPT 2: Pick one of the three ways that you mentioned to extract all the lattice concepts from the context in this .csv file
+____________________
+
+OUTPUT:
+We’ll use the **Naive (Brute-Force) Algorithm** to extract all formal concepts from the given context because the context is very small (only 2 objects and 3 attributes), making this method straightforward and efficient.  
+
+### **Step-by-Step Execution**  
+The context is represented as:  
+
+| Object | a1  | a2  | a3  |
+|--------|-----|-----|-----|
+| o1     | yes | yes | no  |
+| o2     | no  | yes | yes |
+
+#### **1. List all possible subsets of objects**  
+For 2 objects, the subsets are:  
+- \(\emptyset\) (empty set)  
+- \(\{o1\}\)  
+- \(\{o2\}\)  
+- \(\{o1, o2\}\)  
+
+#### **2. Compute formal concepts for each subset**  
+For each subset \(A\), compute its **intent** \(B = A'\) (shared attributes of \(A\)), then compute the **extent** \(A'' = B'\) (objects sharing all attributes in \(B\)).  
+
+##### **(1) Subset \(A = \emptyset\)**  
+- **Intent \(A'\)**: All attributes (since no objects restrict the attributes).  
+  \(A' = \{a1, a2, a3\}\)  
+- **Extent \(A''\)**: Objects sharing all attributes in \(A'\).  
+  No object has all attributes (\(\{a1, a2, a3\}\)), so \(A'' = \emptyset\).  
+- **Formal Concept**: \((\emptyset, \{a1, a2, a3\})\)  
+
+##### **(2) Subset \(A = \{o1\}\)**  
+- **Intent \(A'\)**: Attributes shared by \(o1\).  
+  \(o1\) has \(\{a1, a2\}\), so \(A' = \{a1, a2\}\).  
+- **Extent \(A''\)**: Objects sharing \(\{a1, a2\}\).  
+  \(o1\): yes, \(o2\): no (since \(o2\) lacks \(a1\)).  
+  Thus, \(A'' = \{o1\}\).  
+- **Formal Concept**: \((\{o1\}, \{a1, a2\})\)  
+
+##### **(3) Subset \(A = \{o2\}\)**  
+- **Intent \(A'\)**: Attributes shared by \(o2\).  
+  \(o2\) has \(\{a2, a3\}\), so \(A' = \{a2, a3\}\).  
+- **Extent \(A''\)**: Objects sharing \(\{a2, a3\}\).  
+  \(o1\): no (lacks \(a3\)), \(o2\): yes.  
+  Thus, \(A'' = \{o2\}\).  
+- **Formal Concept**: \((\{o2\}, \{a2, a3\})\)  
+
+##### **(4) Subset \(A = \{o1, o2\}\)**  
+- **Intent \(A'\)**: Attributes shared by both \(o1\) and \(o2\).  
+  \(o1\): \(\{a1, a2\}\), \(o2\): \(\{a2, a3\}\).  
+  Only common attribute is \(a2\), so \(A' = \{a2\}\).  
+- **Extent \(A''\)**: Objects sharing \(\{a2\}\).  
+  Both \(o1\) and \(o2\) have \(a2\), so \(A'' = \{o1, o2\}\).  
+- **Formal Concept**: \((\{o1, o2\}, \{a2\})\)  
+
+#### **3. Verify no duplicates and list all concepts**  
+The four formal concepts are:  
+1. \((\emptyset, \{a1, a2, a3\})\)  
+2. \((\{o1\}, \{a1, a2\})\)  
+3. \((\{o2\}, \{a2, a3\})\)  
+4. \((\{o1, o2\}, \{a2\})\)  
+
+No duplicates exist, and all combinations are covered.  
+
+### **Resulting Concept Lattice**  
+The lattice (Hasse diagram) is structured as:  
+- Top: \((\{o1, o2\}, \{a2\})\)  
+- Middle: \((\{o1\}, \{a1, a2\})\) and \((\{o2\}, \{a2, a3\})\)  
+- Bottom: \((\emptyset, \{a1, a2, a3\})\)  
+
+### **Why the Naive Method Worked Well Here**  
+- The context is tiny (2 objects × 3 attributes), so brute-force enumeration is feasible.  
+- For larger contexts (e.g., 10+ objects/attributes), **Next-Closure** or **Lindig’s Algorithm** would be more efficient.  
+
+Would you like the lattice visualized or further explanation on how to order the concepts hierarchically?
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]
+
+### Explanation of the format:  
+- Each concept is written as `[extent, intent]`.  
+- `[]` represents the empty set.  
+- No quotation marks are used (as requested).  
+
+### Breakdown of the concepts:  
+1. `[[], [a1, a2, a3]]` → Bottom concept (no objects, all attributes).  
+2. `[[o1], [a1, a2]]` → Objects with `a1` and `a2`.  
+3. `[[o2], [a2, a3]]` → Objects with `a2` and `a3`.  
+4. `[[o1, o2], [a2]]` → Top concept (all objects, only shared attribute `a2`).  
+
+This matches the results from the brute-force algorithm. Let me know if you'd like adjustments!

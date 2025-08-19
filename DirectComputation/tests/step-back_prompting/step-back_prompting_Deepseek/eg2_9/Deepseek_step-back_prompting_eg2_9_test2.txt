@@ -1,0 +1,173 @@
+Deepseek_step-back_prompting_eg2_9_test2
+
+Date: 25 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1: 
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), finding all formal concepts and constructing the concept lattice from a formal context (with less than 20 objects and 20 attributes) can be done efficiently using several methods. Here are three approaches:
+
+### 1. **Naive Enumeration (Clarified by Next Closure)**
+   - **Description**: Generate all possible subsets of objects (or attributes), compute their closures (using the Galois connection), and check for concept validity.
+   - **Steps**:
+     1. Start with the empty set and compute its intent (all attributes shared by no objects, i.e., all attributes if no object has all).
+     2. Use the **Next Closure Algorithm** (Ganter, 1984) to systematically generate closed sets in lexicographic order.
+     3. For each closed set of attributes (intent), derive the corresponding extent (objects sharing all these attributes) to form a formal concept.
+   - **Advantage**: Simple and systematic, avoids redundancy.
+   - **Disadvantage**: Can be slow for larger contexts (but feasible for <20 objects/attributes).
+
+### 2. **Breadth-First Search (Using Attribute Exploration)**
+   - **Description**: Build the lattice level by level, starting from the top (most general concept) or bottom (most specific concept).
+   - **Steps**:
+     1. Start with the top concept (extent = all objects, intent = common attributes).
+     2. For each concept, generate child concepts by removing one attribute at a time and computing the new extent.
+     3. Use the **AddIntent** or **Close-by-One (CbO)** algorithm to avoid duplicates.
+   - **Advantage**: Intuitive for small contexts, constructs the lattice hierarchically.
+   - **Disadvantage**: Requires careful management of concept order.
+
+### 3. **Using Matrix Multiplication (For Small Contexts)**
+   - **Description**: Represent the context as a binary matrix and use matrix operations to compute intersections.
+   - **Steps**:
+     1. Encode the context as an incidence matrix \( I \) (rows = objects, columns = attributes).
+     2. For each subset of objects \( A \), compute the intent as the bitwise AND of their rows (for all attributes).
+     3. For each subset of attributes \( B \), compute the extent as the bitwise AND of their columns (for all objects).
+     4. Pairs \((A, B)\) where \( A \) is the extent of \( B \) and \( B \) is the intent of \( A \) are formal concepts.
+   - **Advantage**: Computationally simple for small contexts.
+   - **Disadvantage**: Not scalable for larger contexts due to exponential complexity.
+
+### Bonus: **Using FCA Software (Recommended for Practical Use)**
+   - Tools like **ConExp**, **FCAStone**, or **Python libraries (Concepts)** can automatically compute the concept lattice for small contexts.
+   - Example (Python, using `concepts` library):
+     ```python
+     from concepts import Context
+
+     # Example context (objects x attributes)
+     ctx = Context.fromstring('''
+         |a b c d
+      X1|X X . .
+      X2|X . X .
+      X3|. X . X
+      X4|. . X X
+     ''')
+
+     # Print all concepts
+     for concept in ctx.lattice:
+         print(concept.extent, concept.intent)
+     ```
+
+### Which to Choose?
+- For **manual computation**, **Next Closure** is systematic.
+- For **programmatic solutions**, matrix methods or FCA libraries work well.
+- For **visualization**, use FCA tools like ConExp.
+
+Since your context is small (<20 objects/attributes), all three methods are feasible, but software tools are the most efficient. Would you like an example walkthrough for a specific context?
+____________________
+
+PROMPT 2: 
+Pick one of the three ways that you mentioned to extract all the lattice concepts from the context in this .csv file
+____________________
+
+OUTPUT:
+I’ll use the **Next Closure Algorithm** (the first method) to systematically extract all formal concepts from the given context. This approach is efficient for small contexts like yours (2 objects and 9 attributes) and guarantees completeness.
+
+---
+
+### **Step-by-Step Execution for `eg2_9.csv`**
+
+#### **1. Formal Context Representation**
+The context has:
+- **Objects (extents)**: \( O = \{o1, o2\} \)
+- **Attributes (intents)**: \( M = \{a1, a2, a3, a4, a5, a6, a7, a8, a9\} \)
+- **Incidence relation**:  
+  - \( o1 \): Has attributes \( \{a1, a2, a3, a4, a7, a9\} \)  
+  - \( o2 \): Has attributes \( \{a1, a4, a6, a9\} \)
+
+#### **2. Galois Connection Basics**
+For a set of objects \( A \subseteq O \), its **intent** is:  
+\( A' = \{m \in M \mid \forall o \in A : (o, m) \in I\} \)  
+For a set of attributes \( B \subseteq M \), its **extent** is:  
+\( B' = \{o \in O \mid \forall m \in B : (o, m) \in I\} \)
+
+A **formal concept** is a pair \( (A, B) \) where \( A' = B \) and \( B' = A \).
+
+#### **3. Next Closure Algorithm Steps**
+We generate closed attribute sets (intents) in lexicographic order. The order for attributes is fixed (e.g., \( a1 < a2 < \dots < a9 \)).
+
+##### **Initialization**
+- Start with the **empty set** \( \emptyset \).
+  - Compute its closure: \( \emptyset' = \{o1, o2\} \) (all objects).  
+  - Then \( \{o1, o2\}' = \{a1, a4, a9\} \) (common attributes of \( o1 \) and \( o2 \)).  
+  - Thus, the first concept is \( (\{o1, o2\}, \{a1, a4, a9\}) \).
+
+##### **Iteration**
+For each subsequent step, we find the next closed set \( B \) in lexicographic order. Here’s how it works for this small context:
+
+1. **Concept 1**: \( (\{o1, o2\}, \{a1, a4, a9\}) \) (top concept).  
+2. **Next closure after \( \{a1, a4, a9\} \)**:
+   - Add the next attribute (lexicographically) not in the set and compute closure.  
+   - Example: Add \( a2 \):  
+     - \( \{a1, a4, a9, a2\}' = \{o1\} \) (only \( o1 \) has all these attributes).  
+     - \( \{o1\}' = \{a1, a2, a3, a4, a7, a9\} \).  
+     - New concept: \( (\{o1\}, \{a1, a2, a3, a4, a7, a9\}) \).  
+3. **Continue** until no new closed sets can be generated.
+
+##### **Full List of Concepts**
+For this context, the complete set of formal concepts is:
+1. \( (\{o1, o2\}, \{a1, a4, a9\}) \)  
+2. \( (\{o1\}, \{a1, a2, a3, a4, a7, a9\}) \)  
+3. \( (\{o2\}, \{a1, a4, a6, a9\}) \)  
+4. \( (\emptyset, \{a1, a2, a3, a4, a5, a6, a7, a8, a9\}) \) (bottom concept).  
+
+*(Note: The bottom concept’s intent is all attributes because no object satisfies all of them simultaneously.)*
+
+#### **4. Resulting Concept Lattice**
+The Hasse diagram of the lattice (ordered by subset inclusion) is:
+```
+Top: ({o1, o2}, {a1, a4, a9})
+      /               \
+({o1}, {a1,a2,a3,a4,a7,a9})  ({o2}, {a1,a4,a6,a9})
+      \               /
+Bottom: (∅, M)
+```
+
+---
+
+### **Verification**
+- Each concept’s extent/intent satisfies \( A' = B \) and \( B' = A \).  
+- No additional closed sets exist for this context.
+
+### **Why Next Closure?**
+- It’s **systematic** and **complete**, ensuring no concepts are missed.  
+- Efficient for small contexts (like this one).  
+
+For larger contexts (>10 objects/attributes), software (e.g., `concepts` library in Python) would be preferable. Would you like the Python code to verify this?
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]]  
+
+### Explanation:
+- Each concept is represented as `[intent, extent]`.  
+- The order follows the lattice structure:  
+  1. `[[], [o1, o2]]`: Top concept (empty intent = all attributes, extent = all objects).  
+  2. `[[a1, a4, a9], [o1, o2]]`: Next closure (common attributes of all objects).  
+  3. `[[a1, a2, a3, a4, a7, a9], [o1]]`: Concept for object `o1`.  
+  4. `[[a1, a4, a6, a9], [o2]]`: Concept for object `o2`.  
+  5. `[[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]`: Bottom concept (full intent = no object satisfies all attributes).  
+
+### Note:
+- The `Top` and `Bottom` concepts are explicitly included.  
+- No quotation marks are used, as requested.  
+
+Would you like the lattice visualized as a Hasse diagram?

@@ -1,0 +1,134 @@
+Deepseek_step-back_prompting_eg2_9_test3
+
+Date: 25 may 2025
+Model: DeepSeek-V3 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1: 
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), a **formal concept** is a pair \((A, B)\), where \(A\) is a set of objects (the **extent**) and \(B\) is a set of attributes (the **intent**), such that \(B\) is the set of all attributes shared by the objects in \(A\), and \(A\) is the set of all objects that have all attributes in \(B\). The set of all formal concepts, ordered by the subconcept-superconcept relation, forms a **concept lattice**.
+
+For a context with fewer than 20 objects and fewer than 20 attributes, the following are three practical ways to compute the lattice concepts:
+
+### 1. **Naive Enumeration (Brute-Force)**
+   - **Method**: Generate all possible subsets of objects (or attributes), compute their closures, and check for concept validity.
+   - **Steps**:
+     1. For each subset \(A\) of objects, compute its **attribute derivation** \(A'\) (the set of all attributes common to all objects in \(A\)).
+     2. Then compute the **object derivation** \(A''\) (the set of all objects that have all attributes in \(A'\)).
+     3. If \(A'' = A\), then \((A, A')\) is a formal concept.
+   - **Pros**: Simple to implement.
+   - **Cons**: Computationally expensive for larger contexts (but feasible for <20 objects/attributes).
+
+### 2. **Next-Closure Algorithm (Ganter's Algorithm)**
+   - **Method**: A systematic way to generate all concepts in **lexicographic order**.
+   - **Steps**:
+     1. Start with the smallest concept (usually \((\emptyset, M)\) where \(M\) is the set of all attributes if the context has no empty intent).
+     2. Use the **next-closure** procedure to compute the next concept by modifying the previous intent.
+     3. Repeat until reaching the largest concept \((G, \emptyset)\) (where \(G\) is the set of all objects).
+   - **Pros**: Efficient for small contexts, does not require storing the entire lattice at once.
+   - **Cons**: Requires careful implementation of lexicographic order.
+
+### 3. **Using Formal Concept Analysis Tools (e.g., ConExp, FCAStone, or Python Libraries)**
+   - **Method**: Use existing FCA software to compute the concept lattice automatically.
+   - **Steps**:
+     1. Input the context (a cross-table of objects × attributes) into the tool.
+     2. Run the concept lattice generation algorithm (many tools use **Next-Closure**, **Lindig's algorithm**, or **CbO (Close-by-One)**).
+     3. Extract the list of formal concepts and the lattice structure.
+   - **Pros**: Fast and reliable, avoids manual implementation errors.
+   - **Cons**: Requires installing/learning a tool.
+
+### **Bonus: Close-by-One (CbO) Algorithm**
+   - A more optimized version of Next-Closure that avoids redundant checks by using a depth-first search approach. It is one of the fastest algorithms for medium-sized contexts.
+
+### **Which One to Choose?**
+- If you need a quick solution, **use an FCA tool** (e.g., [ConExp](http://conexp.sourceforge.net/), [FCAStone](https://www.fcastone.com/), or Python libraries like `concepts`).
+- If you are implementing it yourself for learning purposes, **Next-Closure or CbO** are good choices.
+- **Brute-force** is only recommended for very small contexts (e.g., <10 objects/attributes).
+
+Would you like a step-by-step example for one of these methods?
+____________________
+
+PROMPT 2: 
+Pick one of the three ways that you mentioned to extract all the lattice concepts from the context in this .csv file
+____________________
+
+OUTPUT:
+I’ll use the **Naive Enumeration (Brute-Force) method** to extract all lattice concepts from the given context because it’s straightforward for small contexts like this (only 2 objects and 9 attributes). Here’s how it works:
+
+---
+
+### **Step-by-Step Brute-Force Enumeration**
+Given the context:
+- **Objects**: \( G = \{o1, o2\} \)
+- **Attributes**: \( M = \{a1, a2, a3, a4, a5, a6, a7, a8, a9\} \)
+
+We compute all possible subsets of objects, derive their attributes, and check for closure.
+
+#### **1. List all subsets of objects (extents)**  
+There are \( 2^2 = 4 \) possible subsets:
+- \( A_1 = \emptyset \)
+- \( A_2 = \{o1\} \)
+- \( A_3 = \{o2\} \)
+- \( A_4 = \{o1, o2\} \)
+
+#### **2. Compute attribute derivations (\( A' \)) for each subset**  
+- \( \emptyset' = M \) (all attributes)  
+- \( \{o1\}' = \) attributes shared by \( o1 \):  
+  From the table: \( o1 \) has \( \{a1, a2, a3, a4, a7, a9\} \).  
+- \( \{o2\}' = \) attributes shared by \( o2 \):  
+  From the table: \( o2 \) has \( \{a1, a4, a6, a9\} \).  
+- \( \{o1, o2\}' = \) attributes shared by both:  
+  Intersection of \( \{o1\}' \) and \( \{o2\}' \): \( \{a1, a4, a9\} \).
+
+#### **3. Compute object derivations (\( A'' \)) to verify closure**  
+- \( \emptyset'' = M' = \) objects with all attributes in \( M \).  
+  No object has all attributes, so \( \emptyset'' = \emptyset \).  
+  → Not a concept (since \( \emptyset \neq \emptyset'' \)).  
+- \( \{o1\}'' = \{a1, a2, a3, a4, a7, a9\}' \):  
+  Only \( o1 \) has all these attributes, so \( \{o1\}'' = \{o1\} \).  
+  → **Concept**: \( (\{o1\}, \{a1, a2, a3, a4, a7, a9\}) \).  
+- \( \{o2\}'' = \{a1, a4, a6, a9\}' \):  
+  Only \( o2 \) has all these attributes, so \( \{o2\}'' = \{o2\} \).  
+  → **Concept**: \( (\{o2\}, \{a1, a4, a6, a9\}) \).  
+- \( \{o1, o2\}'' = \{a1, a4, a9\}' \):  
+  Both \( o1 \) and \( o2 \) have these attributes, so \( \{o1, o2\}'' = \{o1, o2\} \).  
+  → **Concept**: \( (\{o1, o2\}, \{a1, a4, a9\}) \).
+
+#### **4. Include the top concept (if not already covered)**  
+The top concept is \( (G, M') \), where \( M' \) is the set of objects with all attributes in \( M \). Here, \( M' = \emptyset \), so the top concept is \( (\{o1, o2\}, \emptyset) \). However, we already have \( (\{o1, o2\}, \{a1, a4, a9\}) \), which is more specific. The true top concept is \( (\{o1, o2\}, \{a1, a4, a9\}) \), since no larger intent exists.
+
+#### **5. Final List of Formal Concepts**  
+1. \( (\emptyset, M) \) → **Not a concept** (fails \( A = A'' \)).  
+2. \( (\{o1\}, \{a1, a2, a3, a4, a7, a9\}) \)  
+3. \( (\{o2\}, \{a1, a4, a6, a9\}) \)  
+4. \( (\{o1, o2\}, \{a1, a4, a9\}) \)  
+
+---
+
+### **Resulting Concept Lattice**
+The lattice (Hasse diagram) can be drawn as:
+- Top: \( (\{o1, o2\}, \{a1, a4, a9\}) \)  
+- Middle: \( (\{o1\}, \{a1, a2, a3, a4, a7, a9\}) \) and \( (\{o2\}, \{a1, a4, a6, a9\}) \)  
+- Bottom: \( (\emptyset, \{a1, a2, ..., a9\}) \) → **Not included** (not a valid concept).  
+
+### **Why Brute-Force Worked Here**
+- For \( |G| = 2 \), only \( 4 \) subsets needed to be checked.  
+- The method is transparent and verifiable for small contexts.  
+
+For larger contexts (e.g., 10+ objects), **Next-Closure** or **CbO** would be more efficient. Would you like an implementation of this in Python for automation?
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1,a2,a3,a4,a7,a9], [o1], [[a1,a4,a6,a9], [o2], [[a1,a4,a9], [o1,o2]]]  
+
+(Note: The bottom concept `[[], [a1,a2,a3,a4,a5,a6,a7,a8,a9]]` is excluded because it fails the closure condition `A = A''`, and the top concept is already represented by `[{o1,o2}, {a1,a4,a9}]`.)
