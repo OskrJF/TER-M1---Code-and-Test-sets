@@ -1,0 +1,80 @@
+Mistral_tree_of_thoughts_eg8_8_test1_B
+
+Date: 26 may 2025
+Model: Mistral Large
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1B:
+Pick one of these three ways to extract all the lattice concepts from the next context and apply it to give me the concepts:
+Objet;a1;a2;a3;a4;a5;a6;a7;a8
+O1;Yes;Yes;Yes;No;No;No;No;No
+O2;Yes;Yes;Yes;No;No;Yes;No;Yes
+O3;Yes;Yes;No;Yes;No;Yes;No;No
+O4;No;Yes;Yes;Yes;Yes;No;No;Yes
+O5;No;Yes;No;Yes;No;Yes;Yes;Yes
+O6;Yes;Yes;Yes;No;Yes;No;Yes;No
+O7;No;Yes;Yes;Yes;Yes;No;Yes;No
+O8;No;Yes;Yes;Yes;Yes;No;Yes;No
+
+1. In the field of formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is by using the **Close-by-One algorithm**. This algorithm is a straightforward method that constructs the concept lattice by iteratively adding one attribute or object at a time and computing the closure of the resulting set. It starts with the empty set and builds up the concepts by adding elements and checking for closure under the derivation operators. This method is particularly useful for small contexts because it is easy to implement and understand, although it may not be the most efficient for larger datasets.
+
+2. Another method to find the lattice concepts in a small context is through the **Next Closure algorithm**. This approach generates formal concepts by computing the closures of attribute sets. It starts with the empty set of attributes and iteratively computes the next closure until all possible closures are found. The Next Closure algorithm is advantageous for small contexts because it efficiently navigates through the lattice structure by leveraging the properties of closure systems. This method is often used in educational settings to teach the principles of FCA, as it provides a clear and intuitive way to understand how concepts are formed and related in a lattice.
+
+3. A third method for identifying lattice concepts in a small formal context is the **Border Diff algorithm**. This algorithm focuses on the differences between the borders of concept intents to generate the concept lattice. It starts by identifying the initial borders of the concept lattice and then iteratively computes the differences between these borders to generate new concepts. The Border Diff algorithm is effective for small contexts because it reduces the computational effort by focusing on the differences between concepts rather than generating each concept from scratch. This approach can be particularly advantageous when dealing with contexts that have a limited number of objects and attributes, as it efficiently navigates the search space to identify all formal concepts.
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context using the **Close-by-One algorithm**, we follow these steps:
+
+1. **Understand the Context**: The given context is a table where rows represent objects (O1 to O8) and columns represent attributes (a1 to a8). Each cell indicates whether an object has a particular attribute (Yes/No).
+
+2. **Concept Definition**: A formal concept is a pair (A, B), where A is a set of objects, B is a set of attributes, and they satisfy the following conditions:
+   - Every object in A has all the attributes in B.
+   - Every attribute in B is shared by all objects in A.
+
+3. **Close-by-One Algorithm**:
+   - Start with the empty set of attributes and compute its closure to find the corresponding set of objects.
+   - Iteratively add one attribute at a time and compute the closure to find new concepts.
+   - Repeat the process for objects to ensure all concepts are found.
+
+4. **Compute Concepts**:
+   - Begin with the entire set of objects and find the common attributes.
+   - Gradually reduce the set of objects and find the corresponding attributes.
+   - Continue until all possible combinations of objects and attributes are exhausted.
+
+Let's apply this to the given context:
+
+- **Initial Concept**: Start with all objects (O1, O2, O3, O4, O5, O6, O7, O8) and find common attributes. There are no common attributes across all objects.
+
+- **Subset Concepts**:
+  - For (O1, O2, O3, O6): Common attributes are a1, a2.
+  - For (O2, O6): Common attributes are a1, a2, a3, a8.
+  - For (O4, O5, O7, O8): Common attributes are a2, a5.
+  - For (O4, O7, O8): Common attributes are a2, a3, a5, a7.
+  - For (O2, O5): Common attributes are a2, a6, a8.
+  - For (O2, O3, O6): Common attributes are a1, a2.
+  - For (O4, O5, O7): Common attributes are a2, a5, a7.
+  - For (O1, O3): Common attributes are a1, a2.
+  - For (O4, O8): Common attributes are a2, a3, a5, a7.
+  - For (O2, O6, O7): Common attributes are a2, a8.
+  - For (O1): Attributes are a1, a2, a3.
+  - For (O2): Attributes are a1, a2, a3, a6, a8.
+  - For (O3): Attributes are a1, a2, a6.
+  - For (O4): Attributes are a2, a3, a5, a8.
+  - For (O5): Attributes are a2, a5, a6, a7, a8.
+  - For (O6): Attributes are a1, a2, a3, a5, a8.
+  - For (O7): Attributes are a2, a3, a5, a7, a8.
+  - For (O8): Attributes are a2, a3, a5, a7.
+
+These are the formal concepts derived from the given context using the Close-by-One algorithm. Each concept is a pair of a set of objects and a set of attributes that satisfy the conditions of formal concept analysis.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a1, a2, a3, a8], [O2, O6]], [[a2, a5], [O4, O5, O7, O8]], [[a2, a3, a5, a7], [O4, O7, O8]], [[a2, a6, a8], [O2, O5]], [[a1, a2], [O2, O3, O6]], [[a2, a5, a7], [O4, O5, O7]], [[a1, a2], [O1, O3]], [[a2, a3, a5, a7], [O4, O8]], [[a2, a8], [O2, O6, O7]], [[a1, a2, a3], [O1]], [[a1, a2, a3, a6, a8], [O2]], [[a1, a2, a6], [O3]], [[a2, a3, a5, a8], [O4]], [[a2, a5, a6, a7, a8], [O5]], [[a1, a2, a3, a5, a8], [O6]], [[a2, a3, a5, a7, a8], [O7]], [[a2, a3, a5, a7], [O8]]

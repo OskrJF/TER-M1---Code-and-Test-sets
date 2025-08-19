@@ -1,0 +1,19 @@
+Mistral_tree_of_thoughts_eg2_3_test2_A3
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is by using the **Next Closure algorithm**. This algorithm is efficient for small contexts and works by iteratively computing the closure of attribute sets. It starts with an empty set of attributes and incrementally adds attributes, computing the closure for each new set. The closures correspond to the concepts of the lattice. This method is particularly effective for small datasets because it minimizes redundant computations and efficiently explores the concept lattice structure.
+
+Another method to find the lattice concepts is the **Border Diff algorithm**. This approach focuses on the borders between different concept intents. It starts with the entire set of attributes and iteratively refines the borders by removing attributes and checking for concept formation. The algorithm maintains a list of potential concepts and updates this list as it processes each attribute. The Border Diff algorithm is well-suited for small contexts because it leverages the limited number of attributes and objects to efficiently explore the concept lattice without excessive computational overhead.
+
+A third approach is the **Add Intent algorithm**, which builds the concept lattice by adding intents incrementally. This method starts with the bottom concept (the empty set of attributes) and iteratively adds new intents by combining existing ones. Each new intent is formed by taking the intersection of existing intents and checking for closure. The Add Intent algorithm is particularly useful for small contexts because it systematically explores the lattice structure by leveraging the limited number of possible intents. This method ensures that all concepts are discovered efficiently, making it suitable for contexts with fewer than 20 objects and attributes.

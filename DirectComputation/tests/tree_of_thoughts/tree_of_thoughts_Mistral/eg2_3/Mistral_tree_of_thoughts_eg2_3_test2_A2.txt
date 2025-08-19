@@ -1,0 +1,19 @@
+Mistral_tree_of_thoughts_eg2_3_test2_A2
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is through the use of the "Next Closure" algorithm. This algorithm efficiently computes the set of all formal concepts by iterating through the power set of attributes and determining the closure of each subset. The closure of an attribute set is the smallest set of attributes that contains the original set and is closed under the derivation operators. By systematically exploring these closures, the algorithm constructs the concept lattice. This method is particularly effective for small contexts due to its straightforward implementation and relatively low computational overhead.
+
+Another approach to finding lattice concepts in a small context is the "Border Algorithm." This method focuses on the borders between the lower and upper neighbors of formal concepts. It starts with the bottom concept (the empty set of attributes) and iteratively builds the lattice by identifying the immediate successors of each concept. The algorithm maintains a list of "generators" for each concept, which are minimal subsets of attributes that generate the concept under closure. By leveraging these generators, the Border Algorithm efficiently navigates the lattice structure, making it suitable for contexts with limited objects and attributes.
+
+A third method is the "Incremental Algorithm," which builds the concept lattice incrementally by adding one object at a time. Starting with an empty lattice, the algorithm processes each object in the context and updates the lattice accordingly. For each new object, it determines how the existing concepts are affected and modifies the lattice structure to reflect the addition. This approach is particularly useful for small contexts because it allows for a step-by-step construction of the lattice, making it easier to understand and implement. The incremental nature of the algorithm also facilitates the identification of changes in the lattice as new objects are introduced, providing insights into the dynamic evolution of the concept hierarchy.

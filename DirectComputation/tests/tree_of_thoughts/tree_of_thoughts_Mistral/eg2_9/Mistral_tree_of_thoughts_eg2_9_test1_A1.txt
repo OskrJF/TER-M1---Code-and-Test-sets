@@ -1,0 +1,19 @@
+Mistral_tree_of_thoughts_eg2_9_test1_A1
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In the field of Formal Concept Analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is by using the **NextClosure algorithm**. This algorithm is efficient for small datasets and works by iterating through the set of objects and incrementally building the set of closed attribute sets, which correspond to the concepts in the lattice. The algorithm starts with an empty set of attributes and progressively adds attributes to form the next closure, ensuring that each new concept is generated in a systematic manner. This approach is particularly useful for small contexts because it minimizes computational overhead while ensuring that all concepts are identified.
+
+Another method to find lattice concepts in a small context is through the **Lindig algorithm**, which is based on the idea of attribute exploration. This algorithm constructs the concept lattice by exploring the attribute space and using a question-answer approach to determine the implications between attributes. By asking whether certain implications hold in the context, the algorithm can efficiently determine the structure of the lattice. This method is advantageous for small contexts because it reduces the complexity of the computation by focusing on the implications and dependencies between attributes, thus making it feasible to manually or semi-automatically derive the concept lattice.
+
+A third approach is the **Bordat algorithm**, which is designed to compute the concept lattice by constructing it level by level. This algorithm starts from the bottom concept (the empty set of attributes) and iteratively generates the concepts of the next higher level by combining existing concepts and checking for closure. The Bordat algorithm is particularly effective for small contexts because it systematically explores the lattice structure without redundant computations. By leveraging the properties of the formal context and the relationships between objects and attributes, this method ensures that all concepts are identified in a structured and efficient manner.

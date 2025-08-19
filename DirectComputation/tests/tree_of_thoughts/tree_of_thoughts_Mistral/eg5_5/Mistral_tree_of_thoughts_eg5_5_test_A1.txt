@@ -1,0 +1,19 @@
+Mistral_tree_of_thoughts_eg5_5_test1_A1
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In the field of formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is by using the **Close-by-One algorithm**. This algorithm is an efficient method for computing the set of formal concepts from a formal context. It works by incrementally building the concept lattice, starting from the bottom concept (the empty set of attributes and the full set of objects) and iteratively adding one attribute at a time. For each new attribute added, the algorithm computes the closure of the attribute set and updates the lattice accordingly. This method is particularly effective for smaller contexts due to its incremental nature, which minimizes computational overhead and ensures that the lattice is constructed in a systematic manner.
+
+Another approach to finding the lattice concepts in such a context is through the **Next Closure algorithm**. This method is based on the idea of generating formal concepts by computing the closure of attribute sets in a lexicographical order. The algorithm starts with the smallest attribute set and iteratively computes the next closure in the sequence until all possible closures are found. This approach is advantageous for smaller datasets because it leverages the inherent structure of the attribute set, allowing for efficient computation of the concept lattice. The lexicographical order ensures that each concept is generated in a systematic way, reducing redundancy and computational complexity.
+
+A third method is the **Border algorithm**, which is designed to efficiently compute the concept lattice by focusing on the borders of the attribute sets. The algorithm works by maintaining a list of formal concepts and iteratively expanding this list by exploring the borders of the attribute sets. For each formal concept, the algorithm checks the neighboring concepts and updates the lattice structure accordingly. This method is particularly suitable for smaller contexts because it minimizes the number of computations required by focusing on the boundaries of the attribute sets, thereby reducing the overall complexity of the lattice construction process.

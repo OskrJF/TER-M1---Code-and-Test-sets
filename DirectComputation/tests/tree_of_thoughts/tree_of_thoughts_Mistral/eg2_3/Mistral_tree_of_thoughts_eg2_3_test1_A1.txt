@@ -1,0 +1,19 @@
+Mistral_tree_of_thoughts_eg2_3_test1_A1
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is by using the **Next Closure algorithm**. This algorithm is efficient for small contexts and works by iterating through the set of objects and incrementally building the concepts. It starts with an empty set of attributes and iteratively adds objects, computing the closure of the attribute set for each new object added. This process continues until all objects have been processed, resulting in the complete set of formal concepts. The Next Closure algorithm is particularly suitable for small datasets due to its simplicity and effectiveness in generating the concept lattice without excessive computational overhead.
+
+Another method to find the lattice concepts in a small context is the **Border Diff algorithm**. This approach focuses on the borders between different concept intents and uses a diff operation to efficiently compute the concepts. The algorithm starts with the entire set of attributes and iteratively refines it by removing attributes that do not contribute to forming new concepts. By maintaining a border between the current set of concepts and the remaining attributes, the Border Diff algorithm efficiently explores the search space and identifies all formal concepts. This method is well-suited for small contexts because it minimizes redundant computations and leverages the structure of the concept lattice to guide the search process.
+
+A third approach is the **Add Intent algorithm**, which is designed to build the concept lattice by incrementally adding intents (attribute sets) to the lattice. The algorithm starts with the top concept (the empty set of attributes) and iteratively adds new intents by considering all possible combinations of attributes. For each new intent, the algorithm checks if it forms a valid concept and integrates it into the existing lattice structure. The Add Intent algorithm is particularly effective for small contexts because it systematically explores the attribute space and ensures that all formal concepts are identified. This method is straightforward and easy to implement, making it a practical choice for generating concept lattices in small datasets.

@@ -1,0 +1,84 @@
+Mistral_tree_of_thoughts_eg2_3_test1_B
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1B:
+Pick one of these three ways to extract all the lattice concepts from the next context and apply it to give me the concepts
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+
+1. In formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is by using the **Next Closure algorithm**. This algorithm is efficient for small contexts and works by iterating through the set of objects and incrementally building the concepts. It starts with an empty set of attributes and iteratively adds objects, computing the closure of the attribute set for each new object added. This process continues until all objects have been processed, resulting in the complete set of formal concepts. The Next Closure algorithm is particularly suitable for small datasets due to its simplicity and effectiveness in generating the concept lattice without excessive computational overhead.
+
+2. Another method to find the lattice concepts is by employing the **Border algorithm**. This approach focuses on constructing the concept lattice by maintaining a border between the already processed concepts and those yet to be explored. The algorithm starts with the bottom concept (the empty set of attributes) and iteratively adds attributes to form new concepts. The border is updated dynamically as new concepts are generated, ensuring that the algorithm efficiently navigates through the lattice structure. The Border algorithm is advantageous for smaller contexts because it minimizes redundant computations and systematically explores the concept lattice by leveraging the border between known and unknown concepts.
+
+3. A third approach is the **Add Intent algorithm**, which is designed to build the concept lattice by incrementally adding intents (sets of attributes) to the lattice. This algorithm starts with the top concept (the universal set of attributes) and iteratively refines it by adding new intents derived from the objects in the context. The Add Intent algorithm is well-suited for small contexts because it systematically explores the space of possible intents, ensuring that each new concept is correctly placed in the lattice. This method is particularly useful for contexts with a limited number of objects and attributes, as it efficiently constructs the lattice by focusing on the intents of the concepts.
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context using the **Next Closure algorithm**, we follow these steps:
+
+1. **Initialize**: Start with an empty set of attributes and the full set of objects.
+2. **Iterate through objects**: For each object, compute the closure of the attribute set.
+3. **Compute closures**: For each new object added, determine the smallest set of attributes that describes the object and its intent.
+4. **Generate concepts**: Each unique closure forms a formal concept.
+
+Let's apply this to the given context:
+
+### Context:
+| Objet | a1 | a2 | a3 |
+|-------|----|----|----|
+| o1    | yes| yes| no |
+| o2    | no | yes| yes|
+
+### Step-by-Step Application:
+
+1. **Initialize**:
+   - Start with an empty set of attributes: `{}`
+   - The full set of objects: `{o1, o2}`
+
+2. **Iterate through objects**:
+   - For `o1`:
+     - Attributes: `{a1, a2}`
+     - Closure: `{a1, a2}`
+     - Concept: `({o1}, {a1, a2})`
+   - For `o2`:
+     - Attributes: `{a2, a3}`
+     - Closure: `{a2, a3}`
+     - Concept: `({o2}, {a2, a3})`
+
+3. **Compute closures**:
+   - For the combination of `o1` and `o2`:
+     - Attributes: `{a2}`
+     - Closure: `{a2}`
+     - Concept: `({o1, o2}, {a2})`
+
+4. **Generate concepts**:
+   - Concepts:
+     - `({o1}, {a1, a2})`
+     - `({o2}, {a2, a3})`
+     - `({o1, o2}, {a2})`
+     - `( {}, {a1, a2, a3})` (the top concept)
+     - `({o1, o2}, {})` (the bottom concept)
+
+### Final Lattice Concepts:
+1. `({o1}, {a1, a2})`
+2. `({o2}, {a2, a3})`
+3. `({o1, o2}, {a2})`
+4. `( {}, {a1, a2, a3})`
+5. `({o1, o2}, {})`
+
+These are the formal concepts derived from the given context using the Next Closure algorithm.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]], [[a1, a2, a3], []]]

@@ -1,0 +1,122 @@
+Mistral_tree_of_thoughts_eg5_5_test1_B
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1B:
+Pick one of these three ways to extract all the lattice concepts from the next context and apply it to give me the concepts:
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+
+1. In the field of formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is by using the **Close-by-One algorithm**. This algorithm is an efficient method for computing the set of formal concepts from a formal context. It works by incrementally building the concept lattice, starting from the bottom concept (the empty set of attributes and the full set of objects) and iteratively adding one attribute at a time. For each new attribute added, the algorithm computes the closure of the attribute set and updates the lattice accordingly. This method is particularly effective for smaller contexts due to its incremental nature, which minimizes computational overhead and ensures that the lattice is constructed in a systematic manner.
+
+2. Another method to find the lattice concepts is through the **Next Closure algorithm**, which is an efficient way to generate all formal concepts by systematically exploring the search space of possible concepts. It works by generating each concept in lexicographical order, ensuring that each new concept is the next one in this order. This method is more efficient than Close-by-One for slightly larger contexts and is well-suited for contexts with fewer than 20 objects and attributes, as it minimizes redundancy and efficiently prunes the search space.
+
+3. A third approach is the **Border algorithm**, which is designed to efficiently compute the concept lattice by focusing on the borders of the concept set. This method involves identifying the lower and upper neighbors of each concept, which helps in constructing the lattice structure incrementally. The Border algorithm starts by finding the minimal generators of the concepts and then uses these to determine the immediate successors and predecessors in the lattice. This approach is effective for small contexts as it reduces the complexity of the lattice construction by concentrating on the essential relationships between concepts, thereby simplifying the overall process of lattice generation.
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context using the **Close-by-One algorithm**, we can follow these steps:
+
+1. **Initialize the Concept Lattice**: Start with the bottom concept, which is the empty set of attributes and the full set of objects.
+
+2. **Iteratively Add Attributes**: For each attribute, compute the closure of the attribute set and update the lattice.
+
+3. **Compute Closures**: For each new attribute added, determine the smallest set of attributes that has the same closure.
+
+4. **Update the Lattice**: Add the new concept to the lattice and connect it to its immediate neighbors.
+
+Let's apply this algorithm to the given context:
+
+### Context:
+| Objet | a1 | a2 | a3 | a4 | a5 |
+|-------|----|----|----|----|----|
+| o1    | yes| no | yes| yes| no  |
+| o2    | no | no | yes| no | no  |
+| o3    | yes| yes| no | yes| yes |
+| o4    | no | yes| no | no | yes |
+| o5    | no | yes| no | no | no  |
+
+### Step-by-Step Application of Close-by-One Algorithm:
+
+1. **Start with the Bottom Concept**:
+   - Attributes: {}
+   - Objects: {o1, o2, o3, o4, o5}
+
+2. **Add Attribute a1**:
+   - Closure of {a1}: {a1, a3, a4}
+   - Objects: {o1, o3}
+
+3. **Add Attribute a2**:
+   - Closure of {a2}: {a2, a5}
+   - Objects: {o3, o4, o5}
+
+4. **Add Attribute a3**:
+   - Closure of {a3}: {a3}
+   - Objects: {o1, o2}
+
+5. **Add Attribute a4**:
+   - Closure of {a4}: {a1, a4}
+   - Objects: {o1, o3}
+
+6. **Add Attribute a5**:
+   - Closure of {a5}: {a2, a5}
+   - Objects: {o3, o4, o5}
+
+7. **Combine Attributes**:
+   - Closure of {a1, a2}: {a1, a2, a3, a4, a5}
+   - Objects: {o3}
+
+   - Closure of {a1, a3}: {a1, a3, a4}
+   - Objects: {o1, o3}
+
+   - Closure of {a1, a4}: {a1, a3, a4}
+   - Objects: {o1, o3}
+
+   - Closure of {a1, a5}: {a1, a2, a3, a4, a5}
+   - Objects: {o3}
+
+   - Closure of {a2, a3}: {a2, a3, a5}
+   - Objects: {o3}
+
+   - Closure of {a2, a4}: {a1, a2, a3, a4, a5}
+   - Objects: {o3}
+
+   - Closure of {a2, a5}: {a2, a5}
+   - Objects: {o3, o4, o5}
+
+   - Closure of {a3, a4}: {a1, a3, a4}
+   - Objects: {o1, o3}
+
+   - Closure of {a3, a5}: {a2, a3, a5}
+   - Objects: {o3}
+
+   - Closure of {a4, a5}: {a1, a2, a3, a4, a5}
+   - Objects: {o3}
+
+8. **Final Concepts**:
+   - ({}, {o1, o2, o3, o4, o5})
+   - ({a1, a3, a4}, {o1, o3})
+   - ({a2, a5}, {o3, o4, o5})
+   - ({a3}, {o1, o2})
+   - ({a1, a4}, {o1, o3})
+   - ({a1, a2, a3, a4, a5}, {o3})
+   - ({a2, a3, a5}, {o3})
+
+These are the formal concepts extracted from the given context using the Close-by-One algorithm.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2, o3, o4, o5]], [[a1, a3, a4], [o1, o3]], [[a2, a5], [o3, o4, o5]], [[a3], [o1, o2]], [[a1, a4], [o1, o3]], [[a1, a2, a3, a4, a5], [o3]], [[a2, a3, a5], [o3]]]

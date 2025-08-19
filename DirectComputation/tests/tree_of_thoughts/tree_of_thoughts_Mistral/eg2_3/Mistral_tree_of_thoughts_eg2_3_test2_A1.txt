@@ -1,0 +1,19 @@
+Mistral_tree_of_thoughts_eg2_3_test2_A1
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is through the use of the "Next Closure" algorithm. This algorithm is particularly efficient for small datasets and works by iteratively computing the closure of each object's intent. It starts with an empty set of attributes and incrementally adds attributes to form concepts, ensuring that each new concept is a closure of the previous one. The algorithm systematically explores the search space of possible attribute combinations, making it suitable for smaller contexts where exhaustive search is feasible.
+
+Another method to find lattice concepts in such a context is the "Border Algorithm." This approach focuses on maintaining a border between the already generated concepts and the concepts yet to be explored. It starts with the bottom concept (the empty set of attributes) and iteratively generates new concepts by adding one attribute at a time, while ensuring that each new concept is canonical (i.e., it is not already covered by an existing concept). The border algorithm is efficient for small contexts because it minimizes redundant computations by only exploring the boundary between known and unknown concepts.
+
+A third approach is the "Add Intent" algorithm, which builds the concept lattice by incrementally adding intents (sets of attributes) to the lattice structure. This method starts with the top concept (the universal set of attributes) and iteratively refines it by adding new intents that are meet-irreducible (i.e., they cannot be expressed as the intersection of other intents). The algorithm ensures that each new intent is integrated into the lattice in a way that maintains the lattice's structural properties. This method is particularly effective for small contexts because it leverages the inherent properties of the lattice to guide the construction process, reducing the need for exhaustive search.

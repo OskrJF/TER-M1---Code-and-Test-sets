@@ -1,0 +1,135 @@
+Mistral_tree_of_thoughts_eg2_9_test2_B
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1B:
+Pick one of these three ways to extract all the lattice concepts from the next context and apply it to give me the concepts
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+
+1. In the field of formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is by using the **Close-by-One algorithm**. This algorithm is a straightforward approach that constructs the concept lattice by iteratively adding one attribute or object at a time and computing the closure of the resulting set. It starts with the empty set and builds up concepts by adding elements and checking for closure under the derivation operators. This method is particularly useful for small contexts because it is easy to implement and understand, although it may not be the most efficient for larger datasets.
+
+2. Another method to find lattice concepts is the **Lindig’s algorithm**, which is based on the idea of attribute exploration. This algorithm constructs the concept lattice by exploring the attribute set and determining the implications that hold in the context. It starts with the top concept (the entire set of attributes) and iteratively refines it by finding the minimal generators for each concept. Lindig’s algorithm is efficient for small contexts and provides a clear way to understand the structure of the concept lattice through implications and attribute dependencies.
+
+3. Lastly, the **Border algorithm** can be employed to find the lattice concepts in a small context. This method focuses on the borders between the set of already generated concepts and the remaining concepts to be generated. It starts with the top and bottom elements of the lattice and iteratively computes the meet and join operations to discover new concepts. The Border algorithm is advantageous for smaller contexts as it reduces the number of closure operations needed, thereby optimizing the process of concept generation. This approach is particularly useful for visualizing and understanding the hierarchical structure of the concept lattice.
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context using the **Close-by-One algorithm**, we follow these steps:
+
+1. **Understand the Context**: The context is represented as a table with objects (o1, o2) and attributes (a1, a2, ..., a9). Each cell indicates whether an object has a particular attribute.
+
+2. **Initialize the Concept Lattice**: Start with the empty set and the full set of attributes.
+
+3. **Iteratively Add Elements**: For each object and attribute, iteratively add them to the current set and compute the closure to form new concepts.
+
+4. **Compute Closure**: For each new set formed, compute its closure under the derivation operators to ensure it forms a valid concept.
+
+5. **Build the Lattice**: Continue this process until all possible concepts are generated.
+
+Let's apply this to the given context:
+
+### Context:
+| Objet | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+|-------|----|----|----|----|----|----|----|----|----|
+| o1    | yes| yes| yes| yes| no | no | yes| no | yes|
+| o2    | yes| no | no | yes| no | yes| no | no | yes|
+
+### Step-by-Step Application:
+
+1. **Start with the Empty Set and Full Set**:
+   - Concept 1: (∅, {a1, a2, a3, a4, a5, a6, a7, a8, a9})
+   - Concept 2: ({o1, o2}, ∅)
+
+2. **Iteratively Add Objects and Attributes**:
+   - Add o1: Compute the closure of {o1}:
+     - Attributes of o1: {a1, a2, a3, a4, a7, a9}
+     - Concept 3: ({o1}, {a1, a2, a3, a4, a7, a9})
+
+   - Add o2: Compute the closure of {o2}:
+     - Attributes of o2: {a1, a4, a6, a9}
+     - Concept 4: ({o2}, {a1, a4, a6, a9})
+
+   - Add a1: Compute the closure of {a1}:
+     - Objects with a1: {o1, o2}
+     - Concept 5: ({a1}, {o1, o2})
+
+   - Add a2: Compute the closure of {a2}:
+     - Objects with a2: {o1}
+     - Concept 6: ({a2}, {o1})
+
+   - Add a3: Compute the closure of {a3}:
+     - Objects with a3: {o1}
+     - Concept 7: ({a3}, {o1})
+
+   - Add a4: Compute the closure of {a4}:
+     - Objects with a4: {o1, o2}
+     - Concept 8: ({a4}, {o1, o2})
+
+   - Add a5: Compute the closure of {a5}:
+     - Objects with a5: ∅
+     - Concept 9: ({a5}, ∅)
+
+   - Add a6: Compute the closure of {a6}:
+     - Objects with a6: {o2}
+     - Concept 10: ({a6}, {o2})
+
+   - Add a7: Compute the closure of {a7}:
+     - Objects with a7: {o1}
+     - Concept 11: ({a7}, {o1})
+
+   - Add a8: Compute the closure of {a8}:
+     - Objects with a8: ∅
+     - Concept 12: ({a8}, ∅)
+
+   - Add a9: Compute the closure of {a9}:
+     - Objects with a9: {o1, o2}
+     - Concept 13: ({a9}, {o1, o2})
+
+3. **Compute Closure for Combined Sets**:
+   - Combine o1 and o2: Compute the closure of {o1, o2}:
+     - Attributes of o1 and o2: {a1, a4, a9}
+     - Concept 14: ({o1, o2}, {a1, a4, a9})
+
+   - Combine a1 and a2: Compute the closure of {a1, a2}:
+     - Objects with a1 and a2: {o1}
+     - Concept 15: ({a1, a2}, {o1})
+
+   - Continue this process for all possible combinations of objects and attributes.
+
+### Final Concept Lattice:
+The final concept lattice will include all the concepts generated through the above steps. Here are some of the key concepts:
+
+| Concept | Objects | Attributes |
+|---------|---------|------------|
+| 1       | ∅       | {a1, a2, a3, a4, a5, a6, a7, a8, a9} |
+| 2       | {o1, o2}| ∅ |
+| 3       | {o1}    | {a1, a2, a3, a4, a7, a9} |
+| 4       | {o2}    | {a1, a4, a6, a9} |
+| 5       | {a1}    | {o1, o2} |
+| 6       | {a2}    | {o1} |
+| 7       | {a3}    | {o1} |
+| 8       | {a4}    | {o1, o2} |
+| 9       | {a5}    | ∅ |
+| 10      | {a6}    | {o2} |
+| 11      | {a7}    | {o1} |
+| 12      | {a8}    | ∅ |
+| 13      | {a9}    | {o1, o2} |
+| 14      | {o1, o2}| {a1, a4, a9} |
+| 15      | {a1, a2}| {o1} |
+
+This table represents a subset of the concepts in the lattice. The complete lattice would include all possible combinations and their closures.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [a1, a2, a3, a4, a5, a6, a7, a8, a9]], [[o1, o2], []], [[o1], [a1, a2, a3, a4, a7, a9]], [[o2], [a1, a4, a6, a9]], [[a1], [o1, o2]], [[a2], [o1]], [[a3], [o1]], [[a4], [o1, o2]], [[a5], []], [[a6], [o2]], [[a7], [o1]], [[a8], []], [[a9], [o1, o2]], [[o1, o2], [a1, a4, a9]], [[a1, a2], [o1]]]

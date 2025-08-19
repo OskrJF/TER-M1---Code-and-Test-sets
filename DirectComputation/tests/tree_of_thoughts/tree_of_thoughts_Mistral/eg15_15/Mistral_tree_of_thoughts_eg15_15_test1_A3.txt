@@ -1,0 +1,19 @@
+Mistral_tree_of_thoughts_eg15_15_test1_A3
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In the field of formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is through the use of the **Next Closure algorithm**. This algorithm is particularly efficient for small datasets and works by iteratively computing the closure of each object's intent. It starts with an empty set of attributes and incrementally adds attributes to form the smallest closed set that contains the initial set. This process is repeated for each object, and the resulting closed sets represent the concepts in the lattice. The Next Closure algorithm is favored for its simplicity and effectiveness in generating the complete set of formal concepts for small contexts.
+
+Another method to derive the lattice concepts is by employing the **Border Diff algorithm**. This approach focuses on the borders between the object and attribute sets to efficiently compute the concepts. It starts by identifying the lower and upper neighbors of each concept, which helps in constructing the concept lattice incrementally. The Border Diff algorithm is advantageous because it minimizes redundant computations by leveraging the differences between the borders of already computed concepts. This method is particularly useful for contexts where the number of objects and attributes is limited, as it reduces the computational overhead associated with larger datasets.
+
+A third approach involves using the **Add Intent algorithm**, which is designed to build the concept lattice by adding intents to the existing set of concepts. This algorithm starts with the top concept (the entire set of objects and no attributes) and iteratively adds new concepts by computing the intents of the existing ones. The process involves generating new concepts by intersecting the intents of the current concepts with the intents of the objects not yet included. The Add Intent algorithm is efficient for small contexts because it systematically explores the intent space, ensuring that all possible concepts are discovered and organized into a lattice structure. This method is appreciated for its clarity and straightforward implementation in smaller datasets.

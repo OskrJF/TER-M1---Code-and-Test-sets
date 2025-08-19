@@ -1,0 +1,77 @@
+Mistral_tree_of_thoughts_eg2_9_test1_B
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1B:
+Pick one of these three ways to extract all the lattice concepts from the next context and apply it to give me the concepts
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+
+1. In the field of Formal Concept Analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is by using the **NextClosure algorithm**. This algorithm is efficient for small datasets and works by iterating through the set of objects and incrementally building the set of closed attribute sets, which correspond to the concepts in the lattice. The algorithm starts with an empty set of attributes and progressively adds attributes to form the next closure, ensuring that each new concept is generated in a systematic manner. This approach is particularly useful for small contexts because it minimizes computational overhead while ensuring that all concepts are identified.
+
+2. In the field of formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is by using the **Close-by-One algorithm**. This algorithm is a straightforward approach that builds the concept lattice by iteratively adding one attribute or object at a time and computing the closure of the resulting set. Starting from the empty set, it generates all possible combinations of attributes and objects, computes their closures, and constructs the lattice incrementally. This method is particularly useful for small contexts as it is easy to implement and understand, although it may not be the most efficient for larger datasets.
+
+3. Lastly, the **Border algorithm** can be employed to find the lattice concepts in a small context. This algorithm focuses on the borders between the sets of objects and attributes, identifying concepts by examining the boundaries where changes occur in the context. The Border algorithm starts by identifying the top and bottom elements of the lattice and then iteratively refines these boundaries to uncover all formal concepts. This method is particularly useful for visualizing the concept lattice and understanding the hierarchical relationships within the data. Its simplicity and intuitive approach make it a practical choice for small datasets in FCA.
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context using the **NextClosure algorithm**, we follow these steps:
+
+1. **Initialize**: Start with an empty set of attributes.
+2. **Iterate through objects**: For each object, compute the closure of the attribute set.
+3. **Generate concepts**: Use the closure to generate the concepts in the lattice.
+
+Let's apply the NextClosure algorithm to the given context:
+
+### Context:
+| Objet | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+|-------|----|----|----|----|----|----|----|----|----|
+| o1    | yes| yes| yes| yes| no | no | yes| no | yes|
+| o2    | yes| no | no | yes| no | yes| no | no | yes|
+
+### Step-by-Step Application of NextClosure Algorithm:
+
+1. **Start with an empty set of attributes**: `{}`
+2. **Compute the closure for each object**:
+   - For `o1`, the attribute set is `{a1, a2, a3, a4, a7, a9}`.
+   - For `o2`, the attribute set is `{a1, a4, a6, a9}`.
+
+3. **Generate the concepts**:
+   - The closure of the empty set is the intersection of all attribute sets, which is `{a1, a4, a9}`.
+   - The closure of `{a1}` is `{a1, a4, a9}`.
+   - The closure of `{a2}` is `{a1, a2, a3, a4, a7, a9}`.
+   - The closure of `{a3}` is `{a1, a2, a3, a4, a7, a9}`.
+   - The closure of `{a4}` is `{a1, a4, a9}`.
+   - The closure of `{a5}` is `{a1, a2, a3, a4, a5, a6, a7, a8, a9}`.
+   - The closure of `{a6}` is `{a1, a4, a6, a9}`.
+   - The closure of `{a7}` is `{a1, a2, a3, a4, a7, a9}`.
+   - The closure of `{a8}` is `{a1, a2, a3, a4, a5, a6, a7, a8, a9}`.
+   - The closure of `{a9}` is `{a1, a4, a9}`.
+
+4. **Identify unique concepts**:
+   - `{a1, a4, a9}`
+   - `{a1, a2, a3, a4, a7, a9}`
+   - `{a1, a4, a6, a9}`
+   - `{a1, a2, a3, a4, a5, a6, a7, a8, a9}`
+
+### Lattice Concepts:
+1. `{a1, a4, a9}`
+2. `{a1, a2, a3, a4, a7, a9}`
+3. `{a1, a4, a6, a9}`
+4. `{a1, a2, a3, a4, a5, a6, a7, a8, a9}`
+
+These are the formal concepts extracted from the given context using the NextClosure algorithm.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]]

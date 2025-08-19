@@ -1,0 +1,78 @@
+Mistral_tree_of_thoughts_eg2_3_test2_B
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1B:
+Pick one of these three ways to extract all the lattice concepts from the next context and apply it to give me the concepts
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+
+1. In formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is through the use of the "Next Closure" algorithm. This algorithm is particularly efficient for small datasets and works by iteratively computing the closure of each object's intent. It starts with an empty set of attributes and incrementally adds attributes to form concepts, ensuring that each new concept is a closure of the previous one. The algorithm systematically explores the search space of possible attribute combinations, making it suitable for smaller contexts where exhaustive search is feasible.
+
+2. Another approach to finding lattice concepts in a small context is the "Border Algorithm." This method focuses on the borders between the lower and upper neighbors of formal concepts. It starts with the bottom concept (the empty set of attributes) and iteratively builds the lattice by identifying the immediate successors of each concept. The algorithm maintains a list of "generators" for each concept, which are minimal subsets of attributes that generate the concept under closure. By leveraging these generators, the Border Algorithm efficiently navigates the lattice structure, making it suitable for contexts with limited objects and attributes.
+
+3. A third approach is the **Add Intent algorithm**, which builds the concept lattice by adding intents incrementally. This method starts with the bottom concept (the empty set of attributes) and iteratively adds new intents by combining existing ones. Each new intent is formed by taking the intersection of existing intents and checking for closure. The Add Intent algorithm is particularly useful for small contexts because it systematically explores the lattice structure by leveraging the limited number of possible intents. This method ensures that all concepts are discovered efficiently, making it suitable for contexts with fewer than 20 objects and attributes.
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context using the "Next Closure" algorithm, we can follow these steps:
+
+### Given Context:
+| Objet | a1 | a2 | a3 |
+|-------|----|----|----|
+| o1    | yes| yes| no |
+| o2    | no | yes| yes|
+
+### Step-by-Step Application of the Next Closure Algorithm:
+
+1. **Initialize:**
+   - Start with an empty set of attributes.
+
+2. **Compute Closures:**
+   - For each object, compute the closure of its attributes.
+   - The closure of a set of attributes \( A \) is the smallest set of attributes that contains \( A \) and is closed under the derivation operators.
+
+3. **Iterate and Form Concepts:**
+   - Start with the empty set and iteratively add attributes to form concepts.
+
+### Concepts:
+
+1. **Bottom Concept:**
+   - Intent: \(\emptyset\)
+   - Extent: \(\{o1, o2\}\)
+
+2. **Concept from o1:**
+   - Intent: \(\{a1, a2\}\)
+   - Extent: \(\{o1\}\)
+
+3. **Concept from o2:**
+   - Intent: \(\{a2, a3\}\)
+   - Extent: \(\{o2\}\)
+
+4. **Top Concept:**
+   - Intent: \(\{a1, a2, a3\}\)
+   - Extent: \(\emptyset\)
+
+### Lattice Concepts:
+| Concept | Intent   | Extent  |
+|---------|----------|---------|
+| 1       | \(\emptyset\) | \(\{o1, o2\}\) |
+| 2       | \(\{a1, a2\}\) | \(\{o1\}\) |
+| 3       | \(\{a2, a3\}\) | \(\{o2\}\) |
+| 4       | \(\{a1, a2, a3\}\) | \(\emptyset\) |
+
+These are the lattice concepts extracted from the given context using the "Next Closure" algorithm.
+____________________
+
+PROMPT 2B:
+Put the list of concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a2, a3], []]]

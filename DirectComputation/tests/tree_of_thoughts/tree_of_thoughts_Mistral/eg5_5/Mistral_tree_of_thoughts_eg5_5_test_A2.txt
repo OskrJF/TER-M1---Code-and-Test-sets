@@ -1,0 +1,19 @@
+Mistral_tree_of_thoughts_eg5_5_test1_A2
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1A (repeat three times, take one of the solutions from each try for PROMPT 1B):
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes. Write a single paragraph for each way
+____________________
+
+OUTPUT:
+In the field of formal concept analysis (FCA), one way to find the lattice concepts in a context with fewer than 20 objects and fewer than 20 attributes is by using the **Close-by-One algorithm**. This algorithm is a straightforward approach that constructs the concept lattice by iteratively adding one object or attribute at a time and computing the closure of the resulting set. It starts with the empty set and builds up concepts by adding elements and checking for closure under the derivation operators. This method is particularly useful for small contexts as it is easy to implement and understand, although it may not be the most efficient for larger datasets.
+
+Another method to find the lattice concepts is through the **Next Closure algorithm**, which is an efficient way to generate all formal concepts by systematically exploring the search space of possible concepts. It works by generating each concept in lexicographical order, ensuring that each new concept is the next one in this order. This method is more efficient than Close-by-One for slightly larger contexts and is well-suited for contexts with fewer than 20 objects and attributes, as it minimizes redundancy and efficiently prunes the search space.
+
+Lastly, the **Border algorithm** can be used to find the lattice concepts by focusing on the borders of the concept lattice. This algorithm works by first identifying the minimal and maximal generators of the concepts and then using these to derive the entire lattice structure. It is particularly effective for small contexts as it reduces the number of computations needed by focusing on the boundaries of the concept lattice, thus efficiently generating all formal concepts without exhaustive search.
