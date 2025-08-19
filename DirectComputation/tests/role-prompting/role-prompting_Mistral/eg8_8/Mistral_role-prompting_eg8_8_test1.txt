@@ -1,0 +1,62 @@
+Mistral_role-prompting_eg8_8_test1
+
+Date: 27 may 2025
+Model: Mistral Large 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5;a6;a7;a8
+O1;Yes;Yes;Yes;No;No;No;No;No
+O2;Yes;Yes;Yes;No;No;Yes;No;Yes
+O3;Yes;Yes;No;Yes;No;Yes;No;No
+O4;No;Yes;Yes;Yes;Yes;No;No;Yes
+O5;No;Yes;No;Yes;No;Yes;Yes;Yes
+O6;Yes;Yes;Yes;No;Yes;No;Yes;No
+O7;No;Yes;Yes;Yes;Yes;No;Yes;No
+O8;No;Yes;Yes;Yes;Yes;No;Yes;No
+____________________
+
+OUTPUT:
+Formal Concept Analysis (FCA) is a method used to analyze data and identify conceptual structures within it. It involves creating a formal context, which is a triplet consisting of a set of objects, a set of attributes, and a binary relation between them. From this context, we can derive formal concepts, which are pairs of object sets and attribute sets that form a complete lattice.
+
+Let's start by extracting the formal concepts from the given context. We'll follow these steps:
+
+1. **Identify the Objects and Attributes:**
+   - Objects: O1, O2, O3, O4, O5, O6, O7, O8
+   - Attributes: a1, a2, a3, a4, a5, a6, a7, a8
+
+2. **Create the Formal Context:**
+   - This is a table where rows represent objects and columns represent attributes. A "Yes" indicates that an object has a particular attribute.
+
+3. **Find Formal Concepts:**
+   - A formal concept is a pair (A, B), where A is a set of objects and B is a set of attributes, such that all objects in A have all attributes in B, and A and B are maximal with respect to this property.
+
+4. **Construct the Concept Lattice:**
+   - The set of all formal concepts forms a complete lattice under the inclusion order.
+
+Let's extract the formal concepts from the given context.In the context of Formal Concept Analysis (FCA), a formal concept is a pair consisting of a set of objects (called the extent) and a set of attributes (called the intent) that are shared by these objects. Here are the formal concepts extracted from the given context:
+
+| Objects | Attributes          |
+|---------|---------------------|
+| {O1}    | {a1, a2, a3}        |
+| {O2}    | {a1, a2, a3, a6, a8}|
+| {O3}    | {a1, a2, a4, a6}    |
+| {O4}    | {a2, a3, a4, a5, a8}|
+| {O5}    | {a2, a4, a6, a7, a8}|
+| {O6}    | {a1, a2, a3, a5, a7}|
+| {O7}    | {a2, a3, a4, a5, a7}|
+| {O8}    | {a2, a3, a4, a5, a7}|
+
+Each row represents a formal concept where the first column is the extent (set of objects) and the second column is the intent (set of attributes).
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a1], [O1, O2, O3, O6]], [[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a3], [O1, O2, O4, O6, O7, O8]], [[a4], [O3, O4, O5, O7, O8]], [[a5], [O4, O5, O6, O7, O8]], [[a6], [O2, O3, O5]], [[a7], [O4, O5, O6, O7, O8]], [[a8], [O2, O4, O5]], [[a1, a2], [O1, O2, O3, O6]], [[a1, a3], [O1, O2, O6]], [[a1, a6], [O2, O3, O6]], [[a2, a3], [O1, O2, O4, O6, O7, O8]], [[a2, a4], [O3, O4, O5, O7, O8]], [[a2, a5], [O4, O5, O6, O7, O8]], [[a2, a6], [O2, O3, O5, O6]], [[a2, a7], [O4, O5, O6, O7, O8]], [[a2, a8], [O2, O4, O5]], [[a3, a4], [O4, O7, O8]], [[a3, a5], [O4, O6, O7, O8]], [[a3, a7], [O4, O6, O7, O8]], [[a4, a5], [O4, O5, O7, O8]], [[a4, a6], [O3, O5]], [[a4, a7], [O4, O5, O7, O8]], [[a4, a8], [O4, O5]], [[a5, a6], [O5, O6]], [[a5, a7], [O4, O5, O6, O7, O8]], [[a5, a8], [O4, O5]], [[a6, a7], [O5, O6]], [[a6, a8], [O2, O5]], [[a7, a8], [O4, O5]], [[a1, a2, a3], [O1, O2, O6]], [[a1, a2, a6], [O2, O3, O6]], [[a2, a3, a4], [O4, O7, O8]], [[a2, a3, a5], [O4, O6, O7, O8]], [[a2, a3, a7], [O4, O6, O7, O8]], [[a2, a4, a5], [O4, O5, O7, O8]], [[a2, a4, a6], [O3, O5]], [[a2, a4, a7], [O4, O5, O7, O8]], [[a2, a4, a8], [O4, O5]], [[a2, a5, a6], [O5, O6]], [[a2, a5, a7], [O4, O5, O6, O7, O8]], [[a2, a5, a8], [O4, O5]], [[a2, a6, a7], [O5, O6]], [[a2, a6, a8], [O2, O5]], [[a2, a7, a8], [O4, O5]], [[a3, a4, a5], [O4, O7, O8]], [[a3, a4, a7], [O4, O7, O8]], [[a3, a5, a7], [O4, O6, O7, O8]], [[a4, a5, a6], [O5]], [[a4, a5, a7], [O4, O5, O7, O8]], [[a4, a5, a8], [O4, O5]], [[a4, a6, a7], [O5]], [[a4, a6, a8], [O5]], [[a4, a7, a8], [O4, O5]], [[a5, a6, a7], [O5, O6]], [[a5, a6, a8], [O5]], [[a5, a7, a8], [O4, O5]], [[a6, a7, a8], [O5]], [[a1, a2, a3, a6], [O2, O6]], [[a2, a3, a4, a5], [O4, O7, O8]], [[a2, a3, a4, a7], [O4, O7, O8]], [[a2, a3, a5, a7], [O4, O6, O7, O8]], [[a2, a4, a5, a6], [O5]], [[a2, a4, a5, a7], [O4, O5, O7, O8]], [[a2, a4, a5, a8], [O4, O5]], [[a2, a4, a6, a7], [O5]], [[a2, a4, a6, a8], [O5]], [[a2, a4, a7, a8], [O4, O5]], [[a2, a5, a6, a7], [O5, O6]], [[a2, a5, a6, a8], [O5]], [[a2, a5, a7, a8], [O4, O5]], [[a2, a6, a7, a8], [O5]], [[a3, a4, a5, a7], [O4, O7, O8]], [[a4, a5, a6, a7], [O5]], [[a4, a5, a6, a8], [O5]], [[a4, a5, a7, a8], [O4, O5]], [[a4, a6, a7, a8], [O5]], [[a5, a6, a7, a8], [O5]], [[a2, a3, a4, a5, a7], [O4, O7, O8]], [[a2, a4, a5, a6, a7], [O5]], [[a2, a4, a5, a6, a8], [O5]], [[a2, a4, a5, a7, a8], [O4, O5]], [[a2, a4, a6, a7, a8], [O5]], [[a2, a5, a6, a7, a8], [O5]], [[a4, a5, a6, a7, a8], [O5]], [[a2, a3, a4, a5, a6, a7], [O7]], [[a2, a3, a4, a5, a6, a8], []], [[a2, a3, a4, a5, a7, a8], [O4, O8]], [[a2, a3, a4, a6, a7, a8], []], [[a2, a3, a5, a6, a7, a8], [O6]], [[a2, a4, a5, a6, a7, a8], [O5]], [[a3, a4, a5, a6, a7, a8], []], [[a2, a3, a4, a5, a6, a7, a8], []]]

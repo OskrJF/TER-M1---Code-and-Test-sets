@@ -1,0 +1,76 @@
+Mistral_role-prompting_eg5_5_test1
+
+Date: 27 may 2025
+Model: Mistral Large 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+Formal Concept Analysis (FCA) is a method used to analyze data and identify conceptual structures within it. The data is typically represented in a formal context, which is a triplet consisting of a set of objects, a set of attributes, and a binary relation between them.
+
+In your provided context, we have a table with objects (o1, o2, o3, o4, o5) and attributes (a1, a2, a3, a4, a5). The table indicates whether an object has a particular attribute (yes/no).
+
+To extract lattice concepts, we need to find all pairs of object sets and attribute sets that form a "concept". A concept is defined as a pair (A, B), where A is a set of objects, B is a set of attributes, and the following two conditions hold:
+
+1. All objects in A have all attributes in B.
+2. No other object outside A has all attributes in B, and no other attribute outside B is common to all objects in A.
+
+Let's go through the process of identifying these concepts:
+
+1. Start with the entire set of objects and find the set of attributes common to all of them.
+2. For each subset of objects, find the set of attributes common to all objects in the subset.
+3. Ensure that the subset of objects is maximal with respect to the set of attributes, and vice versa.
+
+Let's identify the concepts step-by-step:
+
+1. Concept 1: ( {}, {a1, a2, a3, a4, a5} )
+   - This is the top concept, where no objects have all attributes.
+
+2. Concept 2: ( {o1, o2, o3, o4, o5}, {} )
+   - This is the bottom concept, where all objects have no common attributes.
+
+3. Concept 3: ( {o1, o3}, {a1, a4} )
+   - Objects o1 and o3 share attributes a1 and a4.
+
+4. Concept 4: ( {o3, o4, o5}, {a2} )
+   - Objects o3, o4, and o5 share attribute a2.
+
+5. Concept 5: ( {o1, o2}, {a3} )
+   - Objects o1 and o2 share attribute a3.
+
+6. Concept 6: ( {o3}, {a1, a2, a4, a5} )
+   - Object o3 has attributes a1, a2, a4, and a5.
+
+7. Concept 7: ( {o4}, {a2, a5} )
+   - Object o4 has attributes a2 and a5.
+
+8. Concept 8: ( {o5}, {a2} )
+   - Object o5 has attribute a2.
+
+9. Concept 9: ( {o1}, {a1, a3, a4} )
+   - Object o1 has attributes a1, a3, and a4.
+
+10. Concept 10: ( {o2}, {a3} )
+    - Object o2 has attribute a3.
+
+These are the formal concepts derived from the given context. Each concept is a maximal pair of objects and attributes that satisfy the conditions of FCA.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2, o3, o4, o5]], [[a1, a4], [o1, o3]], [[a2], [o3, o4, o5]], [[a3], [o1, o2]], [[a1, a2, a4, a5], [o3]], [[a2, a5], [o4]], [[a2], [o5]], [[a1, a3, a4], [o1]], [[a3], [o2]], [[a1, a2, a3, a4, a5], []]]

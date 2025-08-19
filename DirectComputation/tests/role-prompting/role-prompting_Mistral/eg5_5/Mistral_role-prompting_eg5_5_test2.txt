@@ -1,0 +1,86 @@
+Mistral_role-prompting_eg5_5_test2
+
+Date: 27 may 2025
+Model: Mistral Large 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+I want you to act as a computer science teacher who's explaining to their students. In the field of formal concept analysis (FCA), given this context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+Formal Concept Analysis (FCA) is a method used to analyze data and identify conceptual structures within it. The data is typically represented in a formal context, which is a triplet consisting of a set of objects, a set of attributes, and a binary relation between them.
+
+Given your formal context, we can extract the lattice concepts. A lattice concept in FCA is a pair (A, B), where A is a set of objects and B is a set of attributes, such that A is the set of all objects that have all attributes in B, and B is the set of all attributes shared by all objects in A.
+
+Let's extract the lattice concepts from your given context:
+
+### Formal Context:
+| Objet | a1 | a2 | a3 | a4 | a5 |
+|-------|----|----|----|----|----|
+| o1    | yes| no | yes| yes| no |
+| o2    | no | no | yes| no | no |
+| o3    | yes| yes| no | yes| yes|
+| o4    | no | yes| no | no | yes|
+| o5    | no | yes| no | no | no |
+
+### Step-by-Step Extraction of Lattice Concepts:
+
+1. **Concept 1:**
+   - Objects: {o1, o3}
+   - Attributes: {a1, a4}
+   - Explanation: Both o1 and o3 have attributes a1 and a4.
+
+2. **Concept 2:**
+   - Objects: {o2}
+   - Attributes: {a3}
+   - Explanation: o2 is the only object with attribute a3.
+
+3. **Concept 3:**
+   - Objects: {o3, o4}
+   - Attributes: {a2, a5}
+   - Explanation: Both o3 and o4 have attributes a2 and a5.
+
+4. **Concept 4:**
+   - Objects: {o3, o4, o5}
+   - Attributes: {a2}
+   - Explanation: o3, o4, and o5 all have attribute a2.
+
+5. **Concept 5:**
+   - Objects: {o5}
+   - Attributes: {}
+   - Explanation: o5 has no unique attributes not shared by others.
+
+6. **Concept 6:**
+   - Objects: {}
+   - Attributes: {a1, a2, a3, a4, a5}
+   - Explanation: The empty set of objects corresponds to all attributes.
+
+### Lattice Concepts:
+| Concept | Objects | Attributes |
+|---------|---------|------------|
+| 1       | {o1, o3}| {a1, a4}   |
+| 2       | {o2}    | {a3}       |
+| 3       | {o3, o4}| {a2, a5}   |
+| 4       | {o3, o4, o5}| {a2}   |
+| 5       | {o5}    | {}         |
+| 6       | {}      | {a1, a2, a3, a4, a5} |
+
+These are the lattice concepts extracted from the given formal context. Each concept represents a maximal set of objects sharing a specific set of attributes.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2, o3, o4, o5]], [[a3], [o2]], [[a1, a4], [o1, o3]], [[a2, a5], [o3, o4]], [[a2], [o3, o4, o5]], [[], [o5]], [[a1, a2, a3, a4, a5], []]]
