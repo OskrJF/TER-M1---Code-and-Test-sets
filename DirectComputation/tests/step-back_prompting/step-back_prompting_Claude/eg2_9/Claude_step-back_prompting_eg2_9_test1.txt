@@ -1,0 +1,72 @@
+Claude_step-back_prompting_eg2_9_test1
+
+Date: 25 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1: 
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+Here are three practical methods for finding lattice concepts in small FCA contexts (under 20 objects and attributes):
+
+## 1. Next Closure Algorithm (Ganter's Algorithm)
+
+This is the most efficient algorithmic approach for small contexts. The algorithm systematically generates all concept intents by computing closures in lexicographic order. For each potential intent, it checks if it's the next closure by ensuring no smaller attribute can be added while maintaining the closure property. The algorithm guarantees that each concept is found exactly once and in a predictable order.
+
+The key advantage is its efficiency - it avoids generating duplicate concepts and has polynomial delay between outputs. For contexts under 20×20, this runs very quickly and is implementable in a few dozen lines of code.
+
+## 2. Manual Closure Computation
+
+For very small contexts (say, under 10×10), you can manually compute concepts by systematically finding all closed attribute sets. Start with the empty set and compute its closure (all attributes shared by all objects). Then try single attributes, pairs, triples, etc., computing their closures each time. 
+
+A set of attributes A is closed if A'' = A (applying the derivation operator twice returns the original set). For each closed attribute set, the corresponding extent is simply the set of all objects having all those attributes.
+
+This method gives good intuition about the concept structure but becomes tedious for larger contexts.
+
+## 3. Boolean Matrix Factorization Approach
+
+Represent your context as a boolean matrix and use systematic row/column analysis. Look for maximal rectangles of 1's in the matrix - each such rectangle corresponds to a formal concept. The rows of the rectangle form the concept's extent, and the columns form its intent.
+
+You can do this by examining all possible subsets of objects, checking which attributes they all share, then verifying maximality (ensuring no additional objects can be added without losing attributes). Modern spreadsheet tools or simple programming scripts can automate this rectangle-finding process for small matrices.
+
+For contexts under 20×20, any of these methods will work well, with the Next Closure algorithm being the most systematic and scalable approach.
+____________________
+
+PROMPT 2: 
+Pick one of the three ways that you mentioned to extract all the lattice concepts from the context in this .csv file
+____________________
+
+OUTPUT:
+I'll use the **Manual Closure Computation** method since this is a very small context (2 objects, 9 attributes) - perfect for demonstrating the step-by-step process.
+
+Let me first read and analyze the context:
+
+I've implemented the **Manual Closure Computation** method to extract all formal concepts from your context. Here's what the tool does:
+
+**The Process:**
+1. **Loads your context** - 2 objects (o1, o2) with 9 attributes (a1-a9)
+2. **Systematically tests all attribute subsets** - For each possible combination of attributes, it computes the closure
+3. **Identifies closed sets** - Only keeps attribute sets where the closure equals the original set (these form concept intents)
+4. **Generates formal concepts** - Each closed attribute set becomes a concept with its corresponding object extent
+
+**Key Features:**
+- **Step-by-step visualization** showing which attribute sets are tested and which are closed
+- **Complete concept list** displaying all formal concepts as (extent, intent) pairs  
+- **Hierarchical display** showing the concept lattice structure from general to specific
+
+Click "Start Concept Extraction" to see the manual closure computation process in action. This method is perfect for your small 2×9 context and will help you understand exactly how formal concepts emerge from the closure properties of the context.
+
+The beauty of this approach is that it's completely transparent - you can see every step of the computation and understand why each concept exists in the lattice.
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], []]]
