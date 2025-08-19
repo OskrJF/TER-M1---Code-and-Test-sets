@@ -1,0 +1,220 @@
+ChatGPT_step-back_prompting_eg2_3_test1
+
+Date: 24 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1: In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In **Formal Concept Analysis (FCA)**, when dealing with a **formal context** (a cross-table of objects and attributes) with fewer than 20 objects and attributes, you can efficiently compute all **formal concepts** (pairs of object sets and attribute sets forming a Galois connection) using various methods. Here are **three commonly used approaches**:
+
+---
+
+### 1. **Next Closure Algorithm (Ganter's Algorithm)**
+
+This is the **canonical** method used in FCA to generate all formal concepts in a lectic (lexicographic) order.
+
+#### How it works:
+
+* Uses the **closure operator** on sets of attributes.
+* Generates each concept by computing the closure of subsets in a systematic order.
+* Ensures that each concept is found exactly once.
+
+#### Why use it:
+
+* Deterministic and complete.
+* Efficient for small contexts (like < 20×20).
+* Generates concepts in a sorted (lectic) order.
+
+---
+
+### 2. **Concept Lattice Construction via Bordat’s Algorithm**
+
+This is a **top-down approach** that builds the concept lattice incrementally by discovering successors (children) of a concept.
+
+#### How it works:
+
+* Starts from the top concept (the concept with all objects).
+* Recursively computes **lower neighbors** by removing attributes and computing closures.
+* Constructs the Hasse diagram (the actual lattice structure) as it proceeds.
+
+#### Why use it:
+
+* Useful when you want to **visualize or build the lattice** structure as a graph.
+* Also effective on small contexts.
+
+---
+
+### 3. **Data-Powered Exhaustive Search with Pruning**
+
+This is a **brute-force-based** approach optimized by early pruning using closure conditions.
+
+#### How it works:
+
+* Iterate over all subsets of attributes (or objects).
+* For each subset, compute its closure.
+* Store only unique (extent, intent) pairs.
+
+#### Why use it:
+
+* Easy to implement in scripting languages (e.g., Python).
+* Feasible due to the small size of the context (< 20 × 20 → \~1 million attribute subsets max).
+* Good for educational or exploratory purposes.
+
+---
+
+### Summary Table
+
+| Method                  | Strategy      | Best For                   | Notes                  |
+| ----------------------- | ------------- | -------------------------- | ---------------------- |
+| Next Closure (Ganter)   | Lexicographic | Full concept enumeration   | Canonical, efficient   |
+| Bordat’s Algorithm      | Top-down      | Lattice structure building | Good for visualization |
+| Exhaustive with Pruning | Brute-force   | Simple, small contexts     | Easy to code/test      |
+
+Let me know if you'd like an implementation of any of these in Python or pseudocode.
+____________________
+
+PROMPT 2: Pick one of the three ways that you mentioned to extract all the lattice concepts from the next context:
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+Let's go with **Ganter's Next Closure Algorithm**, the canonical and efficient method in FCA, especially good for small contexts like this one.
+
+---
+
+### 🔢 **Step-by-Step with Ganter’s Next Closure Algorithm**
+
+#### **Input Context:**
+
+|        | a1 | a2 | a3 |
+| ------ | -- | -- | -- |
+| **o1** | ✔️ | ✔️ | ❌  |
+| **o2** | ❌  | ✔️ | ✔️ |
+
+We interpret:
+
+* `yes` as ✓ (attribute present)
+* `no` as ✗ (attribute absent)
+
+#### **Formal Context (G, M, I):**
+
+* Objects: G = {o1, o2}
+* Attributes: M = {a1, a2, a3}
+* Incidence relation I:
+
+  * (o1, a1), (o1, a2)
+  * (o2, a2), (o2, a3)
+
+---
+
+### 🔁 **Core Algorithm Idea (Attribute closure):**
+
+Given a set of attributes **X ⊆ M**, compute:
+
+1. **Extent (X')**: all objects that have **all attributes in X**
+2. **Intent (X'')**: all attributes shared by those objects (closure)
+
+A formal concept is the pair (X', X''), where **X'' is the closure of X**.
+
+---
+
+### ✅ **Step-by-Step Computation**
+
+#### We generate all subsets of M = {a1, a2, a3} in lexicographic (lectic) order:
+
+---
+
+1. **{}**
+
+* X = {}
+* X' = {o1, o2} (all objects have all of nothing)
+* X'' = common attributes of o1 & o2 = {a2}
+* Concept: (**{o1, o2}**, **{a2}**)
+
+---
+
+2. **{a1}**
+
+* o1 has a1, o2 does not → X' = {o1}
+* X'' = attributes of o1 = {a1, a2}
+* Concept: (**{o1}**, **{a1, a2}**)
+
+---
+
+3. **{a2}**
+
+* o1 and o2 both have a2 → X' = {o1, o2}
+* X'' = common attributes = {a2}
+* Already found above → skip (duplicate)
+
+---
+
+4. **{a3}**
+
+* o2 has a3, o1 does not → X' = {o2}
+* X'' = attributes of o2 = {a2, a3}
+* Concept: (**{o2}**, **{a2, a3}**)
+
+---
+
+5. **{a1, a2}**
+
+* Only o1 has both → X' = {o1}
+* X'' = attributes of o1 = {a1, a2}
+* Already found above → skip
+
+---
+
+6. **{a1, a3}**
+
+* No object has both a1 and a3 → X' = ∅
+* X'' = all attributes (by vacuous truth) = {}
+* Concept: (**∅**, **{}**)
+
+---
+
+7. **{a2, a3}**
+
+* Only o2 has both → X' = {o2}
+* X'' = attributes of o2 = {a2, a3}
+* Already found → skip
+
+---
+
+8. **{a1, a2, a3}**
+
+* No object has all three → X' = ∅
+* X'' = {}
+* Already found
+
+---
+
+### 📌 **Final List of Formal Concepts**
+
+| Extent   | Intent   |
+| -------- | -------- |
+| {o1, o2} | {a2}     |
+| {o1}     | {a1, a2} |
+| {o2}     | {a2, a3} |
+| ∅        | ∅        |
+
+---
+
+Let me know if you’d like the Hasse diagram of this lattice, or Python code for the algorithm!
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a2], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[], []]]
+

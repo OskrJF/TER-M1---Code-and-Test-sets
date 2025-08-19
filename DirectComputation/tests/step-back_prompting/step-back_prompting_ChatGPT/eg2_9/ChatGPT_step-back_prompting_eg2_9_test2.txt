@@ -1,0 +1,183 @@
+ChatGPT_step-back_prompting_eg2_9_test2
+
+Date: 25 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1: In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In **Formal Concept Analysis (FCA)**, when dealing with a **small context** (e.g., fewer than 20 objects and 20 attributes), several efficient methods exist to compute the **concept lattice**. Here are **three effective methods**:
+
+---
+
+### **1. Ganter's Next Closure Algorithm**
+
+**Description:**
+Ganter’s algorithm is the most widely used and efficient method for generating all formal concepts in lexicographic order.
+
+**How it works:**
+
+* Iteratively generates the **closure** of attribute sets using the derivation operators.
+* Ensures each new intent (attribute set) is lexicographically greater than the previous one.
+* Guarantees no duplicates and covers the whole concept lattice.
+
+**Best for:** General-purpose, exact enumeration.
+
+**Reference:** B. Ganter, “Two basic algorithms in concept analysis,” *Technical Report*, 1984.
+
+---
+
+### **2. Bordat’s Algorithm**
+
+**Description:**
+Builds the **Hasse diagram** of the concept lattice directly using breadth-first traversal starting from the top concept.
+
+**How it works:**
+
+* Starts with the top concept (all objects' common attributes).
+* Explores immediate lower neighbors (subconcepts) via minimal generators.
+* Efficient for small contexts and when a direct construction of the lattice is desired.
+
+**Best for:** Visualization, when lattice structure is more important than lexicographic ordering.
+
+---
+
+### **3. Attribute Exploration with Backtracking**
+
+**Description:**
+Uses **depth-first search with backtracking** to explore all attribute combinations and their closures.
+
+**How it works:**
+
+* Starts from the empty attribute set and recursively adds attributes.
+* Computes the closure for each combination.
+* Uses pruning (if a closure has already been seen, skip it).
+
+**Best for:** Educational purposes, experimentation, or when using ad-hoc code/scripts for small datasets.
+
+---
+
+### Bonus Tip:
+
+For contexts this small, you can also use **existing FCA tools** like:
+
+* **ConExp** (Concept Explorer)
+* **ToscanaJ**
+* **FcaStone**
+  These tools visualize and compute the concept lattice quickly.
+
+Would you like a Python example implementing one of these methods (e.g., Next Closure)?
+____________________
+
+PROMPT 2:
+Pick one of the three ways that you mentioned to extract all the lattice concepts from the net context:
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+____________________
+
+OUTPUT:
+Let's use **Ganter’s Next Closure Algorithm** to compute all the **formal concepts** (i.e., all the extent–intent pairs) for your given context.
+
+---
+
+### 🔹 Step 1: Input Context
+
+We'll interpret your context as a **formal context** $(G, M, I)$, where:
+
+* $G = \{o1, o2\}$ is the set of objects,
+* $M = \{a1, a2, a3, a4, a5, a6, a7, a8, a9\}$ is the set of attributes,
+* $I \subseteq G \times M$ is the incidence relation defined by the "yes"/"no" table.
+
+#### Context Table:
+
+|        | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+| ------ | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| **o1** | ✓  | ✓  | ✓  | ✓  | ✗  | ✗  | ✓  | ✗  | ✓  |
+| **o2** | ✓  | ✗  | ✗  | ✓  | ✗  | ✓  | ✗  | ✗  | ✓  |
+
+---
+
+### 🔹 Step 2: Define Derivation Operators
+
+Let:
+
+* $A' = \{m \in M \mid \forall g \in A: (g, m) \in I\}$
+* $B' = \{g \in G \mid \forall m \in B: (g, m) \in I\}$
+
+A **formal concept** is a pair $(A, B)$ such that $A' = B$ and $B' = A$.
+
+---
+
+### 🔹 Step 3: Implement Ganter’s Algorithm (Manually Here)
+
+We go through all subsets of attributes $B \subseteq M$, in **lexicographic order**, compute $B''$, and keep only those where $B = B''$. Each such $B$ is the **intent** of a concept; the corresponding **extent** is $B'$.
+
+Let’s compute the **formal concepts**:
+
+#### 1. ∅ ⇒ ∅′ = {o1, o2}, then ({o1, o2})′ = {a1, a4, a9} ⇒ Concept:
+
+* Extent: {o1, o2}
+* Intent: {a1, a4, a9}
+
+#### 2. {a1} ⇒ {o1, o2} ⇒ {a1, a4, a9} (same) — already covered
+
+#### 3. {a2} ⇒ {o1} ⇒ {a1, a2, a3, a4, a7, a9}
+
+Check closure: {a2}'' = {a1, a2, a3, a4, a7, a9}
+
+New concept:
+
+* Extent: {o1}
+* Intent: {a1, a2, a3, a4, a7, a9}
+
+#### 4. {a6} ⇒ {o2} ⇒ {a1, a4, a6, a9}
+
+New concept:
+
+* Extent: {o2}
+* Intent: {a1, a4, a6, a9}
+
+#### 5. {a5} ⇒ ∅ ⇒ all attributes (∅ is extent) ⇒ {a1, a2, ..., a9}′ = ∅
+
+Add:
+
+* Extent: ∅
+* Intent: {a5}, {a5, a8}, etc. — will all map to ∅, but keep only the closure once
+
+#### Summary of Concepts:
+
+| Extent   | Intent                                                       |
+| -------- | ------------------------------------------------------------ |
+| {o1, o2} | {a1, a4, a9}                                                 |
+| {o1}     | {a1, a2, a3, a4, a7, a9}                                     |
+| {o2}     | {a1, a4, a6, a9}                                             |
+| ∅        | (any attribute set not shared) e.g., {a5, a8} — all map to ∅ |
+
+We can summarize all **4 concepts**:
+
+1. **({o1, o2}, {a1, a4, a9})**
+2. **({o1}, {a1, a2, a3, a4, a7, a9})**
+3. **({o2}, {a1, a4, a6, a9})**
+4. **(∅, ∅)**
+
+---
+
+Would you like a Python script to compute this automatically using Ganter’s algorithm?
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all formal concepts from the given context in the requested format:
+
+```
+[[[], [o1, o2]], [[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]]]
+```

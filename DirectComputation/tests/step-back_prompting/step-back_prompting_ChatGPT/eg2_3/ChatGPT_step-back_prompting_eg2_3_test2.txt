@@ -1,0 +1,170 @@
+ChatGPT_step-back_prompting_eg2_3_test2
+
+Date: 24 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1: In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), when working with a **formal context** (a cross-table of objects and attributes) of manageable size (e.g., <20 objects and <20 attributes), there are several efficient methods to find all **formal concepts** (i.e., the elements of the concept lattice). Here are three commonly used approaches:
+
+---
+
+### **1. Ganter’s Next Closure Algorithm**
+
+* **Description**: This is a classic and widely used algorithm in FCA to enumerate all concepts in lectic (lexicographic) order.
+* **How it works**: It uses the closure operator on sets of attributes and systematically generates each formal concept without repetition.
+* **Pros**: Efficient for small to medium-sized contexts. Guarantees no duplicates and covers all concepts.
+* **References**: Bernhard Ganter’s original papers or the book *Formal Concept Analysis: Mathematical Foundations*.
+
+---
+
+### **2. Bordat’s Algorithm**
+
+* **Description**: This is an early algorithm that generates the concept lattice by computing all formal concepts using implications.
+* **How it works**: Starts from the most general concept and uses object-attribute relations to find immediate successors (children) in the lattice.
+* **Pros**: Conceptually straightforward and works well when implications are easy to compute.
+* **Note**: Less efficient than Ganter’s algorithm for larger contexts but fine for small ones.
+
+---
+
+### **3. Use of FCA Tools (Software-based computation)**
+
+* **Examples**: Tools like **ConExp (Concept Explorer)**, **ToscanaJ**, or **FcaStone**.
+* **How it works**: You input the context (as a cross-table), and the tool computes all formal concepts and often visualizes the concept lattice.
+* **Pros**: Easy to use, avoids manual computation, and provides visual feedback. Ideal for quick exploration and learning.
+
+---
+
+Would you like an example context and the step-by-step application of one of these methods?
+____________________
+
+PROMPT 2: Pick one of the three ways that you mentioned to extract all the lattice concepts from the next context:
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+Let's use **Ganter’s Next Closure Algorithm**, as it's efficient and well-suited for small contexts like this one.
+
+---
+
+### **Given Formal Context**
+
+| Object | a1 | a2 | a3 |
+| ------ | -- | -- | -- |
+| o1     | ✓  | ✓  | ✗  |
+| o2     | ✗  | ✓  | ✓  |
+
+We can write this context as:
+
+* **Objects (G)** = {o1, o2}
+* **Attributes (M)** = {a1, a2, a3}
+* **Incidence Relation (I)**:
+
+  * o1 ↔ {a1, a2}
+  * o2 ↔ {a2, a3}
+
+---
+
+### **Step-by-Step Using Ganter’s Next Closure Algorithm**
+
+#### Definitions:
+
+* For a set of attributes **A ⊆ M**, define:
+
+  * **A′** = set of objects having *all* attributes in A
+  * **A′′** = set of attributes common to those objects (i.e., closure of A)
+* A **formal concept** is a pair (extent, intent) = (A′, A′′), where A′ is the set of objects and A′′ is the closure.
+
+---
+
+We go through **all subsets of attributes in lexicographic order**:
+Let’s fix the attribute order: **a1 < a2 < a3**
+
+Now we generate all subsets of attributes and compute their closures:
+
+#### 1. **∅**
+
+* ∅′ = all objects = {o1, o2}
+* ∅′′ = common attributes of o1 and o2 = {a2}
+  → Concept: ({o1, o2}, {a2})
+
+#### 2. **{a1}**
+
+* {a1}′ = {o1}
+* {a1}′′ = attributes of o1 = {a1, a2}
+  → Concept: ({o1}, {a1, a2})
+
+#### 3. **{a2}**
+
+* {a2}′ = {o1, o2}
+* {a2}′′ = {a2} (already computed)
+  → Duplicate: skip
+
+#### 4. **{a3}**
+
+* {a3}′ = {o2}
+* {a3}′′ = attributes of o2 = {a2, a3}
+  → Concept: ({o2}, {a2, a3})
+
+#### 5. **{a1, a2}**
+
+* {a1, a2}′ = {o1}
+* {a1, a2}′′ = {a1, a2}
+  → Already computed
+
+#### 6. **{a1, a3}**
+
+* {a1, a3}′ = ∅ (no object has both a1 and a3)
+* ∅′′ = all attributes shared by no objects = ∅
+  → Concept: (∅, ∅)
+
+#### 7. **{a2, a3}**
+
+* {a2, a3}′ = {o2}
+* {a2, a3}′′ = {a2, a3}
+  → Already computed
+
+#### 8. **{a1, a2, a3}**
+
+* {a1, a2, a3}′ = ∅
+* ∅′′ = ∅
+  → Already computed
+
+---
+
+### ✅ Final List of Concepts
+
+| Extent   | Intent   |
+| -------- | -------- |
+| {o1, o2} | {a2}     |
+| {o1}     | {a1, a2} |
+| {o2}     | {a2, a3} |
+| ∅        | ∅        |
+
+---
+
+These are all the **formal concepts**, which you can use to construct the **concept lattice**.
+
+Would you like the Hasse diagram or lattice visualized?
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all concepts from your context in the requested format:
+
+```
+[[[a2], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[], []]]
+```
+
+

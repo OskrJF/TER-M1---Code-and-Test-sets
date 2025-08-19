@@ -1,0 +1,165 @@
+ChatGPT_step-back_prompting_eg2_3_test3
+
+Date: 24 may 2025
+Model: ChatGPT-4o 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1: In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), when working with small contexts (less than 20 objects and less than 20 attributes), it's practical to compute the **concept lattice** (i.e., the set of all formal concepts) using one of several methods. Here are three effective approaches:
+
+---
+
+### **1. Next Closure Algorithm (Ganter's Algorithm)**
+
+This is the **standard algorithm** for generating all formal concepts in a **lexicographic order**.
+
+* **How it works:** It systematically computes all intents (attribute sets) of formal concepts using a closure operator and ensures each intent is generated exactly once.
+* **Why it's good for small contexts:** It is efficient and avoids duplicates. Works well even for larger datasets but is very manageable for small ones.
+* **Tools that use it:** Many FCA tools like **ConExp**, **ToscanaJ**, or **Concept Explorer**.
+
+---
+
+### **2. Bordat's Algorithm (Based on Closure Systems)**
+
+This approach uses the **lattice-theoretic structure** more explicitly.
+
+* **How it works:** It starts with the bottom concept and recursively constructs upper neighbors using closure operations.
+* **Good for small contexts:** Because it builds the lattice structure by traversing from bottom-up, it gives a clear picture of the hierarchical concept generation.
+* **Key feature:** Particularly suitable if you're interested in constructing the lattice edges as well (for visualization or understanding dependencies).
+
+---
+
+### **3. Exhaustive Enumeration with Pruning**
+
+A naive but effective method when the dataset is small.
+
+* **How it works:** You enumerate **all subsets** of the attribute set, compute their closures, and store only unique (closed) sets as intents of concepts. For each intent, the corresponding extent is calculated.
+* **Efficiency tip:** Use memoization or hash sets to avoid redundant closure computations.
+* **Why it's suitable here:** For a small number of attributes (≤ 20), the powerset is small enough (max 2^20 = 1,048,576), and many subsets will be pruned as they won't yield new concepts.
+
+---
+
+### Bonus Tip:
+
+For a practical hands-on implementation, try the **Python library `concepts`** or use **FCA tools** like:
+
+* [ConExp](https://sourceforge.net/projects/conexp/)
+* [FcaStone](https://github.com/vincent-hugot/fca-stone)
+* [ToscanaJ](https://www.toscana.de/)
+
+Let me know if you'd like a Python example for any of the above methods.
+____________________
+
+PROMPT 2: Pick one of the three ways that you mentioned to extract all the lattice concepts from the next context:
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+Let's use the **Next Closure Algorithm** (Ganter's Algorithm) to extract all formal concepts from your context.
+
+---
+
+### 🔹 **Input Formal Context**
+
+|        | a1  | a2  | a3  |
+| ------ | --- | --- | --- |
+| **o1** | yes | yes | no  |
+| **o2** | no  | yes | yes |
+
+We will represent this context as a **binary relation**:
+
+* $G = \{o1, o2\}$ (objects)
+* $M = \{a1, a2, a3\}$ (attributes)
+* $I = \{(o1,a1), (o1,a2), (o2,a2), (o2,a3)\}$
+
+---
+
+### 🔹 **Definitions Recap**
+
+* **Intent (B')**: Set of attributes common to a set of objects B.
+* **Extent (A')**: Set of objects that share all attributes in A.
+* A **formal concept** is a pair $(A, B)$ such that $A' = B$ and $B' = A$.
+
+---
+
+### 🔹 **Compute All Concepts Using Next Closure**
+
+We systematically generate all **closed attribute sets** (intents), and from them compute the extents.
+
+1. **∅ (empty set)**
+
+   * Extent: all objects = {o1, o2}
+   * Intent: common attributes of o1 and o2 = a2
+   * ⇒ Concept: ({o1, o2}, {a2})
+
+2. **{a1}**
+
+   * Extent: only o1
+   * Intent: attributes of o1 = {a1, a2}
+   * ⇒ Concept: ({o1}, {a1, a2})
+
+3. **{a2}**
+
+   * Extent: {o1, o2}
+   * Intent: common attributes of o1 and o2 = {a2}
+   * Already found.
+
+4. **{a3}**
+
+   * Extent: only o2
+   * Intent: attributes of o2 = {a2, a3}
+   * ⇒ Concept: ({o2}, {a2, a3})
+
+5. **{a1, a2}**
+
+   * Extent: only o1
+   * Intent: attributes of o1 = {a1, a2}
+   * Already found.
+
+6. **{a1, a3}**
+
+   * Extent: ∅
+   * Intent: all attributes (irrelevant)
+   * ⇒ Concept: (∅, closure = full attribute set) = (∅, {a1, a2, a3})
+
+7. **{a2, a3}**
+
+   * Extent: only o2
+   * Intent: attributes of o2 = {a2, a3}
+   * Already found.
+
+8. **{a1, a2, a3}**
+
+   * Extent: ∅
+   * ⇒ Concept: (∅, {a1, a2, a3})
+   * Already found.
+
+---
+
+### ✅ **Final List of Formal Concepts**
+
+| Extent   | Intent       |
+| -------- | ------------ |
+| {o1, o2} | {a2}         |
+| {o1}     | {a1, a2}     |
+| {o2}     | {a2, a3}     |
+| ∅        | {a1, a2, a3} |
+
+Let me know if you want the **Hasse diagram** of this lattice or a **Python implementation** of this procedure.
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a2], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a2, a3], []]]
+
