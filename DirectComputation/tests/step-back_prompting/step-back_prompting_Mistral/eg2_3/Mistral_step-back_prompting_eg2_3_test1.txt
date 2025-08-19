@@ -1,0 +1,85 @@
+Mistral_step-back_prompting_eg2_3_test1
+
+Date: 24 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1: In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), finding the lattice of concepts in a formal context with a small number of objects and attributes can be done using several methods. Here are three common approaches:
+
+1. **Brute Force Method**:
+   - **Description**: Enumerate all possible combinations of objects and attributes to find all formal concepts.
+   - **Steps**:
+     1. Generate all possible subsets of objects and attributes.
+     2. For each subset, check if it forms a formal concept (i.e., a pair \((A, B)\) where \(A\) is a set of objects, \(B\) is a set of attributes, and they satisfy the Galois connection).
+     3. Construct the concept lattice from these formal concepts.
+   - **Suitability**: Feasible for very small contexts due to its exponential complexity.
+
+2. **Next Closure Algorithm**:
+   - **Description**: An efficient algorithm to compute all formal concepts by generating them in a lexicographical order.
+   - **Steps**:
+     1. Start with the empty set of attributes and find its closure.
+     2. Iteratively generate the next closure in lexicographical order.
+     3. Continue until all closures (and thus all formal concepts) are found.
+   - **Suitability**: More efficient than brute force and suitable for small to moderately sized contexts.
+
+3. **Lindig’s Algorithm**:
+   - **Description**: An algorithm that builds the concept lattice incrementally by adding one object at a time.
+   - **Steps**:
+     1. Start with an empty lattice.
+     2. For each object, update the lattice by inserting the object and adjusting the concepts accordingly.
+     3. Repeat until all objects are processed.
+   - **Suitability**: Efficient for incremental construction and suitable for small contexts.
+
+These methods are practical for contexts with fewer than 20 objects and attributes, as they balance computational feasibility with the need to accurately construct the concept lattice. For larger contexts, more advanced algorithms or optimizations may be necessary.
+____________________
+
+PROMPT 2: Pick one of the three ways that you mentioned to extract all the lattice concepts from the next context:
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context, we can use the **Next Closure Algorithm**. This algorithm is efficient for small contexts and will help us systematically find all formal concepts.
+
+Let's proceed with the Next Closure Algorithm to find the lattice concepts for the given context:
+
+| Object;a1;a2;a3
+| ------;---;---;---
+| o1;yes;yes;no
+| o2;no;yes;yes
+
+We'll implement the algorithm to find the formal concepts.It seems there was an error in the implementation. Let's correct the code and try again to extract the formal concepts using the Next Closure Algorithm.Using the Next Closure Algorithm, we have extracted the following formal concepts from the given context:
+
+1. **Concept 1**:
+   - Attributes: \(\emptyset\)
+   - Objects: \(\{o1, o2\}\)
+
+2. **Concept 2**:
+   - Attributes: \(\{a2, a3\}\)
+   - Objects: \(\{o2\}\)
+
+3. **Concept 3**:
+   - Attributes: \(\{a1, a2\}\)
+   - Objects: \(\{o1\}\)
+
+4. **Concept 4**:
+   - Attributes: \(\{a1, a2, a3\}\)
+   - Objects: \(\emptyset\)
+
+These concepts represent the formal concepts in the lattice derived from the given context.
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a2, a3], [o2]], [[a1, a2], [o1]], [[a1, a2, a3], []]]

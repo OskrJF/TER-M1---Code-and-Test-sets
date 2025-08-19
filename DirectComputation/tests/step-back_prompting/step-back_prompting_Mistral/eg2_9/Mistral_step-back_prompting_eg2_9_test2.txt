@@ -1,0 +1,56 @@
+Mistral_step-back_prompting_eg2_9_test2
+
+Date: 25 may 2025
+Model: Mistral Large 
+Context file: eg2_9
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1: 
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), finding the lattice of concepts in a formal context with a limited number of objects and attributes can be done using several methods. Here are three common approaches:
+
+1. **AddIntent Algorithm**:
+   - This algorithm is used to compute the set of all formal concepts of a formal context. It is based on the idea of adding intents incrementally. The algorithm starts with the empty set and iteratively adds new intents to form concepts.
+
+2. **Close-by-One Algorithm**:
+   - This algorithm is another method for computing the set of all formal concepts. It works by generating concepts by closing attribute sets one attribute at a time. It starts with the empty set and iteratively adds attributes, computing the closure of each set to form concepts.
+
+3. **Border Algorithm**:
+   - The Border algorithm is used to compute the concept lattice by maintaining a border between the concepts that have been generated and those that have not. It starts with the top concept and iteratively refines the border to generate all concepts in the lattice.
+
+These algorithms are efficient for small contexts, such as those with fewer than 20 objects and 20 attributes. For larger contexts, more advanced or optimized algorithms might be necessary.
+____________________
+
+PROMPT 2: 
+Pick one of the three ways that you mentioned to extract all the lattice concepts from the next context:
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context, we can use the **Close-by-One Algorithm**. This algorithm is suitable for computing the set of all formal concepts in a formal context by generating concepts by closing attribute sets one attribute at a time.
+
+Let's implement this algorithm to find the lattice concepts for the given context.It seems there was an error in the implementation. Let's correct it and try again to extract all the lattice concepts from the given context using the Close-by-One algorithm.Using the Close-by-One algorithm, we have extracted the following lattice concepts from the given context:
+
+1. Empty set: `[]`
+2. Concept: `['a1', 'a4', 'a6', 'a9']`
+3. Concept: `['a1', 'a2', 'a3', 'a4', 'a7', 'a9']`
+4. Concept: `['a1', 'a2', 'a3', 'a4', 'a6', 'a7', 'a9']`
+
+These sets represent the formal concepts derived from the given formal context.
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+To represent the concepts in the desired format, we need to determine the objects associated with each concept. Here is the list of all concepts in the specified format:
+
+[[[], [o1, o2]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a2, a3, a4, a6, a7, a9], []]]

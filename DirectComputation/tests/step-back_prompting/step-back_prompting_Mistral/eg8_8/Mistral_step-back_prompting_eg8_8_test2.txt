@@ -1,0 +1,84 @@
+Mistral_step-back_prompting_eg8_8_test2
+
+Date: 25 may 2025
+Model: Mistral Large 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1: 
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), finding the lattice of concepts in a formal context with fewer than 20 objects and fewer than 20 attributes can be approached in several ways. Here are three common methods:
+
+1. **Naive Algorithm**:
+   - **Description**: This is the most straightforward approach where all possible concept extents are generated and checked for closure. It involves iterating over all subsets of objects and attributes to find all formal concepts.
+   - **Steps**:
+     - Generate all possible subsets of objects and attributes.
+     - For each subset, compute its closure to determine if it forms a formal concept.
+     - Collect all unique formal concepts to form the concept lattice.
+   - **Complexity**: This method is computationally intensive, with a complexity of \(O(2^{n+m})\), where \(n\) is the number of objects and \(m\) is the number of attributes.
+
+2. **Next Closure Algorithm**:
+   - **Description**: This algorithm is more efficient than the naive approach. It generates concepts in a lexicographical order, leveraging the fact that the closure system of a formal context is a lattice.
+   - **Steps**:
+     - Start with the empty set and iteratively generate the next closure in lexicographical order.
+     - For each new closure, check if it forms a formal concept.
+     - Continue until all possible closures have been generated.
+   - **Complexity**: This method is more efficient, with a complexity of \(O((n+m) \times |L|)\), where \(|L|\) is the number of formal concepts.
+
+3. **Add Intent Algorithm**:
+   - **Description**: This algorithm builds the concept lattice incrementally by adding intents (attribute sets) to the lattice as they are discovered.
+   - **Steps**:
+     - Start with the bottom concept (empty intent) and iteratively add new intents.
+     - For each new intent, compute its extent and check if it forms a formal concept.
+     - Insert the new concept into the lattice, updating the order relations as necessary.
+   - **Complexity**: This method is also efficient, with a complexity of \(O((n+m) \times |L|)\).
+
+These methods vary in complexity and efficiency, with the naive algorithm being the simplest but least efficient, and the Next Closure and Add Intent algorithms being more efficient for larger contexts. For contexts with fewer than 20 objects and attributes, any of these methods can be feasible, but the Next Closure and Add Intent algorithms are generally preferred for their efficiency.
+____________________
+
+PROMPT 2: 
+Pick one of the three ways that you mentioned to extract all the lattice concepts from the next context:
+Objet;a1;a2;a3;a4;a5;a6;a7;a8
+O1;Yes;Yes;Yes;No;No;No;No;No
+O2;Yes;Yes;Yes;No;No;Yes;No;Yes
+O3;Yes;Yes;No;Yes;No;Yes;No;No
+O4;No;Yes;Yes;Yes;Yes;No;No;Yes
+O5;No;Yes;No;Yes;No;Yes;Yes;Yes
+O6;Yes;Yes;Yes;No;Yes;No;Yes;No
+O7;No;Yes;Yes;Yes;Yes;No;Yes;No
+O8;No;Yes;Yes;Yes;Yes;No;Yes;No
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context, we can use the Next Closure Algorithm. This algorithm is efficient and suitable for contexts of this size. Let's proceed with implementing the Next Closure Algorithm to find the formal concepts in the provided context.Using the Next Closure algorithm, we have extracted the following formal concepts from the given context:
+
+1. **Concept 1**:
+   - Extent: {'O1', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7', 'O8'}
+   - Intent: {'a2'}
+
+2. **Concept 2**:
+   - Extent: {'O1', 'O2', 'O3', 'O6'}
+   - Intent: {'a1', 'a2'}
+
+3. **Concept 3**:
+   - Extent: {'O2', 'O3'}
+   - Intent: {'a1', 'a2', 'a6'}
+
+4. **Concept 4**:
+   - Extent: {}
+   - Intent: {'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'}
+
+These concepts represent the formal concepts in the lattice for the given context.
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a2], [O1, O2, O3, O4, O5, O6, O7, O8]], [[a1, a2], [O1, O2, O3, O6]], [[a1, a2, a6], [O2, O3]], [[a1, a2, a3, a4, a5, a6, a7, a8], []]]

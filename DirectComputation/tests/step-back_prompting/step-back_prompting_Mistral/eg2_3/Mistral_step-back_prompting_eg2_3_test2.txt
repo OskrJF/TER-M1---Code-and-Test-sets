@@ -1,0 +1,67 @@
+Mistral_step-back_prompting_eg2_3_test2
+
+Date: 24 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1: In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), finding the lattice of concepts in a formal context with a limited number of objects and attributes can be approached in several ways. Here are three common methods:
+
+1. **AddIntent Algorithm**:
+   - This algorithm is used to compute the set of all formal concepts of a formal context. It starts with the bottom concept (the empty set of attributes) and iteratively adds intents to generate new concepts.
+   - It is efficient for smaller contexts and can be implemented recursively.
+
+2. **Close-by-One Algorithm**:
+   - This algorithm generates concepts by closing attribute sets one attribute at a time. It starts with the empty set and iteratively adds attributes, computing the closure for each new set.
+   - It is straightforward and works well for small contexts.
+
+3. **Border Algorithms**:
+   - These algorithms work by maintaining a border between the concepts that have already been generated and those that have not. They iteratively expand this border to generate new concepts.
+   - Examples include the NextClosure algorithm, which is efficient for generating the concept lattice by exploring the search space in a systematic manner.
+
+These methods are suitable for contexts with fewer than 20 objects and 20 attributes, as they can handle the computational complexity involved in generating the concept lattice for such contexts. For larger contexts, more advanced or optimized algorithms might be necessary.
+____________________
+
+PROMPT 2: Pick one of the three ways that you mentioned to extract all the lattice concepts from the next context:
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context using one of the methods mentioned earlier, I'll use the **Close-by-One Algorithm**. This algorithm is suitable for small contexts and is relatively straightforward to implement.
+
+Let's define the context in terms of objects and attributes:
+
+- Objects: \( o1, o2 \)
+- Attributes: \( a1, a2, a3 \)
+
+The context can be represented as a binary table:
+
+|   | a1 | a2 | a3 |
+|---|----|----|----|
+| o1| 1  | 1  | 0  |
+| o2| 0  | 1  | 1  |
+
+Let's implement the Close-by-One Algorithm to find all the formal concepts in this context.It seems there was an error in the implementation. Let's correct the code and try again to extract the lattice concepts using the Close-by-One algorithm.Using the Close-by-One algorithm, we have extracted the following formal concepts from the given context:
+
+1. Extent: `['o1', 'o2']`, Intent: `{'a2'}`
+2. Extent: `['o2']`, Intent: `{'a2', 'a3'}`
+3. Extent: `['o1']`, Intent: `{'a1', 'a2'}`
+4. Extent: `['o1', 'o2']`, Intent: `set()`
+
+These concepts represent the formal concepts in the lattice for the given context. Each concept is defined by its extent (the set of objects) and its intent (the set of attributes).
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a2], [o1, o2]], [[a2, a3], [o2]], [[a1, a2], [o1]], [[], [o1, o2]]]

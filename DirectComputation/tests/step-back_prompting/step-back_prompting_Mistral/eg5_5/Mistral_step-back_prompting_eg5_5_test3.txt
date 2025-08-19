@@ -1,0 +1,94 @@
+Mistral_step-back_prompting_eg5_5_test3
+
+Date: 25 may 2025
+Model: Mistral Large 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3		
+
+PROMPT 1: 
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), finding the lattice of concepts in a formal context with a limited number of objects and attributes can be approached in several ways. Here are three common methods:
+
+1. **Algorithm by Bordat**:
+   - This algorithm is efficient for computing the set of formal concepts. It uses a lexicographical order to generate concepts and prunes the search space to avoid redundant computations. It is particularly suitable for smaller contexts.
+
+2. **Next Closure Algorithm**:
+   - This algorithm generates formal concepts by computing closures of attribute sets. It iteratively finds the next closure in a lexicographical order, making it efficient for contexts with a limited number of attributes.
+
+3. **Add Intent Algorithm**:
+   - This algorithm builds the concept lattice by incrementally adding intents (attribute sets) to the lattice. It starts with the bottom concept and iteratively adds new concepts by considering the intents of the existing concepts.
+
+These algorithms are well-suited for smaller contexts, such as those with fewer than 20 objects and 20 attributes. For larger contexts, more advanced or optimized algorithms might be necessary.
+____________________
+
+PROMPT 2: 
+Pick one of the three ways that you mentioned to extract all the lattice concepts from the next context:
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context using one of the methods mentioned, we can use the **Next Closure Algorithm**. This algorithm is suitable for smaller contexts and works by generating formal concepts through computing closures of attribute sets.
+
+Let's implement this algorithm to find the lattice concepts for the given context.It seems there was an error in the implementation. Let's correct the code and try again to extract the lattice concepts using the Next Closure algorithm.It seems there was an issue with the code execution due to attempting to hash a set, which is not allowed. Let's fix this by converting the sets to tuples before adding them to the list of concepts. I'll correct the code and run it again.Using the Next Closure algorithm, we have extracted the following formal concepts from the given context. Each concept is represented as a pair of an extent (set of objects) and an intent (set of attributes):
+
+1. Extent: \(\{\}\)
+   Intent: \(\{\text{a1}, \text{a2}, \text{a3}\}\)
+
+2. Extent: \(\{\}\)
+   Intent: \(\{\text{a1}, \text{a3}, \text{a4}, \text{a5}\}\)
+
+3. Extent: \(\{\}\)
+   Intent: \(\{\text{a1}, \text{a2}, \text{a3}, \text{a5}\}\)
+
+4. Extent: \(\{\}\)
+   Intent: \(\{\text{a1}, \text{a2}, \text{a3}, \text{a4}, \text{a5}\}\)
+
+5. Extent: \(\{\}\)
+   Intent: \(\{\text{a3}, \text{a4}, \text{a5}\}\)
+
+6. Extent: \(\{\}\)
+   Intent: \(\{\text{a2}, \text{a3}, \text{a4}\}\)
+
+7. Extent: \(\{\}\)
+   Intent: \(\{\text{a1}, \text{a3}, \text{a5}\}\)
+
+8. Extent: \(\{\}\)
+   Intent: \(\{\text{a2}, \text{a3}, \text{a4}, \text{a5}\}\)
+
+9. Extent: \(\{\}\)
+   Intent: \(\{\text{a3}, \text{a5}\}\)
+
+10. Extent: \(\{\}\)
+    Intent: \(\{\text{a1}, \text{a2}, \text{a3}, \text{a4}\}\)
+
+11. Extent: \(\{\}\)
+    Intent: \(\{\text{a2}, \text{a3}, \text{a5}\}\)
+
+12. Extent: \(\{\text{o1}\}\)
+    Intent: \(\{\text{a1}, \text{a3}, \text{a4}\}\)
+
+13. Extent: \(\{\}\)
+    Intent: \(\{\text{a2}, \text{a3}\}\)
+
+14. Extent: \(\{\text{o3}\}\)
+    Intent: \(\{\text{a1}, \text{a2}, \text{a4}, \text{a5}\}\)
+
+These concepts form the concept lattice for the given formal context.
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3], []], [[a1, a3, a4, a5], []], [[a1, a2, a3, a5], []], [[a1, a2, a3, a4, a5], []], [[a3, a4, a5], []], [[a2, a3, a4], []], [[a1, a3, a5], []], [[a2, a3, a4, a5], []], [[a3, a5], []], [[a1, a2, a3, a4], []], [[a2, a3, a5], []], [[a1, a3, a4], [o1]], [[a2, a3], []], [[a1, a2, a4, a5], [o3]]]

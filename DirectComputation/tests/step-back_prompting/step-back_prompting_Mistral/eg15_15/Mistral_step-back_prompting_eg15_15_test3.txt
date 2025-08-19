@@ -1,0 +1,84 @@
+Mistral_step-back_prompting_eg15_15_test3
+
+Date: 25 may 2025
+Model: Mistral Large 
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1: 
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), finding the lattice of concepts in a formal context with fewer than 20 objects and fewer than 20 attributes can be approached in several ways. Here are three common methods:
+
+1. **Brute-Force Approach**:
+   - **Description**: Enumerate all possible combinations of objects and attributes to find all formal concepts.
+   - **Process**: For each subset of objects, compute its intent (the set of attributes common to all objects in the subset). Similarly, for each subset of attributes, compute its extent (the set of objects that have all the attributes in the subset). The pairs (extent, intent) that satisfy the definition of a formal concept form the concept lattice.
+   - **Complexity**: This approach is computationally intensive and not feasible for larger contexts, but it is manageable for small contexts (less than 20 objects and attributes).
+
+2. **Next Closure Algorithm**:
+   - **Description**: This algorithm efficiently computes all formal concepts by generating them in a lexicographical order.
+   - **Process**: Start with the empty set of attributes and iteratively add attributes to form new concepts. For each new concept, compute its extent and intent, and use these to generate further concepts.
+   - **Complexity**: More efficient than the brute-force approach, it reduces the number of subsets that need to be checked.
+
+3. **Lindig’s Algorithm**:
+   - **Description**: An incremental algorithm that builds the concept lattice by adding one object at a time.
+   - **Process**: Start with the lattice of the empty context and incrementally add objects, updating the lattice at each step. For each new object, compute its intent and integrate it into the existing lattice.
+   - **Complexity**: Efficient for incremental updates and suitable for small contexts.
+
+These methods are suitable for small contexts and can be implemented using various programming languages and libraries designed for FCA. For larger contexts, more advanced algorithms and optimizations are typically required.
+____________________
+
+PROMPT 2: 
+Pick one of the three ways that you mentioned to extract all the lattice concepts from the next context:
+Objet;Attr1;Attr2;Attr3;Attr4;Attr5;Attr6;Attr7;Attr8;Attr9;Attr10;Attr11;Attr12;Attr13;Attr14;Attr15
+O1;No;No;No;Yes;Yes;Yes;No;No;Yes;No;No;No;Yes;No;Yes
+O2;No;Yes;No;Yes;No;No;No;No;No;Yes;Yes;Yes;Yes;No;Yes
+O3;Yes;No;Yes;No;No;No;No;Yes;Yes;No;Yes;No;Yes;No;Yes
+O4;No;Yes;No;No;Yes;Yes;No;No;No;No;No;Yes;Yes;Yes;No
+O5;No;Yes;Yes;Yes;Yes;Yes;No;Yes;No;No;Yes;No;Yes;Yes;No
+O6;Yes;No;No;No;Yes;No;Yes;Yes;No;Yes;No;Yes;Yes;No;Yes
+O7;Yes;Yes;Yes;Yes;No;Yes;Yes;Yes;Yes;Yes;Yes;No;Yes;No;No
+O8;Yes;No;No;No;Yes;Yes;Yes;No;No;No;Yes;No;No;No;No
+O9;No;Yes;No;No;Yes;Yes;Yes;No;Yes;Yes;No;Yes;No;Yes;No
+O10;No;Yes;No;Yes;Yes;Yes;No;Yes;No;No;Yes;No;Yes;No;No
+O11;No;Yes;No;Yes;No;Yes;Yes;No;No;Yes;Yes;Yes;No;No;Yes
+O12;No;No;No;No;Yes;Yes;No;No;Yes;Yes;No;Yes;No;Yes;No
+O13;No;Yes;Yes;No;No;Yes;No;Yes;Yes;Yes;No;No;No;Yes;Yes
+O14;No;Yes;No;No;No;Yes;No;No;No;No;No;Yes;Yes;Yes;Yes
+O15;No;No;No;Yes;No;No;No;No;Yes;No;Yes;No;Yes;Yes;No
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context, we can use the Next Closure Algorithm. This algorithm is efficient for small contexts and will help us compute all formal concepts by generating them in a lexicographical order.
+
+Let's implement the Next Closure Algorithm to find the lattice concepts from the provided context.I used the Next Closure algorithm to extract all the lattice concepts from the given context. Here are the formal concepts found:
+
+1. **Concept 1**:
+   - Extent: \( \{\text{O1}, \text{O2}, \text{O3}, \text{O4}, \text{O5}, \text{O6}, \text{O7}, \text{O8}, \text{O9}, \text{O10}, \text{O11}, \text{O12}, \text{O13}, \text{O14}, \text{O15}\} \)
+   - Intent: \( \{\} \)
+
+2. **Concept 2**:
+   - Extent: \( \{\text{O3}, \text{O6}, \text{O7}, \text{O8}\} \)
+   - Intent: \( \{\text{Attr1}\} \)
+
+3. **Concept 3**:
+   - Extent: \( \{\text{O7}\} \)
+   - Intent: \( \{\text{Attr1}, \text{Attr2}, \text{Attr3}, \text{Attr4}, \text{Attr6}, \text{Attr7}, \text{Attr8}, \text{Attr9}, \text{Attr10}, \text{Attr11}, \text{Attr14}\} \)
+
+4. **Concept 4**:
+   - Extent: \( \{\} \)
+   - Intent: \( \{\text{Attr1}, \text{Attr2}, \text{Attr3}, \text{Attr4}, \text{Attr5}, \text{Attr6}, \text{Attr7}, \text{Attr8}, \text{Attr9}, \text{Attr10}, \text{Attr11}, \text{Attr12}, \text{Attr13}, \text{Attr14}, \text{Attr15}\} \)
+
+These concepts represent the formal concepts in the lattice derived from the given context.
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [O1, O2, O3, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15]], [[Attr1], [O3, O6, O7, O8]], [[Attr1, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr14], [O7]], [[Attr1, Attr2, Attr3, Attr4, Attr5, Attr6, Attr7, Attr8, Attr9, Attr10, Attr11, Attr12, Attr13, Attr14, Attr15], []]]

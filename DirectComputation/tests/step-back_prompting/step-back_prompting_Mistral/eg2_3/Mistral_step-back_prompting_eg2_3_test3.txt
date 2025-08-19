@@ -1,0 +1,56 @@
+Mistral_step-back_prompting_eg2_3_test1
+
+Date: 24 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1: In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), finding the lattice of concepts in a formal context with fewer than 20 objects and fewer than 20 attributes can be approached in several ways. Here are three common methods:
+
+1. **Algorithm by Bordat**:
+   - This algorithm is efficient for computing the set of formal concepts. It uses a lexicographical order to generate concepts and prunes the search space to avoid redundant computations. It is particularly suitable for smaller contexts.
+
+2. **Next Closure Algorithm**:
+   - This algorithm generates formal concepts by computing the closure of attribute sets. It iteratively finds the next closure in a lexicographical order, making it efficient for smaller datasets.
+
+3. **Add Intent Algorithm**:
+   - This algorithm builds the concept lattice by incrementally adding intents (attribute sets) to the lattice. It starts with the bottom concept and iteratively adds new concepts by combining existing ones with new intents.
+
+These methods are well-suited for smaller contexts and can be implemented using various software tools and libraries designed for FCA. If you need a practical demonstration or implementation of these algorithms, I can help with that using a code interpreter.
+____________________
+
+PROMPT 2: Pick one of the three ways that you mentioned to extract all the lattice concepts from the next context:
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context using one of the methods mentioned, I'll use the **Next Closure Algorithm**. This algorithm is suitable for smaller contexts and will help us generate the formal concepts efficiently.
+
+Let's implement this algorithm to find the lattice concepts for the given context.Using the Next Closure Algorithm, we have extracted the following lattice concepts from the given context:
+
+1. \(\emptyset\) (the empty set)
+2. \(\{\text{a1}\}\)
+3. \(\{\text{a2}\}\)
+4. \(\{\text{a3}\}\)
+5. \(\{\text{a1}, \text{a2}\}\)
+6. \(\{\text{a1}, \text{a3}\}\)
+7. \(\{\text{a2}, \text{a3}\}\)
+8. \(\{\text{a1}, \text{a2}, \text{a3}\}\)
+
+These sets represent the formal concepts in the lattice derived from the given context.
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1], [o1]], [[a2], [o1, o2]], [[a3], [o2]], [[a1, a2], [o1]], [[a1, a3], []], [[a2, a3], [o2]], [[a1, a2, a3], []]]

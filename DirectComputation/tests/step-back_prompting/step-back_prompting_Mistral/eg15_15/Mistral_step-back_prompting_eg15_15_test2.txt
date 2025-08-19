@@ -1,0 +1,90 @@
+Mistral_step-back_prompting_eg15_15_test2
+
+Date: 25 may 2025
+Model: Mistral Large 
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1: 
+In the field of formal concept analysis (FCA), give me three ways to find the lattice concepts in a context with less than 20 objects and less than 20 attributes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), finding the lattice of concepts in a context with a limited number of objects and attributes can be approached in several ways. Here are three common methods:
+
+1. **Brute Force Approach**:
+   - **Description**: Enumerate all possible combinations of objects and attributes to form concepts. This involves checking every subset of objects and attributes to see if they form a valid concept.
+   - **Suitability**: This method is feasible for very small contexts due to its computational complexity, which grows exponentially with the number of objects and attributes.
+
+2. **Next Closure Algorithm**:
+   - **Description**: This algorithm efficiently computes all formal concepts by iterating through the set of objects and finding the closure of each subset. It uses the fact that the set of all intents (or extents) forms a closure system.
+   - **Suitability**: It is more efficient than the brute force approach and works well for contexts with a moderate number of objects and attributes.
+
+3. **Lindig’s Algorithm**:
+   - **Description**: This algorithm is based on the idea of computing the concept lattice level by level, starting from the bottom concept (the empty set of objects and the full set of attributes) and moving upwards.
+   - **Suitability**: It is efficient for small to moderately sized contexts and is particularly useful when the lattice structure is needed explicitly.
+
+These methods are practical for contexts with fewer than 20 objects and 20 attributes, but for larger contexts, more advanced algorithms or optimizations may be necessary.
+____________________
+
+PROMPT 2: 
+Pick one of the three ways that you mentioned to extract all the lattice concepts from the next context:
+Objet;Attr1;Attr2;Attr3;Attr4;Attr5;Attr6;Attr7;Attr8;Attr9;Attr10;Attr11;Attr12;Attr13;Attr14;Attr15
+O1;No;No;No;Yes;Yes;Yes;No;No;Yes;No;No;No;Yes;No;Yes
+O2;No;Yes;No;Yes;No;No;No;No;No;Yes;Yes;Yes;Yes;No;Yes
+O3;Yes;No;Yes;No;No;No;No;Yes;Yes;No;Yes;No;Yes;No;Yes
+O4;No;Yes;No;No;Yes;Yes;No;No;No;No;No;Yes;Yes;Yes;No
+O5;No;Yes;Yes;Yes;Yes;Yes;No;Yes;No;No;Yes;No;Yes;Yes;No
+O6;Yes;No;No;No;Yes;No;Yes;Yes;No;Yes;No;Yes;Yes;No;Yes
+O7;Yes;Yes;Yes;Yes;No;Yes;Yes;Yes;Yes;Yes;Yes;No;Yes;No;No
+O8;Yes;No;No;No;Yes;Yes;Yes;No;No;No;Yes;No;No;No;No
+O9;No;Yes;No;No;Yes;Yes;Yes;No;Yes;Yes;No;Yes;No;Yes;No
+O10;No;Yes;No;Yes;Yes;Yes;No;Yes;No;No;Yes;No;Yes;No;No
+O11;No;Yes;No;Yes;No;Yes;Yes;No;No;Yes;Yes;Yes;No;No;Yes
+O12;No;No;No;No;Yes;Yes;No;No;Yes;Yes;No;Yes;No;Yes;No
+O13;No;Yes;Yes;No;No;Yes;No;Yes;Yes;Yes;No;No;No;Yes;Yes
+O14;No;Yes;No;No;No;Yes;No;No;No;No;No;Yes;Yes;Yes;Yes
+O15;No;No;No;Yes;No;No;No;No;Yes;No;Yes;No;Yes;Yes;No
+____________________
+
+OUTPUT:
+To extract all the lattice concepts from the given context, we can use the Next Closure Algorithm. This algorithm is efficient for contexts of this size and will help us compute all formal concepts by iterating through the set of objects and finding the closure of each subset.
+
+Let's implement the Next Closure Algorithm to find the lattice concepts from the provided context.The formal concepts extracted from the given context using the Next Closure algorithm are represented as sets of attributes. Here are some of the concepts found:
+
+1. `{'Attr1', 'Attr14'}`
+2. `{'Attr12', 'Attr3'}`
+3. `{'Attr11', 'Attr12', 'Attr3'}`
+4. `{'Attr12', 'Attr14', 'Attr3'}`
+5. `{'Attr1', 'Attr14', 'Attr8'}`
+6. `{'Attr12', 'Attr13', 'Attr3'}`
+7. `{'Attr14', 'Attr15', 'Attr4'}`
+8. `{'Attr12', 'Attr2', 'Attr3'}`
+9. `{'Attr10', 'Attr14', 'Attr4'}`
+10. `{'Attr11', 'Attr12', 'Attr9'}`
+11. `{'Attr1', 'Attr14', 'Attr6'}`
+12. `{'Attr12', 'Attr3', 'Attr9'}`
+13. `{'Attr12', 'Attr13', 'Attr9'}`
+14. `{'Attr1', 'Attr12', 'Attr9'}`
+15. `{'Attr1', 'Attr12', 'Attr4'}`
+16. `{'Attr10', 'Attr12', 'Attr3'}`
+17. `{'Attr4', 'Attr5', 'Attr7'}`
+18. `{'Attr11', 'Attr15', 'Attr5'}`
+19. `{'Attr15', 'Attr3', 'Attr4'}`
+20. `{'Attr14', 'Attr4', 'Attr7'}`
+
+... and so on for all combinations of attributes that form a formal concept in the lattice.
+
+These concepts represent the combinations of attributes that define the formal concepts in the lattice structure of the given context.
+____________________
+
+PROMPT 3:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Certainly! Here is the list of all concepts in the specified format:
+
+[[[], [O1, O2, O3, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15]], [[Attr1], [O3, O6, O7, O8]], [[Attr14], [O1, O2, O4, O5, O9, O10, O12, O13, O15]], [[Attr12], [O2, O3, O4, O5, O6, O7, O9, O10, O11, O12, O13, O14]], [[Attr3], [O3, O6, O7, O11, O13]], [[Attr1, Attr14], [O1, O3, O6, O8]], [[Attr12, Attr3], [O3, O6, O7, O11, O13]], [[Attr14, Attr15], [O2, O4, O5, O10, O12, O15]], [[Attr12, Attr2], [O2, O4, O5, O7, O9, O10, O11, O14]], [[Attr10, Attr14], [O4, O10]], [[Attr11, Attr12], [O2, O5, O7, O9, O11]], [[Attr1, Attr14, Attr6], [O1]], [[Attr12, Attr3, Attr9], [O3, O6, O7, O11]], [[Attr12, Attr13], [O2, O4, O5, O7, O9, O10, O11, O12, O13, O14]], [[Attr1, Attr12, Attr9], [O3, O6]], [[Attr1, Attr12, Attr4], [O3]], [[Attr10, Attr12], [O4, O10, O11, O12]], [[Attr4, Attr5, Attr7], [O4, O5, O8, O9]], [[Attr11, Attr15], [O5, O10]], [[Attr15, Attr3], [O13]], [[Attr14, Attr4, Attr7], [O4, O5, O8, O9]], [[Attr1, Attr15, Attr2], [O7]], [[Attr12, Attr14, Attr8], [O2, O5, O7, O9]], [[Attr1, Attr12, Attr2], [O7]], [[Attr1, Attr14, Attr9], [O3]], [[Attr14, Attr15, Attr5], [O4, O5, O10]], [[Attr14, Attr3, Attr7], [O5, O13]], [[Attr12, Attr3, Attr6], [O6, O7]], [[Attr12, Attr15, Attr9], [O11]], [[Attr12, Attr15, Attr3], [O11, O13]], [[Attr10, Attr13, Attr14], [O4, O10]], [[Attr1, Attr14, Attr15], [O1]], [[Attr12, Attr4, Attr9], [O3]], [[Attr1, Attr5, Attr9], [O3]], [[Attr15, Attr3, Attr5], [O13]], [[Attr1, Attr14, Attr5], [O4]], [[Attr15, Attr4, Attr8], [O8]], [[Attr11, Attr14, Attr7], [O5]], [[Attr1, Attr12, Attr6], [O6]], [[Attr12, Attr3, Attr7], [O5, O13]], [[Attr1, Attr12, Attr3], [O3, O6]], [[Attr15, Attr7, Attr9], [O11]], [[Attr1, Attr4, Attr5], [O4]], [[Attr10, Attr11, Attr5], [O5, O10]], [[Attr12, Attr3, Attr4], [O3]], [[Attr1, Attr13, Attr14], [O1]], [[Attr1, Attr11, Attr14], [O1]], [[Attr3, Attr5, Attr9], [O3]], [[Attr1, Attr3, Attr5], [O3]], [[Attr10, Attr11, Attr15, Attr4], [O10]], [[Attr11, Attr12, Attr2, Attr6, Attr8], [O7]], [[Attr14, Attr15, Attr4, Attr5, Attr6], [O4, O5]], [[Attr11, Attr14, Attr15, Attr2, Attr6], [O11]], [[Attr1, Attr12, Attr3, Attr6, Attr9], [O6]], [[Attr10, Attr13, Attr15, Attr2, Attr5], [O10]], [[Attr3, Attr5, Attr7, Attr8, Attr9], [O5]], [[Attr10, Attr14, Attr15, Attr3, Attr5], [O10]], [[Attr1, Attr12, Attr3, Attr5, Attr6], [O6]], [[Attr1, Attr13, Attr15, Attr4, Attr8], [O8]], [[Attr1, Attr15, Attr4, Attr5, Attr7], [O4]], [[Attr1, Attr11, Attr14, Attr8, Attr9], [O3]], [[Attr13, Attr3, Attr4, Attr5, Attr7], [O5]], [[Attr13, Attr14, Attr15, Attr3, Attr8], [O14]], [[Attr15, Attr2, Attr4, Attr5, Attr7], [O11]], [[Attr2, Attr5, Attr6, Attr7, Attr8], [O5]], [[Attr1, Attr11, Attr15, Attr7, Attr8], [O7]], [[Attr1, Attr10, Attr14, Attr3, Attr8], [O1]], [[Attr1, Attr13, Attr15, Attr2, Attr8], [O8]], [[Attr12, Attr2, Attr3, Attr5, Attr8], [O5]], [[Attr10, Attr11, Attr15, Attr3, Attr4], [O10]], [[Attr10, Attr12, Attr13, Attr4, Attr9], [O3]], [[Attr10, Attr11, Attr12, Attr3, Attr8], [O11]], [[Attr1, Attr11, Attr13, Attr5, Attr8], [O5]], [[Attr1, Attr13, Attr4, Attr5, Attr6], [O6]], [[Attr1, Attr15, Attr2, Attr5, Attr7], [O7]], [[Attr10, Attr13, Attr4, Attr5, Attr9], [O3]], [[Attr10, Attr11, Attr13, Attr2, Attr5], [O10]], [[Attr1, Attr10, Attr12, Attr14, Attr5], [O4]], [[Attr1, Attr14, Attr3, Attr4, Attr9], [O3]], [[Attr15, Attr3, Attr4, Attr5, Attr7], [O13]], [[Attr12, Attr3, Attr4, Attr6, Attr8], [O5]], [[Attr11, Attr12, Attr15, Attr4, Attr8], [O11]], [[Attr1, Attr11, Attr12, Attr5, Attr9], [O3]], [[Attr1, Attr10, Attr11, Attr14, Attr5], [O4]], [[Attr1, Attr11, Attr12, Attr3, Attr5], [O3]], [[Attr1, Attr11, Attr13, Attr14, Attr5], [O4]], [[Attr1, Attr11, Attr14, Attr15, Attr5], [O4]], [[Attr1, Attr12, Attr13, Attr14, Attr5], [O4]], [[Attr1, Attr12, Attr14, Attr15, Attr5], [O4]], [[Attr1, Attr13, Attr14, Attr15, Attr5], [O4]], [[Attr10, Attr11, Attr12, Attr13, Attr5], [O10]], [[Attr10, Attr11, Attr12, Attr14, Attr5], [O10]], [[Attr10, Attr11, Attr13, Attr14, Attr5], [O10]], [[Attr10, Attr12, Attr13, Attr14, Attr5], [O10]], [[Attr11, Attr12, Attr13, Attr14, Attr5], [O5]], [[Attr1, Attr10, Attr11, Attr12, Attr5], [O4]], [[Attr1, Attr10, Attr11, Attr13, Attr5], [O4]], [[Attr1, Attr10, Attr12, Attr13, Attr5], [O4]], [[Attr1, Attr11, Attr12, Attr13, Attr5], [O3]], [[Attr1, Attr11, Attr12, Attr14, Attr5], [O3]], [[Attr1, Attr11, Attr13, Attr14, Attr9], [O3]], [[Attr1, Attr12, Attr13, Attr14, Attr9], [O3]], [[Attr10, Attr11, Attr13, Attr14, Attr9], [O3]], [[Attr10, Attr12, Attr13, Attr14, Attr9], [O3]], [[Attr11, Attr12, Attr13, Attr14, Attr9], [O3]], [[Attr1, Attr10, Attr11, Attr13, Attr9], [O3]], [[Attr1, Attr10, Attr12, Attr13, Attr9], [O3]], [[Attr1, Attr11, Attr12, Attr13, Attr9], [O3]], [[Attr1, Attr10, Attr11, Attr12, Attr9], [O3]], [[Attr1, Attr10, Attr11, Attr12, Attr13, Attr14, Attr3, Attr4, Attr5, Attr6, Attr7, Attr8, Attr9], [O3, O4, O5, O6, O7, O8, O9, O10, O11, O12, O13, O14, O15]]]
