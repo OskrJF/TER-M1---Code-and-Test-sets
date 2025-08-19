@@ -1,0 +1,56 @@
+Claude_self-consistency_eg2_3_test3
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll analyze the formal context in your CSV file and extract all the lattice concepts using Formal Concept Analysis (FCA).
+
+Let me start by reading and parsing the data, then compute all the formal concepts.
+
+I've analyzed your formal context and extracted all the lattice concepts using Formal Concept Analysis. Here's what I found:
+
+**Context Summary:**
+- Objects: o1, o2
+- Attributes: a1, a2, a3
+- Relations: o1 has attributes {a1, a2}, o2 has attributes {a2, a3}
+
+**All Formal Concepts:**
+
+1. **Concept 1** (Bottom): (∅, {a1, a2, a3})
+   - No objects share all three attributes
+
+2. **Concept 2**: ({o1}, {a1, a2})
+   - Object o1 has attributes a1 and a2
+
+3. **Concept 3**: ({o2}, {a2, a3})
+   - Object o2 has attributes a2 and a3
+
+4. **Concept 4**: ({o1, o2}, {a2})
+   - Both objects share attribute a2
+
+5. **Concept 5** (Top): ({o1, o2}, ∅)
+   - All objects, but no common attributes beyond what's already captured
+
+The analysis shows there are **5 formal concepts** in total. Each concept is a pair (A, B) where:
+- A is the extent (set of objects)
+- B is the intent (set of attributes)
+- The closure property holds: objects in A are exactly those having all attributes in B, and attributes in B are exactly those shared by all objects in A
+
+The lattice structure shows the hierarchical relationships between these concepts, with the universal concept at the top and the empty concept at the bottom.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[], [o1, o2]], [[a2], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a2, a3], []]

@@ -1,0 +1,39 @@
+Claude_self-consistency_eg2_3_test1
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll analyze your CSV file using formal concept analysis to extract all lattice concepts. Let me first read and process the data, then compute the formal concepts.
+
+The analysis shows your formal context and extracts all lattice concepts. In formal concept analysis, a **formal concept** is a pair (A, B) where:
+- A is a set of objects (extent)
+- B is a set of attributes (intent)
+- A is the set of all objects that have all attributes in B
+- B is the set of all attributes shared by all objects in A
+
+From your context with objects {o1, o2} and attributes {a1, a2, a3}, the complete lattice contains **5 formal concepts**:
+
+1. **Top concept**: ({}, {a1, a2, a3}) - No objects share all attributes
+2. **({o1}, {a1, a2})** - Object o1 has attributes a1 and a2
+3. **({o2}, {a2, a3})** - Object o2 has attributes a2 and a3  
+4. **({o1, o2}, {a2})** - Both objects share attribute a2
+5. **Bottom concept**: ({o1, o2}, {}) - All objects with no common attributes
+
+These concepts form a complete lattice ordered by inclusion of extents (equivalently, reverse inclusion of intents). The lattice structure represents all possible ways to group objects by their shared attributes in your formal context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]], [[], [o1, o2]]]

@@ -1,0 +1,59 @@
+Claude_self-consistency_eg2_3_test2
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll analyze the CSV file using Formal Concept Analysis (FCA) to extract all lattice concepts. Let me create a tool to process the data and find all concepts in the concept lattice.
+
+I've created a comprehensive Formal Concept Analysis tool that extracts all lattice concepts from your CSV data. Here's what the analysis reveals:
+
+**Context Overview:**
+- **Objects:** o1, o2
+- **Attributes:** a1, a2, a3, a4, a5, a6, a7, a8, a9
+- **Relations:** The context shows which objects have which attributes (marked with "yes")
+
+**Key FCA Concepts:**
+
+In FCA, a **formal concept** is a pair (A, B) where:
+- A is a set of objects (extent)
+- B is a set of attributes (intent)
+- A is the set of all objects that have all attributes in B
+- B is the set of all attributes shared by all objects in A
+
+The tool systematically:
+
+1. **Generates all possible object and attribute combinations**
+2. **Computes closures** using the derivation operators:
+   - For objects → common attributes (intent)
+   - For attributes → objects having all those attributes (extent)
+3. **Identifies valid concepts** where the closure property holds
+4. **Eliminates duplicates** and presents them in a structured format
+
+The analysis will show you all formal concepts in the lattice, including:
+- The **top concept** (all objects, common attributes)
+- The **bottom concept** (objects with all attributes, all attributes)
+- All **intermediate concepts** representing meaningful groupings
+
+Each concept represents a maximal rectangle in the object-attribute incidence matrix, which corresponds to a node in the concept lattice. The tool displays both the extent (objects) and intent (attributes) for each concept, giving you the complete formal concept structure of your data.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+The tool now displays all lattice concepts in the single line format you requested. The format shows each concept as [intent, extent] where:
+- Intent = attributes (first array)
+- Extent = objects (second array)
+
+The complete list of all formal concepts from your FCA context will be displayed in the yellow box in the exact format you specified:
+[[[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]]

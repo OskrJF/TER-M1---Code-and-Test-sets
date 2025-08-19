@@ -1,0 +1,58 @@
+Claude_self-consistency_eg5_5_test1
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll analyze this formal concept context and extract all the lattice concepts using Formal Concept Analysis (FCA).
+
+I've created a comprehensive Formal Concept Analysis tool that extracts and enumerates all lattice concepts from your CSV file. Here's what the analysis reveals:
+
+**The formal context contains:**
+- 5 objects: o1, o2, o3, o4, o5
+- 5 attributes: a1, a2, a3, a4, a5
+
+**Key findings from the lattice concept extraction:**
+
+The tool systematically computes all formal concepts by:
+1. Generating all possible object subsets
+2. Computing their common attributes (intent)
+3. Finding all objects that share those attributes (extent)
+4. Verifying the closure properties that define formal concepts
+
+Each formal concept is a pair (A, B) where:
+- A is the extent (set of objects)
+- B is the intent (set of attributes)
+- A = {objects that have all attributes in B}
+- B = {attributes shared by all objects in A}
+
+The visualization shows the binary incidence matrix with crosses (×) marking where objects have specific attributes, making it easy to trace the concept formation process.
+
+The analysis provides complete enumeration of all concepts in the concept lattice, which forms the mathematical foundation for knowledge representation and data analysis in FCA. Each concept represents a maximal rectangle of crosses in the formal context when rows and columns are appropriately ordered.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Looking at the formal context, I need to systematically extract all formal concepts. Let me compute this step by step:
+
+From the CSV data:
+- o1: a1, a3, a4
+- o2: a3
+- o3: a1, a2, a4, a5
+- o4: a2, a5
+- o5: a2
+
+Computing all formal concepts (extent, intent pairs):
+
+[[[a1, a2, a3, a4, a5], []], [[a2], [o3, o4, o5]], [[a3], [o1, o2]], [[a1], [o1, o3]], [[a4], [o1, o3]], [[a5], [o3, o4]], [[a1, a4], [o1, o3]], [[a2, a5], [o3, o4]], [[a3], [o1, o2]], [[a1, a3, a4], [o1]], [[a3], [o2]], [[a1, a2, a4, a5], [o3]], [[a2, a5], [o4]], [[a2], [o5]], [[a3], [o1, o2]], [[a1, a4], [o1, o3]], [[a2, a5], [o3, o4]], [[a2], [o3, o4, o5]], [[], [o1, o2, o3, o4, o5]]]

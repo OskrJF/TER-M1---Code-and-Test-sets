@@ -1,0 +1,50 @@
+Claude_self-consistency_eg2_3_test2
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll analyze your CSV file to extract all formal concepts from this context. Let me first read and parse the data, then implement the formal concept analysis algorithm.
+
+I've created a comprehensive formal concept analysis tool that extracts all lattice concepts from your CSV data. Here's what the analysis reveals:
+
+**Your Context:**
+- Objects: {o1, o2}
+- Attributes: {a1, a2, a3}
+- Binary relation where "yes" indicates the object has the attribute
+
+**All Formal Concepts Extracted:**
+
+1. **Concept 1**: (∅, {a1, a2, a3}) - Empty extent with all attributes
+2. **Concept 2**: ({o1}, {a1, a2}) - Object o1 with attributes a1, a2
+3. **Concept 3**: ({o2}, {a2, a3}) - Object o2 with attributes a2, a3
+4. **Concept 4**: ({o1, o2}, {a2}) - Both objects with shared attribute a2
+5. **Concept 5**: ({o1, o2}, ∅) - All objects with no common attributes
+
+The algorithm works by:
+1. Generating all possible object subsets
+2. Computing their intent (shared attributes)
+3. Computing the extent of that intent (objects having those attributes)
+4. Verifying the closure property (extent = original object set)
+
+These concepts form the complete concept lattice for your formal context, representing all meaningful object-attribute relationships in your data.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Based on the formal concept analysis of your CSV data, here are all the lattice concepts in the requested single-line format:
+
+**[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]], [[], [o1, o2]]]**
+
+This represents the 5 formal concepts where each concept is formatted as [[intent], [extent]] - first the attributes (intent), then the objects (extent) that share those attributes.

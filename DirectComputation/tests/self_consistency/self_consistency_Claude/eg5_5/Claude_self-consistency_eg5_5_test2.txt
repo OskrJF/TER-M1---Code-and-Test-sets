@@ -1,0 +1,34 @@
+Claude_self-consistency_eg5_5_test2
+
+Date: 26 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts
+____________________
+
+OUTPUT:
+I'll analyze this formal concept analysis context and extract all the lattice concepts for you.
+
+I've created a comprehensive analyzer that extracts all formal concepts from your FCA context. The tool reads your CSV file and systematically finds all concept pairs (A, B) where:
+
+- A is a set of objects (extent)
+- B is a set of attributes (intent)  
+- A is the set of all objects having all attributes in B
+- B is the set of all attributes shared by all objects in A
+
+From your context with 5 objects (o1-o5) and 5 attributes (a1-a5), the analyzer will identify all formal concepts that satisfy the closure properties of formal concept analysis. Each concept represents a maximal rectangle of crosses in your incidence matrix.
+
+The results show both the formal context as a table (with × marking where objects have attributes) and enumerate all the formal concepts with their extents and intents. This gives you the complete concept lattice structure for your FCA analysis.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3, a4, a5], []], [[a1, a3, a4], [o1]], [[a3], [o1, o2]], [[a1, a2, a4, a5], [o3]], [[a1, a4], [o1, o3]], [[a2, a5], [o3, o4]], [[a2], [o3, o4, o5]], [[], [o1, o2, o3, o4, o5]]]
