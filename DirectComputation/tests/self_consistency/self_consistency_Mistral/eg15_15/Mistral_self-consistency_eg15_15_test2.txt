@@ -1,0 +1,101 @@
+Mistral_self-consistency_eg15_15_test2
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg15_15
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given the next context, I want you to extract and enumerate all lattice concepts
+Objet;Attr1;Attr2;Attr3;Attr4;Attr5;Attr6;Attr7;Attr8;Attr9;Attr10;Attr11;Attr12;Attr13;Attr14;Attr15
+O1;No;No;No;Yes;Yes;Yes;No;No;Yes;No;No;No;Yes;No;Yes
+O2;No;Yes;No;Yes;No;No;No;No;No;Yes;Yes;Yes;Yes;No;Yes
+O3;Yes;No;Yes;No;No;No;No;Yes;Yes;No;Yes;No;Yes;No;Yes
+O4;No;Yes;No;No;Yes;Yes;No;No;No;No;No;Yes;Yes;Yes;No
+O5;No;Yes;Yes;Yes;Yes;Yes;No;Yes;No;No;Yes;No;Yes;Yes;No
+O6;Yes;No;No;No;Yes;No;Yes;Yes;No;Yes;No;Yes;Yes;No;Yes
+O7;Yes;Yes;Yes;Yes;No;Yes;Yes;Yes;Yes;Yes;Yes;No;Yes;No;No
+O8;Yes;No;No;No;Yes;Yes;Yes;No;No;No;Yes;No;No;No;No
+O9;No;Yes;No;No;Yes;Yes;Yes;No;Yes;Yes;No;Yes;No;Yes;No
+O10;No;Yes;No;Yes;Yes;Yes;No;Yes;No;No;Yes;No;Yes;No;No
+O11;No;Yes;No;Yes;No;Yes;Yes;No;No;Yes;Yes;Yes;No;No;Yes
+O12;No;No;No;No;Yes;Yes;No;No;Yes;Yes;No;Yes;No;Yes;No
+O13;No;Yes;Yes;No;No;Yes;No;Yes;Yes;Yes;No;No;No;Yes;Yes
+O14;No;Yes;No;No;No;Yes;No;No;No;No;No;Yes;Yes;Yes;Yes
+O15;No;No;No;Yes;No;No;No;No;Yes;No;Yes;No;Yes;Yes;No
+____________________
+
+OUTPUT:
+To extract and enumerate all lattice concepts in the given context using Formal Concept Analysis (FCA), we need to follow these steps:
+
+1. **Define the Formal Context**: This is already given in the table format. The rows represent objects, and the columns represent attributes.
+
+2. **Identify Concepts**: A concept is a pair `(A, B)`, where `A` is a set of objects and `B` is a set of attributes. `A` is the extent, and `B` is the intent. The intent `B` contains all attributes shared by the objects in `A`, and the extent `A` contains all objects that have all attributes in `B`.
+
+3. **Find All Concepts**: We need to find all possible pairs `(A, B)` that satisfy the above condition.
+
+4. **Build the Concept Lattice**: The concepts are ordered by inclusion, forming a lattice structure.
+
+Let's start by identifying all the concepts from the given formal context. We'll use the `code_interpreter` tool to help with this computation.It seems that the code to extract lattice concepts from the given formal context is not working as expected. The result only contains one concept with all objects and no attributes, which is not correct.
+
+Formal Concept Analysis (FCA) involves identifying all pairs of object sets (extent) and attribute sets (intent) such that the extent contains all objects sharing the attributes in the intent, and vice versa. The code should generate all such pairs.
+
+Let's try to fix the code and extract the lattice concepts correctly.Here are the lattice concepts extracted from the given formal context:
+
+| Extent (Objects) | Intent (Attributes) |
+|------------------|---------------------|
+| O3, O6, O7, O8   | Attr1               |
+| O10, O11, O13, O14, O2, O4, O5, O7, O9 | Attr2 |
+| O13, O3, O5, O7  | Attr3, Attr8        |
+| O1, O10, O11, O15, O2, O5, O7 | Attr4 |
+| O1, O10, O11, O12, O4, O5, O6, O8, O9 | Attr5 |
+| O1, O10, O11, O12, O13, O14, O4, O5, O7, O8, O9 | Attr6 |
+| O11, O6, O7, O8, O9 | Attr7 |
+| O10, O13, O3, O5, O6, O7 | Attr8 |
+| O1, O12, O13, O15, O3, O7, O9 | Attr9 |
+| O11, O12, O13, O2, O6, O7, O9 | Attr10 |
+| O10, O11, O15, O2, O3, O5, O7, O8 | Attr11 |
+| O11, O12, O14, O2, O4, O6, O9 | Attr12, Attr13 |
+| O1, O10, O14, O15, O2, O3, O4, O5, O6, O7 | Attr14 |
+| O12, O13, O14, O4, O5, O9 | Attr15, Attr6 |
+| O7 | Attr1, Attr10, Attr11, Attr14, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9 |
+| O3, O7 | Attr1, Attr11, Attr14, Attr3, Attr8, Attr9 |
+| O6, O8 | Attr1, Attr5, Attr7 |
+| O7, O8 | Attr1, Attr11, Attr6, Attr7 |
+| O6, O7, O8 | Attr1, Attr7 |
+| O3, O6, O7 | Attr1, Attr14, Attr8 |
+| O6, O7 | Attr1, Attr10, Attr11, Attr12, Attr13, Attr2, Attr4, Attr5, Attr6, Attr7 |
+| O1 | Attr14, Attr4, Attr5, Attr6, Attr9 |
+| O1, O10, O5 | Attr14, Attr4, Attr5, Attr6 |
+| O1, O7 | Attr14, Attr4, Attr6, Attr9 |
+| O1, O10, O5, O7 | Attr14, Attr4, Attr6 |
+| O15, O7 | Attr11, Attr14, Attr4, Attr9 |
+| O10, O15, O2, O5, O7 | Attr11, Attr14, Attr4 |
+| O2 | Attr10, Attr11, Attr12, Attr13, Attr14, Attr2, Attr4 |
+| O11, O8, O9 | Attr5, Attr6, Attr7 |
+| O11, O12, O9 | Attr10, Attr12, Attr13, Attr5, Attr6 |
+| O11, O12, O4, O9 | Attr12, Attr13, Attr5, Attr6 |
+| O1, O10, O4, O5 | Attr14, Attr5, Attr6 |
+| O11, O8 | Attr11, Attr5, Attr6, Attr7 |
+| O4, O6 | Attr12, Attr13, Attr14, Attr5 |
+| O12, O4, O9 | Attr12, Attr13, Attr15, Attr5, Attr6 |
+| O4, O5 | Attr14, Attr15, Attr2, Attr5, Attr6 |
+| O14, O4 | Attr12, Attr13, Attr14, Attr15, Attr2, Attr6 |
+| O2, O6 | Attr10, Attr12, Attr13, Attr14 |
+| O4 | Attr12, Attr13, Attr14, Attr15, Attr2, Attr5, Attr6 |
+| O4, O9 | Attr12, Attr13, Attr15, Attr2, Attr5, Attr6 |
+
+These concepts represent the formal concepts in the lattice derived from the given context. Each concept is defined by a set of objects (extent) and a set of attributes (intent).
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Here is the list of all concepts in the specified format:
+
+[[[], [O1, O10, O11, O12, O13, O14, O15, O2, O3, O4, O5, O6, O7, O8, O9]], [[Attr1], [O3, O6, O7, O8]], [[Attr2], [O10, O11, O13, O14, O2, O4, O5, O7, O9]], [[Attr3, Attr8], [O13, O3, O5, O7]], [[Attr4], [O1, O10, O11, O15, O2, O5, O7]], [[Attr5], [O1, O10, O11, O12, O4, O5, O6, O8, O9]], [[Attr6], [O1, O10, O11, O12, O13, O14, O4, O5, O7, O8, O9]], [[Attr7], [O11, O6, O7, O8, O9]], [[Attr8], [O10, O13, O3, O5, O6, O7]], [[Attr9], [O1, O12, O13, O15, O3, O7, O9]], [[Attr10], [O11, O12, O13, O2, O6, O7, O9]], [[Attr11], [O10, O11, O15, O2, O3, O5, O7, O8]], [[Attr12, Attr13], [O11, O12, O14, O2, O4, O6, O9]], [[Attr14], [O1, O10, O14, O15, O2, O3, O4, O5, O6, O7]], [[Attr15, Attr6], [O12, O13, O14, O4, O5, O9]], [[Attr1, Attr10, Attr11, Attr14, Attr2, Attr3, Attr4, Attr6, Attr7, Attr8, Attr9], [O7]], [[Attr1, Attr11, Attr14, Attr3, Attr8, Attr9], [O3, O7]], [[Attr1, Attr5, Attr7], [O6, O8]], [[Attr1, Attr11, Attr6, Attr7], [O7, O8]], [[Attr1, Attr7], [O6, O7, O8]], [[Attr1, Attr14, Attr8], [O3, O6, O7]], [[Attr1, Attr10, Attr11, Attr12, Attr13, Attr2, Attr4, Attr5, Attr6, Attr7], [O6, O7]], [[Attr14, Attr4, Attr5, Attr6, Attr9], [O1]], [[Attr14, Attr4, Attr5, Attr6], [O1, O10, O5]], [[Attr14, Attr4, Attr6, Attr9], [O1, O7]], [[Attr14, Attr4, Attr6], [O1, O10, O5, O7]], [[Attr11, Attr14, Attr4, Attr9], [O15, O7]], [[Attr11, Attr14, Attr4], [O10, O15, O2, O5, O7]], [[Attr10, Attr11, Attr12, Attr13, Attr14, Attr2, Attr4], [O2]], [[Attr5, Attr6, Attr7], [O11, O8, O9]], [[Attr10, Attr12, Attr13, Attr5, Attr6], [O11, O12, O9]], [[Attr12, Attr13, Attr5, Attr6], [O11, O12, O4, O9]], [[Attr14, Attr5, Attr6], [O1, O10, O4, O5]], [[Attr11, Attr5, Attr6, Attr7], [O11, O8]], [[Attr12, Attr13, Attr14, Attr5], [O4, O6]], [[Attr12, Attr13, Attr15, Attr5, Attr6], [O12, O4, O9]], [[Attr14, Attr15, Attr2, Attr5, Attr6], [O4, O5]], [[Attr12, Attr13, Attr14, Attr15, Attr2, Attr6], [O14, O4]], [[Attr10, Attr12, Attr13, Attr14], [O2, O6]], [[Attr12, Attr13, Attr14, Attr15, Attr2, Attr5, Attr6], [O4]], [[Attr12, Attr13, Attr15, Attr2, Attr5, Attr6], [O4, O9]]]
+

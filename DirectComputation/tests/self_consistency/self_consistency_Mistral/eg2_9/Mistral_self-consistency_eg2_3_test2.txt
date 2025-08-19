@@ -1,0 +1,54 @@
+Mistral_self-consistency_eg2_3_test2
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given the next context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5;a6;a7;a8;a9
+o1;yes;yes;yes;yes;no;no;yes;no;yes
+o2;yes;no;no;yes;no;yes;no;no;yes
+____________________
+
+OUTPUT:
+To extract and enumerate all lattice concepts in the given formal context using Formal Concept Analysis (FCA), we need to follow these steps:
+
+1. **Identify the Objects and Attributes:**
+   - Objects: \( o1, o2 \)
+   - Attributes: \( a1, a2, a3, a4, a5, a6, a7, a8, a9 \)
+
+2. **Create the Formal Context:**
+   The formal context is a table where rows represent objects and columns represent attributes. A "yes" indicates that the object has the attribute, and a "no" indicates that it does not.
+
+   |   | a1 | a2 | a3 | a4 | a5 | a6 | a7 | a8 | a9 |
+   |---|----|----|----|----|----|----|----|----|----|
+   |o1| yes| yes| yes| yes| no | no | yes| no | yes|
+   |o2| yes| no | no | yes| no | yes| no | no | yes|
+
+3. **Find Formal Concepts:**
+   A formal concept is a pair \((A, B)\), where \(A\) is a set of objects and \(B\) is a set of attributes such that:
+   - \(A\) is the set of all objects that have all attributes in \(B\).
+   - \(B\) is the set of all attributes shared by all objects in \(A\).
+
+   We need to find all such pairs \((A, B)\).
+
+4. **Enumerate All Formal Concepts:**
+   - Concept 1: \((\{o1, o2\}, \{a1, a4, a9\})\)
+   - Concept 2: \((\{o1\}, \{a1, a2, a3, a4, a7, a9\})\)
+   - Concept 3: \((\{o2\}, \{a1, a4, a6, a9\})\)
+   - Concept 4: \((\emptyset, \{a1, a2, a3, a4, a5, a6, a7, a8, a9\})\)
+   - Concept 5: \((\{o1, o2\}, \emptyset)\)
+
+These are the formal concepts derived from the given formal context. Each concept represents a maximal set of objects sharing a maximal set of attributes.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[], [o1, o2]], [[a1, a4, a9], [o1, o2]], [[a1, a2, a3, a4, a7, a9], [o1]], [[a1, a4, a6, a9], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9], []]]

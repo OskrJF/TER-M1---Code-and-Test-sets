@@ -1,0 +1,44 @@
+Mistral_self-consistency_eg8_8_test2
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg8_8
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given the next context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5;a6;a7;a8
+O1;Yes;Yes;Yes;No;No;No;No;No
+O2;Yes;Yes;Yes;No;No;Yes;No;Yes
+O3;Yes;Yes;No;Yes;No;Yes;No;No
+O4;No;Yes;Yes;Yes;Yes;No;No;Yes
+O5;No;Yes;No;Yes;No;Yes;Yes;Yes
+O6;Yes;Yes;Yes;No;Yes;No;Yes;No
+O7;No;Yes;Yes;Yes;Yes;No;Yes;No
+O8;No;Yes;Yes;Yes;Yes;No;Yes;No
+____________________
+
+OUTPUT:
+To extract and enumerate all lattice concepts in the field of Formal Concept Analysis (FCA), we need to follow these steps:
+
+1. **Define the Formal Context**: This is a triplet \((G, M, I)\), where \(G\) is a set of objects, \(M\) is a set of attributes, and \(I\) is a binary relation between \(G\) and \(M\).
+
+2. **Identify Concepts**: A concept is a pair \((A, B)\), where \(A \subseteq G\), \(B \subseteq M\), \(A' = B\), and \(B' = A\). Here, \(A'\) is the set of attributes common to all objects in \(A\), and \(B'\) is the set of objects that have all attributes in \(B\).
+
+3. **Compute the Concept Lattice**: This involves finding all concepts and ordering them based on the subset relation.
+
+Let's start by defining the formal context and then proceed to compute the concepts and the lattice.In the given formal context, the only lattice concept extracted is:
+
+| Objects | Attributes |
+|---------|------------|
+| O1, O2, O3, O4, O5, O6, O7, O8 | a2 |
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a2], [O1, O2, O3, O4, O5, O6, O7, O8]]]

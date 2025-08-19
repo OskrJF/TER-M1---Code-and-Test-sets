@@ -1,0 +1,50 @@
+Mistral_self-consistency_eg5_5_test2
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg5_5
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given the next context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3;a4;a5
+o1;yes;no;yes;yes;no
+o2;no;no;yes;no;no
+o3;yes;yes;no;yes;yes
+o4;no;yes;no;no;yes
+o5;no;yes;no;no;no
+____________________
+
+OUTPUT:
+Formal Concept Analysis (FCA) is a method used to analyze data and identify conceptual structures within it. The data is typically represented as a formal context, which is a triplet (G, M, I), where G is a set of objects, M is a set of attributes, and I is a binary relation between G and M.
+
+Given your context, we can represent it as follows:
+
+- Objects (G): {o1, o2, o3, o4, o5}
+- Attributes (M): {a1, a2, a3, a4, a5}
+
+The relation I is given by the table you provided, where "yes" indicates that an object has a particular attribute.
+
+To extract all the formal concepts, we need to find all pairs (A, B) where A is a subset of G, B is a subset of M, and (A, B) forms a concept. A concept (A, B) is defined such that A' = B and B' = A, where ' denotes the derivation operator.
+
+Let's compute the concepts using the derivation operator.Here are the lattice concepts extracted from the given context in formal concept analysis:
+
+1. Objects: {'o1'}, Attributes: {'a1', 'a3', 'a4'}
+2. Objects: {'o3'}, Attributes: {'a1', 'a2', 'a4', 'a5'}
+3. Objects: {'o1', 'o2'}, Attributes: {'a3'}
+4. Objects: {'o1', 'o3'}, Attributes: {'a1', 'a4'}
+5. Objects: {'o3', 'o4'}, Attributes: {'a2', 'a5'}
+6. Objects: {'o3', 'o4', 'o5'}, Attributes: {'a2'}
+7. Objects: {'o1', 'o2', 'o3', 'o4', 'o5'}, Attributes: {}
+
+These concepts represent the formal concepts in the lattice structure derived from the given context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2, o3, o4, o5]], [[a3], [o1, o2]], [[a1, a4], [o1, o3]], [[a2, a5], [o3, o4]], [[a2], [o3, o4, o5]], [[a1, a3, a4], [o1]], [[a1, a2, a4, a5], [o3]]]

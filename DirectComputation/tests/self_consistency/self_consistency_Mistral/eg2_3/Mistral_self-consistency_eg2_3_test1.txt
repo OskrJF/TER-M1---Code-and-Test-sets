@@ -1,0 +1,57 @@
+Mistral_self-consistency_eg2_3_test1
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given thenext context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+In Formal Concept Analysis (FCA), a formal context is typically represented as a triplet \((G, M, I)\), where \(G\) is a set of objects, \(M\) is a set of attributes, and \(I\) is a binary relation between \(G\) and \(M\). The relation \(I\) indicates which objects have which attributes.
+
+Given your context:
+
+- Objects \(G = \{o1, o2\}\)
+- Attributes \(M = \{a1, a2, a3\}\)
+
+The relation \(I\) can be represented as follows:
+
+- \(o1\) has attributes \(a1\) and \(a2\)
+- \(o2\) has attributes \(a2\) and \(a3\)
+
+To find the formal concepts, we need to determine all pairs \((A, B)\) where \(A \subseteq G\), \(B \subseteq M\), and \((A, B)\) forms a concept. A concept is defined such that \(A' = B\) and \(B' = A\), where \('\) denotes the derivation operator.
+
+Let's enumerate all possible concepts:
+
+1. **Concept 1**: \((\emptyset, \{a1, a2, a3\})\)
+   - This is the top concept where no objects have all attributes.
+
+2. **Concept 2**: \((\{o1\}, \{a1, a2\})\)
+   - Object \(o1\) has attributes \(a1\) and \(a2\).
+
+3. **Concept 3**: \((\{o2\}, \{a2, a3\})\)
+   - Object \(o2\) has attributes \(a2\) and \(a3\).
+
+4. **Concept 4**: \((\{o1, o2\}, \{a2\})\)
+   - Both objects \(o1\) and \(o2\) share attribute \(a2\).
+
+5. **Concept 5**: \((\{o1, o2\}, \emptyset)\)
+   - This is the bottom concept where all objects have no attributes in common.
+
+These are the formal concepts derived from the given context.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[], [o1, o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]], [[], [o1, o2]]]

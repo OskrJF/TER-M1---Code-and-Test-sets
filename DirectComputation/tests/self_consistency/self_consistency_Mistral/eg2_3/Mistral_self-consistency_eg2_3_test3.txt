@@ -1,0 +1,119 @@
+Mistral_self-consistency_eg2_3_test3
+
+Date: 26 may 2025
+Model: Mistral Large 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 3
+
+PROMPT 1 (repeat three times, choose the one with the best results):
+In the field of formal concept analysis (FCA), given thenext context, I want you to extract and enumerate all lattice concepts
+Objet;a1;a2;a3
+o1;yes;yes;no
+o2;no;yes;yes
+____________________
+
+OUTPUT:
+To extract and enumerate all lattice concepts in the given formal context using Formal Concept Analysis (FCA), we first need to understand the basic definitions and steps involved in FCA.
+
+### Definitions:
+1. **Formal Context**: A triplet \((G, M, I)\), where \(G\) is a set of objects, \(M\) is a set of attributes, and \(I\) is a binary relation between \(G\) and \(M\).
+2. **Formal Concept**: A pair \((A, B)\), where \(A \subseteq G\), \(B \subseteq M\), \(A' = B\), and \(B' = A\). Here, \(A'\) is the set of attributes common to all objects in \(A\), and \(B'\) is the set of objects sharing all attributes in \(B\).
+3. **Concept Lattice**: A complete lattice formed by all formal concepts of a formal context, ordered by the subconcept-superconcept relation.
+
+### Given Context:
+The formal context can be represented as follows:
+
+| Object/Attribute | a1 | a2 | a3 |
+|------------------|----|----|----|
+| o1               | yes| yes| no |
+| o2               | no | yes| yes|
+
+### Step-by-Step Extraction of Concepts:
+
+1. **Identify the set of objects \(G\) and attributes \(M\)**:
+   - \(G = \{o1, o2\}\)
+   - \(M = \{a1, a2, a3\}\)
+
+2. **Determine the binary relation \(I\)**:
+   - \(I = \{(o1, a1), (o1, a2), (o2, a2), (o2, a3)\}\)
+
+3. **Compute the formal concepts**:
+   - For each subset of objects \(A \subseteq G\), compute \(A'\) (the set of attributes common to all objects in \(A\)).
+   - For each subset of attributes \(B \subseteq M\), compute \(B'\) (the set of objects sharing all attributes in \(B\)).
+
+### Enumerating the Concepts:
+
+1. **Concept 1**:
+   - \(A = \emptyset\) (empty set of objects)
+   - \(A' = \{a1, a2, a3\}\) (all attributes)
+   - \(B = \{a1, a2, a3\}\)
+   - \(B' = \emptyset\)
+   - Concept: \((\emptyset, \{a1, a2, a3\})\)
+
+2. **Concept 2**:
+   - \(A = \{o1\}\)
+   - \(A' = \{a1, a2\}\)
+   - \(B = \{a1, a2\}\)
+   - \(B' = \{o1\}\)
+   - Concept: \((\{o1\}, \{a1, a2\})\)
+
+3. **Concept 3**:
+   - \(A = \{o2\}\)
+   - \(A' = \{a2, a3\}\)
+   - \(B = \{a2, a3\}\)
+   - \(B' = \{o2\}\)
+   - Concept: \((\{o2\}, \{a2, a3\})\)
+
+4. **Concept 4**:
+   - \(A = \{o1, o2\}\)
+   - \(A' = \{a2\}\)
+   - \(B = \{a2\}\)
+   - \(B' = \{o1, o2\}\)
+   - Concept: \((\{o1, o2\}, \{a2\})\)
+
+5. **Concept 5**:
+   - \(A = \emptyset\) (empty set of objects)
+   - \(A' = \{a1, a2, a3\}\) (all attributes)
+   - \(B = \{a1, a2, a3\}\)
+   - \(B' = \emptyset\)
+   - Concept: \((\emptyset, \{a1, a2, a3\})\)
+
+6. **Concept 6**:
+   - \(A = \{o1\}\)
+   - \(A' = \{a1, a2\}\)
+   - \(B = \{a1, a2\}\)
+   - \(B' = \{o1\}\)
+   - Concept: \((\{o1\}, \{a1, a2\})\)
+
+7. **Concept 7**:
+   - \(A = \{o2\}\)
+   - \(A' = \{a2, a3\}\)
+   - \(B = \{a2, a3\}\)
+   - \(B' = \{o2\}\)
+   - Concept: \((\{o2\}, \{a2, a3\})\)
+
+8. **Concept 8**:
+   - \(A = \{o1, o2\}\)
+   - \(A' = \{a2\}\)
+   - \(B = \{a2\}\)
+   - \(B' = \{o1, o2\}\)
+   - Concept: \((\{o1, o2\}, \{a2\})\)
+
+### Concept Lattice:
+The concept lattice for the given formal context is formed by the following concepts:
+1. \((\emptyset, \{a1, a2, a3\})\)
+2. \((\{o1\}, \{a1, a2\})\)
+3. \((\{o2\}, \{a2, a3\})\)
+4. \((\{o1, o2\}, \{a2\})\)
+
+These concepts form a lattice structure where each concept is connected to its subconcepts and superconcepts based on the inclusion of objects and attributes.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a1, a2, a3], []], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a2], [o1, o2]]]
