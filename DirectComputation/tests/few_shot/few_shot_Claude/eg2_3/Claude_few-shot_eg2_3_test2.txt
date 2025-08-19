@@ -1,0 +1,75 @@
+Claude_few-shot_eg2_3_test2
+
+Date: 27 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 2
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+I'll analyze the given CSV file to extract all lattice concepts using formal concept analysis principles.
+
+First, let me read and parse the CSV file:
+
+Based on the analysis of your CSV file, here are all the lattice concepts extracted from the given context:
+
+**Input Context:**
+- Objects: o1, o2
+- Attributes: a1, a2, a3
+- Relations:
+  - o1 has attributes: a1, a2
+  - o2 has attributes: a2, a3
+
+**Complete List of Lattice Concepts:**
+
+```
+[
+  [[], ["o1", "o2"]],
+  [["a1"], ["o1"]],
+  [["a2"], ["o1", "o2"]],
+  [["a3"], ["o2"]],
+  [["a1", "a2"], ["o1"]],
+  [["a2", "a3"], ["o2"]],
+  [["a1", "a2", "a3"], []]
+]
+```
+
+**Explanation:**
+1. `[[], [o1, o2]]` - The top concept: no attributes, all objects
+2. `[[a1], [o1]]` - Objects having attribute a1
+3. `[[a2], [o1, o2]]` - Objects having attribute a2 (both objects share this)
+4. `[[a3], [o2]]` - Objects having attribute a3
+5. `[[a1, a2], [o1]]` - Objects having both a1 and a2
+6. `[[a2, a3], [o2]]` - Objects having both a2 and a3
+7. `[[a1, a2, a3], []]` - The bottom concept: all attributes, no objects
+
+Each concept is represented as `[[intent], [extent]]` where:
+- **Intent** = set of attributes shared by all objects in the extent
+- **Extent** = set of objects that have all attributes in the intent
+
+The total number of formal concepts for this context is **7**.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+Based on the analysis of your CSV file, here is the complete list of all lattice concepts in the requested format:
+
+[[[], [o1, o2]], [[a1], [o1]], [[a2], [o1, o2]], [[a3], [o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a2, a3], []]]

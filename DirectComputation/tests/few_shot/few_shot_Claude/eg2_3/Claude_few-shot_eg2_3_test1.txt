@@ -1,0 +1,64 @@
+Claude_few-shot_eg2_3_test1
+
+Date: 27 may 2025
+Model: Claude 4 Sonnet 
+Context file: eg2_3
+Type of solution: Applied code
+Created .txt file?: No
+Test number: 1
+
+PROMPT 1:
+In the field of formal concept analysis (FCA), given this .csv file with a context, I want you to extract and enumerate all lattice concepts.
+
+EXAMPLE:
+For the next context
+;a1;a2;a3;a4;a5;a6;a7;a8;a9;a10;a11;a12;a13;a14;a15;a16
+o1;no;no;no;no;no;no;no;no;yes;no;yes;no;no;yes;yes;no
+o2;yes;no;yes;no;yes;no;no;yes;yes;no;no;yes;yes;yes;no;no
+o3;no;yes;no;no;yes;no;yes;no;yes;yes;no;yes;no;no;no;no
+
+the list of lattice concepts is the next
+[[[a9], [o1, o2, o3]], [[a1, a3, a5, a8, a9, a12, a13, a14], [o2]], [[a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16], []], [[a2, a5, a7, a9, a10, a12], [o3]], [[a5, a9, a12], [o2, o3]], [[a9, a11, a14, a15], [o1]], [[a9, a14], [o1, o2]]]
+____________________
+
+OUTPUT:
+I'll analyze the given CSV file to extract all lattice concepts using formal concept analysis (FCA).
+
+First, let me read and parse the CSV file:
+
+Based on the analysis of your CSV file, I can extract all the lattice concepts from the given formal context.
+
+The context has:
+- Objects: o1, o2
+- Attributes: a1, a2, a3
+- Relations: 
+  - o1: has a1✓, a2✓, a3✗
+  - o2: has a1✗, a2✓, a3✓
+
+The complete list of lattice concepts is:
+
+```
+[
+  [[], [o1, o2]],
+  [[a1], [o1]], 
+  [[a2], [o1, o2]],
+  [[a3], [o2]],
+  [[a1, a2], [o1]],
+  [[a2, a3], [o2]],
+  [[a1, a2, a3], []]
+]
+```
+
+Each concept is represented as `[attributes, objects]` where:
+- The first element is the set of attributes (intent)
+- The second element is the set of objects (extent)
+
+These 7 concepts form the complete concept lattice for your context, representing all maximal rectangles of 'yes' entries that can be formed in the object-attribute matrix.
+____________________
+
+PROMPT 2:
+Put the list of all concepts in a single line with this format: [[[], [o1, o2, o3, o4, o5]], [[a1], [o1, o3, o4]], [[a1, a2, a3, a5], [o4]]], without any quotation marks
+____________________
+
+OUTPUT:
+[[[a2], [o1, o2]], [[], [o1, o2]], [[a1], [o1]], [[a3], [o2]], [[a1, a2], [o1]], [[a2, a3], [o2]], [[a1, a2, a3], []]]
