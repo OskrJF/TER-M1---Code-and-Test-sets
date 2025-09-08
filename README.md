@@ -26,6 +26,7 @@ the context generator: a simple program the populates a csv file with either 1s 
 * Synthetics directory: has been described before
 * Prompts directory: contains the prompts for code generation
 * M1\_TER\_rapport\_FCA.pdf: is the report on the project
+* 2025\_CONSOFT\_Slides: The presentation slides for the ConSoft workshop  
 
 # Participants
 * [Valentino Cocks](https://www.linkedin.com/in/valentino-cocks-0144b51bb/?originalSubdomain=fr)
